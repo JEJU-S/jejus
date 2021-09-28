@@ -1,0 +1,15 @@
+doctype html
+html(lang="ko")
+    head
+        title #{pageTitle} | Sample
+        link(rel="stylesheet" href="https://unpkg.com/mvp.css") 
+    body
+        header
+            include partials/header.pug 
+            h1=pageTitle
+        //-side bar
+        include partials/sidebar.pug
+        main
+        block content 
+        include partials/footer.pug
+        

@@ -1,0 +1,6 @@
+
+div(class=sidebar)
+    h2 this is side bar
+    ul
+        each planInfo in plans
+            a(href=`/plans/${planInfo.id}`)=planInfo.name
