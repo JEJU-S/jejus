@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     image_url : {type : String},
     gmail : {type : String, required : true, unique : true},
     name : {type : String, required : true},
-    plan_id : [{type:Schema.Types.ObjectId}],
+    plan_id : [{type: String}],
 });
 
 const User = mongoose.model("User", userSchema);

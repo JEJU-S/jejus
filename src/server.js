@@ -2,7 +2,7 @@
 import express from "express"; 
 import morgan from "morgan";
 
-import globalRouter from "./routers/globalRouter";
+import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import planRouter from "./routers/planRouter";
 
@@ -12,12 +12,12 @@ const app = express();
 // middle ware 패키지 사용
 const logger = morgan("dev");
 
-//퍼그 사용
+//html 사용
 app.set("view engine", "ejs");
-app.engine('html', require('ejs').renderFile);
+//app.engine('html', require('ejs').renderFile); html 파일 사용 x 해서 지움
 app.set("views", process.cwd() + "/src/views");
 app.use(logger)
-app.use("/", globalRouter);
+app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/plans", planRouter);
 

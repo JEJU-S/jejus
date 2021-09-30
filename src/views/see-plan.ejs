@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+        <!--추후 수정 => 여행 이름으로-->
+        <title> plan1🚐 | Sample </title>
+    </head>
+    <body>
+        <header>
+            <img src="" alt="logo">
+        </header>
+        <div class="sidebar"> <!--사이드 바-->
+            <div class="side-profile">
+                <img src="<%=user.image_url%>" alt="user photo"/>
+                    <p><%=user.name%></p>
+                    <p><%=user.gmail%></p>
+            </div>
+            <ul> <!--유저 플랜 목록 function 해야 함-->
+                <li> plan 1🚔</li>
+                <li> plan 2🛫</li>
+        </div>
+        <main>
+            <div class="kakao-map">
+            
+            </div>
+
+            <div>
+            </div>
+
+
+        </main>
+            <footer>
+                &copy; <%=new Date().getFullYear()%> Sample Project
+            </footer>
+    </body>
+</html>

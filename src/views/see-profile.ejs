@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+        <title> Profile | Sample </title>
+    </head>
+    <body>
+        <header>
+            <img src="" alt="logo">
+        </header>
+        <div class="sidebar">
+            <div class="side-profile">
+                <img src="<%=user.image_url%>" alt="user photo"/>
+                    <p><%=user.name%></p>
+                    <p><%=user.gmail%></p>
+            </div>
+            <ul> <!--유저 플랜 목록 function 해야 함-->
+                <li> plan 1🚔</li>
+                <li> plan 2🛫</li>
+        </div>
+        <main>
+            <div class="main-profile">
+                <img src="<%=user.image_url%>" alt="user photo"/>
+                <p><%=user.name%></p>
+                <p><%=user.gmail%></p>
+            </div>
+                <button class="edit-button" type="button">수정하기</button>
+        </main>
+            <footer>
+                &copy; <%=new Date().getFullYear()%> Sample Project
+            </footer>
+    </body>
+</html>
+
