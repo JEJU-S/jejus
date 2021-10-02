@@ -1,11 +1,14 @@
-import Plan from "../models/Plan";
 import fetch from "node-fetch";
 import dotdev from "dotenv";
 dotdev.config();
 
-//import User from "../models/User";
+// 추후 진짜 db로 바꿔야 함
+import { fakeUser } from "./fakeDB";
+import { fakeTotPlan } from "./fakeDB";
 
-// Main Page
+
+
+// Main Page 
 export const main = async (req, res) => {
     try{
     return res.render("main.ejs");
@@ -31,13 +34,6 @@ export const login = (req, res)  =>
     const finalURL = `${baseURL}?${params}`;
     
     return res.redirect(finalURL);
-}
-const fakeUser = {
-    id : 1,
-    image_url : "https://cdn.pixabay.com/photo/2021/07/20/03/39/fisherman-6479663__340.jpg",
-    gmail : "fake123@gmail.com",
-    name : "kimfake",
-    plan_id : []
 }
 
 export const callback = async(req, res) => {
@@ -67,8 +63,7 @@ export const callback = async(req, res) => {
     ).json();
 
     //access token을 받아 왔다면,
-    //url = "https://people.googleapis.com/v1/people/me?personFields=emailAddresses,names,photos&access_token=" + access_token;
-         
+  
     if("access_token" in tokenRequest){
         const {access_token} = tokenRequest;
 
@@ -79,13 +74,16 @@ export const callback = async(req, res) => {
         }
         const params = new URLSearchParams(config).toString();
         const finalURL = `${baseURL}?${params}`;
-
+        
+        // 사용자 정보 받아옴(json 형식)
         const userRequest = await (
             await fetch( finalURL, {
             method : "GET"
         })
         ).json(); 
+        // 사용자 정보 console에 출력
         console.log(userRequest);
+
         //res.send("end of login!");
 
         //if the user is new => create user
@@ -93,7 +91,8 @@ export const callback = async(req, res) => {
 
         //if the user is exist => select user
 
-        res.redirect(`/users/${fakeUser.id}`);
+
+        res.redirect("/users/profile");
 
     }
     else {
@@ -112,9 +111,10 @@ export const postEditProfile = (req, res) => {
 };
 
 export const seeProfile = (req, res) => {
-    //req.params;
+    //const {} =req.params;
 
-    return res.render("see-profile.ejs", {user : fakeUser});
+    //user 정보 넘겨줘야 함
+    return res.render("see-profile", {user : fakeUser});
     
 };
 export const logout = (req, res) => res.send("Log out");

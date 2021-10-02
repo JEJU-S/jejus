@@ -1,6 +1,6 @@
-import "./db";
-import "./models/Plan";
-import app from "./server";
+import "./db"; // database 연결
+import "./models/Plan"; // schema
+import app from "./server"; // 서버 객체, 라우터 
 
 
 const PORT = 4000;

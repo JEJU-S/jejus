@@ -1,12 +1,10 @@
 import express from "express"; 
-import {postEditProfile, getEditProfile, seeProfile, invitations, callback} from "../controllers/userController";
+import {postEditProfile, getEditProfile, seeProfile, callback} from "../controllers/userController";
 
 const userRouter = express.Router();
-
-//로그인 작업 
 userRouter.get("/callback", callback);
+userRouter.get("/profile", seeProfile);
 
-userRouter.get("/invitations", invitations);
-userRouter.get("/:id(\\d+)", seeProfile);
-userRouter.route("/:id(\\d+)/edit").get(getEditProfile).post(postEditProfile);
+// 아직 시작xx
+userRouter.route("/profile/edit").get(getEditProfile).post(postEditProfile);
 export default userRouter;

@@ -8,6 +8,8 @@ const planSchema = new mongoose.Schema({
     place_id : [{type:Schema.Types.ObjectId}],
 });
 
-//(String, schema)
+
+
+//형식 => (String, schema)
 const Plan = mongoose.model("Plan", planSchema);
 export default Plan;

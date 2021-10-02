@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+
+        <title> Edit <%=plan.title%> | Sample </title>
+    </head>
+    <body>
+        <header><!--수정 가능하게 input으로 바꿔야 하고 html 태그 중 날짜 정하는 것 입력/ 이거 헤더에 넣ㅇ어도 되나 문서 공부하기-->
+            <%=plan.title%>
+            참여자 : <%=plan.participants%>
+            <p>출발일 : </p>
+            <p>도착일 : </p>
+            <button>초대</button>
+        </header>
+        <main>
+                <!--네이버 지도, 검색창 자리 수정 필요-->
+                
+                <div id="place">
+                    <input type="text" placeholder="검색창">
+                </div>
+                <div id="map" style="width:100%;height:400px;"></div>
+                    <!--js,css 파일 따로 만들기-->
+                <script>
+                    var mapOptions = {
+                        center: new naver.maps.LatLng(37.3595704, 127.105399),
+                        zoom: 10
+                    };
+                    var map = new naver.maps.Map('map', mapOptions);
+                </script>
+
+                <div class= "place-box">
+                    <button>일정 추가</button>
+                    <!--일정 마다 day 다르게, input으로-->
+                    <p>day1</p>
+                    <div class="place-object">
+                        <button>❌</button>
+                        <p>상호명 또는 사용자가 설정한 이름</p> <!--편집가능하게-->
+                        <p>주소</p>
+                        <textarea>메모</textarea>
+                    </div>
+
+                    <button>저장하기</button>
+                </div>
+                <div class="recommandation-box">
+                    <!--추천 장소 뜨기-->
+                    <div class="recommandation-object">
+                    <img src="", alt="추천 장소">
+                    <p>이름</p>
+                    <p>요악</p>
+                    <button>추가</button>
+                    </div>
+                </div>
+                
+                <button class="chatting-popup">chatting</button>
+        </main>
+
+            <footer>
+                &copy; <%=new Date().getFullYear()%> Sample Project
+            </footer>
+    </body>
+</html>
