@@ -11,16 +11,24 @@ import { fakeTotPlan } from "./fakeDB";
 // Main Page 
 export const main = async (req, res) => {
     try{
-    return res.render("main.ejs");
+        //loggedIn => true or undefined
+        // 로그인했으면 profile페이지로 다시 넘어가도록 한다(session loggedIn 변수로 확인)
+        if(Boolean(req.session.loggedIn) == true)
+        {   
+            return res.redirect("/users/profile");
+        }
+        return res.render("main.ejs");
     }
     catch(error){
         return res.render("<h1>SERVER ERROR🛑</h1>");
     }
 };
 
+// --로그인 작업--
+
 //Main -> Profile 로 가는 process function 
 //login -> callback -> profile
-export const login = (req, res)  => 
+export const login = (req, res) => 
 {
      //구글 로그인 전달 url 파라미터들
     const baseURL = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -63,7 +71,6 @@ export const callback = async(req, res) => {
     ).json();
 
     //access token을 받아 왔다면,
-  
     if("access_token" in tokenRequest){
         const {access_token} = tokenRequest;
 
@@ -81,44 +88,70 @@ export const callback = async(req, res) => {
             method : "GET"
         })
         ).json(); 
-        // 사용자 정보 console에 출력
+        // 사용자 정보 console에 출력 -> db로 받아서 
         console.log(userRequest);
 
-        //res.send("end of login!");
-
-        //if the user is new => create user
 
 
-        //if the user is exist => select user
+
+        //db에서 사용자를 찾을 수 없다면 => 추가 
 
 
+        // db에서 사용자 찾을 수 있다면 => select
+
+
+
+        //session 초기화(만든다)
+        req.session.loggedIn = true;
+        
+
+        //profile 페이지로 redirect(seeProfile 함수)
         res.redirect("/users/profile");
-
     }
+
     else {
         console.log("error 알림 해줘야 함");
+        //main 페이지로 redirect(main 함수)
         res.redirect("/");
     }
 }
 
 //goes to user router
+
+// 아직 시작 xx
 export const getEditProfile = (req, res) => {
+
+    //**DB** : => user
     res.send("get User profile")
 };
 
+// 아직 시작 xx
 export const postEditProfile = (req, res) => {
+
+    //**DB** : => user
     res.send("post User profile")
 };
+
+
 
 export const seeProfile = (req, res) => {
     //const {} =req.params;
 
-    //user 정보 넘겨줘야 함
-    return res.render("see-profile", {user : fakeUser});
+    // login 한 유저가 아니라면 돌려보내야함
     
+    
+
+    //**DB** : => 특정 user, user가 가지고 있는 plan목록, user가 받은 초대
+    return res.render("see-profile", {user : fakeUser});
 };
-export const logout = (req, res) => res.send("Log out");
-export const invitations = (req, res) => res.send("Invitations");
+
+
+export const logout = (req, res) => {
+    req.session.destroy();
+    res.redirect("/");
+};
+
+
 
 
 

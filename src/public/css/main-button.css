@@ -1,0 +1,20 @@
+*{
+    font-family: 'Nanum Myeongjo', serif;
+}
+
+button {
+    color : white;
+    background-color: green;
+    font-size : 20px;
+    width : auto;
+    height : auto;
+    display : block;
+    padding : 20px;
+    margin : auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    border : none;
+}
+
+
+

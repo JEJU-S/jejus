@@ -5,12 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://unpkg.com/mvp.css">
         <title> Profile | Sample </title>
+
+        <!--<link rel="stylesheet" href="/static/css/styles.css">-->
+        <!--<script src="/static/js/main.js"> </script>-->
     </head>
     <body>
         <header>
-            <div class="logo_box">
-                <img src="../public/images/logo.png" alt="logo" class="logo">
-            </div>
+            <img src="../public/images/logo.png" alt="logo">
         </header>
         <div class="sidebar">
             <div class="side-profile">
@@ -18,22 +19,21 @@
                     <p><%=user.name%></p>
                     <p><%=user.gmail%></p>
             </div>
-            <ul> <!--유저 플랜 목록 function 해야 함/ 여기도 div 로 묶을까..?-->
+            <ul> <!--유저 플랜 목록 function 해야 함-->
                 <li> plan 1🚔</li>
                 <li> plan 2🛫</li>
         </div>
         <main>
             <div class="main-profile">
-                <form action="", mdthod="POST">
-                    <input type="url", name="image_url", placeholder="프로필 사진", value="<%=user.image_url%>">
-                    <input type="text", name="name", placeholder="닉네임", value="<%=user.name%>">
-                    <p>gmail : <%=user.gmail%></p><!--진회색으로 표시?-->
-                    <input type="submit" value="수정하기">
-                </form>
+                <img src="<%=user.image_url%>" alt="user photo"/>
+                <p><%=user.name%></p>
+                <p><%=user.gmail%></p>
             </div>
+                <button class="edit-button" type="button">수정하기</button>
         </main>
             <footer>
                 &copy; <%=new Date().getFullYear()%> Sample Project
             </footer>
     </body>
 </html>
+

@@ -1,36 +1,115 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset = "UTF-8">
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+        <link rel="stylesheet" href="../public/css/see-profile.css">
         <title> Profile | Sample </title>
-    </head>
+        </head>
+
+        <!--사이드바 시작-->
+        <!--class:body-pd ->사이드바 펼치고 접는 과정에서 반응하는 효과를 위해 입힌 클래스 -->
     <body>
         <header>
-            <img src="" alt="logo">
+        <!--헤더 시작-->
+            <div class="logo_box">
+                <img src="../public/images/logo.png" alt="logo" class="logo">
+            </div>
         </header>
-        <div class="sidebar">
-            <div class="side-profile">
-                <img src="<%=user.image_url%>" alt="user photo"/>
-                    <p><%=user.name%></p>
-                    <p><%=user.gmail%></p>
+        <div class="body" id="body-pd">
+        <!--사이드바 전체 틀 class:left_sidebar로 지정. 크기, 백그라운드, 페이지 내 표시 순서를 위해 필요한 과정-->
+            <div class="left_sidebar" id="sidebar">
+                <div class="sidebar">
+                    <div>
+                    <!--사이드바 열고닫기 토글 부분-->
+                        <div class="sidebar__brand">
+                            <ion-icon name="menu-outline" class="sidebar__toggle" id="sidebar-toggle"></ion-icon>
+                        </div>
+                    <!--사이드바 카테고리 구성 시작-->
+                        <div class="sidebar__list">
+                        <!--카테고리 이동 링크 sidebar__link / active는 클릭 시 백그라운드 컬러 들어와있는 효과-->
+                            <a href="#" class="sidebar__link active">
+                            <!--사이드바 카테고리별 아이콘 sidebar__icon-->
+                                <ion-icon name="home-outline" class="sidebar__icon"></ion-icon>
+                            <!--사이드바 카테고리 이름 sidebar__name-->
+                                <span 
+                            class="sidebar_name">메인페이지</span>
+                            </a>
+                        <!--펼쳐지는 카테고리 sidebar__link collapse-->
+                            <div href="#" class="sidebar__link collapse">
+                                <ion-icon name="folder-outline" class="sidebar__icon"></ion-icon>
+                                <span class="sidebar_name">내 그룹</span>
+                            <!--펼치기 링크 collapse__link-->
+                                <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+                            <!--펼치기 리스트 collapse__menu-->
+                                <ul class="collapse__menu">
+                                <!--펼쳤을 때 나타나는 세부 메뉴 collapse__sublink-->
+                                    <li><a href="#" class="collapse__sublink"> 제주도1</a></li>
+                                    <li><a href="#" class="collapse__sublink"> plan1</a></li>
+                                </ul>
+                            </div>
+                            <a href="#" class="sidebar__link">
+                                <ion-icon name="log-out-outline" class="sidebar__icon"></ion-icon>
+                                <span class="sidebar_name">로그아웃</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <ul> <!--유저 플랜 목록 function 해야 함-->
-                <li> plan 1🚔</li>
-                <li> plan 2🛫</li>
+        <!--사이드바 끝-->
+            <main>
+                <div class="main">
+        <!--프로필 시작-->
+                <!--profile 부분 grid 컨테이너 main-profile-->
+                    <div class="main-profile">
+                    <!--프로필 사진 들어가는 부분 박스 profile_box-->
+                        <div class="profile_box">
+                            <img src="<%=user.image_url%>" class="profile_photo" alt="user photo">
+                        </div>
+                            <!--닉네임-->
+                        <div class="nickname">
+                            <p>닉네임</p>
+                            <div>
+                                <span style="padding-left: 5%;"><%=user.name%></span>
+                            </div>
+                        </div>   
+                    <!--이메일-->
+                        <div class="email">
+                            <p>이메일</p>
+                            <div>
+                                <span style="padding-left: 5%;"><%=user.gmail%></span>
+                            </div>
+                        </div>
+                        <!--수정버튼-->
+                        <button class="edit-button" type="button">수정하기</button>
+                    </div>
+        <!--프로필 끝-->
+        <!--초대창 시작-->
+                    <ul class="inv_box">
+                        <h2>초대장</h2>
+                        <li class="inv_item">
+                            <span hrep="#" class="inv_title">초대장1
+                                <div class="inv_btn">
+                                    <button class="accept">수락</button>
+                                    <button class="refuse">거절</button>
+                                </div>
+                            </span>
+                        </li>
+                    </ul >
+                </div>
+        <!--초대창 끝-->
+    <!--프로필 끝-->
+            </main>
         </div>
-        <main>
-            <div class="main-profile">
-                <img src="<%=user.image_url%>" alt="user photo"/>
-                <p><%=user.name%></p>
-                <p><%=user.gmail%></p>
-            </div>
-                <button class="edit-button" type="button">수정하기</button>
-        </main>
-            <footer>
-                &copy; <%=new Date().getFullYear()%> Sample Project
-            </footer>
+    <!--푸터 시작-->
+        <div class="footer" id="body-pd">
+            <!--년도 계산 내장 function 사용해야 함-->
+            <span class="copyright">&copy; <%=new Date().getFullYear()%> Sample Project</span>
+        </div>
+
+
+    <!--푸터 끝-->
+    <!-- IONICONS -->
+            <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
     </body>
 </html>
-

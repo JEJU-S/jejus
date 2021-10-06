@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "sample project for paasta",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js"
+    "dev": "nodemon",
+    "dev:assets": "webpack"
   },
   "repository": {
     "type": "git",
@@ -16,9 +17,11 @@
   },
   "homepage": "https://github.com/nyoung113/project_sample#readme",
   "dependencies": {
+    "connect-mongo": "^4.6.0",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "mongoose": "^6.0.7",
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
@@ -29,6 +32,15 @@
     "@babel/core": "^7.15.5",
     "@babel/node": "^7.15.4",
     "@babel/preset-env": "^7.15.6",
-    "nodemon": "^2.0.12"
+    "babel-loader": "^8.2.2",
+    "cli": "^1.0.1",
+    "css-loader": "^6.3.0",
+    "mini-css-extract-plugin": "^2.3.0",
+    "nodemon": "^2.0.12",
+    "sass": "^1.42.1",
+    "sass-loader": "^12.1.0",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.56.1",
+    "webpack-cli": "^4.8.0"
   }
 }

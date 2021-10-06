@@ -1,5 +1,4 @@
-import "./db"; // database 연결
-import "./models/Plan"; // schema
+//import "./db"; // database 연결
 import app from "./server"; // 서버 객체, 라우터 
 
 
