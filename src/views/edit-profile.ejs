@@ -7,12 +7,15 @@
         <link rel="stylesheet" href="../../public/css/sidebar.css">
         <link rel="stylesheet" href="../../public/css/base.css">
 		<link rel="stylesheet" href="../../public/css/footer.css">
+        <link rel="stylesheet" href="../../public/css/see-profile.css">
         
         <title> Edit Profile | Sample </title>
     </head>
     <body class="container">
         <header>
-            <img src="../../public/images/logo.png" alt="logo">
+            <div class="logo-box">
+                <img src="../../public/images/logo.png" alt="logo" class="logo">
+            </div>
         </header>
         <div class="sidebar"> <!--사이드 바-->
             <div class="side-profile"> <!--프로필 사진 크기 맞춤을 위해 "photo-box" div 추가-->
@@ -50,12 +53,20 @@
         <!--메인 페이지--> 
 
         <main>
-            <div class="main-profile">
-                <form action="http://localhost:4000/users/<%=user._id%>/edit", mdthod="GET" id="edit-form">
-                    <img src="<%=user.image_url%>" alt="user photo"/>
-                    <input type="text", name="name", placeholder="이름", value="<%=user.name%>">
-                    <span>gmail : <%=user.gmail%></span>
-                    <input type="submit" value="수정하기">
+            <div>
+                <form action="http://localhost:4000/users/<%=user._id%>/edit", mdthod="GET" id="edit-form" class="main-profile">
+                    <div class="profile-box">
+                        <img src="<%=user.image_url%>" class="profile-photo" alt="user photo">
+                    </div>
+                    <div class="info-box">
+                        <h3>닉네임</h3>
+                        <input type="text", name="name", placeholder="이름", value="<%=user.name%>" class="nickname-edit">
+                    </div>
+                    <div class="info-box">
+                        <h3>이메일</h3>
+                        <span class="email-edit"><%=user.gmail%></span>
+                    </div>
+                        <input type="submit" value="수정하기" class="edit-button">
                 </form>
             </div>
         </main>

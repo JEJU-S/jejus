@@ -16,7 +16,6 @@
   column-gap: 20px;
   padding: 2% 4%;
   width: 1055px;
-  transition: 0.5s;
   color: rgb(0, 0, 0);
   margin: 15px 0;
   background-color: rgb(255, 255, 255);
@@ -44,14 +43,14 @@
 }
 
 .info-box {
-  max-width: 300px;
+  width: 200px;
   text-overflow: clip;
+  margin-left: 50px;
 }
 
 .nickname {
   width: 20%;
   margin: 16px 35px;
-  line
 }
 
 .email {
@@ -60,6 +59,33 @@
   text-overflow: clip;
 }
 
+.nickname-edit {
+  width: 20%;
+  margin: 3px 35px;
+}
+
+input[type="text"] {
+  width: 100%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  margin: -8px 25px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.email-edit {
+  width: 30%;
+  margin: 16px 35px;
+  text-overflow: clip;
+}
 .edit-button {
   background-color: rgb(72, 173, 255);
   padding: 7.5px 1px;
@@ -91,7 +117,6 @@
   min-height: 120px;
   max-height: 317px;
   width: 1053px;
-  transition: 0.5s;
   color: rgb(0, 0, 0);
   margin-bottom: 1px;
   background-color: white;
