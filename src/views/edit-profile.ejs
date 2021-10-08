@@ -3,37 +3,66 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
-        <title> Profile | Sample </title>
+		<link rel="stylesheet" href="../../public/css/header.css">
+        <link rel="stylesheet" href="../../public/css/sidebar.css">
+        <link rel="stylesheet" href="../../public/css/base.css">
+		<link rel="stylesheet" href="../../public/css/footer.css">
+        
+        <title> Edit Profile | Sample </title>
     </head>
-    <body>
+    <body class="container">
         <header>
-            <div class="logo_box">
-                <img src="../public/images/logo.png" alt="logo" class="logo">
-            </div>
+            <img src="../../public/images/logo.png" alt="logo">
         </header>
-        <div class="sidebar">
-            <div class="side-profile">
-                <img src="<%=user.image_url%>" alt="user photo"/>
+        <div class="sidebar"> <!--사이드 바-->
+            <div class="side-profile"> <!--프로필 사진 크기 맞춤을 위해 "photo-box" div 추가-->
+                <div class="photo-box"> <!--프로필 사진 크기 맞춤을 위해 사진에 "profile-img" class 추가-->
+                    <img class="profile-img" src="<%=user.image_url%>" alt="user photo"/>
+                </div>
+                <!--프로필 내 정보들을 box로 묶기 위해 "user-info" div 추가-->
+                <div class="user-info">
                     <p><%=user.name%></p>
                     <p><%=user.gmail%></p>
+                </div>
             </div>
-            <ul> <!--유저 플랜 목록 function 해야 함/ 여기도 div 로 묶을까..?-->
-                <li> plan 1🚔</li>
-                <li> plan 2🛫</li>
-        </div>
+            <!--사이드바 메뉴구성 시작-->
+            <div class="menu">
+                <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
+                <div class="menu-name">
+                    <span><a href="/users/profile">마이페이지</a></span>
+                </div>
+                <div class="menu-name">
+                    <span>내 그룹</span>
+                    <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
+                    <div class="menu-detail">
+                        <ul>
+                            <%totPlanTitles.forEach(function(title){%>
+                            <li><a href="http://localhost:4000/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <% })%>
+                        </ul>
+                    </div>
+                </div>
+                <div class="menu-name">
+                    <span><a href="/users/logout">로그아웃</a></span>
+                </div>
+            </div>
+		</div>
+        <!--메인 페이지--> 
+
         <main>
             <div class="main-profile">
-                <form action="", mdthod="POST">
-                    <input type="url", name="image_url", placeholder="프로필 사진", value="<%=user.image_url%>">
-                    <input type="text", name="name", placeholder="닉네임", value="<%=user.name%>">
-                    <p>gmail : <%=user.gmail%></p><!--진회색으로 표시?-->
+                <form action="http://localhost:4000/users/<%=user._id%>/edit", mdthod="GET" id="edit-form">
+                    <img src="<%=user.image_url%>" alt="user photo"/>
+                    <input type="text", name="name", placeholder="이름", value="<%=user.name%>">
+                    <span>gmail : <%=user.gmail%></span>
                     <input type="submit" value="수정하기">
                 </form>
             </div>
         </main>
+
+        <!--메인 페이지 끝-->
             <footer>
-                &copy; <%=new Date().getFullYear()%> Sample Project
+                &copy; 2021 Sample Project
             </footer>
     </body>
 </html>

@@ -28,9 +28,9 @@ app.use(
     session({
         secret : process.env.COOKIE_SECRET,
         resave : false,
-        saveUninitialized : true,
+        saveUninitialized : true, // 추후 false로 바꿔야 함
         cookie : {
-            maxAge : 20000,
+            //maxAge : 20000,
         }
         /*
         store : MongoStore.create({

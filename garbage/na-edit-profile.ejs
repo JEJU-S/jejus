@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+        <link rel="stylesheet" href="../public/css/base.css">
+		<link rel="stylesheet" href="../public/css/sidebar.css">
+		<link rel="stylesheet" href="../public/css/header.css">
+		<link rel="stylesheet" href="../public/css/footer.css">
+        <title> Profile | Sample </title>
+    </head>
+    <body>
+        <header>
+            <div class="logo_box">
+                <img src="../public/images/logo.png" alt="logo" class="logo">
+            </div>
+        </header>
+        <div class="sidebar">
+            <div class="side-profile">
+                <img src="<%=user.image_url%>" alt="user photo"/>
+                    <p><%=user.name%></p>
+                    <p><%=user.gmail%></p>
+            </div>
+            <ul> 
+                <li> plan 1🚔</li>
+                <li> plan 2🛫</li>
+        </div>
+        <main>
+            <div class="main-profile">
+                <form action="", mdthod="POST">
+                    <img src="<%=user.image_url%>" alt="user photo"/>
+                    <input type="text", name="name", placeholder="닉네임", value="<%=user.name%>">
+                    <p>gmail : <%=user.gmail%></p>
+                    <input type="submit" value="수정하기">
+                </form>
+            </div>
+        </main>
+            <footer>
+                &copy; <%=new Date().getFullYear()%> Sample Project
+            </footer>
+    </body>
+</html>

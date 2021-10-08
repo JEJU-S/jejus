@@ -1,0 +1,21 @@
+.title {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.container {
+  width: 1536px;
+  height: 721px;
+  margin: 0;
+  display: grid;
+  background-color: #f9f9fa;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}

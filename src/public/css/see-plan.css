@@ -1,0 +1,155 @@
+.container {
+  grid-template-areas:
+    "header header header"
+    "sidebar day-btn day-btn"
+    "sidebar main main"
+    "sidebar main main"
+    "footer footer footer";
+  grid-template-columns: 310px 1170px;
+  grid-template-rows: 40px 50px 0 600px 20px;
+}
+
+main {
+  background-color: rgb(255, 255, 255);
+  grid-area: main;
+  margin: 15px 0 0 0px;
+  border-radius: 0 15px 15px 15px;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 19%);
+  height: 572px;
+  width: 1140px;
+}
+
+.day-button {
+  grid-area: day-btn;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  margin: 15px 0 0 0px;
+}
+
+.btn {
+  background-color: rgb(229 229 229);
+  width: 120px;
+  height: 50px;
+  max-width: 186px;
+  border-radius: 15px 15px 0 0;
+  line-height: 3;
+  box-shadow: -1px -2px 4px 0 rgb(0 0 0 / 11%);
+}
+/*자바스크립트로 버튼이 클릭됐을 때 버튼 클래스에 selected 클래스가 추가되는 효과(html에 이미 info에 적용된 것 처럼 써 놓았음.) */
+.selected {
+  background-color: rgb(255, 255, 255);
+  z-index: 1;
+}
+/*info가 선택되었는지, 아닌지에 따라 day-plan과 whole-plan의
+display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*/
+.whole-plan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.plan-info {
+  width: 80%;
+}
+
+.user {
+  float: left;
+}
+
+.date {
+  float: right;
+}
+
+.edit-btn {
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  color: white;
+  background-color: green;
+  margin: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.del-btn {
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  color: white;
+  background-color: rgb(255, 0, 0);
+  margin: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.not-manager {
+  display: none;
+}
+
+.plan-buttons {
+  margin-top: auto;
+}
+
+.day-plan {
+  display: none;
+  grid-template-areas:
+    "title title title"
+    " day day day"
+    "map map object";
+  justify-items: center;
+  grid-template-columns: 30% 30% 40%;
+}
+
+.plan-title {
+  grid-area: title;
+}
+
+.plan-day {
+  grid-area: day;
+}
+
+.place-object {
+  grid-area: object;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  gap: 15px;
+  max-height: 64vh;
+  overflow: scroll;
+  /*스크롤 바*/
+  -ms-overflow-style: none;
+}
+
+.place-object::-webkit-scrollbar {
+  display: none;
+}
+
+.p-obj {
+  width: 400px;
+  border-radius: 10px;
+  text-align: left;
+  background-color: #f9fbff;
+  color: #272727;
+  box-shadow: 1px 1px 1px 0px rgb(0 0 0 / 23%);
+}
+
+.obj-name {
+  margin-left: 12px;
+}
+
+.obj-adress {
+  margin: -18px 1px 1px 19px;
+  color: #939393;
+}
+
+.obj-memo {
+  margin-left: 13px;
+  padding: 17px 0px;
+}
+
+map {
+  grid-area: map;
+  width: 80%;
+}

@@ -1,0 +1,14 @@
+header {
+  background-color: #e0f4ff;
+  grid-area: header;
+  box-shadow: 0 0 1px 0 rgb(0 0 0 / 15%);
+}
+
+.logo-box {
+  height: 30px;
+  margin: 5px 0 0 80px;
+}
+.logo {
+  height: 100%;
+  object-fit: cover;
+}

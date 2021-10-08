@@ -1,12 +1,14 @@
 import express from "express"; 
 import {main ,login} from "../controllers/userController"
+import {protectMiddleware, loggedInMiddleware} from "../middleware";
+
 
 const rootRouter = express.Router();
 
-rootRouter.get("/", main);
+rootRouter.get("/", loggedInMiddleware, main);
 
 // google aouth2로 넘어감
-rootRouter.get("/login", login);
+rootRouter.get("/login", loggedInMiddleware, login);
 
 
 export default rootRouter;

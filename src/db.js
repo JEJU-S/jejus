@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import dotdev from "dotenv";
+import genericPool from "generic-pool";
+
 dotdev.config();
 
 mongoose.connect(process.env.DB_URL);

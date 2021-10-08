@@ -1,64 +1,133 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!--컬러,폰트, 로고 빼고 작업 완료된 듯..?-->
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+		<link rel="stylesheet" href="../../public/css/header.css">
+        <link rel="stylesheet" href="../../public/css/sidebar.css">
+        <link rel="stylesheet" href="../../public/css/base.css">
+		<link rel="stylesheet" href="../../public/css/footer.css">
+		<link rel="stylesheet" href="../../public/css/see-plan.css">
+
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
-        <title> <%=plan.title%> | Sample </title>
+        <title> <%=totPlan.title%> | Sample </title>
     </head>
-    <body>
+    <body class="container">
         <header>
-            <img src="" alt="logo">
+            <img src="../public/images/logo.png" alt="logo">
         </header>
+        <!--사이드바-->
         <div class="sidebar"> <!--사이드 바-->
-            <div class="side-profile">
-                <img src="<%=user.image_url%>" alt="user photo"/>
+            <div class="side-profile"> <!--프로필 사진 크기 맞춤을 위해 "photo-box" div 추가-->
+                <div class="photo-box"> <!--프로필 사진 크기 맞춤을 위해 사진에 "profile-img" class 추가-->
+                    <img class="profile-img" src="<%=user.image_url%>" alt="user photo"/>
+                </div>
+                <!--프로필 내 정보들을 box로 묶기 위해 "user-info" div 추가-->
+                <div class="user-info">
                     <p><%=user.name%></p>
                     <p><%=user.gmail%></p>
+                </div>
             </div>
-            <ul> <!--유저 플랜 목록 function 해야 함-->
-                <li> plan 1🚔</li>
-                <li> plan 2🛫</li>
-        </div>
+            <!--사이드바 메뉴구성 시작-->
+            <div class="menu">
+                <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
+                <div class="menu-name">
+                    <span><a href="/users/profile">마이페이지</a></span>
+                </div>
+                <div class="menu-name">
+                    <span>내 그룹</span>
+                    <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
+                    <div class="menu-detail">
+                        <ul>
+                            <%totPlanTitles.forEach(function(title){%>
+                            <li><a href="http://localhost:4000/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <% })%>
+                        </ul>
+                    </div>
+                </div>
+                <div class="menu-name">
+                    <span><a href="/users/logout">로그아웃</a></span>
+                </div>
+            </div>
+		</div>
         <!--메인 페이지-->
-        <main>
-            <!--자바스크립트로 날짜별 버튼 생성해야 함 1 ~ n 개 까지-->
-            <div class="day-button">
-                <button>info</button>
-                <button>day 1</button>
-                <button>day 2</button>
-            </div>
+                    <!--데이 버튼이 메인에 넣을 시 메인컨텐츠와 겹치게 표시되어 따로 daybutton으로 분리하였고, 요소별 영역 부여를 위해 day-button 클래스를 입힘-->
+        <div class="day-button">
+            <div class="btn selected"><a>info</a></div>
             
+            <%let i%> <!--다시 짜기-->
+            <% for(i = 0; i < totPlan.day_plan.length; i++){ %>
+            <div class="btn"><a>day <%=i + 1%></a></div>
+            <%}%>
+        </div>
+
+        <main>
             <!--자바스크립트로 날짜별 div 생성 후 버튼에 해당되는 날짜의 div 보여줘야 함 / db 바꾸면 달라질 수 있음-->
-            <div class="day-plan">
-                <p><%=plan.title%></p>
-                <p>day2</p>
-                
+            <!--데이버튼 클릭마다 다른 내용을 보여주어야 함. 전체 페이지인 whole-plan과 day-plan으로 전체페이지와 세부내용 페이지를 분리해서 작성했음. 각 css의 display를 버튼 클릭에 따라 none <->grid 로 변경하는 작업 필요.-->
+            <div class="whole-plan">
+                <h1 class="plan-title"><%=totPlan.title%></h1>
+                <div class="plan-info">
+                    <span class="user"> 
+                        user : 
+                        <%totPlan.participants.forEach(function(participant){%>
+                            <%=participant%>
+                        <% })%>
+                    </span>
+                    <span class="date">
+                        <%=totPlan.day_plan[0]['date']%>
+                            ~
+                        <%=totPlan.day_plan[i-1]['date']%>
+                        
+                    </span>
+                </div>
                 <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map" style= "width : 100%; height : 400px"></div>
+                <div id="map" style= "width : 80%; height : 400px"></div>
                 <!--js 파일 따로 만들기-->
                 <script>
                     var mapOptions = {
                         center: new naver.maps.LatLng(37.3595704, 127.105399),
                         zoom: 10
                     };
-
                     var map = new naver.maps.Map('map', mapOptions);
-                </script>
-
-
-                <!--추후에 db 봐서 class명 바꿔야 함 1 ~ n개 출력-->
-                <div class="place-object">
-                    <p>상호명 또는 사용자가 설정한 이름</p>
-                    <p>주소</p>
-                    <p>메모</p>
+                    </script>
+               
+                    <div class="plan-buttons">
+                        <button type="button" class="edit-btn">편집하기</button>
+                        <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
+                        <button type="button" class="del-btn not-manager">삭제</button>
+                    </div>
                 </div>
 
             </div>
+            
+            <div class="day-plan">
+                <h1 class="plan-title">플랜 이름</h1>
+                <span class="plan-day">day2</span>
+                <!--네이버 지도, 좌표 표시해줘야함-->
+                <div id="map"></div>
+                <!--js 파일 따로 만들기-->
+                <!--
+                    <script>
+                    var mapOptions = {
+                        center: new naver.maps.LatLng(37.3595704, 127.105399),
+                        zoom: 10
+                    };
+                    var map = new naver.maps.Map('map', mapOptions);
+                </script>
+            -->
+                <!--추후에 db 봐서 class명 바꿔야 함 1 ~ n개 출력-->
+                <div class="place-object">
+                    <div class="p-obj">
+                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3>
+                        <p class="obj-adress">주소</p>
+                        <p class="obj-memo">메모</p>
+                    </div>                
+                </div>
+            </div>
         </main>
             <footer>
-                &copy; <%=new Date().getFullYear()%> Sample Project
+                &copy; 2021 Sample Project
             </footer>
     </body>
 </html>

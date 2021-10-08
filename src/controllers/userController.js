@@ -4,20 +4,23 @@ dotdev.config();
 
 // 추후 진짜 db로 바꿔야 함
 import { fakeUser } from "./fakeDB";
-import { fakeTotPlan } from "./fakeDB";
+import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 
 
 
 // Main Page 
 export const main = async (req, res) => {
     try{
+        /*
         //loggedIn => true or undefined
         // 로그인했으면 profile페이지로 다시 넘어가도록 한다(session loggedIn 변수로 확인)
         if(Boolean(req.session.loggedIn) == true)
         {   
             return res.redirect("/users/profile");
         }
-        return res.render("main.ejs");
+        */
+        return res.render("main");
+        
     }
     catch(error){
         return res.render("<h1>SERVER ERROR🛑</h1>");
@@ -87,30 +90,51 @@ export const callback = async(req, res) => {
             await fetch( finalURL, {
             method : "GET"
         })
-        ).json(); 
+        ).json();
+        
+        
         // 사용자 정보 console에 출력 -> db로 받아서 
         console.log(userRequest);
-
-
-
-
+        console.log("-----------user info-------------");
+        console.log(userRequest['names'][0]['displayName']);
+        console.log(userRequest['photos'][0]['url']);
+        console.log(userRequest['emailAddresses'][0]['value']);
+        console.log("---------------------------------");
         //db에서 사용자를 찾을 수 없다면 => 추가 
 
 
-        // db에서 사용자 찾을 수 있다면 => select
-
-
+        // db에서 사용자 찾을 수 있다면
+        //올바른 이름, 형식인지 체크
+        // => select
 
         //session 초기화(만든다)
         req.session.loggedIn = true;
         
+        //session User 저장(DB에서 user찾아서)
+        req.session.user = {
+            _id : "507f1f77bcf86cd799439011", 
+            name : userRequest['names'][0]['displayName'],
+            image_url : userRequest['photos'][0]['url'],
+            gmail : userRequest['emailAddresses'][0]['value'],
+            totPlan_id : ["507f191e810c19729de860ea", "13jbrkw3494msd3j3456e245"]
+        };
 
+        // user가 가지고 있는 plan 뽑아서 id, title을 저장
+        // fake db에서는 2개 만든걸로 있는 걸로 넣음
+        req.session.totPlanTitleList = [
+            { title : fakeTotPlan1.title, _id : fakeTotPlan1._id},
+            { title : fakeTotPlan2.title, _id : fakeTotPlan2._id},
+        ]
+
+        console.log(req.session.totPlanTitleList);
+        
         //profile 페이지로 redirect(seeProfile 함수)
-        res.redirect("/users/profile");
+        res.redirect(`/users/${req.session.user._id}`);
     }
 
     else {
         console.log("error 알림 해줘야 함");
+        
         //main 페이지로 redirect(main 함수)
         res.redirect("/");
     }
@@ -120,32 +144,52 @@ export const callback = async(req, res) => {
 
 // 아직 시작 xx
 export const getEditProfile = (req, res) => {
+    console.log("get func");
 
-    //**DB** : => user
-    res.send("get User profile")
+    
+
+    //**DB** : => user 불러오기(session에 저장된거) // session으로 옮기자
+    
+    
+    res.render("edit-profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
 };
 
-// 아직 시작 xx
-export const postEditProfile = (req, res) => {
 
-    //**DB** : => user
-    res.send("post User profile")
+export const postEditProfile = (req, res) => {
+    console.log("post func");
+
+    
+    //**DB** : => user 저장
+    //session에서 user 다시 저장
+
+
+    
+    
+    res.redirect("/users/profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
 };
 
 
 
 export const seeProfile = (req, res) => {
-    //const {} =req.params;
-
+   
     // login 한 유저가 아니라면 돌려보내야함
-    
-    
 
+    /*
+    //loggedIn => true or undefined
+        // 로그인했으면 profile페이지로 다시 넘어가도록 한다(session loggedIn 변수로 확인)
+        if(Boolean(req.session.loggedIn) != true)
+        {   
+            return res.render("main");
+        }
+    */  
+    
     //**DB** : => 특정 user, user가 가지고 있는 plan목록, user가 받은 초대
-    return res.render("see-profile", {user : fakeUser});
+
+    return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
 };
 
 
+//로그아웃 -> main 페이지로 간다
 export const logout = (req, res) => {
     req.session.destroy();
     res.redirect("/");
