@@ -8,8 +8,11 @@
         <link rel="stylesheet" href="../../public/css/base.css">
 		<link rel="stylesheet" href="../../public/css/footer.css">
         <link rel="stylesheet" href="../../public/css/see-profile.css">
+        <link rel="stylesheet" href="../../public/css/whiteboard.css">
         
-        <title> Edit Profile | Sample </title>
+        <!--웹페이지 빈 틀-->
+
+        <title> empty page | Sample </title>
     </head>
     <body class="container">
         <header>
@@ -32,7 +35,7 @@
             <div class="menu">
                 <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
                 <div class="menu-name">
-                    <span><a href="/users/<%=user._id%>">마이페이지</a></span>
+                    <span><a href="/users/profile">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
                     <span>내 그룹</span>
@@ -53,22 +56,7 @@
         <!--메인 페이지--> 
 
         <main>
-            <div>
-                <form action="http://localhost:4000/users/<%=user._id%>/edit", mdthod="GET" id="edit-form" class="main-profile">
-                    <div class="profile-box">
-                        <img src="<%=user.image_url%>" class="profile-photo" alt="user photo">
-                    </div>
-                    <div class="info-box">
-                        <h3>닉네임</h3>
-                        <input type="text", name="name", placeholder="이름", value="<%=user.name%>" class="nickname-edit">
-                    </div>
-                    <div class="info-box">
-                        <h3>이메일</h3>
-                        <span class="email-edit"><%=user.gmail%></span>
-                    </div>
-                        <input type="submit" value="수정하기" class="edit-button">
-                </form>
-            </div>
+            
         </main>
 
         <!--메인 페이지 끝-->

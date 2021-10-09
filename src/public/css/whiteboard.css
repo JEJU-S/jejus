@@ -1,0 +1,10 @@
+.container {
+  grid-template-areas:
+    "header header header"
+    "sidebar . ."
+    "sidebar . ."
+    "footer footer footer";
+
+  grid-template-columns: 310px 1170px;
+  grid-template-rows: 40px 630px 20px;
+}
