@@ -33,7 +33,7 @@
             <div class="menu">
                 <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
                 <div class="menu-name">
-                    <span><a href="/users/profile">마이페이지</a></span>
+                    <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
                     <span>내 그룹</span>
@@ -56,7 +56,7 @@
         <div class="day-button">
             <div class="btn selected"><a>info</a></div>
             
-            <%let i%> <!--다시 짜기-->
+            <%let i%> <!--다시 짜보기-->
             <% for(i = 0; i < totPlan.day_plan.length; i++){ %>
             <div class="btn"><a>day <%=i + 1%></a></div>
             <%}%>
@@ -84,12 +84,25 @@
                 <!--네이버 지도, 좌표 표시해줘야함-->
                 <div id="map" style= "width : 80%; height : 400px"></div>
                 <!--js 파일 따로 만들기-->
+                
                 <script>
-                    var mapOptions = {
+                    const mapOptions = {
                         center: new naver.maps.LatLng(37.3595704, 127.105399),
                         zoom: 10
                     };
-                    var map = new naver.maps.Map('map', mapOptions);
+                    const map = new naver.maps.Map('map', mapOptions);
+
+                    
+                    const marker = new naver.maps.Marker({
+                        position: new naver.maps.LatLng(37.3595704, 127.105399),
+                        map: map
+                    });
+
+                    const marker = new naver.maps.Marker({
+                        position: new naver.maps.LatLng(37.3595704, 127.105399),
+                        map: map
+                    });
+
                     </script>
                
                     <div class="plan-buttons">
@@ -115,7 +128,7 @@
                     };
                     var map = new naver.maps.Map('map', mapOptions);
                 </script>
-            -->
+                -->                
                 <!--추후에 db 봐서 class명 바꿔야 함 1 ~ n개 출력-->
                 <div class="place-object">
                     <div class="p-obj">
