@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="../../public/css/see-plan.css">
 
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+        <!--<script type="javascript" src="../public/js/see-plan.js"></script>-->
         <title> <%=totPlan.title%> | Sample </title>
     </head>
     <body class="container">
@@ -58,9 +59,9 @@
         <div class="day-button">
             <div class="btn selected"><a>info</a></div>
             
-            <%let i%> <!--다시 짜보기-->
-            <% for(i = 0; i < totPlan.day_plan.length; i++){ %>
-            <div class="btn"><a>day <%=i + 1%></a></div>
+            <%let day%> <!--다시 짜보기-->
+            <% for(day = 0; day < totPlan.day_plan.length; day++){ %>
+            <div class="btn"><a>day <%=day + 1%></a></div>
             <%}%>
         </div>
 
@@ -79,34 +80,33 @@
                     <span class="date">
                         <%=totPlan.day_plan[0]['date']%>
                             ~
-                        <%=totPlan.day_plan[i-1]['date']%>
+                        <%=totPlan.day_plan[day-1]['date']%>
                         
                     </span>
                 </div>
                 <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map" style= "width : 80%; height : 400px"></div>
-                <!--js 파일 따로 만들기-->
-                
+                <div id="totMap" style="width : 80%; height : 400px"></div>
                 <script>
                     const mapOptions = {
-                        center: new naver.maps.LatLng(37.3595704, 127.105399),
-                        zoom: 10
+                        center: new naver.maps.LatLng(33.405265881588015, 126.5546799108763),
+                        logoControl : false,
+                        zoom: 10,
                     };
-                    const map = new naver.maps.Map('map', mapOptions);
-
                     
-                    const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(37.3595704, 127.105399),
-                        map: map
-                    });
+                    const totPlanMap = new naver.maps.Map('totMap', mapOptions);
+                    
+                    const markerList = [];
+                    
+                    
+                    const marker = new naver.maps.Marker(
+                        {
+                            position : new naver.maps.LatLng(33.405265881588015, 126.5546799108763),
+                            map : totPlanMap
+                        }
+                    );
 
-                    const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(37.3595704, 127.105399),
-                        map: map
-                    });
 
-                    </script>
-               
+                </script>
                     <div class="plan-buttons">
                         <button type="button" class="edit-btn">편집하기</button>
                         <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
