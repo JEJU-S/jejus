@@ -1,3 +1,5 @@
+import dotdev from "dotenv";
+dotdev.config();
 //goes to plan router
 
 
@@ -17,19 +19,17 @@ export const seePlan = (req, res) =>
     res.render(`see-plan`, {
         user : req.session.user,
         totPlanTitles : req.session.totPlanTitleList,
-        totPlan : fakeTotPlan1
+        totPlan : fakeTotPlan1,
+        map_cl : process.env.MAP_CLIENT
     });
 }
  
 export const editPlan = (req, res) => 
 {
-
-
     //**DB** : => user, 페이지에서 보여주고 있는 total plan
-    res.render("edit-plan", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
+    res.render("edit-plan");
 }
 
-//----------아직 작업 x ------------
 
 // 처음 만든 사람만 삭제 가능하게 만들어야 함
 export const del = (req, res) => res.send("delete plans");

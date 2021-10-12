@@ -10,13 +10,13 @@
 		<link rel="stylesheet" href="../../public/css/footer.css">
 		<link rel="stylesheet" href="../../public/css/see-plan.css">
 
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
         <title> <%=totPlan.title%> | Sample </title>
     </head>
     <body class="container">
         <header>
             <div class="logo-box">
-                <img src="logo.png" alt="logo" class="logo">
+                <img src="../public/images/logo.png" alt="logo" class="logo">
             </div>
         </header>
         <!--사이드바-->
@@ -58,12 +58,11 @@
         <div class="day-button">
             <div class="btn selected"><a>info</a></div>
             
-            <%let i%> <!--다시 짜보기-->
-            <% for(i = 0; i < totPlan.day_plan.length; i++){ %>
-            <div class="btn"><a>day <%=i + 1%></a></div>
+            <%let day%> <!--다시 짜보기-->
+            <% for(day = 0; day < totPlan.day_plan.length; day++){ %>
+            <div class="btn"><a>day <%=day + 1%></a></div>
             <%}%>
         </div>
-
         <main>
             <!--자바스크립트로 날짜별 div 생성 후 버튼에 해당되는 날짜의 div 보여줘야 함 / db 바꾸면 달라질 수 있음-->
             <!--데이버튼 클릭마다 다른 내용을 보여주어야 함. 전체 페이지인 whole-plan과 day-plan으로 전체페이지와 세부내용 페이지를 분리해서 작성했음. 각 css의 display를 버튼 클릭에 따라 none <->grid 로 변경하는 작업 필요.-->
@@ -72,50 +71,58 @@
                 <div class="plan-info">
                     <span class="user"> 
                         user : 
+                        
                         <%totPlan.participants.forEach(function(participant){%>
                             <%=participant%>
                         <% })%>
                     </span>
                     <span class="date">
+                        <!--day 변수 왜이런지 찾기-->
                         <%=totPlan.day_plan[0]['date']%>
                             ~
-                        <%=totPlan.day_plan[i-1]['date']%>
-                        
+                        <%=totPlan.day_plan[day-1]['date']%>
                     </span>
+                    
                 </div>
-                <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map" style= "width : 80%; height : 400px"></div>
-                <!--js 파일 따로 만들기-->
+                <div id="totMap" style= "width : 80%; height : 400px"></div>
                 
                 <script>
-                    const mapOptions = {
-                        center: new naver.maps.LatLng(37.3595704, 127.105399),
-                        zoom: 10
-                    };
-                    const map = new naver.maps.Map('map', mapOptions);
-
+                    /*
+                    let totPlan = "<%-JSON.stringify(totPlan.day_plan[0]['place'][0])%>";
+                    console.log("totPlan");
                     
-                    const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(37.3595704, 127.105399),
-                        map: map
-                    });
+                    for(let i = 0; i < totPlan.day_plan.length; i++){
+                        for(let j =0; j < totPlan.day_plan[i]['place'].length; j++)
+                        {   
+                            console.log(totPlan.day_plan[i]['place'][j]);
+                        }
+                    }
+                    //console.log("<%=totPlan.day_plan[0]['place'][0]['adr'][0]%>");
+                    */
+                    const mapOptions = {
+                        center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+                        zoom : 10
+                    };
 
+                    const totMap = new naver.maps.Map('totMap', mapOptions);
+    
                     const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(37.3595704, 127.105399),
-                        map: map
+                        position : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+                        map: totMap
                     });
+                    
+                    const marker2 = new naver.maps.Marker({
+                        position : new naver.maps.LatLng(33.40002222233901, 126.55788921383366),
+                        map: totMap
+                    });   
+                </script>
 
-                    </script>
-               
-                    <div class="plan-buttons">
-                        <button type="button" class="edit-btn">편집하기</button>
-                        <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
-                        <button type="button" class="del-btn not-manager">삭제</button>
-                    </div>
+                <div class="plan-buttons">
+                    <button type="button" class="edit-btn">편집하기</button>
+                    <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
+                    <button type="button" class="del-btn not-manager">삭제</button>
                 </div>
-
             </div>
-            
             <div class="day-plan">
                 <h1 class="plan-title">플랜 이름</h1>
                 <span class="plan-day">day2</span>

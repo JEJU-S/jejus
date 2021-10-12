@@ -1,6 +1,6 @@
 import express from "express"; 
 import {main ,login} from "../controllers/userController"
-import {protectMiddleware, loggedInMiddleware} from "../middleware";
+import {loggedInMiddleware} from "../middleware";
 
 
 const rootRouter = express.Router();

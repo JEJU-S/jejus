@@ -9,7 +9,6 @@ userRouter.get("/callback", callback);
 
 userRouter.get("/logout", logout);
 // user profile
-
 userRouter.get("/:id([0-9a-f]{24})", protectMiddleware, seeProfile);
 userRouter.route("/:id([0-9a-f]{24})/edit" , protectMiddleware).get(getEditProfile).post(postEditProfile);
 
