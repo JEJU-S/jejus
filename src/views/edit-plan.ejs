@@ -3,59 +3,99 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="https://unpkg.com/mvp.css">
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+		<link rel="stylesheet" href="../../src/public/css/header.css">
+        <link rel="stylesheet" href="../../src/public/css/base.css">
+		<link rel="stylesheet" href="../../src/public/css/footer.css">
+        <link rel="stylesheet" href="../../src/public/css/edit-plan.css">
 
         <title> Edit <%=plan.title%> | Sample </title>
     </head>
-    <body>
+    <body class="container">
         <header>
-            <%=plan.title%>
+            <h1><%=plan.title%></h1>
             참여자 : <%=plan.participants%>
+            <button class="inv-btn">초대</button>
             <p>출발일 : </p>
             <p>도착일 : </p>
-            <button>초대</button>
         </header>
         <main>
-                <!--네이버 지도, 검색창 자리 수정 필요-->
-                
-                <div id="place">
-                    <input type="text" placeholder="검색창">
-                </div>
-                <div id="map" style="width:100%;height:400px;"></div>
-                    <!--js,css 파일 따로 만들기-->
-                <script>
-                    var mapOptions = {
-                        center: new naver.maps.LatLng(37.3595704, 127.105399),
-                        zoom: 10
+            <!--네이버 지도, 검색창 자리 수정 필요-->
+            
+            <div id="place" class="search">
+                <input type="text" placeholder="검색창">
+            </div>
+
+            <div id="map" class="map">
+
+            </div>
+            <!--js,css 파일 따로 만들기-->
+            <script>
+                var mapOptions = {
+                    center: new naver.maps.LatLng(37.3595704, 127.105399),
+                    zoom: 10
                     };
-                    var map = new naver.maps.Map('map', mapOptions);
-                </script>
+                var map = new naver.maps.Map('map', mapOptions);
+            </script>
 
-                <div class= "place-box">
-                    <button>일정 추가</button>
-                    <!--일정 마다 day 다르게, input으로-->
-                    <p>day1</p>
+            <div class= "place-box">
+                <button class="add-btn">일정 추가</button>
+                <!--일정 마다 day 다르게, input으로-->
+                <div class="place-list">
+                    <div class="day-box">
+                        <h3>Day1</h3>
+                    </div>
                     <div class="place-object">
-                        <button>❌</button>
-                        <p>상호명 또는 사용자가 설정한 이름</p> <!--편집가능하게-->
-                        <p>주소</p>
-                        <textarea>메모</textarea>
+                        <button class="del-btn">❌</button>
+                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
+                        <p class="obj-adress">주소</p>
+                        <textarea class="obj-memo">메모</textarea>
                     </div>
+                    <div class="place-object">
+                        <button class="del-btn">❌</button>
+                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
+                        <p class="obj-adress">주소</p>
+                        <textarea class="obj-memo">메모</textarea>
+                    </div>
+                    <div class="place-object">
+                        <button class="del-btn">❌</button>
+                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
+                        <p class="obj-adress">주소</p>
+                        <textarea class="obj-memo">메모</textarea>
+                    </div>
+                    <div class="place-object">
+                        <button class="del-btn">❌</button>
+                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
+                        <p class="obj-adress">주소</p>
+                        <textarea class="obj-memo">메모</textarea>
+                    </div>
+                </div>
+                <button class="save-btn">저장하기</button>
+            </div>
 
-                    <button>저장하기</button>
-                </div>
-                <div class="recommandation-box">
+            <div class="recommandation-box">
                     <!--추천 장소 뜨기-->
-                    <div class="recommandation-object">
-                    <img src="", alt="추천 장소">
-                    <p>이름</p>
-                    <p>요악</p>
-                    <button>추가</button>
+                <div class="recommandation-object">
+                    <div class="info">
+                        <h2>이름</h2>
+                        <p>요약</p>
+                        <button class="obj-add-btn">추가</button>
                     </div>
+                    <img src="../../src/public/images/test1.png", alt="추천 장소" class="obj-img">
                 </div>
-                
-                <button class="chatting-popup">chatting</button>
+                <div class="recommandation-object">
+                    <div class="info">
+                        <h2>이름</h2>
+                        <p>요약</p>
+                        <button class="obj-add-btn">추가</button>
+                    </div>
+                    <img src="../../src/public/images/test1.png", alt="추천 장소" class="obj-img">
+                </div>
+            </div>
+
+            <!--
+            <button class="chatting-popup">chatting</button>
+            -->
         </main>
 
             <footer>
