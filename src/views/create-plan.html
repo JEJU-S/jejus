@@ -1,0 +1,75 @@
+-<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!--<link rel="stylesheet" href="https://unpkg.com/mvp.css">-->
+		<link rel="stylesheet" href="../../src/public/css/base.css">
+		<link rel="stylesheet" href="../../src/public/css/sidebar.css">
+		<link rel="stylesheet" href="../../src/public/css/header.css">
+		<link rel="stylesheet" href="../../src/public/css/footer.css">
+        <link rel="stylesheet" href="../../src/public/css/create-plan.css">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+        <title> 새 계획 생성하기 | Sample </title>
+    </head>
+    <body class="container">
+        <header>
+            <div class="logo-box">
+                <img src="logo.png" alt="logo" class="logo">
+            </div>
+            </header>
+        <div class="sidebar"> <!--사이드 바-->
+            <div class="side-profile">
+                <!--프로필 사진 크기 맞춤을 위해 "photo-box" div 추가-->
+                <div class="photo-box">
+                    <!--프로필 사진 크기 맞춤을 위해 사진에 "profile-img" class 추가-->
+                    <img class="profile-img" src="default_profile.jpg" alt="user-photo"/>
+                </div>
+                <!--프로필 내 정보들을 box로 묶기 위해 "user-info" div 추가-->
+                <div class="user-info">
+                    <p>오정환1234</p>
+                    <p>wjdghks2468@gmail.com</p>
+                </div>
+            </div>
+            <!--사이드바 메뉴구성 시작-->
+            <div class="menu">
+                <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
+                <div class="menu-name">
+                    <span>메인페이지</span>
+                </div>
+                <div class="menu-name">
+                    <span>내 그룹</span>
+                    <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
+                    <div class="menu-detail">
+                        <ul> <!--유저 플랜 목록 function 해야 함-->
+                            <li><a href="#" class="plan-title"> plan 1🚔 </a></li>
+                            <li><a href="#" class="plan-title"> plan 2🛫 </a></li>
+			            </ul>
+                    </div>
+                </div>
+                <div class="menu-name" style="margin-top: auto;">
+                    <span>로그아웃</span>
+                </div>
+            </div>
+		</div>
+        <main>
+            <form class="creator">
+                <h1>
+                    새 계획 생성하기
+                </h1>
+                <div class="title-box">
+                    <p>title</p>
+                    <input type="text" name="title", placeholder="제목">
+                </div>
+                <div class="date-box">
+                    <p>date</p>
+                    <input type="date" name="title", placeholder="제목">
+                </div>
+                <input type="submit" value="생성하기" class="creat-btn">
+            </form>
+        </main>    
+        <footer>
+            &copy; 2021 Sample Project
+        </footer>
+    </body>
+</html>
