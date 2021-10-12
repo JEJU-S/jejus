@@ -109,15 +109,16 @@ export const callback = async(req, res) => {
         console.log("---------------------------------");
         //db에서 사용자를 찾을 수 없다면 => 추가 
         
-        const loginSchema = new mongoose.Schema({
+        const userSchema = new mongoose.Schema({
             name: String,
             gmail: {type: String, required: true, unique: true},
-            image_url: String
+            image_url: String,
+            totPlan_id: Array,
         })
 
-        var Login = mongoose.model('Login', loginSchema);
+        var User = mongoose.model('User', userSchema);
 
-        new Login({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
+        new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
             .then(() => {
                 console.log('Saved successfully');
             })
@@ -183,8 +184,6 @@ export const postEditProfile = (req, res) => {
     //**DB** : => user 저장
     //session에서 user 다시 저장
 
-
-    
     
     res.redirect("/users/profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
 };
@@ -215,10 +214,3 @@ export const logout = (req, res) => {
     req.session.destroy();
     res.redirect("/");
 };
-
-
-
-
-
-
-
