@@ -4,7 +4,11 @@ import genericPool from "generic-pool";
 
 dotdev.config();
 
-mongoose.connect(process.env.DB_URL);
+mongoose.connect(process.env.DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: "jeju_plan" // 이 이름으로 db가 생성됩니다.
+  });
 
 const db = mongoose.connection;
 

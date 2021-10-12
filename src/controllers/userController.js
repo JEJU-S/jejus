@@ -1,10 +1,12 @@
 import fetch from "node-fetch";
 import dotdev from "dotenv";
 dotdev.config();
+const mongoose = require('mongoose');
 
 // 추후 진짜 db로 바꿔야 함
 import { fakeUser } from "./fakeDB";
 import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
+import { Mongoose } from "mongoose";
 
 
 
@@ -95,14 +97,33 @@ export const callback = async(req, res) => {
         
         // 사용자 정보 console에 출력 -> db로 받아서 
         console.log(userRequest);
+        const user_name = userRequest['names'][0]['displayName']
+        const user_gmail = userRequest['emailAddresses'][0]['value']
+        const user_image_url = userRequest['photos'][0]['url']
+
         console.log("-----------user info-------------");
-        console.log(userRequest['names'][0]['displayName']);
-        console.log(userRequest['photos'][0]['url']);
-        console.log(userRequest['emailAddresses'][0]['value']);
+        console.log(user_name);
+        console.log(user_gmail);
+        console.log(user_image_url);
+
         console.log("---------------------------------");
         //db에서 사용자를 찾을 수 없다면 => 추가 
+        
+        const loginSchema = new mongoose.Schema({
+            name: String,
+            gmail: {type: String, required: true, unique: true},
+            image_url: String
+        })
 
+        var Login = mongoose.model('Login', loginSchema);
 
+        new Login({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
+            .then(() => {
+                console.log('Saved successfully');
+            })
+            .catch((err) => {
+                console.error(err);
+            });
         // db에서 사용자 찾을 수 있다면
         //올바른 이름, 형식인지 체크
         // => select
