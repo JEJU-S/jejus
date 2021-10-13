@@ -4,11 +4,11 @@
         <!--컬러,폰트, 로고 빼고 작업 완료된 듯..?-->
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="../../src/public/css/header.css">
-        <link rel="stylesheet" href="../../src/public/css/sidebar.css">
-        <link rel="stylesheet" href="../../src/public/css/base.css">
-		<link rel="stylesheet" href="../../src/public/css/footer.css">
-		<link rel="stylesheet" href="../../src/public/css/see-plan.css">
+		<link rel="stylesheet" href="../../public/css/header.css">
+        <link rel="stylesheet" href="../../public/css/sidebar.css">
+        <link rel="stylesheet" href="../../public/css/base.css">
+		<link rel="stylesheet" href="../../public/css/footer.css">
+		<link rel="stylesheet" href="../../public/css/see-plan.css">
 
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
         <title> <%=totPlan.title%> | Sample </title>
@@ -84,9 +84,8 @@
                     </span>
                 </div>
                 <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map" style= "width : 80%; height : 400px"></div>
+                <div id="map" class="map"></div>
                 <!--js 파일 따로 만들기-->
-                
                 <script>
                     const mapOptions = {
                         center: new naver.maps.LatLng(37.3595704, 127.105399),
@@ -106,7 +105,7 @@
                     });
 
                     </script>
-               
+
                     <div class="plan-buttons">
                         <button type="button" class="edit-btn">편집하기</button>
                         <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
@@ -120,9 +119,8 @@
                 <h1 class="plan-title">플랜 이름</h1>
                 <span class="plan-day">day2</span>
                 <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map"></div>
+                <div id="map" class="map"></div>
                 <!--js 파일 따로 만들기-->
-                <!--
                     <script>
                     var mapOptions = {
                         center: new naver.maps.LatLng(37.3595704, 127.105399),
@@ -130,7 +128,6 @@
                     };
                     var map = new naver.maps.Map('map', mapOptions);
                 </script>
-                -->                
                 <!--추후에 db 봐서 class명 바꿔야 함 1 ~ n개 출력-->
                 <div class="place-object">
                     <div class="p-obj">

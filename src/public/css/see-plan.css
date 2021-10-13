@@ -95,11 +95,12 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 .day-plan {
   display: none;
   grid-template-areas:
-    "title title title"
-    " day day day"
-    "map map object";
+    "title title"
+    "day day"
+    "map object";
   justify-items: center;
-  grid-template-columns: 30% 30% 40%;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 85px 25px 460px;
 }
 
 .plan-title {
@@ -149,7 +150,8 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   padding: 17px 0px;
 }
 
-map {
+.map {
   grid-area: map;
-  width: 80%;
+  width: 430px;
+  height: 610px;
 }
