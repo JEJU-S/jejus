@@ -71,50 +71,48 @@
                 <div class="plan-info">
                     <span class="user"> 
                         user : 
-                        
                         <%totPlan.participants.forEach(function(participant){%>
                             <%=participant%>
                         <% })%>
                     </span>
                     <span class="date">
-                        <!--day 변수 왜이런지 찾기-->
                         <%=totPlan.day_plan[0]['date']%>
                             ~
                         <%=totPlan.day_plan[day-1]['date']%>
                     </span>
                     
                 </div>
-                <div id="totMap" style= "width : 80%; height : 400px"></div>
                 
+                <!--map 처리 부분-->
+                <div id="totMap" style= "width : 80%; height : 400px"></div>
                 <script>
-                    /*
-                    let totPlan = "<%-JSON.stringify(totPlan.day_plan[0]['place'][0])%>";
-                    console.log("totPlan");
-                    
-                    for(let i = 0; i < totPlan.day_plan.length; i++){
-                        for(let j =0; j < totPlan.day_plan[i]['place'].length; j++)
-                        {   
-                            console.log(totPlan.day_plan[i]['place'][j]);
-                        }
-                    }
-                    //console.log("<%=totPlan.day_plan[0]['place'][0]['adr'][0]%>");
-                    */
                     const mapOptions = {
                         center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
                         zoom : 10
                     };
 
                     const totMap = new naver.maps.Map('totMap', mapOptions);
-    
                     const marker = new naver.maps.Marker({
                         position : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
                         map: totMap
                     });
-                    
-                    const marker2 = new naver.maps.Marker({
-                        position : new naver.maps.LatLng(33.40002222233901, 126.55788921383366),
-                        map: totMap
-                    });   
+
+                    // 마커 여러개 찍기
+                    const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
+                    const markerList = [];
+                    for(let i =0; i < totPlan.day_plan.length; i++){
+                        for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
+                            markerList.push(new naver.maps.Marker({
+                                position : new naver.maps.LatLng(
+                                    totPlan.day_plan[i]['place'][j]['adr'][0],
+                                    totPlan.day_plan[i]['place'][j]['adr'][1],
+                                ),
+                                map : totMap
+                            })
+                            )
+                        }
+                    }
+
                 </script>
 
                 <div class="plan-buttons">

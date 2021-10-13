@@ -94,7 +94,7 @@ export const fakeTotPlan1 = {
             ]
         }
     ]
-};
+}
 
 
 export const fakeTotPlan2 = {
