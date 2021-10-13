@@ -1,0 +1,242 @@
+.container {
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-rows: 70px auto 20px;
+}
+
+/*헤더 css 시작*/
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 40px;
+  gap: 50px;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  z-index: 1;
+}
+
+.inv-btn {
+  color: white;
+  background-color: #48adff;
+  padding: 6px 22px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+
+.inv-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+/*헤더 css 끝*/
+
+footer {
+  margin-right: 1% !important;
+}
+
+main {
+  grid-area: main;
+  display: grid;
+  grid-template-areas:
+    "search map place-box"
+    "recommand recommand place-box";
+  grid-template-columns: 250px 700px auto;
+  grid-template-rows: auto 200px;
+  gap: 5px;
+}
+
+.search {
+  grid-area: search;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.map {
+  grid-area: map;
+  width: 100%;
+  height: 100%;
+  background-color: blue;
+}
+/*여행지 리스트 CSS 시작*/
+.place-box {
+  grid-area: place-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.add-btn {
+  color: white;
+  background-color: #48adff;
+  padding: 20px 22px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+.place-list {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: 100%;
+  max-height: 515px;
+  overflow: scroll;
+}
+
+.place-list::-webkit-scrollbar {
+  display: none;
+}
+
+.day-box {
+  text-align: center;
+  background-color: rgb(211, 248, 255);
+  border-top: 1px solid rgba(128, 128, 128, 0.356);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.356);
+}
+
+.place-object {
+  display: grid;
+  grid-template-areas:
+    "name btn"
+    "adress adress"
+    "memo memo";
+  background-color: whitesmoke;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.del-btn {
+  grid-area: btn;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  float: right;
+  border: none;
+  background-color: rgba(245, 245, 245, 0);
+  justify-self: right;
+  cursor: pointer;
+}
+
+.obj-name {
+  grid-area: name;
+  margin-left: 12px;
+  margin-top: 5px;
+}
+
+.obj-adress {
+  grid-area: adress;
+  margin: -20px 0px 5px 20px;
+  color: #939393;
+}
+
+.obj-memo {
+  grid-area: memo;
+  margin-left: 13px;
+  padding: 17px 0px;
+}
+
+.save-btn {
+  color: white;
+  background-color: #5846ff;
+  padding: 20px 22px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+.save-btn:hover {
+  background-color: #322791;
+  transition: 0.1s;
+}
+
+/*여행지 리스트 CSS 끝*/
+
+/*여행지 추천시스템 CSS */
+
+.recommandation-box {
+  grid-area: recommand;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.recommandation-object {
+  position: relative;
+  width: 200px;
+  height: 180px;
+  background-color: whitesmoke;
+  margin: 10px;
+  text-overflow: ellipsis;
+  text-align: center;
+  overflow: hidden;
+}
+
+.obj-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  position: absolute;
+  color: rgb(255, 255, 255);
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+.recommandation-object:hover .info {
+  opacity: 1;
+}
+
+input[type="text"] {
+  width: 80%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin: 25px;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.obj-add-btn {
+  color: white;
+  background-color: #48adff;
+  padding: 6px 22px;
+  margin: 30px 0;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+
+.obj-add-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+/*여행지 추천시스템 CSS 끝*/
