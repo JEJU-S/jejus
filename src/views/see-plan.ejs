@@ -60,7 +60,8 @@
             
             <%let day%> <!--다시 짜보기-->
             <% for(day = 0; day < totPlan.day_plan.length; day++){ %>
-            <div class="btn"><a>day <%=day + 1%></a></div>
+            <!--day button 이름 바꾸기-->
+            <div class="btn">day <%=day + 1%></div>
             <%}%>
         </div>
         <main>
@@ -80,74 +81,79 @@
                             ~
                         <%=totPlan.day_plan[day-1]['date']%>
                     </span>
-                    
                 </div>
                 
-                <!--map 처리 부분-->
-                <div id="totMap" style= "width : 80%; height : 400px"></div>
+                <!--total-map(전체 경로 마커) 처리 부분-->
+                <div id="total-map" style = "width : 80%; height : 400px"></div>
                 <script>
+                    const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
+
                     const mapOptions = {
                         center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
                         zoom : 10
                     };
-
-                    const totMap = new naver.maps.Map('totMap', mapOptions);
-                    const marker = new naver.maps.Marker({
-                        position : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
-                        map: totMap
-                    });
+                    const totMap = new naver.maps.Map('total-map', mapOptions);
 
                     // 마커 여러개 찍기
-                    const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
-                    const markerList = [];
+                    
                     for(let i =0; i < totPlan.day_plan.length; i++){
                         for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
-                            markerList.push(new naver.maps.Marker({
+                            new naver.maps.Marker({
                                 position : new naver.maps.LatLng(
                                     totPlan.day_plan[i]['place'][j]['adr'][0],
                                     totPlan.day_plan[i]['place'][j]['adr'][1],
                                 ),
                                 map : totMap
                             })
-                            )
                         }
                     }
-
+                    
+                    const dayMapList = [];
                 </script>
-
                 <div class="plan-buttons">
                     <button type="button" class="edit-btn">편집하기</button>
                     <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
                     <button type="button" class="del-btn not-manager">삭제</button>
-                </div>
+                </div> 
             </div>
+            <!--day plan-->
+            <%for(day = 0; day < totPlan.day_plan.length; day++){%>
             <div class="day-plan">
-                <h1 class="plan-title">플랜 이름</h1>
-                <span class="plan-day">day2</span>
+                <h1 class="plan-title"><%=totPlan.title%></h1>
+                <span class="plan-day">day <%=day + 1%></span>
                 <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map"></div>
-                <!--js 파일 따로 만들기-->
-                <!--
-                    <script>
-                    var mapOptions = {
-                        center: new naver.maps.LatLng(37.3595704, 127.105399),
-                        zoom: 10
-                    };
-                    var map = new naver.maps.Map('map', mapOptions);
+                <div id="day-map<%=day + 1%>" style = "width : 100%; height : 400px; background-color :blue"></div>
+                <script>
+                    dayMapList.push(new naver.maps.Map("day-map<%=day + 1%>", mapOptions));
+
+                        for(let i = 0; i < totPlan.day_plan["<%=day%>"]['place'].length; i++){
+                            new naver.maps.Marker({
+                                position : new naver.maps.LatLng(
+                                    totPlan.day_plan["<%=day%>"]['place'][i]['adr'][0],
+                                    totPlan.day_plan["<%=day%>"]['place'][i]['adr'][1],
+                                ),
+                                map : dayMapList["<%=day%>"]
+                            })
+                        }
+
+
+                        
                 </script>
-                -->                
-                <!--추후에 db 봐서 class명 바꿔야 함 1 ~ n개 출력-->
-                <div class="place-object">
-                    <div class="p-obj">
-                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3>
-                        <p class="obj-adress">주소</p>
-                        <p class="obj-memo">메모</p>
-                    </div>                
-                </div>
+
+                <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
+                    <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
+                        <div class="p-obj">
+                            <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>
+                            <p class="obj-adress"><%=totPlan.day_plan[day]['place'][placeIndex]['adr']%></p>
+                            <p class="obj-memo"><%=totPlan.day_plan[day]['place'][placeIndex]['memo']%></p>
+                        </div>              
+                    <%}%>
+                </div> 
             </div>
+            <%}%> 
         </main>
             <footer>
-                &copy; 2021 Sample Project
+                &copy; <%=new Date().getFullYear()%> Sample Project
             </footer>
     </body>
 </html>
