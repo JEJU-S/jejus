@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "sample project for paasta",
   "scripts": {
-    "build:server" : "babel src -d build",
+    "build:server": "babel src -d build",
     "dev": "nodemon",
     "dev:assets": "webpack"
   },

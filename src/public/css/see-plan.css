@@ -50,8 +50,15 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   height: 100%;
 }
 
+#total-map {
+  width: 80%;
+  height: 400px;
+  border-radius: 10px;
+}
+
 .plan-info {
   width: 80%;
+  margin-bottom: 5px;
 }
 
 .user {
@@ -93,7 +100,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 }
 
 .day-plan {
-  display: none;
+  display: grid;
   grid-template-areas:
     "title title"
     "day day"
@@ -101,6 +108,14 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   justify-items: center;
   grid-template-columns: 60% 40%;
   grid-template-rows: 85px 25px 460px;
+}
+
+.day-map {
+  grid-area: map;
+  width: 630px;
+  height: 440px;
+  margin: 10px auto;
+  border-radius: 10px;
 }
 
 .plan-title {
@@ -148,10 +163,4 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 .obj-memo {
   margin-left: 13px;
   padding: 17px 0px;
-}
-
-.map {
-  grid-area: map;
-  width: 430px;
-  height: 610px;
 }

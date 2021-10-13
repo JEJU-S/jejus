@@ -48,10 +48,12 @@ app.use((req, res, next) => {
     });
 });
 
-
 // public 폴더 접근 가능할 수 있게 해줌(css, js)
 app.use("/public", express.static(path.join(__dirname, "public")));
-//app.use("/static", express.static("assets"));
+
+// post 내용 받아옴
+
+app.use(express.urlencoded({ extended: true }));
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/plans", planRouter);
