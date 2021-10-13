@@ -93,7 +93,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 }
 
 .day-plan {
-  display: none;
+  display: grid;
   grid-template-areas:
     "title title title"
     " day day day"
