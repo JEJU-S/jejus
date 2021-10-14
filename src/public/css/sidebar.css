@@ -72,11 +72,10 @@
 .menu-detail {
   display: flex;
   flex-direction: column;
-  max-height: 29vh;
+  max-height: 20vh;
   font-size: 90%;
   font-weight: normal;
   overflow: scroll;
-  -ms-overflow-style: none;
 }
 
 .menu-detail::-webkit-scrollbar {

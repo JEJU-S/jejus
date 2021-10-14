@@ -13,10 +13,10 @@
   display: flex;
   flex-direction: column;
   width: 500px;
-  height: 500px;
+  height: 400px;
   background-color: white;
   margin: auto;
-  margin-top: 80px;
+  margin-top: 100px;
   border-radius: 16px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
@@ -63,6 +63,11 @@ input[type="date"]:focus {
   box-shadow: 0 0 8px 0 dodgetBlue;
 }
 
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: none;
+  display: none;
+}
+
 .title-box {
   display: flex;
   flex-direction: column;
@@ -75,7 +80,7 @@ input[type="date"]:focus {
 
 .creat-btn {
   margin: auto;
-  margin-top: 40px;
+  margin-top: 55px;
   color: white;
   background-color: #48adff;
   padding: 6px 22px;
@@ -86,5 +91,31 @@ input[type="date"]:focus {
 }
 .creat-btn:hover {
   background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #48adff;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.btn-primary:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+.btn-default {
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.btn-default:hover {
+  background-color: #dadada;
   transition: 0.1s;
 }
