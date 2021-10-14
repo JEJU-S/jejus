@@ -4,13 +4,14 @@
         <!--컬러,폰트, 로고 빼고 작업 완료된 듯..?-->
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="../../public/css/header.css">
-        <link rel="stylesheet" href="../../public/css/sidebar.css">
-        <link rel="stylesheet" href="../../public/css/base.css">
-		<link rel="stylesheet" href="../../public/css/footer.css">
-		<link rel="stylesheet" href="../../public/css/see-plan.css">
+		<link rel="stylesheet" href="/public/css/header.css">
+        <link rel="stylesheet" href="/public/css/sidebar.css">
+        <link rel="stylesheet" href="/public/css/base.css">
+		<link rel="stylesheet" href="/public/css/footer.css">
+		<link rel="stylesheet" href="/public/css/see-plan.css">
 
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
+        <script src="../public/js/see-plan.js"></script>
         <title> <%=totPlan.title%> | Sample </title>
     </head>
     <body class="container">
@@ -134,12 +135,9 @@
                                 ),
                                 map : dayMapList["<%=day%>"]
                             })
-                        }
-
-
-                        
+                        }  
                 </script>
-
+                
                 <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
