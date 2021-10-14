@@ -95,6 +95,7 @@ export const callback = async(req, res) => {
         // => select
 
         //session 초기화(만든다)
+        
         req.session.loggedIn = true;
         
         //session User 저장(DB에서 user찾아서)
