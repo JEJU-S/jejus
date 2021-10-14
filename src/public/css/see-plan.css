@@ -36,11 +36,7 @@ main {
   line-height: 3;
   box-shadow: -1px -2px 4px 0 rgb(0 0 0 / 11%);
 }
-/*자바스크립트로 버튼이 클릭됐을 때 버튼 클래스에 selected 클래스가 추가되는 효과(html에 이미 info에 적용된 것 처럼 써 놓았음.) */
-.selected {
-  background-color: rgb(255, 255, 255);
-  z-index: 1;
-}
+
 /*info가 선택되었는지, 아닌지에 따라 day-plan과 whole-plan의
 display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*/
 .whole-plan {
@@ -132,10 +128,10 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   flex-direction: column;
   height: auto;
   gap: 15px;
-  max-height: 64vh;
+  max-height: 445px;
+  padding: 1px;
   overflow: scroll;
   /*스크롤 바*/
-  -ms-overflow-style: none;
 }
 
 .place-object::-webkit-scrollbar {

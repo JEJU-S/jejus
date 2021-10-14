@@ -15,7 +15,7 @@ header {
   padding-left: 40px;
   gap: 50px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
-  z-index: 1;
+  z-index: 2;
 }
 
 .inv-btn {
@@ -49,12 +49,84 @@ main {
   grid-template-rows: auto 200px;
   gap: 5px;
 }
-
+/*검색창 css 시작*/
 .search {
   grid-area: search;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
+
+input[type="text"] {
+  width: 80%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin: 15px 25px 5px 25px;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.search-result {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  max-height: 357px;
+  overflow: scroll;
+}
+
+.search-result::-webkit-scrollbar {
+  display: none;
+}
+
+.result {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  margin: auto;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.result:hover {
+  background-color: whitesmoke;
+}
+
+.obj-adress {
+  font-size: 12px;
+  margin: 2px 0px 0px 17px;
+  color: #939393;
+  max-width: 210px;
+}
+
+#toast {
+  position: fixed;
+  bottom: 400px;
+  left: 50%;
+  padding: 15px 20px;
+  transform: translate(-50%, 10px);
+  border-radius: 15px;
+  overflow: hidden;
+  font-size: 0.8rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  z-index: 10000;
+}
+
+#toast.reveal {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/*검색창 css 끝*/
 
 .map {
   grid-area: map;
@@ -69,7 +141,6 @@ main {
   grid-area: place-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
@@ -92,8 +163,8 @@ main {
   display: flex;
   flex-direction: column;
   background-color: white;
-  height: 100%;
-  max-height: 515px;
+  height: 513px;
+  max-height: 513px;
   overflow: scroll;
 }
 
@@ -112,7 +183,6 @@ main {
   display: grid;
   grid-template-areas:
     "name btn"
-    "adress adress"
     "memo memo";
   background-color: whitesmoke;
   margin: 5px;
@@ -137,12 +207,6 @@ main {
   margin-left: 12px;
   margin-top: 5px;
   margin-bottom: 12px;
-}
-
-.obj-adress {
-  grid-area: adress;
-  margin: -20px 0px 5px 20px;
-  color: #939393;
 }
 
 .obj-memo {
@@ -192,16 +256,41 @@ textarea:focus {
 .recommandation-box {
   grid-area: recommand;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
+.recommandation-header {
+  grid-area: recommand;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  height: 30px;
+  cursor: pointer;
+}
+
+.categories {
+  background-color: rgb(255, 255, 255);
+  padding: 4px 10px;
+  width: 80px;
+  text-align: center;
+  border-bottom: 1px solid rgb(226, 226, 226);
+}
+
+.recommandation {
+  grid-area: recommand;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .recommandation-object {
   position: relative;
-  width: 200px;
-  height: 180px;
+  width: 160px;
+  height: 150px;
   background-color: whitesmoke;
   margin: 10px;
   text-overflow: ellipsis;
@@ -229,28 +318,10 @@ textarea:focus {
   opacity: 1;
 }
 
-input[type="text"] {
-  width: 80%;
-  border: 2px solid #aaa;
-  border-radius: 4px;
-  outline: none;
-  padding: 8px;
-  box-sizing: border-box;
-  font-size: 16px;
-  margin: 25px;
-}
-
-input[type="text"]:focus {
-  border-color: rgb(29, 142, 255);
-  background-color: rgb(241, 248, 255);
-  box-shadow: 0 0 8px 0 dodgetBlue;
-}
-
 .obj-add-btn {
   color: white;
   background-color: #48adff;
   padding: 6px 22px;
-  margin: 30px 0;
   text-decoration: none;
   border: none;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
