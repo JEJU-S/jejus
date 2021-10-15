@@ -11,7 +11,9 @@ function dayButtonClick(day){
     for(let i = 0; i < dayPlans.length; i++){
         if(day == i + 1){
             planBtns[i+1].style.backgroundColor = "white";
+            planBtns[i+1].style.zIndex = 1;
             dayPlans[i].style.display = "grid";
+            
         }
         else{
             planBtns[i+1].style.backgroundColor = "#cccccc";
@@ -23,6 +25,7 @@ function dayButtonClick(day){
 function wholePlanClick(){
 
     planBtns[0].style.backgroundColor = "white";
+    planBtns[0].style.zIndex = 1;
     wholePlan[0].style.display = "flex";
     for(let i =0; i < dayPlans.length; i++){
         planBtns[i+1].style.backgroundColor = "#cccccc";
@@ -38,13 +41,8 @@ planBtns.forEach(function(button, day) {
     button.addEventListener("click", function(){dayButtonClick(day)})
     }
 });
-/*
-for(let day = 1; day < planBtns.length; day++){
 
-    planBtns[day].addEventListener("click", function(){
-        dayButtonClick(day);
-    })
-}
-*/
+
+wholePlanClick();
 
 

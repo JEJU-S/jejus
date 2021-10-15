@@ -27,6 +27,11 @@ export const editPlan = (req, res) =>
     res.render("edit-plan");
 }
 
+
+export const createPlan = (req, res) => {
+    res.render("create-plan", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList });
+}
+
 // 처음 만든 사람만 삭제 가능하게 만들어야 함
 export const del = (req, res) => res.send("delete plans");
 

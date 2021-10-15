@@ -1,5 +1,6 @@
 //import "./db"; // database 연결
 import app from "./server"; // 서버 객체, 라우터 
+import "regenerator-runtime";
 
 
 const PORT = 4000;

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "sample project for paasta",
   "scripts": {
-    "build:server": "babel src -d build",
+    "start": "node build/init.js",
+    "build": "babel src -d build",
     "dev": "nodemon"
   },
   "repository": {
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/nyoung113/project_sample#readme",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.15.8",
+    "@babel/runtime": "^7.15.4",
     "connect-mongo": "^4.6.0",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
@@ -29,6 +32,7 @@
     "node-fetch": "^2.6.1",
     "pool": "^0.4.1",
     "pug": "^3.0.2",
+    "regenerator-runtime": "^0.13.9",
     "socket.io": "^4.2.0"
   },
   "devDependencies": {
