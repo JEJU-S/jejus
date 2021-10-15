@@ -4,10 +4,10 @@
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
-		<link rel="stylesheet" href="../../src/public/css/header.css">
-        <link rel="stylesheet" href="../../src/public/css/base.css">
-		<link rel="stylesheet" href="../../src/public/css/footer.css">
-        <link rel="stylesheet" href="../../src/public/css/edit-plan.css">
+		<link rel="stylesheet" href="/public/css/header.css">
+        <link rel="stylesheet" href="/public/css/base.css">
+		<link rel="stylesheet" href="/public/css/footer.css">
+        <link rel="stylesheet" href="/public/css/edit-plan.css">
 
         <title> Edit <%=plan.title%> | Sample </title>
     </head>
@@ -21,11 +21,46 @@
         </header>
         <main>
             <!--네이버 지도, 검색창 자리 수정 필요-->
-            
             <div id="place" class="search">
                 <input type="text" placeholder="검색창">
+                <div class="search-result">
+                    <ul>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날공인중개사</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날의류판매점</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날막걸리</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날햄버거</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날 보드게임 카페</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날 스쿠버다이빙</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result"  onclick="toast()">
+                            <span class="obj-name">봄날의류판매점</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                    </ul>
+                </div>
             </div>
-
+            <div id="toast">장소가 추가되었습니다🚀</div>
             <div id="map" class="map">
 
             </div>
@@ -47,59 +82,74 @@
                     </div>
                     <div class="place-object">
                         <button class="del-btn">❌</button>
-                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
-                        <p class="obj-adress">주소</p>
-                        <textarea class="obj-memo">메모</textarea>
+                        <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
+                        <textarea class="obj-memo" placeholder="메모"></textarea>
                     </div>
                     <div class="place-object">
                         <button class="del-btn">❌</button>
-                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
-                        <p class="obj-adress">주소</p>
-                        <textarea class="obj-memo">메모</textarea>
+                        <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
+                        <textarea class="obj-memo" placeholder="메모"></textarea>
                     </div>
                     <div class="place-object">
                         <button class="del-btn">❌</button>
-                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
-                        <p class="obj-adress">주소</p>
-                        <textarea class="obj-memo">메모</textarea>
+                        <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
+                        <textarea class="obj-memo" placeholder="메모"></textarea>
                     </div>
                     <div class="place-object">
                         <button class="del-btn">❌</button>
-                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3> <!--편집가능하게-->
-                        <p class="obj-adress">주소</p>
-                        <textarea class="obj-memo">메모</textarea>
+                        <h4 class="obj-name">봄날햄버거</h4> <!--편집가능하게-->
+                        <textarea class="obj-memo" placeholder="메모"></textarea>
+                    </div>
+                    <div class="place-object">
+                        <button class="del-btn">❌</button>
+                        <h4 class="obj-name">봄날햄버거</h4> <!--편집가능하게-->
+                        <textarea class="obj-memo" placeholder="메모"></textarea>
                     </div>
                 </div>
                 <button class="save-btn">저장하기</button>
             </div>
 
             <div class="recommandation-box">
-                    <!--추천 장소 뜨기-->
-                <div class="recommandation-object">
-                    <div class="info">
-                        <h2>이름</h2>
-                        <p>요약</p>
-                        <button class="obj-add-btn">추가</button>
+                <div class="recommandation-header">
+                    <div class="categories">
+                        <span>식당</span>
                     </div>
-                    <img src="../../src/public/images/test1.png", alt="추천 장소" class="obj-img">
+                    <div class="categories">
+                        <span>카페</span>
+                    </div>
+                    <div class="categories">
+                        <span>자연경관</span>
+                    </div>
+                    <div class="categories">
+                        <span>레저스포츠</span>
+                    </div>
                 </div>
-                <div class="recommandation-object">
-                    <div class="info">
-                        <h2>이름</h2>
-                        <p>요약</p>
-                        <button class="obj-add-btn">추가</button>
+                    <!--추천 장소 뜨기-->
+                <div class="recommandation">
+                    <div class="recommandation-object">
+                        <div class="info">
+                            <h3>이름</h3>
+                            <p>요약</p>
+                            <button class="obj-add-btn">추가</button>
+                        </div>
+                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fplace%2F99EEE4C723274F2786F1A3BC2690F21F", alt="추천 장소" class="obj-img">
                     </div>
-                    <img src="../../src/public/images/test1.png", alt="추천 장소" class="obj-img">
+                    <div class="recommandation-object">
+                        <div class="info">
+                            <h3>이름</h3>
+                            <p>요약</p>
+                            <button class="obj-add-btn">추가</button>
+                        </div>
+                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
+                    </div>
                 </div>
             </div>
 
-            <!--
-            <button class="chatting-popup">chatting</button>
-            -->
+            <div class="chatting">chatting</div>
         </main>
-
-            <footer>
-                &copy; <%=new Date().getFullYear()%> Sample Project
-            </footer>
+        <footer>
+            &copy; <%=new Date().getFullYear()%> Sample Project
+        </footer>
+        <script type="text/javascript" src="/public/js/toastr.js"></script>
     </body>
 </html>

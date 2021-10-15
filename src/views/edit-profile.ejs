@@ -3,18 +3,18 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="../../src/public/css/header.css">
-        <link rel="stylesheet" href="../../src/public/css/sidebar.css">
-        <link rel="stylesheet" href="../../src/public/css/base.css">
-		<link rel="stylesheet" href="../../src/public/css/footer.css">
-        <link rel="stylesheet" href="../../src/public/css/see-profile.css">
+		<link rel="stylesheet" href="/public/css/header.css">
+        <link rel="stylesheet" href="/public/css/sidebar.css">
+        <link rel="stylesheet" href="/public/css/base.css">
+		<link rel="stylesheet" href="/public/css/footer.css">
+        <link rel="stylesheet" href="/public/css/see-profile.css">
         
         <title> Edit Profile | Sample </title>
     </head>
     <body class="container">
         <header>
             <div class="logo-box">
-                <img src="../../public/images/logo.png" alt="logo" class="logo">
+                <img src="/public/images/logo.png" alt="logo" class="logo">
             </div>
         </header>
         <div class="sidebar"> <!--사이드 바-->
@@ -33,6 +33,9 @@
                 <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
                 <div class="menu-name">
                     <span><a href="/users/<%=user._id%>">마이페이지</a></span>
+                </div>
+                <div class="menu-name">
+                    <span>새 계획 만들기</span>
                 </div>
                 <div class="menu-name">
                     <span>내 그룹</span>

@@ -4,11 +4,11 @@
         <!--컬러,폰트, 로고 빼고 작업 완료된 듯..?-->
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="../../src/public/css/header.css">
-        <link rel="stylesheet" href="../../src/public/css/sidebar.css">
-        <link rel="stylesheet" href="../../src/public/css/base.css">
-		<link rel="stylesheet" href="../../src/public/css/footer.css">
-		<link rel="stylesheet" href="../../src/public/css/see-plan.css">
+		<link rel="stylesheet" href="/public/css/header.css">
+        <link rel="stylesheet" href="/public/css/sidebar.css">
+        <link rel="stylesheet" href="/public/css/base.css">
+		<link rel="stylesheet" href="/public/css/footer.css">
+		<link rel="stylesheet" href="/public/css/see-plan.css">
 
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
         <title> <%=totPlan.title%> | Sample </title>
@@ -38,6 +38,9 @@
                     <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
+                    <span>새 계획 만들기</span>
+                </div>
+                <div class="menu-name">
                     <span>내 그룹</span>
                     <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
                     <div class="menu-detail">
@@ -56,7 +59,7 @@
         <!--메인 페이지-->
                     <!--데이 버튼이 메인에 넣을 시 메인컨텐츠와 겹치게 표시되어 따로 daybutton으로 분리하였고, 요소별 영역 부여를 위해 day-button 클래스를 입힘-->
         <div class="day-button">
-            <div class="btn selected"><a>info</a></div>
+            <div class="btn"><a>info</a></div>
             
             <%let day%> <!--다시 짜보기-->
             <% for(day = 0; day < totPlan.day_plan.length; day++){ %>
@@ -84,7 +87,7 @@
                 </div>
                 
                 <!--total-map(전체 경로 마커) 처리 부분-->
-                <div id="total-map" style = "width : 80%; height : 400px"></div>
+                <div id="total-map"></div>
                 <script>
                     const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
 
@@ -122,7 +125,7 @@
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <span class="plan-day">day <%=day + 1%></span>
                 <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="day-map<%=day + 1%>" style = "width : 100%; height : 400px; background-color :blue"></div>
+                <div id="day-map<%=day + 1%>" class="day-map"></div>
                 <script>
                     dayMapList.push(new naver.maps.Map("day-map<%=day + 1%>", mapOptions));
 

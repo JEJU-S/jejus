@@ -15,7 +15,7 @@ header {
   padding-left: 40px;
   gap: 50px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
-  z-index: 1;
+  z-index: 2;
 }
 
 .inv-btn {
@@ -43,18 +43,90 @@ main {
   grid-area: main;
   display: grid;
   grid-template-areas:
-    "search map place-box"
-    "recommand recommand place-box";
-  grid-template-columns: 250px 700px auto;
+    "search map place-box chat"
+    "recommand recommand place-box chat";
+  grid-template-columns: 250px 700px 300px auto;
   grid-template-rows: auto 200px;
   gap: 5px;
 }
-
+/*검색창 css 시작*/
 .search {
   grid-area: search;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
+
+input[type="text"] {
+  width: 80%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin: 15px 25px 5px 25px;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.search-result {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  max-height: 357px;
+  overflow: scroll;
+}
+
+.search-result::-webkit-scrollbar {
+  display: none;
+}
+
+.result {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  margin: auto;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.result:hover {
+  background-color: whitesmoke;
+}
+
+.obj-adress {
+  font-size: 12px;
+  margin: 2px 0px 0px 17px;
+  color: #939393;
+  max-width: 210px;
+}
+
+#toast {
+  position: fixed;
+  bottom: 400px;
+  left: 50%;
+  padding: 15px 20px;
+  transform: translate(-50%, 10px);
+  border-radius: 15px;
+  overflow: hidden;
+  font-size: 0.8rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  z-index: 10000;
+}
+
+#toast.reveal {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/*검색창 css 끝*/
 
 .map {
   grid-area: map;
@@ -62,12 +134,13 @@ main {
   height: 100%;
   background-color: blue;
 }
+
 /*여행지 리스트 CSS 시작*/
+
 .place-box {
   grid-area: place-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
@@ -90,8 +163,8 @@ main {
   display: flex;
   flex-direction: column;
   background-color: white;
-  height: 100%;
-  max-height: 515px;
+  height: 513px;
+  max-height: 513px;
   overflow: scroll;
 }
 
@@ -110,7 +183,6 @@ main {
   display: grid;
   grid-template-areas:
     "name btn"
-    "adress adress"
     "memo memo";
   background-color: whitesmoke;
   margin: 5px;
@@ -134,18 +206,33 @@ main {
   grid-area: name;
   margin-left: 12px;
   margin-top: 5px;
-}
-
-.obj-adress {
-  grid-area: adress;
-  margin: -20px 0px 5px 20px;
-  color: #939393;
+  margin-bottom: 12px;
 }
 
 .obj-memo {
   grid-area: memo;
-  margin-left: 13px;
-  padding: 17px 0px;
+  margin: 0 13px;
+  padding: 5px;
+  height: 30px;
+}
+
+textarea {
+  resize: none;
+  overflow: scroll;
+  width: 85%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
+textarea:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
 }
 
 .save-btn {
@@ -169,16 +256,41 @@ main {
 .recommandation-box {
   grid-area: recommand;
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
+.recommandation-header {
+  grid-area: recommand;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: rgb(0, 0, 0);
+  background-color: rgb(255, 255, 255);
+  height: 30px;
+  cursor: pointer;
+}
+
+.categories {
+  background-color: rgb(255, 255, 255);
+  padding: 4px 10px;
+  width: 80px;
+  text-align: center;
+  border-bottom: 1px solid rgb(226, 226, 226);
+}
+
+.recommandation {
+  grid-area: recommand;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .recommandation-object {
   position: relative;
-  width: 200px;
-  height: 180px;
+  width: 160px;
+  height: 150px;
   background-color: whitesmoke;
   margin: 10px;
   text-overflow: ellipsis;
@@ -206,28 +318,10 @@ main {
   opacity: 1;
 }
 
-input[type="text"] {
-  width: 80%;
-  border: 2px solid #aaa;
-  border-radius: 4px;
-  outline: none;
-  padding: 8px;
-  box-sizing: border-box;
-  font-size: 16px;
-  margin: 25px;
-}
-
-input[type="text"]:focus {
-  border-color: rgb(29, 142, 255);
-  background-color: rgb(241, 248, 255);
-  box-shadow: 0 0 8px 0 dodgetBlue;
-}
-
 .obj-add-btn {
   color: white;
   background-color: #48adff;
   padding: 6px 22px;
-  margin: 30px 0;
   text-decoration: none;
   border: none;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
@@ -240,3 +334,80 @@ input[type="text"]:focus {
 }
 
 /*여행지 추천시스템 CSS 끝*/
+
+.chatting {
+  grid-area: chat;
+  background-color: white;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  text-align: center;
+  line-height: 35;
+  z-index: 3;
+}
+
+/*일정추가 버튼 click시 이벤트 발생 --> .add-place의 display를 block으로*/
+/*
+.add-place {
+  display: none;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.644);
+  z-index: 2;
+}
+
+.add-box {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 250px;
+  margin: 230px 540px;
+  top: 100px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.add-plc {
+  width: 90% !important;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin: 10px !important;
+}
+
+.add-plc:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.add-plc-btn {
+  color: white;
+  background-color: #48adff;
+  width: 100px;
+  padding: 6px 22px;
+  margin: 30px 0;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+  align-self: center;
+}
+
+.add-plc-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+.exit-btn {
+  margin-left: 375px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: rgba(245, 245, 245, 0);
+  cursor: pointer;
+}
+*/
+/*exit-btn 클릭 시 이벤트 add-place의 display:none으로*/
