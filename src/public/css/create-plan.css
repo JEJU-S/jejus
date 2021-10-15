@@ -1,0 +1,121 @@
+.container {
+  grid-template-areas:
+    "header header header"
+    "sidebar creator creator"
+    "sidebar creator creator"
+    "footer footer footer";
+
+  grid-template-columns: 310px 1214px;
+  grid-template-rows: 40px 630px 20px;
+}
+
+.creator {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  height: 400px;
+  background-color: white;
+  margin: auto;
+  margin-top: 100px;
+  border-radius: 16px;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+h1 {
+  margin: 20px auto;
+}
+
+h2 {
+  margin: 15px 50px;
+}
+
+input[type="text"] {
+  width: 80%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  margin: auto;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+input[type="date"] {
+  width: 80%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  margin: auto;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+input[type="date"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: none;
+  display: none;
+}
+
+.title-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.creat-btn {
+  margin: auto;
+  margin-top: 55px;
+  color: white;
+  background-color: #48adff;
+  padding: 6px 22px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+.creat-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+.btn-primary {
+  color: white;
+  background-color: #48adff;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.btn-primary:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+.btn-default {
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.btn-default:hover {
+  background-color: #dadada;
+  transition: 0.1s;
+}
