@@ -105,8 +105,8 @@ input[type="text"]:focus {
 
 #toast {
   position: fixed;
+  left: 600px;
   bottom: 400px;
-  left: 50%;
   padding: 15px 20px;
   transform: translate(-50%, 10px);
   border-radius: 15px;
