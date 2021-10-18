@@ -34,7 +34,7 @@
                     <span><a href="">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
-                    <span><a href="http://localhost:4000/plans/create">새 계획 만들기</a></span>
+                    <span><a href="/plans/create">새 계획 만들기</a></span>
                 </div>
                 <div class="menu-name">
                     <span>내 그룹</span>
@@ -42,7 +42,7 @@
                     <div class="menu-detail">
                         <ul>
                             <%totPlanTitles.forEach(function(title){ %>
-                            <li><a href="http://localhost:4000/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
                             <% })%>
                         </ul>
                     </div>
@@ -71,7 +71,7 @@
                     <p class="email"><%=user.gmail%></p>
                 </div>
                 <!--수정버튼-->
-                <button class="edit-button" type="button" onclick= "location.href ='http://localhost:4000/users/<%=user._id%>/edit'">
+                <button class="edit-button" type="button" onclick= "location.href ='/users/<%=user._id%>/edit'">
                     수정하기
                 </button>
             </div>

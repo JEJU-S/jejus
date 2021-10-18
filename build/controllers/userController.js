@@ -20,7 +20,8 @@ var _fakeDB = require("./fakeDB");
 _dotenv["default"].config(); // 추후 진짜 db로 바꿔야 함
 
 
-// Main Page 
+var PORT = process.env.PORT || 8080; // Main Page 
+
 var main = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
     return _regenerator["default"].wrap(function _callee$(_context) {
@@ -60,7 +61,7 @@ var login = function login(req, res) {
     response_type: "code",
     client_id: process.env.GL_CLIENT,
     scope: "email profile",
-    redirect_uri: "http://localhost:4000/users/callback"
+    redirect_uri: "http://localhost:".concat(PORT, "/users/callback")
   };
   var params = new URLSearchParams(config).toString();
   var finalURL = "".concat(baseURL, "?").concat(params);
@@ -84,7 +85,7 @@ var callback = /*#__PURE__*/function () {
               client_secret: process.env.GL_SECRET,
               code: req.query.code,
               grant_type: "authorization_code",
-              redirect_uri: "http://localhost:4000/users/callback"
+              redirect_uri: "http://localhost:".concat(PORT, "/users/callback")
             };
             params = new URLSearchParams(config).toString();
             finalURL = "".concat(baseURL, "?").concat(params); //token 받기

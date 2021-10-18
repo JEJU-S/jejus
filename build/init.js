@@ -8,7 +8,7 @@ require("regenerator-runtime");
 
 //import "./db"; // database 연결
 // 서버 객체, 라우터 
-var PORT = 8080;
+var PORT = process.env.PORT || 8080;
 
 var handleListening = function handleListening() {
   return console.log("\u2705Server listening on port http://localhost:".concat(PORT, "  \uD83D\uDE80"));

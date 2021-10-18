@@ -3,7 +3,7 @@ import app from "./server"; // 서버 객체, 라우터
 import "regenerator-runtime";
 
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 const handleListening = () =>
     console.log(`✅Server listening on port http://localhost:${PORT}  🚀`);

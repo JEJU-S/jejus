@@ -6,6 +6,8 @@ dotdev.config();
 import { fakeUser } from "./fakeDB";
 import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 
+const PORT = process.env.PORT || 8080;
+
 // Main Page 
 export const main = async (req, res) => {
     try{
@@ -29,7 +31,7 @@ export const login = (req, res) =>
         response_type : "code",
         client_id : process.env.GL_CLIENT,
         scope : "email profile",
-        redirect_uri : "http://localhost:4000/users/callback",
+        redirect_uri : `http://localhost:${PORT}/users/callback`,
     }
     const params = new URLSearchParams(config).toString();
     const finalURL = `${baseURL}?${params}`;
@@ -47,7 +49,7 @@ export const callback = async(req, res) => {
         client_secret : process.env.GL_SECRET,
         code : req.query.code,
         grant_type : "authorization_code",
-        redirect_uri : "http://localhost:4000/users/callback"
+        redirect_uri : `http://localhost:${PORT}/users/callback`
     }
 
     const params  = new URLSearchParams(config).toString();
