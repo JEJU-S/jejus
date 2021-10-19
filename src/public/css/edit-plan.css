@@ -285,6 +285,11 @@ textarea:focus {
   display: flex;
   flex-direction: row;
   align-items: center;
+  overflow: scroll;
+}
+
+.recommandation::-webkit-scrollbar {
+  display: none;
 }
 
 .recommandation-object {
@@ -295,12 +300,11 @@ textarea:focus {
   margin: 10px;
   text-overflow: ellipsis;
   text-align: center;
-  overflow: hidden;
 }
 
 .obj-img {
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
