@@ -7,8 +7,17 @@ const mongoose = require('mongoose');
 import { fakeUser } from "./fakeDB";
 import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 import { Mongoose } from "mongoose";
+import { app } from "cli";
+import { Db } from "mongoose/node_modules/mongodb";
 
+const userSchema = new mongoose.Schema({
+    name: String,
+    gmail: {type: String, required: true, unique: true},
+    image_url: String,
+    totPlan_id: Array,
+})
 
+const User = mongoose.model('User', userSchema);
 
 // Main Page 
 export const main = async (req, res) => {
@@ -94,7 +103,6 @@ export const callback = async(req, res) => {
         })
         ).json();
         
-        
         // 사용자 정보 console에 출력 -> db로 받아서 
         console.log(userRequest);
         const user_name = userRequest['names'][0]['displayName']
@@ -108,37 +116,67 @@ export const callback = async(req, res) => {
 
         console.log("---------------------------------");
         //db에서 사용자를 찾을 수 없다면 => 추가 
-        
-        const userSchema = new mongoose.Schema({
-            name: String,
-            gmail: {type: String, required: true, unique: true},
-            image_url: String,
-            totPlan_id: Array,
-        })
 
-        var User = mongoose.model('User', userSchema);
 
-        new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
-            .then(() => {
-                console.log('Saved successfully');
-            })
-            .catch((err) => {
-                console.error(err);
-            });
-        // db에서 사용자 찾을 수 있다면
-        //올바른 이름, 형식인지 체크
-        // => select
+        User.findOne({gmail: user_gmail}).exec(function(err, res){
+            if(!res){
+                    console.log("!no user!");
+                    new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
+                    .then(() => {
+                        console.log('Saved successfully');
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+                }
+            else{
+                console.log("login successfully!")
+            }
+        });
 
+
+        // 배열 추가 부분 따로 구현해서 붙여넣기
+        const fake_plan = '시청'
+        User.findOne({gmail: user_gmail}).exec(function(err, res){
+            if(res){
+                res.totPlan_id.push(fake_plan);
+                res.save(function(err, plan){
+                    console.log("save sucess");
+                });
+            }
+        });
+
+       const user_info = await User.find({gmail: user_gmail}).lean();
+       const login_id = user_info[0]._id;
+       const login_name = user_info[0].name;
+       const login_gmail = user_info[0].gmail;
+       const login_image = user_info[0].image_url;
+       const login_totPlan_id = user_info[0].totPlan_id;
+
+       console.log('---------------------------')
+       console.log('UserInfo from MongoDB')
+       console.log(login_id);
+       console.log(login_name);
+       console.log(login_gmail);
+       console.log(login_image);
+       console.log(login_totPlan_id);
+       console.log('---------------------------')
+
+
+        // // db에서 사용자 찾을 수 있다면
+        // //올바른 이름, 형식인지 체크
+        // // => select
+           
         //session 초기화(만든다)
         req.session.loggedIn = true;
         
-        //session User 저장(DB에서 user찾아서)
+        //session User 저장(DB에서 user찾아서) // 받아온 세션을 여기다가 넣을 것
         req.session.user = {
-            _id : "507f1f77bcf86cd799439011", 
-            name : userRequest['names'][0]['displayName'],
-            image_url : userRequest['photos'][0]['url'],
-            gmail : userRequest['emailAddresses'][0]['value'],
-            totPlan_id : ["507f191e810c19729de860ea", "13jbrkw3494msd3j3456e245"]
+            _id : login_id, 
+            name : login_name,
+            image_url : login_image,
+            gmail : login_gmail,
+            totPlan_id : login_totPlan_id
         };
 
         // user가 가지고 있는 plan 뽑아서 id, title을 저장
