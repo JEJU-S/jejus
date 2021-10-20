@@ -42,11 +42,9 @@ footer {
 main {
   grid-area: main;
   display: grid;
-  grid-template-areas:
-    "search map place-box chat"
-    "recommand recommand place-box chat";
-  grid-template-columns: 250px 700px 300px auto;
-  grid-template-rows: auto 200px;
+  grid-template-areas: "recommandation search map place-box";
+  grid-template-columns: auto 250px 700px 300px;
+  grid-template-rows: auto;
   gap: 5px;
 }
 /*검색창 css 시작*/
@@ -76,7 +74,7 @@ input[type="text"]:focus {
 .search-result {
   width: 100%;
   background-color: rgb(255, 255, 255);
-  max-height: 357px;
+  max-height: 557px;
   overflow: scroll;
 }
 
@@ -105,8 +103,8 @@ input[type="text"]:focus {
 
 #toast {
   position: fixed;
-  left: 600px;
-  bottom: 400px;
+  left: 750px;
+  bottom: 370px;
   padding: 15px 20px;
   transform: translate(-50%, 10px);
   border-radius: 15px;
@@ -207,6 +205,7 @@ input[type="text"]:focus {
   margin-left: 12px;
   margin-top: 5px;
   margin-bottom: 12px;
+  font-weight: bold;
 }
 
 .obj-memo {
@@ -252,7 +251,7 @@ textarea:focus {
 /*여행지 리스트 CSS 끝*/
 
 /*여행지 추천시스템 CSS */
-
+/*
 .recommandation-box {
   grid-area: recommand;
   display: flex;
@@ -302,12 +301,6 @@ textarea:focus {
   text-align: center;
 }
 
-.obj-img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-}
-
 .info {
   position: absolute;
   color: rgb(255, 255, 255);
@@ -336,16 +329,75 @@ textarea:focus {
   background-color: #1e9aff;
   transition: 0.1s;
 }
-
+*/
 /*여행지 추천시스템 CSS 끝*/
 
-.chatting {
-  grid-area: chat;
+.recommandation {
+  grid-area: recommandation;
   background-color: white;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  overflow: hidden;
+}
+
+.region {
+  width: 100%;
+  height: 56px;
+  border: none;
+  color: white;
+  background-color: navy;
+}
+.categories {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.category {
+  margin-top: 3px;
+  margin-bottom: 3px;
+  width: 56px;
+  height: 56px;
+  border: 4px solid gray;
+  border-radius: 5px;
   text-align: center;
-  line-height: 35;
-  z-index: 3;
+}
+
+.recommandation-box {
+  display: flex;
+  flex-direction: column;
+  max-height: 482px;
+  overflow: scroll;
+}
+
+.recommandation-box::-webkit-scrollbar {
+  display: none;
+}
+
+.recommandation-object {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.315);
+}
+
+.recommandation-object:hover {
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+
+.obj-img {
+  width: 65px;
+  height: 65px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.obj-textbox {
+  line-height: 0;
+}
+
+.obj-info {
+  margin: 27px 0 0 12px;
 }
 
 /*일정추가 버튼 click시 이벤트 발생 --> .add-place의 display를 block으로*/
