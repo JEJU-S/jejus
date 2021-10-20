@@ -102,7 +102,7 @@ export const callback = async(req, res) => {
         
         //session User 저장(DB에서 user찾아서)
         req.session.user = {
-            _id : "507f1f77bcf86cd799439011", 
+            _id : "3952ab947607509ee9654795", 
             name : userRequest['names'][0]['displayName'],
             image_url : userRequest['photos'][0]['url'],
             gmail : userRequest['emailAddresses'][0]['value'],

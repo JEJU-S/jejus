@@ -37,7 +37,7 @@
                     <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
-                    <a href="">새 계획 만들기</a>
+                    <a href="plans/create">새 계획 만들기</a>
                 </div>
                 <div class="menu-name">
                     <span>내 그룹</span>
@@ -74,7 +74,7 @@
                     <span class="user"> 
                         user : 
                         <%totPlan.participants.forEach(function(participant){%>
-                            <%=participant%>
+                            <%=participant['name']%>
                         <% })%>
                     </span>
                     <span class="date">
@@ -108,13 +108,14 @@
                             })
                         }
                     }
-                    
+    
                     const dayMapList = [];
                 </script>
                 <div class="plan-buttons">
                     <button type="button" class="edit-btn">편집하기</button>
-                    <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
-                    <button type="button" class="del-btn not-manager">삭제</button>
+                    <%if(user._id == totPlan.admin["_id"]){%>
+                        <button type="button" class="del-btn">삭제</button>
+                    <%}%>
                 </div> 
             </div>
             <!--day plan-->
