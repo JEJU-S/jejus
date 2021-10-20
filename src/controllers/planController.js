@@ -10,9 +10,8 @@ import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 export const seePlan = (req, res) => 
 {
     const {id} = req.params;
-    // 같은 id 값을 가지고 있는 plan 가지고 오기
 
-    //**DB** : => user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
+    //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
     res.render(`see-plan`, {
         user : req.session.user,
         totPlanTitles : req.session.totPlanTitleList,
@@ -23,8 +22,13 @@ export const seePlan = (req, res) =>
  
 export const editPlan = (req, res) => 
 {
+    const {id} = req.params;
     //**DB** : => user, 페이지에서 보여주고 있는 total plan
-    res.render("edit-plan");
+    res.render("edit-plan", {
+        user : req.session.user,
+        totPlan : fakeTotPlan1,
+        map_cl : process.env.MAP_CLIENT
+    });
 }
 
 
