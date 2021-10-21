@@ -12,6 +12,23 @@
         <title> Edit <%=plan.title%> | Sample </title>
     </head>
     <body class="container">
+        <div class="region-place" id="regionplace">
+            <img src="/public/images/jejumap.png" class="jejumap">
+            <img src="/public/images/ahndeok.png" class="jeju-region ad">
+            <img src="/public/images/daejeong.png" class="jeju-region dj">
+            <img src="/public/images/hankyoung.png" class="jeju-region hk">
+            <img src="/public/images/joongmoon.png" class="jeju-region jm">
+            <img src="/public/images/seokeepoo.png" class="jeju-region skp">
+            <img src="/public/images/koojwa.png" class="jeju-region kj">
+            <img src="/public/images/jocheon.png" class="jeju-region jc">
+            <img src="/public/images/jeju.png" class="jeju-region jj">
+            <img src="/public/images/aewol.png" class="jeju-region aw">
+            <img src="/public/images/hanlim.png" class="jeju-region hl">
+            <img src="/public/images/sungsan.png" class="jeju-region ss">
+            <img src="/public/images/pyoseon.png" class="jeju-region ps">
+            <img src="/public/images/namwon.png" class="jeju-region nw">
+            <img src="/public/images/woodo.png" class="jeju-region wd">
+        </div>
         <header>
             <h1><%=plan.title%></h1>
             참여자 : <%=plan.participants%>
@@ -31,6 +48,30 @@
                         </li>
                         <li class="result">
                             <span class="obj-name">봄날공인중개사</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날의류판매점</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날막걸리</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날햄버거</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날 보드게임 카페</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날 스쿠버다이빙</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날의류판매점</span>
                             <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
                         </li>
                     </ul>
@@ -86,61 +127,25 @@
                 </div>
                 <button class="save-btn">저장하기</button>
             </div>
-            <!--
-            <div class="recommandation-box">
-                <div class="recommandation-header">
-                    <div class="categories">
-                        <span>식당</span>
-                    </div>
-                    <div class="categories">
-                        <span>카페</span>
-                    </div>
-                    <div class="categories">
-                        <span>자연경관</span>
-                    </div>
-                    <div class="categories">
-                        <span>레저스포츠</span>
-                    </div>
-                </div>
-                <div class="recommandation">
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                </div>
-            -->
-            </div>
-
             <div class="recommandation">
-                <button type="button" class="region">권역 선택</button>
+                <button type="button" class="region-select-btn" id="regionbtn">권역 선택</button>
                 <div class="categories">
                     <div class="category">
-                        카테고리1
+                        관광
                     </div>
                     <div class="category">
-                        카테고리2
+                        식당
                     </div>
                     <div class="category">
-                        카테고리3
+                        카페
                     </div>
                     <div class="category">
-                        카테고리4
+                        레저/<br>스포츠
                     </div>
                 </div>
                 <div class="recommandation-box">
                     <ul>
-                        <li class="recommandation-object">
-                            <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                            <div class="obj-textbox">
-                                <span class="obj-name">관광지명</span>
-                                <p class="obj-info">대충설명</p>
-                            </div>
-                        </li>
-                        <li class="recommandation-object">
+                        <li class="recommandation-object" draggable="true">
                             <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
                             <div class="obj-textbox">
                                 <span class="obj-name">관광지명</span>
@@ -154,5 +159,7 @@
             &copy; <%=new Date().getFullYear()%> Sample Project
         </footer>
         <script type="text/javascript" src="/public/js/toastr.js"></script>
+        <script type="text/javascript" src="/public/js/regionSelect.js"></script>
+        <script type="text/javascript" src="/public/js/categorySelect.js"></script>
     </body>
 </html>
