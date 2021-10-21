@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 8080;
 // Main Page 
 export const main = async (req, res) => {
     try{
+        console.log(fullUrl);
         return res.render("main");
-        
     }
     catch(error){
         return res.render("<h1>SERVER ERROR🛑</h1>");
@@ -20,11 +20,10 @@ export const main = async (req, res) => {
 };
 
 // --로그인 작업--
-
 //Main -> Profile 로 가는 process function 
 //login -> callback -> profile
 export const login = (req, res) => 
-{
+{   
      //구글 로그인 전달 url 파라미터들
     const baseURL = "https://accounts.google.com/o/oauth2/v2/auth";
     const config = {

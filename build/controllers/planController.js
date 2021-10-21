@@ -17,8 +17,7 @@ _dotenv["default"].config(); //goes to plan router
 
 //사용자 마다 완성된 plan 보여주기 위한 것
 var seePlan = function seePlan(req, res) {
-  var id = req.params.id; // 같은 id 값을 가지고 있는 plan 가지고 오기
-  //**DB** : => user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
+  var id = req.params.id; //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
 
   res.render("see-plan", {
     user: req.session.user,
@@ -31,8 +30,13 @@ var seePlan = function seePlan(req, res) {
 exports.seePlan = seePlan;
 
 var editPlan = function editPlan(req, res) {
-  //**DB** : => user, 페이지에서 보여주고 있는 total plan
-  res.render("edit-plan");
+  var id = req.params.id; //**DB** : => user, 페이지에서 보여주고 있는 total plan
+
+  res.render("edit-plan", {
+    user: req.session.user,
+    totPlan: _fakeDB.fakeTotPlan1,
+    map_cl: process.env.MAP_CLIENT
+  });
 };
 
 exports.editPlan = editPlan;

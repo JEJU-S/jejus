@@ -3,7 +3,7 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
 		<link rel="stylesheet" href="/public/css/header.css">
         <link rel="stylesheet" href="/public/css/base.css">
 		<link rel="stylesheet" href="/public/css/footer.css">
@@ -14,63 +14,39 @@
     <body class="container">
         <header>
             <h1><%=totPlan.title%></h1>
-            참여자 : <%=totPlan.participants%>
+            참여자 : 
+            <%totPlan.participants.forEach(function(participant){%>
+                <%=participant['name']%>
+            <% })%>
             <button class="inv-btn">초대</button>
             <p>출발일 : </p>
             <p>도착일 : </p>
+            
         </header>
         <main>
             <!--네이버 지도, 검색창 자리 수정 필요-->
             <div id="place" class="search">
-                <input type="text" placeholder="검색창">
+                <input type="text" name ="search-input" placeholder="검색어를 입력하세요">
                 <div class="search-result">
                     <ul>
                         <li class="result">
                             <span class="obj-name">봄날</span>
                             <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
                         </li>
-                        <li class="result" id="result2">
-                            <span class="obj-name">봄날공인중개사</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날의류판매점</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날막걸리</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날햄버거</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날 보드게임 카페</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날 스쿠버다이빙</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날의류판매점</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
                     </ul>
                 </div>
             </div>
             <div id="toast">장소가 추가되었습니다🚀</div>
+            
             <div id="map" class="map">
-
             </div>
-            <!--js,css 파일 따로 만들기-->
             <script>
-                var mapOptions = {
-                    center: new naver.maps.LatLng(37.3595704, 127.105399),
-                    zoom: 10
-                    };
-                var map = new naver.maps.Map('map', mapOptions);
+                const mapOptions = {
+                    center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+                    zoom : 10
+                };
+                const map = new naver.maps.Map('map', mapOptions);
+
             </script>
 
             <div class= "place-box">
@@ -87,114 +63,9 @@
                             <textarea class="obj-memo" placeholder="메모"></textarea>
                         </div>    
                     </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
-                    </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
-                    </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">봄날햄버거</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
-                    </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">봄날햄버거</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
-                    </div>
                 </div>
                 <button class="save-btn">저장하기</button>
             </div>
-
-            <div class="recommandation-box">
-                <div class="recommandation-header">
-                    <div class="categories">
-                        <span>식당</span>
-                    </div>
-                    <div class="categories">
-                        <span>카페</span>
-                    </div>
-                    <div class="categories">
-                        <span>자연경관</span>
-                    </div>
-                    <div class="categories">
-                        <span>레저스포츠</span>
-                    </div>
-                </div>
-                    <!--추천 장소 뜨기-->
-                <div class="recommandation">
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fplace%2F99EEE4C723274F2786F1A3BC2690F21F", alt="추천 장소" class="obj-img">
-                    </div>
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                    <div class="recommandation-object">
-                        <div class="info">
-                            <h3>이름</h3>
-                            <p>요약</p>
-                            <button class="obj-add-btn">추가</button>
-                        </div>
-                        <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                    </div>
-                </div>
-            </div>
-
             <div class="chatting">chatting</div>
         </main>
         <footer>
