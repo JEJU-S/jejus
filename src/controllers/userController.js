@@ -9,14 +9,8 @@ import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 const PORT = process.env.PORT || 8080;
 
 // Main Page 
-export const main = async (req, res) => {
-    try{
-        console.log(fullUrl);
+export const main = (req, res) => {
         return res.render("main");
-    }
-    catch(error){
-        return res.render("<h1>SERVER ERROR🛑</h1>");
-    }
 };
 
 // --로그인 작업--

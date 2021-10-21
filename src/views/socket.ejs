@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+    <form>
+        <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
+        <input type="submit", value = "검색">
+    </form>
+    <ul class = "search-result">
+    </ul>
+
+<body>
+    <script>
+        const socket = new WebSocket(`ws://${window.location.host}`);
+        socket.addEventListener("open", () => {console.log("connected to Browser🏁")});
+        socket.addEventListener("message", (message) => { socket.send(message.data)});
+        socket.addEventListener("close", () =>{console.log("disconnected")});
+
+        const placeSearchForm = document.querySelector("form");
+        const placeResultForm = document.querySelector(".search-result");
+
+        function handleSearchSubmit(event){
+            event.preventDefault();
+            const input = placeSearchForm.querySelector("input");
+            console.log(input.value);
+            socket.send(input.value);
+            input.value = "";
+        }
+        placeSearchForm.addEventListener("submit", handleSearchSubmit);
+    </script>
+</body>
+</html>
