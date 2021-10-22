@@ -42,11 +42,8 @@ footer {
 main {
   grid-area: main;
   display: grid;
-  grid-template-areas:
-    "search map place-box chat"
-    "recommand recommand place-box chat";
-  grid-template-columns: 250px 700px 300px auto;
-  grid-template-rows: auto 200px;
+  grid-template-areas: "recommandation search map place-box";
+  grid-template-columns: 20% auto 40% 20%;
   gap: 5px;
 }
 /*검색창 css 시작*/
@@ -76,7 +73,7 @@ input[type="text"]:focus {
 .search-result {
   width: 100%;
   background-color: rgb(255, 255, 255);
-  max-height: 357px;
+  height: 70vh;
   overflow: scroll;
 }
 
@@ -85,7 +82,6 @@ input[type="text"]:focus {
 }
 
 .result {
-  width: 100%;
   background-color: rgb(255, 255, 255);
   margin: auto;
   padding: 5px;
@@ -100,13 +96,12 @@ input[type="text"]:focus {
   font-size: 12px;
   margin: 2px 0px 0px 17px;
   color: #939393;
-  max-width: 210px;
 }
 
 #toast {
   position: fixed;
-  left: 600px;
-  bottom: 400px;
+  left: 50%;
+  bottom: 50%;
   padding: 15px 20px;
   transform: translate(-50%, 10px);
   border-radius: 15px;
@@ -163,8 +158,7 @@ input[type="text"]:focus {
   display: flex;
   flex-direction: column;
   background-color: white;
-  height: 513px;
-  max-height: 513px;
+  height: 70vh;
   overflow: scroll;
 }
 
@@ -207,6 +201,7 @@ input[type="text"]:focus {
   margin-left: 12px;
   margin-top: 5px;
   margin-bottom: 12px;
+  font-weight: bold;
 }
 
 .obj-memo {
@@ -249,116 +244,206 @@ textarea:focus {
   transition: 0.1s;
 }
 
-/*여행지 리스트 CSS 끝*/
-
-/*여행지 추천시스템 CSS */
-
-.recommandation-box {
-  grid-area: recommand;
-  display: flex;
-  flex-direction: column;
-  background-color: rgb(255, 255, 255);
+.recommandation {
+  grid-area: recommandation;
+  background-color: white;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  overflow: hidden;
 }
 
-.recommandation-header {
-  grid-area: recommand;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: rgb(0, 0, 0);
-  background-color: rgb(255, 255, 255);
-  height: 30px;
+.region-select-btn {
+  width: 100%;
+  height: 56px;
+  border: none;
+  color: white;
+  background-color: navy;
   cursor: pointer;
 }
 
 .categories {
-  background-color: rgb(255, 255, 255);
-  padding: 4px 10px;
-  width: 80px;
-  text-align: center;
-  border-bottom: 1px solid rgb(226, 226, 226);
-}
-
-.recommandation {
-  grid-area: recommand;
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.315);
+}
+
+.category {
+  display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 10px 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  transition: 0.2s;
+}
+
+.category:hover {
+  color: coral;
+  border: 1px solid coral;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.selected {
+  color: coral;
+  border: 1px solid coral;
+  font-weight: bold;
+}
+
+.recommandation-box {
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
   overflow: scroll;
 }
 
-.recommandation::-webkit-scrollbar {
+.recommandation-box::-webkit-scrollbar {
   display: none;
 }
 
 .recommandation-object {
-  position: relative;
-  width: 160px;
-  height: 150px;
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.315);
+}
+
+.recommandation-object:hover {
   background-color: whitesmoke;
-  margin: 10px;
-  text-overflow: ellipsis;
-  text-align: center;
-}
-
-.obj-img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-}
-
-.info {
-  position: absolute;
-  color: rgb(255, 255, 255);
-  background: rgba(0, 0, 0, 0.5);
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: 0.2s;
-}
-
-.recommandation-object:hover .info {
-  opacity: 1;
-}
-
-.obj-add-btn {
-  color: white;
-  background-color: #48adff;
-  padding: 6px 22px;
-  text-decoration: none;
-  border: none;
-  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   cursor: pointer;
 }
 
-.obj-add-btn:hover {
-  background-color: #1e9aff;
-  transition: 0.1s;
+.obj-img {
+  width: 65px;
+  height: 65px;
+  border-radius: 10px;
+  object-fit: cover;
 }
 
-/*여행지 추천시스템 CSS 끝*/
+.obj-textbox {
+  line-height: 0;
+}
 
-.chatting {
-  grid-area: chat;
-  background-color: white;
-  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
-  text-align: center;
-  line-height: 35;
-  z-index: 3;
+.obj-info {
+  margin: 27px 0 0 12px;
 }
 
 /*일정추가 버튼 click시 이벤트 발생 --> .add-place의 display를 block으로*/
-/*
-.add-place {
+
+.region-place {
   display: none;
   position: absolute;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.644);
-  z-index: 2;
+  transition: 0.5s;
+  z-index: 3;
 }
 
+.jejumap {
+  margin: 100px 400px;
+}
+
+.jeju-region {
+  position: absolute;
+  opacity: 1;
+}
+
+.jeju-region:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.ad {
+  opacity: 0;
+  top: 377px;
+  left: 560px;
+}
+
+.dj {
+  opacity: 0;
+  top: 419px;
+  left: 467px;
+}
+
+.hk {
+  opacity: 0;
+  top: 352px;
+  left: 462px;
+}
+
+.jm {
+  opacity: 0;
+  top: 360px;
+  left: 631px;
+}
+
+.skp {
+  opacity: 0;
+  top: 359px;
+  left: 763px;
+  z-index: 4;
+}
+
+.kj {
+  opacity: 0;
+  top: 149px;
+  left: 919px;
+}
+
+.wd {
+  opacity: 0;
+  top: 195px;
+  left: 1119px;
+}
+
+.jc {
+  opacity: 0;
+  top: 156px;
+  left: 794px;
+}
+
+.jj {
+  opacity: 0;
+  top: 178px;
+  left: 672px;
+  z-index: 4;
+}
+
+.aw {
+  opacity: 0;
+  top: 226px;
+  left: 572px;
+}
+
+.hl {
+  opacity: 0;
+  top: 275px;
+  left: 502px;
+}
+
+.ss {
+  opacity: 0;
+  top: 239px;
+  left: 1010px;
+}
+
+.ps {
+  opacity: 0;
+  top: 280px;
+  left: 876px;
+}
+
+.nw {
+  opacity: 0;
+  top: 328px;
+  left: 784px;
+}
+
+/*
 .add-box {
   display: flex;
   flex-direction: column;
