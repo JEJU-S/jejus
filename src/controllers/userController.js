@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8080;
 
 // Main Page 
 export const main = (req, res) => {
-        return res.render("main");
+        return res.render("socket");
 };
 
 // --로그인 작업--

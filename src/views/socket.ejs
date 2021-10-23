@@ -4,33 +4,84 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
     <title>Document</title>
 </head>
-    <form>
+    <form id="search-form">
         <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
         <input type="submit", value = "검색">
+
     </form>
-    <ul class = "search-result">
+    <ul class="search-result">
     </ul>
-
+    <div id="map" class="map" style ="width:800px; height:400px;"></div>
+    <form id="chatting">
+    </form>
 <body>
-    <script>
-        const socket = new WebSocket(`ws://${window.location.host}`);
-        socket.addEventListener("open", () => {console.log("connected to Browser🏁")});
-        socket.addEventListener("message", (message) => { socket.send(message.data)});
-        socket.addEventListener("close", () =>{console.log("disconnected")});
-
-        const placeSearchForm = document.querySelector("form");
-        const placeResultForm = document.querySelector(".search-result");
-
-        function handleSearchSubmit(event){
-            event.preventDefault();
-            const input = placeSearchForm.querySelector("input");
-            console.log(input.value);
-            socket.send(input.value);
-            input.value = "";
-        }
-        placeSearchForm.addEventListener("submit", handleSearchSubmit);
-    </script>
 </body>
+
+<script>
+    const mapOptions = {
+        center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+        zoom : 10
+    };
+    const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
+
+    //client 소켓 생성
+    const socket = new WebSocket(`ws://${window.location.host}`);
+
+    const placeSearchForm = document.querySelector(".search-form");
+    const placeResultUl = document.querySelector(".search-result");
+
+    function printSearchResult(message){
+        const placeResults = JSON.parse(message.data);
+        
+        while(placeResultUl.hasChildNodes()){
+            placeResultUl.removeChild(placeResultUl.firstChild);
+        }
+
+        placeResults.forEach((place, index) => {
+            console.log(place);
+            
+            const li = document.createElement("li");
+            li.className = "result";
+            li.style.backgroundColor = "#555555";
+
+            const span = document.createElement("span");
+            span.className = "obj-name";
+            span.append(place.place_name);
+
+            const p = document.createElement("p");
+            p.className = "obj-adress";
+            p.append(place.address_name);
+
+            li.append(span);
+            li.append(p);
+
+            placeResultUl.append(li);
+        })
+    }
+
+    const placeResultList = document.querySelectorAll(".search-result li");
+    placeResultList.forEach((placeResult) => {
+        placeResult.addEventListener("click", handleClickSearchResult);
+    })
+
+    function handleClickSearchResult(){
+        alert("clicked");
+    }
+
+    socket.addEventListener("open", () => {console.log("connected to Browser🏁")});
+    socket.addEventListener("message", printSearchResult);
+    socket.addEventListener("close", () =>{console.log("disconnected")});
+
+    function handleSearchSubmit(event){
+        event.preventDefault();
+        const input = placeSearchForm.querySelector("input");
+        socket.send(input.value);
+        input.value = "";
+    }
+
+    placeSearchForm.addEventListener("submit", handleSearchSubmit);
+</script>
 </html>

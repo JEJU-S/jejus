@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.fakeUser = exports.fakeTotPlan2 = exports.fakeTotPlan1 = exports.fakeRecPlace = exports.fakePlace = void 0;
 // fake database로 추후 진짜 데이터베이스로 바꿔야 함
 // 프론트엔드 자바스크립트 확인용으로 만듦
-var fakeUser = {
+const fakeUser = {
   _id: "507f1f77bcf86cd799439011",
   name: "홍길동",
   image_url: "https://cdn.pixabay.com/photo/2021/07/20/03/39/fisherman-6479663__340.jpg",
@@ -14,7 +14,8 @@ var fakeUser = {
   totPlan_id: ["507f191e810c19729de860ea", "13jbrkw3494msd3j3456e245"]
 };
 exports.fakeUser = fakeUser;
-var fakeTotPlan1 = {
+
+const fakeTotPlan1 = {
   _id: "507f191e810c19729de860ea",
   title: "첫 제주도 여행🚗",
   admin: {
@@ -36,7 +37,8 @@ var fakeTotPlan1 = {
   }],
   day_plan: [{
     date: "2022-04-05",
-    place: [{
+    place: [
+      {
       name: "봄날",
       adr: [33.46245977342849, 126.30958954597405],
       memo: "분위기 좋은 카페! 당근 케이크 맛있댔음ㅋㅋ🍰"
@@ -97,7 +99,8 @@ var fakeTotPlan1 = {
   }]
 };
 exports.fakeTotPlan1 = fakeTotPlan1;
-var fakeTotPlan2 = {
+
+const fakeTotPlan2 = {
   _id: "13jbrkw3494msd3j3456e245",
   title: "제주도 가족 여행🚌",
   admin: "홍길동",
@@ -156,7 +159,7 @@ var fakeTotPlan2 = {
   }]
 };
 exports.fakeTotPlan2 = fakeTotPlan2;
-var fakeRecPlace = {
+const fakeRecPlace = {
   id: 1,
   name: "한라산",
   adr: [33.36193358861604, 126.52916341462316],
@@ -165,7 +168,7 @@ var fakeRecPlace = {
 }; //실시간
 
 exports.fakeRecPlace = fakeRecPlace;
-var fakePlace = {
+const fakePlace = {
   id: 1,
   name: "봄날",
   adr: [33.46245977342849, 126.30958954597405],
