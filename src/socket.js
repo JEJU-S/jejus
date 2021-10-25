@@ -52,6 +52,13 @@ function addPlaceToDataBase(){
 
 io.on("connection", (socket) => {
     
+    socket.onAny((event) => {
+        console.log(`Socket Event: ${event}`);
+      });
+
+    socket.on("join_room", (planId) => {
+        socket.join(planId);
+    });
 
     socket.on("search_keyword", (keyword) => {
         sendSearchResults(keyword, socket);
@@ -59,7 +66,8 @@ io.on("connection", (socket) => {
     
     socket.on("add_to_placelist",(coordinates) => {
         io.emit("place_add_map", {x : coordinates.x, y : coordinates.y});
-    }); 
+    });
+     
 });
 
 export default server;
