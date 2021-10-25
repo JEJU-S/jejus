@@ -5,83 +5,129 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
     <title>Document</title>
 </head>
+<body>
     <form id="search-form">
         <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
         <input type="submit", value = "검색">
-
     </form>
-    <ul class="search-result">
+    <ul id="search-result-list">
     </ul>
     <div id="map" class="map" style ="width:800px; height:400px;"></div>
-    <form id="chatting">
-    </form>
-<body>
+    
+    <ul id="place-list">
+    </ul>
 </body>
 
 <script>
+    // element 요소
+    const searchForm = document.querySelector("#search-form");
+    const searchResultUl = document.querySelector("#search-result-list");
+    const placeList = document.querySelector("#place-list");
+
+    //map 관리
+    const markerList = [];
     const mapOptions = {
         center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
         zoom : 10
     };
     const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
-
-    //client 소켓 생성
-    const socket = new WebSocket(`ws://${window.location.host}`);
-
-    const placeSearchForm = document.querySelector(".search-form");
-    const placeResultUl = document.querySelector(".search-result");
-
-    function printSearchResult(message){
-        const placeResults = JSON.parse(message.data);
-        
-        while(placeResultUl.hasChildNodes()){
-            placeResultUl.removeChild(placeResultUl.firstChild);
+    
+    // client 소켓 생성
+    const socket = io();
+    
+    //place result 데이터 리스트 생성
+    function printSearchResult(searchResults){
+        while(searchResultUl.hasChildNodes()){
+            searchResultUl.removeChild(searchResultUl.firstChild);
         }
+        searchResults.forEach((result) => {
+            console.log(result);
 
-        placeResults.forEach((place, index) => {
-            console.log(place);
-            
             const li = document.createElement("li");
             li.className = "result";
-            li.style.backgroundColor = "#555555";
+            // 임시로 넣어 둠(클릭 범위 확인)
+            li.style.backgroundColor = "#cccccc";
 
             const span = document.createElement("span");
             span.className = "obj-name";
-            span.append(place.place_name);
+            span.append(result.place_name);
 
             const p = document.createElement("p");
             p.className = "obj-adress";
-            p.append(place.address_name);
+            p.append(result.address_name);
 
+            const coordinates = {
+                x : result.x,
+                y : result.y
+            };
+            const hidden = document.createElement("input");
+            hidden.setAttribute("type", "hidden");
+            hidden.setAttribute("value", JSON.stringify(coordinates));
             li.append(span);
             li.append(p);
+            li.append(hidden);
 
-            placeResultUl.append(li);
+            searchResultUl.append(li);
         })
     }
+        // userplace list에 추가
+    function addPlaceToPlaceList(){
+        
 
-    const placeResultList = document.querySelectorAll(".search-result li");
-    placeResultList.forEach((placeResult) => {
-        placeResult.addEventListener("click", handleClickSearchResult);
-    })
+    }
+    
 
-    function handleClickSearchResult(){
-        alert("clicked");
+    function addSearchResult(event){
+        const li = event.target.closest('li');
+        if(!li) return;
+        
+        let result = {};
+        
+        socket.emit("add_to_placelist", {
+            x : coordinates.x,
+            y : coordinates.y
+        });
+    }
+    
+    // map에 마커 추가
+    function addPlaceToMap(coordinates){
+        console.log("here : ", parseFloat(coordinates.x), " , " , parseFloat(coordinates.y));
+        markerList.push(new naver.maps.Marker({  
+            position : new naver.maps.LatLng(
+                parseFloat(coordinates.y), parseFloat(coordinates.x)
+            ),
+            map : map
+        }));
+    }
+    
+    //map에서 마커 제거
+    function delPlaceFromMap(){
+
+
     }
 
-    socket.addEventListener("open", () => {console.log("connected to Browser🏁")});
-    socket.addEventListener("message", printSearchResult);
-    socket.addEventListener("close", () =>{console.log("disconnected")});
-
+    /*socket */
+    //search_result 받기
     function handleSearchSubmit(event){
         event.preventDefault();
-        const input = placeSearchForm.querySelector("input");
-        socket.send(input.value);
+        const input = searchForm.querySelector("input");
+
+        //server로 키워드 전송
+        socket.emit("search_keyword", input.value);
         input.value = "";
     }
 
-    placeSearchForm.addEventListener("submit", handleSearchSubmit);
+    //eventListner
+    searchForm.addEventListener("submit", handleSearchSubmit);
+    searchResultUl.addEventListener("click", addSearchResult);
+
+
+    // sever에서 데이터 받기
+    socket.on("search_result", printSearchResult);
+    socket.on("place_add_map", addPlaceToMap);
+    
 </script>
 </html>

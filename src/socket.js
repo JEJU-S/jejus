@@ -1,19 +1,20 @@
 // socket 구현
 import fetch from "node-fetch";
 import app from "./server";
-import WebSocket from "ws";
-import SocketIO from "SocketIO";
+import SocketIO from "socket.io";
 import http from "http";
 import dotdev from "dotenv";
 dotdev.config();
 
+
 const server = http.createServer(app);
-const wss = new WebSocket.Server({server});
-const sockets = [];
+const io = SocketIO(server);
+//const io = new WebSocket.Server({server});
 
 // searchPlace 비동기 사용해서 불러옴
+
 async function searchPlace(keyword){
-    const placeResults = [];
+    const searchResults = [];
     const baseURL = "https://dapi.kakao.com/v2/local/search/keyword.json";
     const config = {
         query : keyword,
@@ -30,25 +31,35 @@ async function searchPlace(keyword){
             },
         })
     ).json();
+
     result["documents"].forEach((document) => {
-        placeResults.push(document);
+        searchResults.push(document);
     });
 
-    return placeResults;
+    return searchResults;
 }
 
-async function sendPlaceResults(message){
-    const msgString = message.toString('utf8');
-    const placeResults = await(searchPlace(msgString));
-    sockets.forEach((socket)=> {
-        socket.send(JSON.stringify(placeResults));
+async function sendSearchResults(keyword, socket){
+    const searchResults = await(searchPlace(keyword));
+    socket.emit("search_result", searchResults);
+}
+
+function addPlaceToDataBase(){
+    // DATABASE 작업
+}
+
+
+
+io.on("connection", (socket) => {
+    
+
+    socket.on("search_keyword", (keyword) => {
+        sendSearchResults(keyword, socket);
     });
-}
-
-wss.on("connection", (socket) => {
-    sockets.push(socket);
-    socket.on("message",sendPlaceResults);
-    socket.on("close", () => {console.log("disconnected from client")});
+    
+    socket.on("add_to_placelist",(coordinates) => {
+        io.emit("place_add_map", {x : coordinates.x, y : coordinates.y});
+    }); 
 });
 
 export default server;
