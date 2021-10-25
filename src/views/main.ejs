@@ -3,12 +3,101 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+		<link rel="stylesheet" href="/public/css/main.css">        
+        <link rel="stylesheet" href="/public/css/base.css">
         <link rel="stylesheet" href="/public/css/main-button.css">
+        <!--구글 웹폰트-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
         <title> Main | Sample </title>
     </head>
     <body>
-        <button type="button" onclick= "location.href ='/login'">
-            google로 시작하기
-        </button>
+        <header id="header">
+            <div class="banner">
+                <div class="logobox">
+                    <img src="/public/images/logo.png" class="logo">
+                </div>
+                <div class="menubar">
+                        <a href="#content1" class="menu-btn">프로젝트 소개</a>
+                        <a href="#content2" class="menu-btn">이용 Guide</a>
+                        <a href="#content3" class="menu-btn">시작하기</a>
+                </div>
+            </div>
+            
+        </header>
+        <main>
+            <div class="title" id="content1">
+                <div class="title-box">
+                    <h1 id="project-title">🛫프로젝트 이름🛫</h1>
+                    <h4 id="project-info">모두가 함께하는 여행 플래너</h4>
+                </div>
+            </div>
+            <div class="content">
+                <div class="content-box header">
+                    <div class="cooperation">
+                        <h1>협업 관련 사항</h1> 
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="content">
+                <div class="content-box">
+                    <h1>여행계획 기록, 시각화에 관한 사항</h1>
+                </div>
+            </div>
+            <div class="content">
+                <div class="content-box">
+                    <h1>여행지 추천 서비스 소개</h1>
+                </div>
+            </div>
+            <div class="slide-wrap" id="content2">
+                <div class="slide-box">
+                    <div class="slide-list clearfix">
+                        <div class="slide-content slide01">
+                            <p>로그인</p>
+                        </div>
+                        <div class="slide-content slide02">
+                            <p>새 계획 생성하기</p>
+                        </div>
+                        <div class="slide-content slide03">
+                            <p>사용자 초대</p>
+                        </div>
+                        <div class="slide-content slide04">
+                            <p>플래너 편집</p>
+                        </div>
+                        <div class="slide-content slide05">
+                            <p>플래너 저장</p>
+                        </div>
+                        <div class="slide-content slide06">
+                            <p>플랜 확인하기</p>
+                        </div>
+                    </div>
+            <!-- // .slide-list -->
+                </div>
+            <!-- // .slide-box -->
+                <div class="slide-btn-box">
+                    <button type="button" class="slide-btn-prev"><</button>
+                    <button type="button" class="slide-btn-next">></button>
+                </div>
+            <!-- // .slide-btn-box -->
+                <ul class="slide-pagination"></ul>
+            <!-- // .slide-pagination -->
+            </div>
+            <!-- // .slide-wrap -->
+            
+            <button type="button" onclick= "location.href ='/login'" class="login-btn" id="content3">
+                Google로 시작하기
+            </button>
+        </main>
+        <footer>
+            <div>
+                asggg
+            </div>
+        </footer>
+        <script type="text/javascript" src="/public/js/main.js"></script>
+        <script type="text/javascript" src="/public/js/main-slider.js"></script>
+        <script type="text/javascript" src="/public/js/header.js" defer></script>
     </body>
 </html>

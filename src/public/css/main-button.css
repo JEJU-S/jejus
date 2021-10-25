@@ -1,18 +1,19 @@
-* {
-  font-family: "Nanum Myeongjo", serif;
-}
-
-button {
+.login-btn {
   color: white;
-  background-color: green;
   font-size: 20px;
   width: auto;
   height: auto;
   display: block;
   padding: 20px;
-  margin: auto;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 150px auto;
   cursor: pointer;
-  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  border: 1px solid #ffffff61;
+}
+
+.login-btn:hover {
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.247);
+  transition: 0.3s;
+  border: 1px solid rgba(255, 0, 0, 0);
 }
