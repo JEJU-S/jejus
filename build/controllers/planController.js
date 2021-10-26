@@ -30,13 +30,21 @@ var seePlan = function seePlan(req, res) {
 exports.seePlan = seePlan;
 
 var editPlan = function editPlan(req, res) {
-  var id = req.params.id; //**DB** : => user, 페이지에서 보여주고 있는 total plan
-
-  res.render("edit-plan", {
+  // database => 접근하고자 하는 plan id를 통해 user가 plan 사용자에 포함되어있는지 확인
+  // 포함되어있으면 들어가게, 아니면 접근 x 하게 만들어야 함
+  var id = req.params.id;
+  res.render("socket", {
     user: req.session.user,
     totPlan: _fakeDB.fakeTotPlan1,
     map_cl: process.env.MAP_CLIENT
   });
+  /*
+  res.render("edit-plan", {
+      user : req.session.user,
+      totPlan : fakeTotPlan1,
+      map_cl : process.env.MAP_CLIENT
+  });
+  */
 };
 
 exports.editPlan = editPlan;

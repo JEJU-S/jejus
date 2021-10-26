@@ -13,11 +13,9 @@
     <div id="plan-id" hidden><%=totPlan._id%></div>
     <header>
         <h1><%=totPlan.title%></h1>
-        
     </header>
-    <!--다 불러올 필요 없고 나중에 수정할거임
-    <div id="plan" hidden><%-JSON.stringify(totPlan)%></div>
-    -->
+    <ul id="recommand-list">
+    </ul>
     <form id="search-form">
         <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
         <input type="submit", value = "검색">
@@ -25,18 +23,31 @@
     <ul id="search-result-list">
     </ul>
     <div id="map" class="map" style ="width:800px; height:400px;"></div>
-    
+
     <ul id="place-list">
     </ul>
+
+    <div>
+        <ul id="chatting-list">
+        </ul>
+        <form id="chatting-form">
+            <input type="text" name="chatting-input", placeholder="메시지 전송하기", required>
+            <input type="submit", value="전송">
+        </form>
+    </div>
 </body>
 
 <script>
     //room 생성
     const planId = document.querySelector("#plan-id").innerHTML;
     // element 요소
+    const recommandListUl = document.querySelector("#recommand-list");
     const searchForm = document.querySelector("#search-form");
     const searchResultUl = document.querySelector("#search-result-list");
     const placeListUl = document.querySelector("#place-list");
+    const chattingForm = document.querySelector("#chatting-form");
+    const chattingListUl = document.querySelector("#chatting-list");
+
 
     //map 관리
     const markerList = [];
@@ -49,17 +60,34 @@
     // client 소켓 생성
     const socket = io(); 
     //*********init*********//   
-    socket.on("join_room", planId); // 방 만들기(planid 별 방 만들기)
+    socket.on("join_room", planId, init); // 방 만들기(planid 별 방 만들기)
     function init(){
-        //데이터베이스에서 꺼내온 것 초기화 해줘야 함 
+        //데이터베이스에서 꺼내온 것 초기화
+
     }
     //************************//
 
-    //place result 데이터 리스트 생성
-    function printSearchResult(searchResults){
+    //검색 입력
+    function submitSearchKeyword(event){
+        event.preventDefault();
+        const input = searchForm.querySelector("input");
+    
+        //server로 키워드 전송
+        socket.emit("search_keyword", input.value);
+        input.value = "";
+    }
+
+    //검색 결과 리스트 생성
+    function printSearchResultList(searchResults){
         while(searchResultUl.hasChildNodes()){
             searchResultUl.removeChild(searchResultUl.firstChild);
         }
+
+        if(searchResults.length == 0){
+            alert("검색 결과가 없습니다");
+            return;
+        }
+
         searchResults.forEach((result) => {
             console.log(result);
 
@@ -80,6 +108,7 @@
                 x : result.x,
                 y : result.y
             };
+
             const hidden = document.createElement("input");
             hidden.setAttribute("type", "hidden");
             hidden.setAttribute("value", JSON.stringify(coordinates));
@@ -90,16 +119,16 @@
             searchResultUl.append(li);
         })
     }
+    // finished
     
-    // 서버에 전송하기
-    // list에 이미 있으면 넣으면 안됨
-    function addSearchResult(event){
+    // 클릭한 장소 서버에 넘기기(추가되게) <추천 리스트 & 검색리스트 구분 없이 사용가능하도록>
+    // list에 이미 있으면 넣으면 안됨(alert)
+    
+    function sendPlaceToServer(event){
+        // 클릭한 li 가져옴
         const li = event.target.closest('li');
-        if(!li) {
-            console.log("not li");
-            return;
-        }
-       const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
+        if(!li) return;
+        const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
        
         for(let i =0; i < markerList.length; i++){
             if(markerList[i]["position"].x == coordinates.x && markerList[i]["position"].y == coordinates.y){
@@ -107,20 +136,22 @@
                 return;
             }
         }
-       
-       const searchResult = {
+
+        //데이터베이스로 넘겨줄 것
+        const placeObj = {
             name : li.querySelector(".obj-name").innerHTML,
             address : li.querySelector(".obj-adress").innerHTML,
             coordinates : coordinates
         }
-        console.log(searchResult);
-        socket.emit("add_to_placelist", searchResult);
+
+        console.log(placeObj);
+        socket.emit("add_to_placelist", placeObj);
     }
 
     
     // map에 마커 추가
-    function addPlaceToMap(searchResult){
-        const {coordinates} = searchResult; 
+    function addPlaceToMap(placeObj){
+        const {coordinates} = placeObj; 
         console.log("here : ", parseFloat(coordinates.x), " , " , parseFloat(coordinates.y));
         
         markerList.push(new naver.maps.Marker({  
@@ -129,14 +160,14 @@
             ),
             map : map
         }));
-        addPlaceToPlaceList(searchResult);
+        addPlaceToPlaceList(placeObj);
     }
 
     // userplace list에 추가
-    function addPlaceToPlaceList(placeResult){
-        console.log(placeResult);
+    function addPlaceToPlaceList(placeObj){
+        console.log(placeObj);
 
-        const {name, address, coordinates} = placeResult;
+        const {name, address, coordinates} = placeObj;
         const li = document.createElement("li");
         const button = document.createElement("button");
         const span = document.createElement("span");
@@ -158,11 +189,6 @@
         placeListUl.append(li);
     }
 
-    //map에서 마커 제거
-    function delPlaceFromMap(event){
-        
-    }
-
     function delePlaceFromList(event){
         const li = event.target.closest('li');
         const button = event.target.closest('button');
@@ -172,32 +198,43 @@
         }
         console.log(li);
         console.log(button);
-
         const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
-        //socket.emit("del_from_placelist", coordinates);
+        socket.emit("del_from_placelist", coordinates);
     }
 
-    /*socket */
-    //검색 입력
-    function handleSearchSubmit(event){
+    function sendChattingMessage(){
         event.preventDefault();
-        const input = searchForm.querySelector("input");
-
-        //server로 키워드 전송
-        socket.emit("search_keyword", input.value);
+        const input = chattingForm.querySelector("input");
+        //server로 메시지 전송
+        const name = "사용자 이름";
+        socket.emit("send_chatting_msg", {name : name, message : input.value});
         input.value = "";
+    }
 
+    function printChattingMessage(msgObj){
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        const p = document.createElement('p');
+
+        span.innerHTML = msgObj.name;
+        p.innerHTML = msgObj.message;
+
+        li.append(span);
+        li.append(p);
+        chattingListUl.append(li);
     }
 
     //eventListner
-    searchForm.addEventListener("submit", handleSearchSubmit);
-    searchResultUl.addEventListener("click", addSearchResult);
-
+    searchForm.addEventListener("submit", submitSearchKeyword);
+    searchResultUl.addEventListener("click", sendPlaceToServer);
     placeListUl.addEventListener("click", delePlaceFromList);
 
-    // sever에서 데이터 받기
-    socket.on("search_result", printSearchResult);
+    // sever에서 받기
+    socket.on("search_result", printSearchResultList);
     socket.on("place_add_map", addPlaceToMap);
+
+    chattingForm.addEventListener("submit", sendChattingMessage);
+    socket.on("print_chatting_msg", printChattingMessage);
 
     
 </script>
