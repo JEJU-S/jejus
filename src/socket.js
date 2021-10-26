@@ -48,6 +48,10 @@ function addPlaceToDataBase(){
     // DATABASE 작업
 }
 
+function delPlaceFromDataBase(){
+    // DATABASE 작업
+}
+
 
 
 io.on("connection", (socket) => {
@@ -64,10 +68,15 @@ io.on("connection", (socket) => {
         sendSearchResults(keyword, socket);
     });
     
-    socket.on("add_to_placelist",(coordinates) => {
-        io.emit("place_add_map", {x : coordinates.x, y : coordinates.y});
+    socket.on("add_to_placelist", (searchResult) => {
+        io.emit("place_add_map",searchResult);
     });
-     
+
+    /*
+    socket.on("del_from_placelist", (coordinates) => {
+        io.emit("", )
+    })
+    */     
 });
 
 export default server;

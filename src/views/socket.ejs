@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <body>
+    <!--hidden(javascript 값 위해 설정한 것)-->
     <div id="plan-id" hidden><%=totPlan._id%></div>
     <header>
         <h1><%=totPlan.title%></h1>
@@ -30,12 +31,12 @@
 </body>
 
 <script>
-    // element 요소
+    //room 생성
     const planId = document.querySelector("#plan-id").innerHTML;
-
+    // element 요소
     const searchForm = document.querySelector("#search-form");
     const searchResultUl = document.querySelector("#search-result-list");
-    const placeList = document.querySelector("#place-list");
+    const placeListUl = document.querySelector("#place-list");
 
     //map 관리
     const markerList = [];
@@ -46,11 +47,14 @@
     const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
     
     // client 소켓 생성
-    const socket = io();    
+    const socket = io(); 
+    //*********init*********//   
+    socket.on("join_room", planId); // 방 만들기(planid 별 방 만들기)
+    function init(){
+        //데이터베이스에서 꺼내온 것 초기화 해줘야 함 
+    }
+    //************************//
 
-    socket.on("join_room", planId);
-
-    
     //place result 데이터 리스트 생성
     function printSearchResult(searchResults){
         while(searchResultUl.hasChildNodes()){
@@ -86,44 +90,95 @@
             searchResultUl.append(li);
         })
     }
-        // userplace list에 추가
-    function addPlaceToPlaceList(){
-        
-
-    }
     
-
+    // 서버에 전송하기
+    // list에 이미 있으면 넣으면 안됨
     function addSearchResult(event){
         const li = event.target.closest('li');
-        if(!li) return;
-        
-        const coordinates = JSON.parse(document.querySelector("input[type='hidden']").value);
-        
-        socket.emit("add_to_placelist", {
-            x : coordinates.x,
-            y : coordinates.y
-        });
+        if(!li) {
+            console.log("not li");
+            return;
+        }
+       const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
+       
+        for(let i =0; i < markerList.length; i++){
+            if(markerList[i]["position"].x == coordinates.x && markerList[i]["position"].y == coordinates.y){
+                alert("이미 추가되었습니다");
+                return;
+            }
+        }
+       
+       const searchResult = {
+            name : li.querySelector(".obj-name").innerHTML,
+            address : li.querySelector(".obj-adress").innerHTML,
+            coordinates : coordinates
+        }
+        console.log(searchResult);
+        socket.emit("add_to_placelist", searchResult);
     }
+
     
     // map에 마커 추가
-    function addPlaceToMap(coordinates){
+    function addPlaceToMap(searchResult){
+        const {coordinates} = searchResult; 
         console.log("here : ", parseFloat(coordinates.x), " , " , parseFloat(coordinates.y));
+        
         markerList.push(new naver.maps.Marker({  
             position : new naver.maps.LatLng(
                 parseFloat(coordinates.y), parseFloat(coordinates.x)
             ),
             map : map
         }));
+        addPlaceToPlaceList(searchResult);
     }
-    
+
+    // userplace list에 추가
+    function addPlaceToPlaceList(placeResult){
+        console.log(placeResult);
+
+        const {name, address, coordinates} = placeResult;
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        const span = document.createElement("span");
+        const p = document.createElement("p");
+        const hidden = document.createElement("input");
+        hidden.setAttribute("type", "hidden");
+        hidden.setAttribute("value", JSON.stringify(coordinates));
+        
+        button.className = "del-btn";
+        button.innerHTML = "❌";
+        span.innerHTML = name;
+        p.innerHTML = address;
+
+        li.append(button);
+        li.append(span);
+        li.append(p);
+        li.append(hidden);
+
+        placeListUl.append(li);
+    }
+
     //map에서 마커 제거
-    function delPlaceFromMap(){
+    function delPlaceFromMap(event){
+        
+    }
 
+    function delePlaceFromList(event){
+        const li = event.target.closest('li');
+        const button = event.target.closest('button');
+        if(!button) {
+            console.log("not button");
+            return;
+        }
+        console.log(li);
+        console.log(button);
 
+        const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
+        //socket.emit("del_from_placelist", coordinates);
     }
 
     /*socket */
-    //search_result 받기
+    //검색 입력
     function handleSearchSubmit(event){
         event.preventDefault();
         const input = searchForm.querySelector("input");
@@ -131,16 +186,19 @@
         //server로 키워드 전송
         socket.emit("search_keyword", input.value);
         input.value = "";
+
     }
 
     //eventListner
     searchForm.addEventListener("submit", handleSearchSubmit);
     searchResultUl.addEventListener("click", addSearchResult);
 
+    placeListUl.addEventListener("click", delePlaceFromList);
 
     // sever에서 데이터 받기
     socket.on("search_result", printSearchResult);
     socket.on("place_add_map", addPlaceToMap);
+
     
 </script>
 </html>
