@@ -7,13 +7,54 @@
   padding: 20px;
   margin: 150px auto;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid #ffffff61;
+  border: none;
+  border-radius: 5px;
+  background: linear-gradient(
+    -45deg,
+    #9b93f5,
+    #99b0ff,
+    #96c0e7,
+    #99ecff,
+    #79f7e9,
+    #9b93f5,
+    #99b0ff,
+    #96c0e7,
+    #99ecff,
+    #79f7e9,
+    #9b93f5,
+    #99b0ff,
+    #96c0e7,
+    #99ecff,
+    #79f7e9,
+    #9b93f5,
+    #99b0ff,
+    #96c0e7,
+    #99ecff,
+    #79f7e9,
+    #9b93f5,
+    #99b0ff,
+    #96c0e7,
+    #99ecff,
+    #79f7e9
+  );
+  background-size: 2000% 2000%;
+  animation: gradient 50s ease-in-out infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .login-btn:hover {
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.247);
+  background-color: #ffffffb7;
   transition: 0.3s;
-  border: 1px solid rgba(255, 0, 0, 0);
 }

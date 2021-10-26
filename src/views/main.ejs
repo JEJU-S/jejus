@@ -4,7 +4,7 @@
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
-		<link rel="stylesheet" href="/public/css/main.css">        
+		<link rel="stylesheet" href="//public/css/main.css">        
         <link rel="stylesheet" href="/public/css/base.css">
         <link rel="stylesheet" href="/public/css/main-button.css">
         <!--구글 웹폰트-->
@@ -17,7 +17,7 @@
         <header id="header">
             <div class="banner">
                 <div class="logobox">
-                    <img src="/public/images/logo.png" class="logo">
+                    <img src="/public/images/logo-wt.png" class="logo">
                 </div>
                 <div class="menubar">
                         <a href="#content1" class="menu-btn">프로젝트 소개</a>
@@ -28,31 +28,77 @@
             
         </header>
         <main>
-            <div class="title" id="content1">
+            <div class="title">
                 <div class="title-box">
-                    <h1 id="project-title">🛫프로젝트 이름🛫</h1>
+                    <h4 id="project-title">🛫프로젝트 이름🛫</h4>
                     <h4 id="project-info">모두가 함께하는 여행 플래너</h4>
                 </div>
             </div>
-            <div class="content">
-                <div class="content-box header">
+            <div class="content" id="content1">
+                <div class="content-box">
                     <div class="cooperation">
-                        <h1>협업 관련 사항</h1> 
+                        <h2 class="content-title">새로운 여행, 새로운 방식으로</h2> 
                     </div>
-                    
+                    <div class="co-info">
+                        <div class="co-a">
+                            "제주도 서부로 돌아보는 건 어때?"
+                        </div>
+                        <div class="co-b">
+                            "좋아! 나는 애월쪽을 많이 돌아다니고 싶어"
+                        </div>
+                        <div class="co-c">
+                            "애월에 있는 관광지를 추천받아보자"
+                        </div>
+                        <div class="co-d">
+                            "나는 맛있는 음식을 위주로 여행하려그러는데 어때?"
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content planning">
+                <div class="content-box">
+                    <div class="planning">
+                        <h2 class="content-title">여행계획 기록, 시각화에 관한 사항</h2> 
+                    </div>
+                    <div class="planning-info">
+                        <div class="plan-info">
+                            기록도 해줘
+                        </div>
+                        <div class="plan-ex">
+                            기록예시
+                        </div>
+                        <div class="visual-info">
+                            시각화도 해줘
+                        </div>
+                        <div class="visual-ex">
+                            시각화예시
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="content">
                 <div class="content-box">
-                    <h1>여행계획 기록, 시각화에 관한 사항</h1>
+                    <div class="recommendation">
+                        <h2 class="content-title">여행지 추천서비스 소개</h2> 
+                    </div>
+                    <div class="recommendation-info">
+                        <div class="reco-info">
+                            info
+                        </div>
+                        <div class="reco-ex">
+                            list example or content example
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="content">
-                <div class="content-box">
-                    <h1>여행지 추천 서비스 소개</h1>
+                <div class="content-box use">
+                    <div class="cooperation" id="content2">
+                        <h2 class="content-title">이용방법</h2> 
+                    </div>
                 </div>
             </div>
-            <div class="slide-wrap" id="content2">
+            <div class="slide-wrap">
                 <div class="slide-box">
                     <div class="slide-list clearfix">
                         <div class="slide-content slide01">
@@ -98,6 +144,7 @@
         </footer>
         <script type="text/javascript" src="/public/js/main.js"></script>
         <script type="text/javascript" src="/public/js/main-slider.js"></script>
+        <script type="text/javascript" src="/public/js/scrollevents.js"></script>
         <script type="text/javascript" src="/public/js/header.js" defer></script>
     </body>
 </html>

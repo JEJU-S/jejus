@@ -1,9 +1,11 @@
-* {
-  font-family: "Malgun Gothic", serif;
-}
+/*base css 시작*/
 
 html {
   scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar {
+  display: none;
 }
 
 body {
@@ -14,7 +16,6 @@ body {
     "footer";
   margin: 0;
   grid-template-rows: 75px auto 200px;
-  background-image: linear-gradient(45deg, #e37682 15%, #5f4d93 85%);
 }
 
 header {
@@ -34,12 +35,15 @@ main {
 
 footer {
   grid-area: footer;
-  background-color: rgb(66, 66, 66);
+  background-color: #2f3438;
 }
+
+/*base css 끝*/
+/*헤더 css 시작*/
 
 .banner {
   margin: 0 auto;
-  width: 1130px;
+  width: 1400px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -70,7 +74,7 @@ footer {
   text-align: center;
   margin: 10px 5px;
   border-radius: 5px;
-  color: #ffffffcc;
+  color: #ffffff;
   border: 1px solid #ffffff61;
 }
 
@@ -82,10 +86,15 @@ footer {
 }
 
 .title {
+  background-image: url("../images/jeju-img3.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 550px;
+  height: 100vh;
   text-align: center;
+  margin-top: -75px;
 }
 
 .title-box {
@@ -95,25 +104,29 @@ footer {
   margin: 0 auto;
   width: 1130px;
   height: 100%;
+  justify-content: center;
+  font-size: 50px;
 }
 
 #project-title {
   opacity: 0;
   transition: 1s;
-  font-size: 64px;
-  margin-top: 150px;
   margin-bottom: 0;
-  font-weight: 100;
-  font-family: "Jua", sans-serif;
+  font-weight: bold;
 }
 
 #project-info {
   opacity: 0;
   transition: 1s;
+  margin-top: 0;
 }
 
+/*헤더 css 끝*/
+/*메인컨텐츠 시작*/
+
 .content {
-  height: 600px;
+  height: 900px;
+  margin: 0 0 100px 0;
 }
 
 .content-box {
@@ -122,18 +135,92 @@ footer {
   margin: 0 auto;
   width: 1130px;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.726);
 }
 
-.header {
-  border-radius: 10px 10px 0 0;
+.content-title {
+  text-align: center;
+  width: auto;
+  margin-top: 100px;
+  margin-bottom: 50px;
+  padding: 15px 0;
+  border-bottom: 2px solid rgb(0, 0, 0);
 }
+
+/*컨텐츠 1 시작*/
 
 .cooperation {
+  align-self: center;
   padding: 10px;
   text-align: center;
-  background-color: rgba(245, 245, 245, 0.664);
-  border-radius: 10px 10px 0 0;
+}
+
+.co-info {
+  display: grid;
+  grid-template-areas:
+    "a b"
+    "c d";
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  height: 100%;
+  margin-top: 20px;
+}
+
+.co-a {
+  padding: 30px;
+  grid-area: a;
+  background-color: rgba(172, 172, 172, 0.075);
+}
+.co-b {
+  padding: 30px;
+  grid-area: b;
+}
+.co-c {
+  padding: 30px;
+  grid-area: c;
+}
+.co-d {
+  padding: 30px;
+  grid-area: d;
+  background-color: rgba(172, 172, 172, 0.075);
+}
+
+/*컨텐츠 1 끝*/
+/*컨텐츠 2 시작*/
+
+.planning {
+  align-self: center;
+  padding: 10px;
+  text-align: center;
+  background-color: aliceblue;
+}
+
+.planning-info {
+  display: grid;
+  grid-template-areas:
+    "plan-info plan-ex"
+    "visual-ex visual-info";
+  width: 100%;
+  height: 100%;
+}
+
+.plan-info {
+  grid-area: plan-info;
+}
+
+.plan-ex {
+  grid-area: plan-ex;
+  margin: 20px;
+  background-color: lavender;
+}
+
+.visual-info {
+  grid-area: visual-info;
+}
+
+.visual-ex {
+  grid-area: visual-ex;
+  background-image: url("../images/jeju-img4.jpg");
+  margin: 20px;
 }
 
 .slide-wrap {
@@ -141,6 +228,26 @@ footer {
   width: 1130px;
   margin: auto;
 }
+
+/*콘텐츠2 끝*/
+/*콘텐츠3 시작*/
+
+.recommendation {
+  align-self: center;
+  padding: 10px;
+  text-align: center;
+}
+
+.recommendation-info {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  justify-content: space-around;
+}
+
+/*콘텐츠3 끝*/
+/*콘텐츠4 시작*/
 
 .slide-box {
   width: 100%;
