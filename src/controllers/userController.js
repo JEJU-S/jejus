@@ -33,8 +33,6 @@ export const login = (req, res) =>
 }
 
 export const callback = async(req, res) => {
-
-    console.log("call back function!");
     const baseURL = "https://oauth2.googleapis.com/token";
 
     const config = {
@@ -114,7 +112,6 @@ export const callback = async(req, res) => {
         //profile 페이지로 redirect(seeProfile 함수)
         res.redirect(`/users/${req.session.user._id}`);
     }
-
     else {
         console.log("error 알림 해줘야 함");
     
@@ -130,9 +127,7 @@ export const getEditProfile = (req, res) => {
 
 
 export const postEditProfile = (req, res) => {
-    console.log("post func");
 
-    
     //**DB** : => user 변경사항 다시 저장
     //session에서 user 다시 저장
 

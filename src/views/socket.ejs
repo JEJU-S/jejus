@@ -40,6 +40,7 @@
 <script>
     //room 생성
     const planId = document.querySelector("#plan-id").innerHTML;
+    const userName = "사용자 이름";
     // element 요소
     const recommandListUl = document.querySelector("#recommand-list");
     const searchForm = document.querySelector("#search-form");
@@ -60,10 +61,10 @@
     // client 소켓 생성
     const socket = io(); 
     //*********init*********//   
-    socket.on("join_room", planId, init); // 방 만들기(planid 별 방 만들기)
+    socket.emit("join_room", planId, userName, init); // 방 만들기(planid 별 방 만들기)
+    
     function init(){
         //데이터베이스에서 꺼내온 것 초기화
-
     }
     //************************//
 
@@ -202,11 +203,24 @@
         socket.emit("del_from_placelist", coordinates);
     }
 
+    /*****************채팅 구현**********************/
+
+    function printEnterMessage(userName){
+        const li = document.createElement('li');
+        li.append(`${userName}님이 들어오셨습니다.`);
+        chattingListUl.append(li);
+    }
+
+    function printLeaveMessage(userName){
+        const li = document.createElement('li');
+        li.append(`${userName}님이 나가셨습니다.`);
+        chattingListUl.append(li);
+    }
+
     function sendChattingMessage(){
         event.preventDefault();
         const input = chattingForm.querySelector("input");
-        //server로 메시지 전송
-        const name = "사용자 이름";
+        const name = userName;
         socket.emit("send_chatting_msg", {name : name, message : input.value});
         input.value = "";
     }
@@ -233,8 +247,10 @@
     socket.on("search_result", printSearchResultList);
     socket.on("place_add_map", addPlaceToMap);
 
+    socket.on("enter_room", printEnterMessage);
     chattingForm.addEventListener("submit", sendChattingMessage);
     socket.on("print_chatting_msg", printChattingMessage);
+
 
     
 </script>

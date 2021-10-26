@@ -9,6 +9,7 @@ dotdev.config();
 const server = http.createServer(app);
 const io = SocketIO(server);
 
+
 // searchPlace 비동기 사용해서 검색 결과 반환
 async function searchPlace(keyword){
     const searchResults = [];
@@ -56,10 +57,14 @@ io.on("connection", (socket) => {
         console.log(`Socket Event: ${event}`);
       });
     // plan id 로 만든 room에 join
-    socket.on("join_room", (planId, init) => {
+    
+    socket.on("join_room", (planId, userName, init) => {
         socket.join(planId);
+        console.log(socket.rooms);
+        socket.to(planId).emit("enter_room", userName);
         init();
     });
+
     //search_keyword로 찾기
     socket.on("search_keyword", (keyword) => {
         sendSearchResults(keyword, socket);
@@ -83,6 +88,14 @@ io.on("connection", (socket) => {
         io.emit("print_chatting_msg", msgObj);
     })
 
+    /*
+    socket.on("disconnecting", () => {
+        socket.rooms.forEach((room)=>{
+            socket.to(room).emit("leave_room")
+
+        }) 
+    })
+    */
 });
 
 export default server;

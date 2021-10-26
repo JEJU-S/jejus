@@ -24,8 +24,6 @@ export const editPlan = (req, res) =>
 {
     // database => 접근하고자 하는 plan id를 통해 user가 plan 사용자에 포함되어있는지 확인
     // 포함되어있으면 들어가게, 아니면 접근 x 하게 만들어야 함
-
-
     const {id} = req.params;
     
     res.render("socket", {
@@ -43,11 +41,15 @@ export const editPlan = (req, res) =>
     */
 }
 
-
-export const createPlan = (req, res) => {
+export const getCreatePlan = (req, res) => {
     res.render("create-plan", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList });
 }
 
-// 처음 만든 사람만 삭제 가능하게 만들어야 함
+export const postCreatePlan = (req, res) => {
+    // database => 새 plan 생성 뒤 user에 추가
+    res.redirect(`/users/${req.session.user._id}`); 
+}
+
+// admin만 삭제 가능하게 만들어야 함 아직 작업 x
 export const del = (req, res) => res.send("delete plans");
 
