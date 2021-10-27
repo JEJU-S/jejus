@@ -83,7 +83,6 @@ io.on("connection", (socket) => {
     
     socket.on("add_to_placelist", (placeObj, planId) => {
         //database 작업
-        console.log(planId);
         socket.to(planId).emit("place_add_map", placeObj);
         socket.emit("place_add_map", placeObj);
     });
@@ -92,7 +91,7 @@ io.on("connection", (socket) => {
         //database 작업
         // list에서 해당 좌표를 가진 place 삭제
         socket.to(planId).emit("place_delete_map", coordinates);
-        socket.emit("place_delete_map", placeObj);
+        socket.emit("place_delete_map", coordinates);
     })
     
     // 다시 짜야 할 수 있음 testing 중

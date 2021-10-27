@@ -11,6 +11,7 @@
 <body>
     <!--hidden(javascript 값 위해 설정한 것)-->
     <div id="plan-id" hidden><%=totPlan._id%></div>
+    <div id="user-name" hidden><%=user.name%></div>
     <header>
         <h1><%=totPlan.title%></h1>
     </header>
@@ -41,7 +42,7 @@
 <script>
     //room 생성
     const planId = document.querySelector("#plan-id").innerHTML;
-    const userName = "사용자 이름";
+    const userName = document.querySelector("#user-name").innerHTML;
     // element 요소
     const recommandListUl = document.querySelector("#recommand-list");
     const searchForm = document.querySelector("#search-form");
@@ -120,12 +121,11 @@
         })
     }
     // finished
-    //*****************************************
+    //************************************************
 
 
 
-
-    //user place list 구현
+    //************user place list 구현*******************************
     // 클릭한 장소 서버에 넘기기(추가되게) <추천 리스트 & 검색리스트 구분 없이 사용가능하도록>
     // list에 이미 있으면 넣으면 안됨(alert)
     function sendPlaceToServer(event){
@@ -164,6 +164,7 @@
             ),
             map : map
         }));
+        console.log("add markerList : ", markerList);
         addPlaceToPlaceList(placeObj);
     }
 
@@ -193,18 +194,39 @@
         placeListUl.append(li);
     }
 
-    function delePlaceFromList(event){
+    function clickDelBtnUserPlaceList(event){
         const li = event.target.closest('li');
         const button = event.target.closest('button');
-        if(!button) {
-            console.log("not button");
-            return;
-        }
+        if(!button) return;
+
         console.log(li);
         console.log(button);
         const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
         socket.emit("del_from_placelist", coordinates, planId);
     }
+
+    function delFromUserPlaceList(coordinates){
+        //marker 삭제
+        for(let i=0; i < markerList.length; i++){
+            console.log("markerList : ", markerList);
+
+            console.log("cur marker :", markerList[i]);
+            if(markerList[i]["position"].x == coordinates.x && markerList[i]["position"].y == coordinates.y){
+                console.log("del this marker :", markerList[i]);
+                markerList[i].setMap(null);
+                markerList.splice(i, 1);
+            }
+        }
+        //list에서 삭제
+        const placeListLi = placeListUl.querySelectorAll("li");
+        placeListLi.forEach((li , index) => {
+            const cor = JSON.parse(li.querySelector("input[type='hidden']").value);
+            if(cor.x === coordinates.x && cor.y === coordinates.y){
+                li.remove();
+            }
+        })
+    }
+
 
     /*****************채팅 구현**********************/
     function printMessage(msgObj, sendMsg){
@@ -252,11 +274,12 @@
     //eventListner
     searchForm.addEventListener("submit", submitSearchKeyword);
     searchResultUl.addEventListener("click", sendPlaceToServer);
-    placeListUl.addEventListener("click", delePlaceFromList);
+    placeListUl.addEventListener("click", clickDelBtnUserPlaceList);
 
     // sever에서 받기
     socket.on("search_result", printSearchResultList);
     socket.on("place_add_map", addPlaceToMap);
+    socket.on("place_delete_map", delFromUserPlaceList);
 
     
 </script>
