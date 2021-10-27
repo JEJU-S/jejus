@@ -1,6 +1,5 @@
 .env
 /node_modules
-/assets
-/garbage
+/build
 
-
+src/views/test.html

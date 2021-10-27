@@ -37,11 +37,6 @@
   object-fit: cover;
 }
 
-.photo-change {
-  z-index: 1;
-  background-color: black;
-}
-
 .info-box {
   width: 200px;
   text-overflow: clip;

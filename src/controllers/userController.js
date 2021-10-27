@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import dotdev from "dotenv";
+import os from "os";
 dotdev.config();
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -12,38 +13,28 @@ import { Mongoose } from "mongoose";
 import { app } from "cli";
 import { Db } from "mongoose/node_modules/mongodb";
 
+
+const PORT = process.env.PORT || 8080;
+
+const hostname = os.networkInterfaces();
 // Main Page 
-export const main = async (req, res) => {
-    try{
-        /*
-        //loggedIn => true or undefined
-        // 로그인했으면 profile페이지로 다시 넘어가도록 한다(session loggedIn 변수로 확인)
-        if(Boolean(req.session.loggedIn) == true)
-        {   
-            return res.redirect("/users/profile");
-        }
-        */
-        return res.render("main");
-        
-    }
-    catch(error){
-        return res.render("<h1>SERVER ERROR🛑</h1>");
-    }
+export const main = (req, res) => {
+    console.log(hostname["Loopback Pseudo-Interface 1"][1]["address"]);
+    return res.render("main");
 };
 
 // --로그인 작업--
-
 //Main -> Profile 로 가는 process function 
 //login -> callback -> profile
 export const login = (req, res) => 
-{
+{   
      //구글 로그인 전달 url 파라미터들
     const baseURL = "https://accounts.google.com/o/oauth2/v2/auth";
     const config = {
         response_type : "code",
         client_id : process.env.GL_CLIENT,
         scope : "email profile",
-        redirect_uri : "http://localhost:4000/users/callback",
+        redirect_uri : `http://localhost:${PORT}/users/callback`,
     }
     const params = new URLSearchParams(config).toString();
     const finalURL = `${baseURL}?${params}`;
@@ -52,8 +43,6 @@ export const login = (req, res) =>
 }
 
 export const callback = async(req, res) => {
-
-    console.log("call back function!");
     const baseURL = "https://oauth2.googleapis.com/token";
 
     const config = {
@@ -61,7 +50,7 @@ export const callback = async(req, res) => {
         client_secret : process.env.GL_SECRET,
         code : req.query.code,
         grant_type : "authorization_code",
-        redirect_uri : "http://localhost:4000/users/callback"
+        redirect_uri : `http://localhost:${PORT}/users/callback`
     }
 
     const params  = new URLSearchParams(config).toString();
@@ -163,6 +152,7 @@ export const callback = async(req, res) => {
         // // => select
            
         //session 초기화(만든다)
+        
         req.session.loggedIn = true;
         
         // //session User 저장(DB에서 user찾아서) // 받아온 세션을 여기다가 넣을 것
@@ -186,57 +176,33 @@ export const callback = async(req, res) => {
         // //profile 페이지로 redirect(seeProfile 함수)
         res.redirect(`/users/${req.session.user._id}`);
     }
-
     else {
         console.log("error 알림 해줘야 함");
-        
-        //main 페이지로 redirect(main 함수)
+    
         res.redirect("/");
     }
 }
 
 //goes to user router
-
-// 아직 시작 xx
 export const getEditProfile = (req, res) => {
-    console.log("get func");
-
-    
-
-    //**DB** : => user 불러오기(session에 저장된거) // session으로 옮기자
-    
-    
+   
     res.render("edit-profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
 };
 
 
 export const postEditProfile = (req, res) => {
-    console.log("post func");
 
-    
-    //**DB** : => user 저장
+    //**DB** : => user 변경사항 다시 저장
     //session에서 user 다시 저장
 
-    
-    res.redirect("/users/profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
+    const {id} = req.params;
+    const {name} = req.body;
+
+    req.session.user.name = name;
+    res.redirect(`/users/${id}`);
 };
 
-
-
 export const seeProfile = (req, res) => {
-   
-    // login 한 유저가 아니라면 돌려보내야함
-
-    /*
-    //loggedIn => true or undefined
-        // 로그인했으면 profile페이지로 다시 넘어가도록 한다(session loggedIn 변수로 확인)
-        if(Boolean(req.session.loggedIn) != true)
-        {   
-            return res.render("main");
-        }
-    */  
-    
-    //**DB** : => 특정 user, user가 가지고 있는 plan목록, user가 받은 초대
 
     return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
 };

@@ -1,0 +1,502 @@
+.container {
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-rows: 70px auto 20px;
+}
+
+/*헤더 css 시작*/
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 40px;
+  gap: 50px;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  z-index: 2;
+}
+
+.inv-btn {
+  color: white;
+  background-color: #48adff;
+  padding: 6px 22px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+
+.inv-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+/*헤더 css 끝*/
+
+footer {
+  margin-right: 1% !important;
+}
+
+main {
+  grid-area: main;
+  display: grid;
+  grid-template-areas: "recommandation search map place-box";
+  grid-template-columns: 20% auto 40% 20%;
+  gap: 5px;
+}
+/*검색창 css 시작*/
+.search {
+  grid-area: search;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+input[type="text"] {
+  width: 80%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin: 15px 25px 5px 25px;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.search-result {
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  height: 70vh;
+  overflow: scroll;
+}
+
+.search-result::-webkit-scrollbar {
+  display: none;
+}
+
+.result {
+  background-color: rgb(255, 255, 255);
+  margin: auto;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.result:hover {
+  background-color: whitesmoke;
+}
+
+.obj-adress {
+  font-size: 12px;
+  margin: 2px 0px 0px 17px;
+  color: #939393;
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 50%;
+  padding: 15px 20px;
+  transform: translate(-50%, 10px);
+  border-radius: 15px;
+  overflow: hidden;
+  font-size: 0.8rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s, visibility 0.5s, transform 0.5s;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  z-index: 10000;
+}
+
+#toast.reveal {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+/*검색창 css 끝*/
+
+.map {
+  grid-area: map;
+  width: 100%;
+  height: 100%;
+  background-color: blue;
+}
+
+/*여행지 리스트 CSS 시작*/
+
+.place-box {
+  grid-area: place-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.add-btn {
+  color: white;
+  background-color: #48adff;
+  padding: 20px 22px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+
+.place-list {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: 70vh;
+  overflow: scroll;
+}
+
+.place-list::-webkit-scrollbar {
+  display: none;
+}
+
+.day-box {
+  text-align: center;
+  background-color: rgb(211, 248, 255);
+  border-top: 1px solid rgba(128, 128, 128, 0.356);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.356);
+}
+
+.place-object {
+  display: grid;
+  grid-template-areas:
+    "name btn"
+    "memo memo";
+  background-color: whitesmoke;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.del-btn {
+  grid-area: btn;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  float: right;
+  border: none;
+  background-color: rgba(245, 245, 245, 0);
+  justify-self: right;
+  cursor: pointer;
+}
+
+.obj-name {
+  grid-area: name;
+  margin-left: 12px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.obj-memo {
+  grid-area: memo;
+  margin: 0 13px;
+  padding: 5px;
+  height: 30px;
+}
+
+textarea {
+  resize: none;
+  overflow: scroll;
+  width: 85%;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
+textarea:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.save-btn {
+  color: white;
+  background-color: #5846ff;
+  padding: 20px 22px;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+}
+.save-btn:hover {
+  background-color: #322791;
+  transition: 0.1s;
+}
+
+.recommandation {
+  grid-area: recommandation;
+  background-color: white;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  overflow: hidden;
+}
+
+.region-select-btn {
+  width: 100%;
+  height: 56px;
+  border: none;
+  color: white;
+  background-color: navy;
+  cursor: pointer;
+}
+
+.categories {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.315);
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 10px 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  transition: 0.2s;
+}
+
+.category:hover {
+  color: coral;
+  border: 1px solid coral;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.selected {
+  color: coral;
+  border: 1px solid coral;
+  font-weight: bold;
+}
+
+.recommandation-box {
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  overflow: scroll;
+}
+
+.recommandation-box::-webkit-scrollbar {
+  display: none;
+}
+
+.recommandation-object {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.315);
+}
+
+.recommandation-object:hover {
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+
+.obj-img {
+  width: 65px;
+  height: 65px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.obj-textbox {
+  line-height: 0;
+}
+
+.obj-info {
+  margin: 27px 0 0 12px;
+}
+
+/*일정추가 버튼 click시 이벤트 발생 --> .add-place의 display를 block으로*/
+
+.region-place {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.644);
+  transition: 0.5s;
+  z-index: 3;
+}
+
+.jejumap {
+  margin: 100px 400px;
+}
+
+.jeju-region {
+  position: absolute;
+  opacity: 1;
+}
+
+.jeju-region:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.ad {
+  opacity: 0;
+  top: 377px;
+  left: 560px;
+}
+
+.dj {
+  opacity: 0;
+  top: 419px;
+  left: 467px;
+}
+
+.hk {
+  opacity: 0;
+  top: 352px;
+  left: 462px;
+}
+
+.jm {
+  opacity: 0;
+  top: 360px;
+  left: 631px;
+}
+
+.skp {
+  opacity: 0;
+  top: 359px;
+  left: 763px;
+  z-index: 4;
+}
+
+.kj {
+  opacity: 0;
+  top: 149px;
+  left: 919px;
+}
+
+.wd {
+  opacity: 0;
+  top: 195px;
+  left: 1119px;
+}
+
+.jc {
+  opacity: 0;
+  top: 156px;
+  left: 794px;
+}
+
+.jj {
+  opacity: 0;
+  top: 178px;
+  left: 672px;
+  z-index: 4;
+}
+
+.aw {
+  opacity: 0;
+  top: 226px;
+  left: 572px;
+}
+
+.hl {
+  opacity: 0;
+  top: 275px;
+  left: 502px;
+}
+
+.ss {
+  opacity: 0;
+  top: 239px;
+  left: 1010px;
+}
+
+.ps {
+  opacity: 0;
+  top: 280px;
+  left: 876px;
+}
+
+.nw {
+  opacity: 0;
+  top: 328px;
+  left: 784px;
+}
+
+/*
+.add-box {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  height: 250px;
+  margin: 230px 540px;
+  top: 100px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.add-plc {
+  width: 90% !important;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  margin: 10px !important;
+}
+
+.add-plc:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  box-shadow: 0 0 8px 0 dodgetBlue;
+}
+
+.add-plc-btn {
+  color: white;
+  background-color: #48adff;
+  width: 100px;
+  padding: 6px 22px;
+  margin: 30px 0;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  cursor: pointer;
+  align-self: center;
+}
+
+.add-plc-btn:hover {
+  background-color: #1e9aff;
+  transition: 0.1s;
+}
+.exit-btn {
+  margin-left: 375px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background-color: rgba(245, 245, 245, 0);
+  cursor: pointer;
+}
+*/
+/*exit-btn 클릭 시 이벤트 add-place의 display:none으로*/

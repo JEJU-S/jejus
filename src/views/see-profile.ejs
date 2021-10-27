@@ -3,17 +3,17 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initikal-scale=1.0">
-		<link rel="stylesheet" href="../../public/css/base.css">
-		<link rel="stylesheet" href="../../public/css/sidebar.css">
-        <link rel="stylesheet" href="../../public/css/see-profile.css">
-		<link rel="stylesheet" href="../../public/css/header.css">
-		<link rel="stylesheet" href="../../public/css/footer.css">
+		<link rel="stylesheet" href="/public/css/base.css">
+		<link rel="stylesheet" href="/public/css/sidebar.css">
+        <link rel="stylesheet" href="/public/css/see-profile.css">
+		<link rel="stylesheet" href="/public/css/header.css">
+		<link rel="stylesheet" href="/public/css/footer.css">
         <title> Profile | Sample </title>
     </head>
     <body class="container">
         <header>
             <div class="logo-box">
-                <img src="../public/images/logo.png" alt="logo" class="logo">
+                <img src="/public/images/logo.png" alt="logo" class="logo">
             </div>
             </header>
         <div class="sidebar"> <!--사이드 바-->
@@ -34,12 +34,15 @@
                     <span><a href="">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
+                    <span><a href="/plans/create">새 계획 만들기</a></span>
+                </div>
+                <div class="menu-name">
                     <span>내 그룹</span>
                     <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
                     <div class="menu-detail">
                         <ul>
                             <%totPlanTitles.forEach(function(title){ %>
-                            <li><a href="http://localhost:4000/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
                             <% })%>
                         </ul>
                     </div>
@@ -52,7 +55,7 @@
         <main>
             <!--프로필 시작-->
                     <!--profile 부분 flex 컨테이너 main-profile-->
-            <div class="main-profile">
+            <div class="main-profile"> 
             <!--프로필 사진 들어가는 부분 박스 profile-box-->
                 <div class="profile-box">
                     <img src="<%=user.image_url%>" class="profile-photo" alt="user-photo">
@@ -68,7 +71,7 @@
                     <p class="email"><%=user.gmail%></p>
                 </div>
                 <!--수정버튼-->
-                <button class="edit-button" type="button" onclick= "location.href ='http://localhost:4000/users/<%=user._id%>/edit'">
+                <button class="edit-button" type="button" onclick= "location.href ='/users/<%=user._id%>/edit'">
                     수정하기
                 </button>
             </div>
@@ -130,7 +133,7 @@
             </div >
         </main>    
         <footer>
-            &copy; 2021 Sample Project
+            &copy; <%=new Date().getFullYear()%> Sample Project
         </footer>
     </body>
 </html>

@@ -4,19 +4,18 @@
         <!--컬러,폰트, 로고 빼고 작업 완료된 듯..?-->
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="../../public/css/header.css">
-        <link rel="stylesheet" href="../../public/css/sidebar.css">
-        <link rel="stylesheet" href="../../public/css/base.css">
-		<link rel="stylesheet" href="../../public/css/footer.css">
-		<link rel="stylesheet" href="../../public/css/see-plan.css">
-
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+		<link rel="stylesheet" href="/public/css/header.css">
+        <link rel="stylesheet" href="/public/css/sidebar.css">
+        <link rel="stylesheet" href="/public/css/base.css">
+		<link rel="stylesheet" href="/public/css/footer.css">
+		<link rel="stylesheet" href="/public/css/see-plan.css">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
         <title> <%=totPlan.title%> | Sample </title>
     </head>
     <body class="container">
         <header>
             <div class="logo-box">
-                <img src="logo.png" alt="logo" class="logo">
+                <img src="/public/images/logo.png" alt="logo" class="logo">
             </div>
         </header>
         <!--사이드바-->
@@ -38,12 +37,15 @@
                     <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
+                    <a href="/plans/create">새 계획 만들기</a>
+                </div>
+                <div class="menu-name">
                     <span>내 그룹</span>
                     <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
                     <div class="menu-detail">
                         <ul>
                             <%totPlanTitles.forEach(function(title){%>
-                            <li><a href="http://localhost:4000/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
                             <% })%>
                         </ul>
                     </div>
@@ -55,15 +57,14 @@
 		</div>
         <!--메인 페이지-->
                     <!--데이 버튼이 메인에 넣을 시 메인컨텐츠와 겹치게 표시되어 따로 daybutton으로 분리하였고, 요소별 영역 부여를 위해 day-button 클래스를 입힘-->
-        <div class="day-button">
-            <div class="btn selected"><a>info</a></div>
-            
-            <%let i%> <!--다시 짜보기-->
-            <% for(i = 0; i < totPlan.day_plan.length; i++){ %>
-            <div class="btn"><a>day <%=i + 1%></a></div>
+        <div class="day-button"><!--id 로 해야 하나?-->
+            <div class="btn"><a>info</a></div>
+            <%let day%>
+            <% for(day = 0; day < totPlan.day_plan.length; day++){ %>
+            <!--day button 이름 바꾸기-->
+            <div class="btn">day <%=day + 1%></div>
             <%}%>
         </div>
-
         <main>
             <!--자바스크립트로 날짜별 div 생성 후 버튼에 해당되는 날짜의 div 보여줘야 함 / db 바꾸면 달라질 수 있음-->
             <!--데이버튼 클릭마다 다른 내용을 보여주어야 함. 전체 페이지인 whole-plan과 day-plan으로 전체페이지와 세부내용 페이지를 분리해서 작성했음. 각 css의 display를 버튼 클릭에 따라 none <->grid 로 변경하는 작업 필요.-->
@@ -73,76 +74,86 @@
                     <span class="user"> 
                         user : 
                         <%totPlan.participants.forEach(function(participant){%>
-                            <%=participant%>
+                            <%=participant['name']%>
                         <% })%>
                     </span>
                     <span class="date">
                         <%=totPlan.day_plan[0]['date']%>
                             ~
-                        <%=totPlan.day_plan[i-1]['date']%>
-                        
+                        <%=totPlan.day_plan[day-1]['date']%>
                     </span>
                 </div>
-                <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map" style= "width : 80%; height : 400px"></div>
-                <!--js 파일 따로 만들기-->
                 
+                <!--total-map(전체 경로 마커) 처리 부분-->
+                <div id="total-map"></div>
                 <script>
+                    const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
+
                     const mapOptions = {
-                        center: new naver.maps.LatLng(37.3595704, 127.105399),
-                        zoom: 10
+                        center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+                        zoom : 10
                     };
-                    const map = new naver.maps.Map('map', mapOptions);
+                    const totMap = new naver.maps.Map('total-map', mapOptions);
 
+                    // 마커 여러개 찍기
                     
-                    const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(37.3595704, 127.105399),
-                        map: map
-                    });
-
-                    const marker = new naver.maps.Marker({
-                        position: new naver.maps.LatLng(37.3595704, 127.105399),
-                        map: map
-                    });
-
-                    </script>
-               
-                    <div class="plan-buttons">
-                        <button type="button" class="edit-btn">편집하기</button>
-                        <!--권한에 따라 not-manager 클래스가 붙고, 안붙고를 설정하면 사용자에 따라 보이는 버튼이 달라지게 할 수 있을듯,,?-->
-                        <button type="button" class="del-btn not-manager">삭제</button>
-                    </div>
-                </div>
-
-            </div>
-            
-            <div class="day-plan">
-                <h1 class="plan-title">플랜 이름</h1>
-                <span class="plan-day">day2</span>
-                <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="map"></div>
-                <!--js 파일 따로 만들기-->
-                <!--
-                    <script>
-                    var mapOptions = {
-                        center: new naver.maps.LatLng(37.3595704, 127.105399),
-                        zoom: 10
-                    };
-                    var map = new naver.maps.Map('map', mapOptions);
+                    for(let i =0; i < totPlan.day_plan.length; i++){
+                        for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
+                            new naver.maps.Marker({
+                                position : new naver.maps.LatLng(
+                                    totPlan.day_plan[i]['place'][j]['adr'][0],
+                                    totPlan.day_plan[i]['place'][j]['adr'][1],
+                                ),
+                                map : totMap
+                            })
+                        }
+                    }
+    
+                    const dayMapList = [];
                 </script>
-                -->                
-                <!--추후에 db 봐서 class명 바꿔야 함 1 ~ n개 출력-->
-                <div class="place-object">
-                    <div class="p-obj">
-                        <h3 class="obj-name">상호명 또는 사용자가 설정한 이름</h3>
-                        <p class="obj-adress">주소</p>
-                        <p class="obj-memo">메모</p>
-                    </div>                
-                </div>
+                <div class="plan-buttons">
+                    <button type="button" class="edit-btn" onclick= "location.href ='/plans/<%=totPlan._id%>/edit'">편집하기</button>
+                    <%if(user._id == totPlan.admin["_id"]){%>
+                        <button type="button" class="del-btn">삭제</button>
+                    <%}%>
+                </div> 
             </div>
+            <!--day plan-->
+            <%for(day=0; day < totPlan.day_plan.length; day++){%>
+            <div class="day-plan">
+                <h1 class="plan-title"><%=totPlan.title%></h1>
+                <span class="plan-day">day <%=day + 1%></span>
+                <!--네이버 지도, 좌표 표시해줘야함-->
+                <div id="day-map<%=day + 1%>" class="day-map"></div>
+                <script>
+                    dayMapList.push(new naver.maps.Map("day-map<%=day + 1%>", mapOptions));
+
+                        for(let i = 0; i < totPlan.day_plan["<%=day%>"]['place'].length; i++){
+                            new naver.maps.Marker({
+                                position : new naver.maps.LatLng(
+                                    totPlan.day_plan["<%=day%>"]['place'][i]['adr'][0],
+                                    totPlan.day_plan["<%=day%>"]['place'][i]['adr'][1],
+                                ),
+                                map : dayMapList["<%=day%>"]
+                            })
+                        }  
+                </script>
+                
+                <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
+                    <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
+                        <div class="p-obj">
+                            <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>
+                            <p class="obj-adress"><%=totPlan.day_plan[day]['place'][placeIndex]['adr']%></p>
+                            <p class="obj-memo"><%=totPlan.day_plan[day]['place'][placeIndex]['memo']%></p>
+                        </div>              
+                    <%}%>
+                </div> 
+            </div>
+            <%}%> 
         </main>
             <footer>
-                &copy; 2021 Sample Project
+                &copy; <%=new Date().getFullYear()%> Sample Project
             </footer>
     </body>
+    <script type="text/javascript" src="/public/js/see-plan.js"></script>
 </html>

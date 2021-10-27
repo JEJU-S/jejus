@@ -43,7 +43,7 @@
                     <div class="menu-detail">
                         <ul>
                             <%totPlanTitles.forEach(function(title){%>
-                            <li><a href="http://localhost:4000/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
                             <% })%>
                         </ul>
                     </div>
@@ -61,7 +61,7 @@
 
         <!--메인 페이지 끝-->
             <footer>
-                &copy; 2021 Sample Project
+                &copy; <%=new Date().getFullYear()%> Sample Project
             </footer>
     </body>
 </html>
