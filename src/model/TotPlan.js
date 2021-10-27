@@ -14,12 +14,11 @@ const totplanSchema = new mongoose.Schema({
        date: Date,
        place: [{
            name: String,
-           adr: Array,
+           road_adr: String,
            coordinates: {
             x : Number,
             y : Number
-        },
-           memo: String
+        }
        }]
     }
     ]

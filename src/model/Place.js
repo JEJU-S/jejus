@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const placeSchema = new mongoose.Schema({
-    id: Number,
+    _id: mongoose.Schema.Types.ObjectId,
     name: String,
     road_adr: String,
     coordinates: {
