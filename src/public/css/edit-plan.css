@@ -158,7 +158,7 @@ input[type="text"]:focus {
   display: flex;
   flex-direction: column;
   background-color: white;
-  height: 70vh;
+  height: 72.5vh;
   overflow: scroll;
 }
 
@@ -331,25 +331,25 @@ textarea:focus {
   margin: 27px 0 0 12px;
 }
 
-/*일정추가 버튼 click시 이벤트 발생 --> .add-place의 display를 block으로*/
-
 .region-place {
   display: none;
   position: absolute;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.644);
-  transition: 0.5s;
   z-index: 3;
 }
 
 .jejumap {
-  margin: 100px 400px;
+  width: 808px;
+  height: 498px;
+  position: relative;
+  margin: 10% 10% 10% 30%;
 }
 
 .jeju-region {
   position: absolute;
-  opacity: 1;
+  opacity: 0;
 }
 
 .jeju-region:hover {
@@ -358,89 +358,103 @@ textarea:focus {
 }
 
 .ad {
+  position: absolute;
   opacity: 0;
-  top: 377px;
-  left: 560px;
+  top: 275px;
+  left: 156px;
 }
 
 .dj {
+  position: absolute;
   opacity: 0;
-  top: 419px;
-  left: 467px;
+  top: 317px;
+  left: 63px;
 }
 
 .hk {
+  position: absolute;
   opacity: 0;
-  top: 352px;
-  left: 462px;
+  top: 250px;
+  left: 58px;
 }
 
 .jm {
+  position: absolute;
   opacity: 0;
-  top: 360px;
-  left: 631px;
+  top: 258px;
+  left: 227px;
 }
 
 .skp {
+  position: absolute;
   opacity: 0;
-  top: 359px;
-  left: 763px;
+  top: 257px;
+  left: 359px;
   z-index: 4;
 }
 
 .kj {
+  position: absolute;
   opacity: 0;
-  top: 149px;
-  left: 919px;
+  top: 47px;
+  left: 515px;
 }
 
 .wd {
+  position: absolute;
   opacity: 0;
-  top: 195px;
-  left: 1119px;
+  top: 93px;
+  left: 715px;
 }
 
 .jc {
+  position: absolute;
   opacity: 0;
-  top: 156px;
-  left: 794px;
+  top: 54px;
+  left: 390px;
 }
 
 .jj {
+  position: absolute;
   opacity: 0;
-  top: 178px;
-  left: 672px;
+  top: 76px;
+  left: 268px;
   z-index: 4;
 }
 
 .aw {
+  position: absolute;
   opacity: 0;
-  top: 226px;
-  left: 572px;
+  top: 124px;
+  left: 168px;
 }
 
 .hl {
+  position: absolute;
   opacity: 0;
-  top: 275px;
-  left: 502px;
+  top: 173px;
+  left: 98px;
 }
 
 .ss {
+  position: absolute;
   opacity: 0;
-  top: 239px;
-  left: 1010px;
+  top: 137px;
+  left: 606px;
 }
 
 .ps {
+  position: absolute;
   opacity: 0;
-  top: 280px;
-  left: 876px;
+  top: 178px;
+  left: 472px;
 }
 
 .nw {
+  position: absolute;
   opacity: 0;
-  top: 328px;
-  left: 784px;
+  top: 226px;
+  left: 380px;
 }
 
 /*
