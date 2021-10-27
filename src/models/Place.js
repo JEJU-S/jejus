@@ -7,7 +7,8 @@ const placeSchema = new mongoose.Schema({
     coordinates: {
         x : Number,
         y : Number
-    }
+    },
+    map_link: String
 })
 
 const RecPlace = mongoose.model('RecPlace', placeSchema);

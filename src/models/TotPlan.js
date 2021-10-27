@@ -21,7 +21,8 @@ const totplanSchema = new mongoose.Schema({
         }
        }]
     }
-    ]
+    ],
+    map_link: String
 })
 
 const TotPlan = mongoose.model('TotPlan', totplanSchema );

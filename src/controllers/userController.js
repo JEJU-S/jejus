@@ -2,6 +2,8 @@ import fetch from "node-fetch";
 import dotdev from "dotenv";
 dotdev.config();
 const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+import {User} from '../models/User'
 
 // 추후 진짜 db로 바꿔야 함
 import { fakeUser } from "./fakeDB";
@@ -9,15 +11,6 @@ import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 import { Mongoose } from "mongoose";
 import { app } from "cli";
 import { Db } from "mongoose/node_modules/mongodb";
-
-const userSchema = new mongoose.Schema({
-    name: String,
-    gmail: {type: String, required: true, unique: true},
-    image_url: String,
-    totPlan_id: Array,
-})
-
-const User = mongoose.model('User', userSchema);
 
 // Main Page 
 export const main = async (req, res) => {
@@ -134,7 +127,6 @@ export const callback = async(req, res) => {
             }
         });
      
-
         
         const user_info = await User.findOne({gmail: user_gmail}).lean();
         if(!user_info){
@@ -165,18 +157,7 @@ export const callback = async(req, res) => {
 
 
           // 배열 추가 부분 따로 구현해서 붙여넣기, 추후 await 처리해서 함수 안으로 넣어주기
-          const fake_plan = '시청' 
-
-          // 
-          User.findOne({gmail: user_gmail}).exec(async function(err, res){
-              if(res){
-                  res.totPlan_id.push(fake_plan);
-                  res.save(async function(err, plan){
-                      console.log("save sucess");
-                  });
-              }
-          });
-  
+   
         // // db에서 사용자 찾을 수 있다면
         // //올바른 이름, 형식인지 체크
         // // => select

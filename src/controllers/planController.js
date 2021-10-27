@@ -1,5 +1,18 @@
 //goes to plan router
 
+// const fake_plan = '시청' 
+
+// // 
+// User.findOne({gmail: user_gmail}).exec(async function(err, res){
+//     if(res){
+//         res.totPlan_id.push(fake_plan);
+//         res.save(async function(err, plan){
+//             console.log("save sucess");
+//         });
+//     }
+// });
+
+
 
 // fake database(json) 추후 진짜 데이터베이스로 바꿔야 함
 import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";

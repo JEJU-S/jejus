@@ -9,7 +9,9 @@ const recplaceSchema = new mongoose.Schema({
         y : Number
     },
     summary: String,
-    img_url: String
+    img_url: String,
+    score: Number ,
+    map_link: String
 })
 
 const RecPlace = mongoose.model('RecPlace', recplaceSchema);
