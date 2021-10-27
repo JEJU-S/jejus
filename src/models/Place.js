@@ -11,6 +11,6 @@ const placeSchema = new mongoose.Schema({
     map_link: String
 })
 
-const RecPlace = mongoose.model('RecPlace', placeSchema);
+const Place = mongoose.model('Place', placeSchema);
 
-module.exports = {RecPlace}
+module.exports = {Place}
