@@ -60,7 +60,6 @@ footer {
   object-fit: contain;
   margin-left: 20px;
 }
-
 .menubar {
   display: flex;
   flex-direction: row;
@@ -148,50 +147,409 @@ footer {
 
 /*컨텐츠 1 시작*/
 
+.content1 {
+  height: 1600px;
+  margin: 0 0 100px 0;
+}
+
+.content1-box {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 1130px;
+  height: 80%;
+}
+
 .cooperation {
   align-self: center;
   padding: 10px;
   text-align: center;
 }
 
-.co-info {
-  display: grid;
-  grid-template-areas:
-    "a b"
-    "c d";
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 50% 50%;
+.chats {
   height: 100%;
-  margin-top: 20px;
+  position: relative;
+  background: #fafafa;
+  border-radius: 10px;
 }
 
-.co-a {
-  padding: 30px;
-  grid-area: a;
-  background-color: rgba(172, 172, 172, 0.075);
+.chats:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 17px solid transparent;
+  border-top-color: #fafafa;
+  border-bottom: 0;
+  margin-left: -17px;
+  margin-bottom: -17px;
 }
-.co-b {
-  padding: 30px;
-  grid-area: b;
+
+.chat1 {
+  position: relative;
+  background: #23587b;
+  color: white;
+  border-radius: 0.4em;
+  width: 300px;
+  height: 80px;
+  text-align: center;
+  line-height: 5;
+  left: 420px;
+  top: 100px;
 }
-.co-c {
-  padding: 30px;
-  grid-area: c;
+
+.chat1::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 7%;
+  width: 0;
+  height: 0;
+  border: 17px solid transparent;
+  border-top-color: #23587b;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -8.5px;
+  margin-bottom: -17px;
 }
-.co-d {
-  padding: 30px;
-  grid-area: d;
-  background-color: rgba(172, 172, 172, 0.075);
+
+.chat2 {
+  position: relative;
+  background: #39a3a5;
+  color: white;
+  border-radius: 0.4em;
+  width: 340px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 590px;
+  top: 110px;
+}
+
+.chat2::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 17%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #39a3a5;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -8px;
+  margin-bottom: -16px;
+}
+
+.chat3 {
+  color: white;
+  position: relative;
+  background: #39a3a5;
+  border-radius: 0.4em;
+  width: 280px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 730px;
+  top: 130px;
+}
+
+.chat3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 70%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #39a3a5;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -8px;
+  margin-bottom: -16px;
+}
+
+.chat4 {
+  color: white;
+  position: relative;
+  background: #39a3a5;
+  border-radius: 0.4em;
+  width: 320px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 230px;
+  top: -5px;
+}
+
+.chat4::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #39a3a5;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -8px;
+  margin-bottom: -16px;
+}
+
+.chat5 {
+  color: white;
+  position: relative;
+  background: #39a3a5;
+  border-radius: 0.4em;
+  width: 350px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 360px;
+  top: 20px;
+}
+
+.chat5::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 80%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #39a3a5;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -8px;
+  margin-bottom: -16px;
+}
+
+.chat6 {
+  color: white;
+  position: relative;
+  background: #58cc99;
+  border-radius: 0.4em;
+  width: 380px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 160px;
+  top: 30px;
+}
+
+.chat6::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 70%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #58cc99;
+  border-bottom: 0;
+  border-right: 0;
+  margin-left: -8px;
+  margin-bottom: -16px;
+}
+
+.chat7 {
+  color: white;
+  position: relative;
+  background: #58cc99;
+  border-radius: 0.4em;
+  width: 400px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 560px;
+  top: -20px;
+}
+
+.chat7::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 30%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #58cc99;
+  border-bottom: 0;
+  margin-left: -16px;
+  margin-bottom: -16px;
+}
+
+.chat8 {
+  color: white;
+  position: relative;
+  background: #39a3a5;
+  border-radius: 0.4em;
+  width: 280px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 70px;
+  top: -190px;
+}
+
+.chat8::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 80%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #39a3a5;
+  border-bottom: 0;
+  margin-left: -16px;
+  margin-bottom: -16px;
+}
+
+.chat9 {
+  color: white;
+  position: relative;
+  background: #58cc99;
+  border-radius: 0.4em;
+  width: 380px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 200px;
+  top: -70px;
+}
+
+.chat9::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 30%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #58cc99;
+  border-bottom: 0;
+  margin-left: -16px;
+  margin-bottom: -16px;
+}
+
+.chat10 {
+  color: white;
+  position: relative;
+  background: #58cc99;
+  border-radius: 0.4em;
+  width: 380px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 600px;
+  top: -110px;
+}
+
+.chat10::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 90%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #58cc99;
+  border-bottom: 0;
+  margin-left: -16px;
+  margin-bottom: -16px;
+}
+
+.chat11 {
+  color: white;
+  position: relative;
+  background: #cee5d0;
+  border-radius: 0.4em;
+  width: 360px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 180px;
+  top: -100px;
+}
+
+.chat11::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 70%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #cee5d0;
+  border-bottom: 0;
+  margin-left: -16px;
+  margin-bottom: -16px;
+}
+
+.chat12 {
+  color: white;
+  position: relative;
+  background: #cee5d0;
+  border-radius: 0.4em;
+  width: 320px;
+  height: 65px;
+  text-align: center;
+  line-height: 4;
+  left: 570px;
+  top: -140px;
+}
+
+.chat12::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 40%;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-top-color: #cee5d0;
+  border-bottom: 0;
+  margin-left: -16px;
+  margin-bottom: -16px;
+}
+
+.logo-small {
+  width: 200px;
+  height: 100px;
+  align-self: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.pj-info {
+  text-align: center;
 }
 
 /*컨텐츠 1 끝*/
 /*컨텐츠 2 시작*/
 
+.content2 {
+  height: 1200px;
+  margin: 0 0 100px 0;
+  background-color: aliceblue;
+}
+
+.content2-box {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 1130px;
+  height: 85%;
+}
+
 .planning {
   align-self: center;
   padding: 10px;
   text-align: center;
-  background-color: aliceblue;
 }
 
 .planning-info {
@@ -205,6 +563,10 @@ footer {
 
 .plan-info {
   grid-area: plan-info;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 .plan-ex {
@@ -215,11 +577,16 @@ footer {
 
 .visual-info {
   grid-area: visual-info;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
 .visual-ex {
   grid-area: visual-ex;
-  background-image: url("../images/jeju-img4.jpg");
+  background-image: url("../images/jejumap.png");
+  background-size: 100%;
   margin: 20px;
 }
 
@@ -246,6 +613,13 @@ footer {
   justify-content: space-around;
 }
 
+.reco-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
 /*콘텐츠3 끝*/
 /*콘텐츠4 시작*/
 
@@ -261,6 +635,24 @@ footer {
   width: 1130px;
   height: 600px;
   background-color: white;
+}
+
+.content4-box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.content4-info {
+  width: 50%;
+}
+
+.content4-img {
+  width: 50%;
+  text-align: center;
 }
 
 .slide-btn-box {
