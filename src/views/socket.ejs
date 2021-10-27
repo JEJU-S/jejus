@@ -35,6 +35,7 @@
             <input type="submit", value="전송">
         </form>
     </div>
+    <button>저장하기</button>
 </body>
 
 <script>
@@ -68,7 +69,7 @@
     }
     //************************//
 
-    //검색 입력
+    //**********검색 구현**********************8
     function submitSearchKeyword(event){
         event.preventDefault();
         const input = searchForm.querySelector("input");
@@ -83,12 +84,10 @@
         while(searchResultUl.hasChildNodes()){
             searchResultUl.removeChild(searchResultUl.firstChild);
         }
-
         if(searchResults.length == 0){
             alert("검색 결과가 없습니다");
             return;
         }
-
         searchResults.forEach((result) => {
             console.log(result);
 
@@ -121,10 +120,14 @@
         })
     }
     // finished
-    
+    //*****************************************
+
+
+
+
+    //user place list 구현
     // 클릭한 장소 서버에 넘기기(추가되게) <추천 리스트 & 검색리스트 구분 없이 사용가능하도록>
     // list에 이미 있으면 넣으면 안됨(alert)
-    
     function sendPlaceToServer(event){
         // 클릭한 li 가져옴
         const li = event.target.closest('li');
@@ -204,40 +207,48 @@
     }
 
     /*****************채팅 구현**********************/
-
-    function printEnterMessage(userName){
+    function printMessage(msgObj, sendMsg){
         const li = document.createElement('li');
-        li.append(`${userName}님이 들어오셨습니다.`);
+        if(sendMsg){
+            const span = document.createElement('span');
+            const p = document.createElement('p');
+            span.innerHTML = msgObj.userName;
+            p.innerHTML = msgObj.message;
+            li.append(span);
+            li.append(p);
+        }
+        else{
+            li.append(msgObj.message);
+        }
         chattingListUl.append(li);
     }
 
-    function printLeaveMessage(userName){
-        const li = document.createElement('li');
-        li.append(`${userName}님이 나가셨습니다.`);
-        chattingListUl.append(li);
+    function printChattingMessage(msgObj){
+        printMessage(msgObj, true);
+    }
+
+    function printServerMessage(msgObj){
+        printMessage(msgObj, false);
     }
 
     function sendChattingMessage(){
         event.preventDefault();
         const input = chattingForm.querySelector("input");
-        const name = userName;
-        socket.emit("send_chatting_msg", {name : name, message : input.value});
+        socket.emit("send_chatting_msg", {
+            roomId : planId,
+            userName : userName, 
+            message : input.value 
+        });
         input.value = "";
     }
 
-    function printChattingMessage(msgObj){
-        const li = document.createElement('li');
-        const span = document.createElement('span');
-        const p = document.createElement('p');
+    socket.on("server_msg", printServerMessage);
+    chattingForm.addEventListener("submit", sendChattingMessage);
+    socket.on("print_chatting_msg", printChattingMessage);
 
-        span.innerHTML = msgObj.name;
-        p.innerHTML = msgObj.message;
+    /***********************************************/
 
-        li.append(span);
-        li.append(p);
-        chattingListUl.append(li);
-    }
-
+    
     //eventListner
     searchForm.addEventListener("submit", submitSearchKeyword);
     searchResultUl.addEventListener("click", sendPlaceToServer);
@@ -246,11 +257,6 @@
     // sever에서 받기
     socket.on("search_result", printSearchResultList);
     socket.on("place_add_map", addPlaceToMap);
-
-    socket.on("enter_room", printEnterMessage);
-    chattingForm.addEventListener("submit", sendChattingMessage);
-    socket.on("print_chatting_msg", printChattingMessage);
-
 
     
 </script>

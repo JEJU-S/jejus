@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import dotdev from "dotenv";
+import os from "os";
 dotdev.config();
 
 // 추후 진짜 db로 바꿔야 함
@@ -8,9 +9,11 @@ import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 
 const PORT = process.env.PORT || 8080;
 
+const hostname = os.networkInterfaces();
 // Main Page 
 export const main = (req, res) => {
-        return res.render("main");
+    console.log(hostname["Loopback Pseudo-Interface 1"][1]["address"]);
+    return res.render("main");
 };
 
 // --로그인 작업--

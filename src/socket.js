@@ -55,47 +55,54 @@ io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
         console.log(`Socket Event: ${event}`);
-      });
-    // plan id 로 만든 room에 join
-    
+    });  
+
+    // plan id 로 만든 room에 join    
     socket.on("join_room", (planId, userName, init) => {
         socket.join(planId);
-        console.log(socket.rooms);
-        socket.to(planId).emit("enter_room", userName);
+        socket["userName"] = userName;
+        //console.log(socket.rooms);
+        socket.to(planId).emit("server_msg", {
+            roomId : planId,
+            userName : socket.userName, 
+            message : `${socket.userName}님이 입장하셨습니다.`
+        });
         init();
     });
+
+    socket.on("send_chatting_msg", (msgObj) => {
+        socket.to(msgObj.roomId).emit("print_chatting_msg", msgObj);
+        socket.emit("print_chatting_msg", msgObj);
+        //socket.nsp.to(room).emit(event) => nsp 문서 확인 후 적용
+    })
 
     //search_keyword로 찾기
     socket.on("search_keyword", (keyword) => {
         sendSearchResults(keyword, socket);
-
     });
     
     socket.on("add_to_placelist", (placeObj) => {
         //database 작업
-        
         io.emit("place_add_map", placeObj);
     });
 
-    
     socket.on("del_from_placelist", (coordinates) => {
         //database 작업
         // list에서 해당 좌표를 가진 place 삭제
         io.emit("place_delete_map", coordinates);
     })
-
-    socket.on("send_chatting_msg", (msgObj) => {
-        io.emit("print_chatting_msg", msgObj);
-    })
-
-    /*
+    
+    // 다시 짜야 할 수 있음 testing 중
     socket.on("disconnecting", () => {
-        socket.rooms.forEach((room)=>{
-            socket.to(room).emit("leave_room")
-
-        }) 
+        socket.rooms.forEach((room) => {
+            socket.to(room).emit("server_msg", {
+                roomId : room,
+                userName : socket.userName, 
+                message : `${socket.userName} 님이 퇴장하셨습니다.`
+            });
+        })
     })
-    */
+
 });
 
 export default server;
