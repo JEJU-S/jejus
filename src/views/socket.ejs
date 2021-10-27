@@ -2,54 +2,97 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-    <title>Document</title>
+    <title> Edit <%=totPlan.title%> | Sample </title>
 </head>
-<body>
+<body class= "container">
     <!--hidden(javascript 값 위해 설정한 것)-->
     <div id="plan-id" hidden><%=totPlan._id%></div>
     <div id="user-name" hidden><%=user.name%></div>
     <header>
         <h1><%=totPlan.title%></h1>
-    </header>
-    <ul id="recommand-list">
-    </ul>
-    <form id="search-form">
-        <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
-        <input type="submit", value = "검색">
-    </form>
-    <ul id="search-result-list">
-    </ul>
-    <div id="map" class="map" style ="width:800px; height:400px;"></div>
-
-    <ul id="place-list">
-    </ul>
-
-    <div>
-        <ul id="chatting-list">
-        </ul>
-        <form id="chatting-form">
-            <input type="text" name="chatting-input", placeholder="메시지 전송하기", required>
-            <input type="submit", value="전송">
+        참여자 :
+        <%totPlan.participants.forEach(function(participant){%>
+            <%=participant.name%>
+        <%})%>
+        <button class="inv-btn">초대</button>
+        <form class="email-form" style="display : none">
+            <!--gmail 정규식 사용해야 함-->
+            <input type="email", placeholder="gmail을 입력하세요">
+            <input type="submit" value="초대장 전송">
         </form>
-    </div>
-    <button>저장하기</button>
+
+        <form id="date-form">
+            출발일 : <input type="date">
+            도착일 : <input type="date">
+            <input type="submit">
+        </form>
+    </header>
+    <main>
+        <ul id="recommand-list">
+        </ul>
+        <form id="search-form">
+            <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
+            <input type="submit", value = "검색">
+        </form>
+
+        <ul id="search-result-list">
+        </ul>
+
+        <div id="map" class="map" style ="width:800px; height:400px;"></div>
+
+        <ul id="place-list">
+        </ul>
+
+        <div>
+            <ul id="chatting-list">
+            </ul>
+            <form id="chatting-form">
+                <input type="text" name="chatting-input", placeholder="메시지 전송하기", required>
+                <input type="submit", value="전송">
+            </form>
+        </div>
+
+        <button>저장하기</button>
+    </main>
+    <footer>
+        &copy; <%=new Date().getFullYear()%> Sample Project
+    </footer>
 </body>
 
 <script>
     //room 생성
     const planId = document.querySelector("#plan-id").innerHTML;
     const userName = document.querySelector("#user-name").innerHTML;
+
     // element 요소
+    const invitationBtn = document.querySelector(".inv-btn");
+    const emailForm = document.querySelector(".email-form");
+
     const recommandListUl = document.querySelector("#recommand-list");
     const searchForm = document.querySelector("#search-form");
     const searchResultUl = document.querySelector("#search-result-list");
     const placeListUl = document.querySelector("#place-list");
     const chattingForm = document.querySelector("#chatting-form");
     const chattingListUl = document.querySelector("#chatting-list");
+
+
+    function showInvitationForm(){
+        emailForm.style.display = "block";
+    }
+
+    function sendInvitationToGmail(event){
+        event.preventDefault();
+        
+        const submit = emailForm.querySelector("input type=['submit']");
+        console.log(submit);
+        emailForm.style.display = "none";
+    }
+
+    //invitationBtn.addEventListener("click", showInvitationForm);
+    //searchForm.addEventListener("submit", sendInvitationToGmail);
 
 
     //map 관리
@@ -70,7 +113,7 @@
     }
     //************************//
 
-    //**********검색 구현**********************8
+    //**********검색 구현**********************
     function submitSearchKeyword(event){
         event.preventDefault();
         const input = searchForm.querySelector("input");
