@@ -5,8 +5,8 @@ const recplaceSchema = new mongoose.Schema({
     name: String,
     road_adr: String,
     coordinates: {
-        x : String,
-        y : String
+        x : Number,
+        y : Number
     },
     summary: String,
     img_url: String

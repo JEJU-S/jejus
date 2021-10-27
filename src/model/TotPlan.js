@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 const totplanSchema = new mongoose.Schema({
     title: String,
-    admin: [{
+    admin: {
         _id: mongoose.Schema.Types.ObjectId,
         name: String
-    }],
+    },
     participants: [{
         _id: mongoose.Schema.Types.ObjectId,
         name: String
@@ -16,8 +16,8 @@ const totplanSchema = new mongoose.Schema({
            name: String,
            adr: Array,
            coordinates: {
-            x : String,
-            y : String
+            x : Number,
+            y : Number
         },
            memo: String
        }]
