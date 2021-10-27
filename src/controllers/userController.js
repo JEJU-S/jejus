@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import dotdev from "dotenv";
+import os from "os";
 dotdev.config();
 
 // 추후 진짜 db로 바꿔야 함
@@ -8,23 +9,18 @@ import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 
 const PORT = process.env.PORT || 8080;
 
+const hostname = os.networkInterfaces();
 // Main Page 
-export const main = async (req, res) => {
-    try{
-        return res.render("main");
-        
-    }
-    catch(error){
-        return res.render("<h1>SERVER ERROR🛑</h1>");
-    }
+export const main = (req, res) => {
+    console.log(hostname["Loopback Pseudo-Interface 1"][1]["address"]);
+    return res.render("main");
 };
 
 // --로그인 작업--
-
 //Main -> Profile 로 가는 process function 
 //login -> callback -> profile
 export const login = (req, res) => 
-{
+{   
      //구글 로그인 전달 url 파라미터들
     const baseURL = "https://accounts.google.com/o/oauth2/v2/auth";
     const config = {
@@ -40,8 +36,6 @@ export const login = (req, res) =>
 }
 
 export const callback = async(req, res) => {
-
-    console.log("call back function!");
     const baseURL = "https://oauth2.googleapis.com/token";
 
     const config = {
@@ -102,7 +96,7 @@ export const callback = async(req, res) => {
         
         //session User 저장(DB에서 user찾아서)
         req.session.user = {
-            _id : "507f1f77bcf86cd799439011", 
+            _id : "3952ab947607509ee9654795", 
             name : userRequest['names'][0]['displayName'],
             image_url : userRequest['photos'][0]['url'],
             gmail : userRequest['emailAddresses'][0]['value'],
@@ -121,7 +115,6 @@ export const callback = async(req, res) => {
         //profile 페이지로 redirect(seeProfile 함수)
         res.redirect(`/users/${req.session.user._id}`);
     }
-
     else {
         console.log("error 알림 해줘야 함");
     
@@ -137,9 +130,7 @@ export const getEditProfile = (req, res) => {
 
 
 export const postEditProfile = (req, res) => {
-    console.log("post func");
 
-    
     //**DB** : => user 변경사항 다시 저장
     //session에서 user 다시 저장
 

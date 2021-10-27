@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!--hidden(javascript 값 위해 설정한 것)-->
+    <div id="plan-id" hidden><%=totPlan._id%></div>
+    <div id="user-name" hidden><%=user.name%></div>
+    <header>
+        <h1><%=totPlan.title%></h1>
+    </header>
+    <ul id="recommand-list">
+    </ul>
+    <form id="search-form">
+        <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
+        <input type="submit", value = "검색">
+    </form>
+    <ul id="search-result-list">
+    </ul>
+    <div id="map" class="map" style ="width:800px; height:400px;"></div>
+
+    <ul id="place-list">
+    </ul>
+
+    <div>
+        <ul id="chatting-list">
+        </ul>
+        <form id="chatting-form">
+            <input type="text" name="chatting-input", placeholder="메시지 전송하기", required>
+            <input type="submit", value="전송">
+        </form>
+    </div>
+    <button>저장하기</button>
+</body>
+
+<script>
+    //room 생성
+    const planId = document.querySelector("#plan-id").innerHTML;
+    const userName = document.querySelector("#user-name").innerHTML;
+    // element 요소
+    const recommandListUl = document.querySelector("#recommand-list");
+    const searchForm = document.querySelector("#search-form");
+    const searchResultUl = document.querySelector("#search-result-list");
+    const placeListUl = document.querySelector("#place-list");
+    const chattingForm = document.querySelector("#chatting-form");
+    const chattingListUl = document.querySelector("#chatting-list");
+
+
+    //map 관리
+    const markerList = [];
+    const mapOptions = {
+        center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+        zoom : 10
+    };
+    const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
+    
+    // client 소켓 생성
+    const socket = io(); 
+    //*********init*********//   
+    socket.emit("join_room", planId, userName, init); // 방 만들기(planid 별 방 만들기)
+    
+    function init(){
+        //데이터베이스에서 꺼내온 것 초기화
+    }
+    //************************//
+
+    //**********검색 구현**********************8
+    function submitSearchKeyword(event){
+        event.preventDefault();
+        const input = searchForm.querySelector("input");
+    
+        //server로 키워드 전송
+        socket.emit("search_keyword", input.value);
+        input.value = "";
+    }
+
+    //검색 결과 리스트 생성
+    function printSearchResultList(searchResults){
+        while(searchResultUl.hasChildNodes()){
+            searchResultUl.removeChild(searchResultUl.firstChild);
+        }
+        if(searchResults.length == 0){
+            alert("검색 결과가 없습니다");
+            return;
+        }
+        searchResults.forEach((result) => {
+            console.log(result);
+
+            const li = document.createElement("li");
+            li.className = "result";
+            // 임시로 넣어 둠(클릭 범위 확인)
+            li.style.backgroundColor = "#cccccc";
+
+            const span = document.createElement("span");
+            span.className = "obj-name";
+            span.append(result.place_name);
+
+            const p = document.createElement("p");
+            p.className = "obj-adress";
+            p.append(result.address_name);
+
+            const coordinates = {
+                x : result.x,
+                y : result.y
+            };
+
+            const hidden = document.createElement("input");
+            hidden.setAttribute("type", "hidden");
+            hidden.setAttribute("value", JSON.stringify(coordinates));
+            li.append(span);
+            li.append(p);
+            li.append(hidden);
+
+            searchResultUl.append(li);
+        })
+    }
+    // finished
+    //************************************************
+
+
+
+    //************user place list 구현*******************************
+    // 클릭한 장소 서버에 넘기기(추가되게) <추천 리스트 & 검색리스트 구분 없이 사용가능하도록>
+    // list에 이미 있으면 넣으면 안됨(alert)
+    function sendPlaceToServer(event){
+        // 클릭한 li 가져옴
+        const li = event.target.closest('li');
+        if(!li) return;
+        const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
+       
+        for(let i =0; i < markerList.length; i++){
+            if(markerList[i]["position"].x == coordinates.x && markerList[i]["position"].y == coordinates.y){
+                alert("이미 추가되었습니다");
+                return;
+            }
+        }
+
+        //데이터베이스로 넘겨줄 것
+        const placeObj = {
+            name : li.querySelector(".obj-name").innerHTML,
+            address : li.querySelector(".obj-adress").innerHTML,
+            coordinates : coordinates
+        }
+
+        console.log(placeObj);
+        socket.emit("add_to_placelist", placeObj, planId);
+    }
+
+    
+    // map에 마커 추가
+    function addPlaceToMap(placeObj){
+        const {coordinates} = placeObj; 
+        console.log("here : ", parseFloat(coordinates.x), " , " , parseFloat(coordinates.y));
+        
+        markerList.push(new naver.maps.Marker({  
+            position : new naver.maps.LatLng(
+                parseFloat(coordinates.y), parseFloat(coordinates.x)
+            ),
+            map : map
+        }));
+        console.log("add markerList : ", markerList);
+        addPlaceToPlaceList(placeObj);
+    }
+
+    // userplace list에 추가
+    function addPlaceToPlaceList(placeObj){
+        console.log(placeObj);
+
+        const {name, address, coordinates} = placeObj;
+        const li = document.createElement("li");
+        const button = document.createElement("button");
+        const span = document.createElement("span");
+        const p = document.createElement("p");
+        const hidden = document.createElement("input");
+        hidden.setAttribute("type", "hidden");
+        hidden.setAttribute("value", JSON.stringify(coordinates));
+        
+        button.className = "del-btn";
+        button.innerHTML = "❌";
+        span.innerHTML = name;
+        p.innerHTML = address;
+
+        li.append(button);
+        li.append(span);
+        li.append(p);
+        li.append(hidden);
+
+        placeListUl.append(li);
+    }
+
+    function clickDelBtnUserPlaceList(event){
+        const li = event.target.closest('li');
+        const button = event.target.closest('button');
+        if(!button) return;
+
+        console.log(li);
+        console.log(button);
+        const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
+        socket.emit("del_from_placelist", coordinates, planId);
+    }
+
+    function delFromUserPlaceList(coordinates){
+        //marker 삭제
+        for(let i=0; i < markerList.length; i++){
+            console.log("markerList : ", markerList);
+
+            console.log("cur marker :", markerList[i]);
+            if(markerList[i]["position"].x == coordinates.x && markerList[i]["position"].y == coordinates.y){
+                console.log("del this marker :", markerList[i]);
+                markerList[i].setMap(null);
+                markerList.splice(i, 1);
+            }
+        }
+        //list에서 삭제
+        const placeListLi = placeListUl.querySelectorAll("li");
+        placeListLi.forEach((li , index) => {
+            const cor = JSON.parse(li.querySelector("input[type='hidden']").value);
+            if(cor.x === coordinates.x && cor.y === coordinates.y){
+                li.remove();
+            }
+        })
+    }
+
+
+    /*****************채팅 구현**********************/
+    function printMessage(msgObj, sendMsg){
+        const li = document.createElement('li');
+        if(sendMsg){
+            const span = document.createElement('span');
+            const p = document.createElement('p');
+            span.innerHTML = msgObj.userName;
+            p.innerHTML = msgObj.message;
+            li.append(span);
+            li.append(p);
+        }
+        else{
+            li.append(msgObj.message);
+        }
+        chattingListUl.append(li);
+    }
+
+    function printChattingMessage(msgObj){
+        printMessage(msgObj, true);
+    }
+
+    function printServerMessage(msgObj){
+        printMessage(msgObj, false);
+    }
+
+    function sendChattingMessage(){
+        event.preventDefault();
+        const input = chattingForm.querySelector("input");
+        socket.emit("send_chatting_msg", {
+            roomId : planId,
+            userName : userName, 
+            message : input.value 
+        });
+        input.value = "";
+    }
+
+    socket.on("server_msg", printServerMessage);
+    chattingForm.addEventListener("submit", sendChattingMessage);
+    socket.on("print_chatting_msg", printChattingMessage);
+
+    /***********************************************/
+
+
+    //eventListner
+    searchForm.addEventListener("submit", submitSearchKeyword);
+    searchResultUl.addEventListener("click", sendPlaceToServer);
+    placeListUl.addEventListener("click", clickDelBtnUserPlaceList);
+
+    // sever에서 받기
+    socket.on("search_result", printSearchResultList);
+    socket.on("place_add_map", addPlaceToMap);
+    socket.on("place_delete_map", delFromUserPlaceList);
+
+    
+</script>
+</html>

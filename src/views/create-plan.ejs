@@ -17,9 +17,7 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <script type="text/javascript" src="/public/js/date-range-picker.js"></script>
         <!--날짜선택기 끝-->
-
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf">
-        </script>
+        
         <title> 새 계획 생성하기 | Sample </title>
     </head>
     <body class="container">
@@ -43,10 +41,10 @@
                 <div class="menu">
                     <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
                     <div class="menu-name">
-                        <span><a href="">마이페이지</a></span>
+                        <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                     </div>
                     <div class="menu-name">
-                        <span><a href="">새 계획 만들기</a></span>
+                        <span><a href="plans/create">새 계획 만들기</a></span>
                     </div>
                     <div class="menu-name">
                         <span>내 그룹</span>
@@ -65,7 +63,7 @@
                 </div>
             </div>
         <main>
-            <form class="creator">
+            <form method="POST" class="creator">
                 <h1>
                     새 계획 만들기
                 </h1>

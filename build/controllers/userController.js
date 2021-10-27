@@ -22,32 +22,9 @@ _dotenv["default"].config(); // 추후 진짜 db로 바꿔야 함
 
 var PORT = process.env.PORT || 8080; // Main Page 
 
-var main = /*#__PURE__*/function () {
-  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    return _regenerator["default"].wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.prev = 0;
-            return _context.abrupt("return", res.render("main"));
-
-          case 4:
-            _context.prev = 4;
-            _context.t0 = _context["catch"](0);
-            return _context.abrupt("return", res.render("<h1>SERVER ERROR🛑</h1>"));
-
-          case 7:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, null, [[0, 4]]);
-  }));
-
-  return function main(_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-}(); // --로그인 작업--
+var main = function main(req, res) {
+  return res.render("main");
+}; // --로그인 작업--
 //Main -> Profile 로 가는 process function 
 //login -> callback -> profile
 
@@ -71,12 +48,12 @@ var login = function login(req, res) {
 exports.login = login;
 
 var callback = /*#__PURE__*/function () {
-  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
     var baseURL, config, params, finalURL, tokenRequest, access_token, _baseURL, _config, _params, _finalURL, userRequest;
 
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context.prev = _context.next) {
           case 0:
             console.log("call back function!");
             baseURL = "https://oauth2.googleapis.com/token";
@@ -90,7 +67,7 @@ var callback = /*#__PURE__*/function () {
             params = new URLSearchParams(config).toString();
             finalURL = "".concat(baseURL, "?").concat(params); //token 받기
 
-            _context2.next = 7;
+            _context.next = 7;
             return (0, _nodeFetch["default"])(finalURL, {
               method: "POST",
               headers: {
@@ -99,14 +76,14 @@ var callback = /*#__PURE__*/function () {
             });
 
           case 7:
-            _context2.next = 9;
-            return _context2.sent.json();
+            _context.next = 9;
+            return _context.sent.json();
 
           case 9:
-            tokenRequest = _context2.sent;
+            tokenRequest = _context.sent;
 
             if (!("access_token" in tokenRequest)) {
-              _context2.next = 34;
+              _context.next = 34;
               break;
             }
 
@@ -119,17 +96,17 @@ var callback = /*#__PURE__*/function () {
             _params = new URLSearchParams(_config).toString();
             _finalURL = "".concat(_baseURL, "?").concat(_params); // 사용자 정보 받아옴(json 형식)
 
-            _context2.next = 18;
+            _context.next = 18;
             return (0, _nodeFetch["default"])(_finalURL, {
               method: "GET"
             });
 
           case 18:
-            _context2.next = 20;
-            return _context2.sent.json();
+            _context.next = 20;
+            return _context.sent.json();
 
           case 20:
-            userRequest = _context2.sent;
+            userRequest = _context.sent;
             console.log(userRequest);
             console.log("-----------user info-------------");
             console.log(userRequest['names'][0]['displayName']);
@@ -144,7 +121,7 @@ var callback = /*#__PURE__*/function () {
             req.session.loggedIn = true; //session User 저장(DB에서 user찾아서)
 
             req.session.user = {
-              _id: "507f1f77bcf86cd799439011",
+              _id: "3952ab947607509ee9654795",
               name: userRequest['names'][0]['displayName'],
               image_url: userRequest['photos'][0]['url'],
               gmail: userRequest['emailAddresses'][0]['value'],
@@ -162,7 +139,7 @@ var callback = /*#__PURE__*/function () {
             console.log(req.session.totPlanTitleList); //profile 페이지로 redirect(seeProfile 함수)
 
             res.redirect("/users/".concat(req.session.user._id));
-            _context2.next = 36;
+            _context.next = 36;
             break;
 
           case 34:
@@ -171,14 +148,14 @@ var callback = /*#__PURE__*/function () {
 
           case 36:
           case "end":
-            return _context2.stop();
+            return _context.stop();
         }
       }
-    }, _callee2);
+    }, _callee);
   }));
 
-  return function callback(_x3, _x4) {
-    return _ref2.apply(this, arguments);
+  return function callback(_x, _x2) {
+    return _ref.apply(this, arguments);
   };
 }(); //goes to user router
 

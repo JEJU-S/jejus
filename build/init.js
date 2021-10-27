@@ -2,12 +2,12 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _server = _interopRequireDefault(require("./server"));
-
 require("regenerator-runtime");
 
+var _socket = _interopRequireDefault(require("./socket"));
+
 //import "./db"; // database 연결
-// 서버 객체, 라우터 
+//import app from "./server"; // 서버 객체, 라우터 
 var PORT = process.env.PORT || 8080;
 
 var handleListening = function handleListening() {
@@ -15,4 +15,5 @@ var handleListening = function handleListening() {
 }; // 서버 4000에서 서버가 열리고 요쳥받음
 
 
-_server["default"].listen(PORT, handleListening); //브라우저가 요청한 페이지 get 해서 보여줘야 함
+_socket["default"].listen(PORT, handleListening); //app.listen(PORT, handleListening);
+//브라우저가 요청한 페이지 get 해서 보여줘야 함

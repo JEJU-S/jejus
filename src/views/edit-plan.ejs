@@ -3,13 +3,13 @@
     <head>
         <meta charset = "UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
 		<link rel="stylesheet" href="/public/css/header.css">
         <link rel="stylesheet" href="/public/css/base.css">
 		<link rel="stylesheet" href="/public/css/footer.css">
         <link rel="stylesheet" href="/public/css/edit-plan.css">
 
-        <title> Edit <%=plan.title%> | Sample </title>
+        <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
     <body class="container">
         <div class="region-place" id="regionplace">
@@ -30,16 +30,20 @@
             <img src="/public/images/woodo.png" class="jeju-region wd">
         </div>
         <header>
-            <h1><%=plan.title%></h1>
-            참여자 : <%=plan.participants%>
+            <h1><%=totPlan.title%></h1>
+            참여자 : 
+            <%totPlan.participants.forEach(function(participant){%>
+                <%=participant['name']%>
+            <% })%>
             <button class="inv-btn">초대</button>
             <p>출발일 : </p>
             <p>도착일 : </p>
+            
         </header>
         <main>
             <!--네이버 지도, 검색창 자리 수정 필요-->
             <div id="place" class="search">
-                <input type="text" placeholder="검색창">
+                <input type="text" name ="search-input" placeholder="검색어를 입력하세요">
                 <div class="search-result">
                     <ul>
                         <li class="result">
@@ -78,16 +82,16 @@
                 </div>
             </div>
             <div id="toast">장소가 추가되었습니다🚀</div>
+            
             <div id="map" class="map">
-
             </div>
-            <!--js,css 파일 따로 만들기-->
             <script>
-                var mapOptions = {
-                    center: new naver.maps.LatLng(37.3595704, 127.105399),
-                    zoom: 10
-                    };
-                var map = new naver.maps.Map('map', mapOptions);
+                const mapOptions = {
+                    center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+                    zoom : 10
+                };
+                const map = new naver.maps.Map('map', mapOptions);
+
             </script>
 
             <div class= "place-box">
@@ -100,29 +104,9 @@
                     <div id="place-obj">
                         <div class="place-object">
                             <button class="del-btn">❌</button>
-                            <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
+                            <h4 class="obj-name">상호명</h4> <!--편집가능하게-->
                             <textarea class="obj-memo" placeholder="메모"></textarea>
                         </div>    
-                    </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
-                    </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">상호명 / 사용자가 설정한 이름</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
-                    </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">봄날햄버거</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
-                    </div>
-                    <div class="place-object">
-                        <button class="del-btn">❌</button>
-                        <h4 class="obj-name">봄날햄버거</h4> <!--편집가능하게-->
-                        <textarea class="obj-memo" placeholder="메모"></textarea>
                     </div>
                 </div>
                 <button class="save-btn">저장하기</button>

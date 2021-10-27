@@ -17,8 +17,23 @@ exports.fakeUser = fakeUser;
 var fakeTotPlan1 = {
   _id: "507f191e810c19729de860ea",
   title: "첫 제주도 여행🚗",
-  admin: "오정환",
-  participants: ["오정환", "박병준", "최재원", "권내영"],
+  admin: {
+    name: "오정환",
+    _id: "507f1f77bcf86cd799439011"
+  },
+  participants: [{
+    name: "오정환",
+    _id: "507f1f77bcf86cd799439011"
+  }, {
+    name: "박병준",
+    _id: "33643fab36324ba879813855"
+  }, {
+    name: "최재원",
+    _id: "20864abc9468cc7330683610"
+  }, {
+    name: "권내영",
+    _id: "3952ab947607509ee9654795"
+  }],
   day_plan: [{
     date: "2022-04-05",
     place: [{
