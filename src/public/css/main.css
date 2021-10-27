@@ -667,6 +667,11 @@ footer {
 .slide-btn-prev,
 .slide-btn-next {
   border: none;
+  background-color: #ffffff00;
+  color: #464646;
+  font-size: 40px;
+  text-align: center;
+  line-height: 1;
   width: 40px;
   height: 40px;
   border-radius: 5px;
@@ -675,6 +680,6 @@ footer {
 .slide-btn-prev:hover,
 .slide-btn-next:hover {
   cursor: pointer;
-  background-color: cornflowerblue;
+  background-color: rgb(235, 235, 235);
   transition: 0.3s;
 }
