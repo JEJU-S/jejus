@@ -149,7 +149,7 @@
         }
 
         console.log(placeObj);
-        socket.emit("add_to_placelist", placeObj);
+        socket.emit("add_to_placelist", placeObj, planId);
     }
 
     
@@ -203,7 +203,7 @@
         console.log(li);
         console.log(button);
         const coordinates = JSON.parse(li.querySelector("input[type='hidden']").value);
-        socket.emit("del_from_placelist", coordinates);
+        socket.emit("del_from_placelist", coordinates, planId);
     }
 
     /*****************채팅 구현**********************/
@@ -248,7 +248,7 @@
 
     /***********************************************/
 
-    
+
     //eventListner
     searchForm.addEventListener("submit", submitSearchKeyword);
     searchResultUl.addEventListener("click", sendPlaceToServer);

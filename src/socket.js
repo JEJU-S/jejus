@@ -61,7 +61,7 @@ io.on("connection", (socket) => {
     socket.on("join_room", (planId, userName, init) => {
         socket.join(planId);
         socket["userName"] = userName;
-        //console.log(socket.rooms);
+        console.log(socket.rooms);
         socket.to(planId).emit("server_msg", {
             roomId : planId,
             userName : socket.userName, 
@@ -81,15 +81,18 @@ io.on("connection", (socket) => {
         sendSearchResults(keyword, socket);
     });
     
-    socket.on("add_to_placelist", (placeObj) => {
+    socket.on("add_to_placelist", (placeObj, planId) => {
         //database 작업
-        io.emit("place_add_map", placeObj);
+        console.log(planId);
+        socket.to(planId).emit("place_add_map", placeObj);
+        socket.emit("place_add_map", placeObj);
     });
 
-    socket.on("del_from_placelist", (coordinates) => {
+    socket.on("del_from_placelist", (coordinates, planId) => {
         //database 작업
         // list에서 해당 좌표를 가진 place 삭제
-        io.emit("place_delete_map", coordinates);
+        socket.to(planId).emit("place_delete_map", coordinates);
+        socket.emit("place_delete_map", placeObj);
     })
     
     // 다시 짜야 할 수 있음 testing 중
@@ -102,7 +105,6 @@ io.on("connection", (socket) => {
             });
         })
     })
-
 });
 
 export default server;
