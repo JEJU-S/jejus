@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const recplaceSchema = new mongoose.Schema({
     id: Number,
     name: String,
-    adr: String,
-    x_y: [{
-        long : String,
-        lat : String
-    }],
+    road_adr: String,
+    coordinates: {
+        x : String,
+        y : String
+    },
     summary: String,
     img_url: String
 })
