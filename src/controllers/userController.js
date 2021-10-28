@@ -95,7 +95,6 @@ export const callback = async(req, res) => {
         console.log(user_name);
         console.log(user_gmail);
         console.log(user_image_url);
-
         console.log("---------------------------------");
    
 
