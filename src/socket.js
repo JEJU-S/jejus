@@ -4,6 +4,7 @@ import app from "./server";
 import SocketIO from "socket.io";
 import http from "http";
 import dotdev from "dotenv";
+import { start } from "repl";
 dotdev.config();
 
 const server = http.createServer(app);
@@ -62,18 +63,30 @@ io.on("connection", (socket) => {
         socket.join(planId);
         socket["userName"] = userName;
         console.log(socket.rooms);
+
         socket.to(planId).emit("server_msg", {
             roomId : planId,
             userName : socket.userName, 
             message : `${socket.userName}님이 입장하셨습니다.`
         });
         init();
+
     });
 
     socket.on("send_inviataion", (gmail) => {
         //DB******** 초대장 gmail로 전송
         console.log(gmail);
-    }) 
+    })
+
+    socket.on("change_date", (start, end, planId) => {
+        //DB****** 날짜 바꾸기
+        console.log(planId);
+        console.log(start);
+        console.log(end);
+
+        socket.to(planId).emit("create_date_div", start, end);
+        socket.emit("create_date_div", start , end);
+    })
 
     socket.on("send_chatting_msg", (msgObj) => {
         socket.to(msgObj.roomId).emit("print_chatting_msg", msgObj);
