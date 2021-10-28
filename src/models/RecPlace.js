@@ -4,11 +4,8 @@ const recplaceSchema = new mongoose.Schema({
     id: Number,
     name: String,
     road_adr: String,
-    coordinates: {
-        x : Number,
-        y : Number
-    },
-    summary: String,
+    x : Number,
+    y : Number,
     img_url: String,
     score: Number ,
     map_link: String

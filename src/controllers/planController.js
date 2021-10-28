@@ -26,10 +26,14 @@ export const seePlan = (req, res) =>
     const {id} = req.params;
 
     //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!')
+    console.log(req.session.user.totPlan_id)
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!')
     const user_TotPlan = TotPlan.findOne({_id: id}).lean();
     
-    console.log('user_TotPlan');
-
+    console.log('@@@@@@@@@@@@@@@@')
+    console.log(user_TotPlan);
+    console.log('@@@@@@@@@@@@@@@@')
     res.render(`see-plan`, {
         user : req.session.user,
         totPlanTitles : req.session.totPlanTitleList,

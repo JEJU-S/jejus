@@ -15,10 +15,8 @@ const totplanSchema = new mongoose.Schema({
        place: [{
            name: String,
            road_adr: String,
-           coordinates: {
             x : Number,
             y : Number
-        }
        }]
     }
     ],

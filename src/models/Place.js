@@ -4,10 +4,8 @@ const placeSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     name: String,
     road_adr: String,
-    coordinates: {
-        x : Number,
-        y : Number
-    },
+    x : Number,
+    y : Number,
     map_link: String
 })
 

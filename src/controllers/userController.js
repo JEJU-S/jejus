@@ -154,6 +154,7 @@ export const callback = async(req, res) => {
         
         req.session.loggedIn = true;
         
+        
         // //session User 저장(DB에서 user찾아서) // 받아온 세션을 여기다가 넣을 것
         req.session.user = {
             _id : login_id, 
@@ -162,6 +163,7 @@ export const callback = async(req, res) => {
             gmail : login_gmail,
             totPlan_id : login_totPlan_id
         };
+        
 
         // // user가 가지고 있는 plan 뽑아서 id, title을 저장
         // // fake db에서는 2개 만든걸로 있는 걸로 넣음
