@@ -1,7 +1,7 @@
 $(function () {
     $('#dates').daterangepicker({
         "locale": { 
-            "format": "MM-DD", 
+            "format": "YYYY-MM-DD", 
             "separator": " ~ ",
             "applyLabel": "입력", 
             "cancelLabel": "취소", 
@@ -14,7 +14,7 @@ $(function () {
             "firstDay": 1 
         }, 
         "maxSpan": {
-            "days": 3
+            "days": 5
         },
         "startDate": new Date(),
         "endDate": new Date(), 

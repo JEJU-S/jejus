@@ -70,6 +70,11 @@ io.on("connection", (socket) => {
         init();
     });
 
+    socket.on("send_inviataion", (gmail) => {
+        //DB******** 초대장 gmail로 전송
+        console.log(gmail);
+    }) 
+
     socket.on("send_chatting_msg", (msgObj) => {
         socket.to(msgObj.roomId).emit("print_chatting_msg", msgObj);
         socket.emit("print_chatting_msg", msgObj);
@@ -82,13 +87,14 @@ io.on("connection", (socket) => {
     });
     
     socket.on("add_to_placelist", (placeObj, planId) => {
-        //database 작업
+        //database 작업 필요
+        //해당 plan
         socket.to(planId).emit("place_add_map", placeObj);
         socket.emit("place_add_map", placeObj);
     });
 
     socket.on("del_from_placelist", (coordinates, planId) => {
-        //database 작업
+        //database 작업 필요
         // list에서 해당 좌표를 가진 place 삭제
         socket.to(planId).emit("place_delete_map", coordinates);
         socket.emit("place_delete_map", coordinates);

@@ -1,20 +1,5 @@
 import dotdev from "dotenv";
 dotdev.config();
-//goes to plan router
-
-// const fake_plan = '시청' 
-
-// // 
-// User.findOne({gmail: user_gmail}).exec(async function(err, res){
-//     if(res){
-//         res.totPlan_id.push(fake_plan);
-//         res.save(async function(err, plan){
-//             console.log("save sucess");
-//         });
-//     }
-// });
-
-
 
 // fake database(json) 추후 진짜 데이터베이스로 바꿔야 함
 import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
@@ -55,11 +40,31 @@ export const editPlan = (req, res) =>
 }
 
 export const getCreatePlan = (req, res) => {
+
     res.render("create-plan", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList });
 }
 
 export const postCreatePlan = (req, res) => {
+    const {title, dates} = req.body;
+    //console.log("여행 계획 : " , title, dates);
+
+    const days = dates.split("~");
+
+    let startDate = new Date(days[0]);
+    let endDate =  new Date(days[1]);
+
+    startDate.setDate(startDate.getDate() + 1);
+    endDate.setDate(endDate.getDate() + 1);
+
+    //console.log(startDate);
+    //console.log(endDate);
+    
+    
     // database => 새 plan 생성 뒤 user에 추가
+
+
+
+
     res.redirect(`/users/${req.session.user._id}`); 
 }
 

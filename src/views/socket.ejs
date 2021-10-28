@@ -18,21 +18,24 @@
             <%=participant.name%>
         <%})%>
         <button class="inv-btn">초대</button>
-        <form class="email-form" style="display : none">
-            <!--gmail 정규식 사용해야 함-->
-            <input type="email", placeholder="gmail을 입력하세요">
+        
+        <form class="email-form" style= "display : none">
+            <input type="email", placeholder="gmail을 입력하세요" name="gmail">
             <input type="submit" value="초대장 전송">
+            <input type= "reset" value="취소">
         </form>
-
-        <form id="date-form">
-            출발일 : <input type="date">
-            도착일 : <input type="date">
+        
+        <form class="date-form">
+            출발일 : <input type="date" name = "start-date">
+            도착일 : <input type="date" name = "end-date">
             <input type="submit">
         </form>
     </header>
     <main>
+        
         <ul id="recommand-list">
         </ul>
+
         <form id="search-form">
             <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
             <input type="submit", value = "검색">
@@ -66,6 +69,14 @@
     //room 생성
     const planId = document.querySelector("#plan-id").innerHTML;
     const userName = document.querySelector("#user-name").innerHTML;
+    // client 소켓 생성
+    const socket = io(); 
+    //*********init*********//   
+    socket.emit("join_room", planId, userName, init); // 방 만들기(planid 별 방 만들기)
+    function init(){
+        //데이터베이스에서 꺼내온 것 초기화
+    
+    }
 
     // element 요소
     const invitationBtn = document.querySelector(".inv-btn");
@@ -77,41 +88,85 @@
     const placeListUl = document.querySelector("#place-list");
     const chattingForm = document.querySelector("#chatting-form");
     const chattingListUl = document.querySelector("#chatting-list");
+    const dateForm = document.querySelector(".date-form");
 
-
+    //************초대장 전송**********************
     function showInvitationForm(){
         emailForm.style.display = "block";
     }
 
     function sendInvitationToGmail(event){
         event.preventDefault();
-        
-        const submit = emailForm.querySelector("input type=['submit']");
-        console.log(submit);
+
+        const regex = new RegExp(/@gmail.com$/);
+
+        const gmailInput = emailForm.querySelector("input[type='email']");
+        console.log(gmailInput.value);
+
+        if(!regex.test(gmailInput.value)){
+            alert("@gmail.com 형식으로 입력해주세요");
+            return;
+        }
+        //server로 키워드 전송
+        socket.emit("send_inviataion", gmailInput.value);
+        emailForm.style.display = "none";
+        gmailInput.value = "";
+    }
+
+    function closeInvitaitonToGmail(event){
+        event.preventDefault();
+        const gmailInput = emailForm.querySelector("input[type='email']");
+        gmailInput.value ="";
         emailForm.style.display = "none";
     }
 
-    //invitationBtn.addEventListener("click", showInvitationForm);
-    //searchForm.addEventListener("submit", sendInvitationToGmail);
+    invitationBtn.addEventListener("click", showInvitationForm);
+    emailForm.addEventListener("submit", sendInvitationToGmail);
+    emailForm.addEventListener("reset", closeInvitaitonToGmail);
+    
+    //************날짜 구현***************
+
+    function checkDate(event){
+        event.preventDefault();
+        const startDate = dateForm.querySelector("input[name='start-date']");
+        const endDate = dateForm.querySelector("input[name='end-date']");
+    }   
+
+    function startDateChange(){
+        const startDate = dateForm.querySelector("input[name='start-date']");
+        const endDate = dateForm.querySelector("input[name='end-date']");
+        endDate.min = startDate.value;
+        
+        const minDate = new Date(startDate.value);
+        const maxDate = new Date();
+
+        maxDate.setDate(minDate.getDate() + 4);
+        endDate.max = `${maxDate.getFullYear()}-${maxDate.getMonth() + 1}-${maxDate.getDate()}`;
+    }
+
+    dateForm.addEventListener("submit", checkDate);
+    dateForm.querySelector("input[name='start-date']").addEventListener("change", startDateChange);
 
 
-    //map 관리
+    function setDaydiv(){
+        const DayDiv = document.ceateElement("div");
+
+
+
+
+    }
+
+    //**********지도*****************************
     const markerList = [];
     const mapOptions = {
         center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
         zoom : 10
     };
     const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
-    
-    // client 소켓 생성
-    const socket = io(); 
-    //*********init*********//   
-    socket.emit("join_room", planId, userName, init); // 방 만들기(planid 별 방 만들기)
-    
-    function init(){
-        //데이터베이스에서 꺼내온 것 초기화
-    }
-    //************************//
+
+
+
+
 
     //**********검색 구현**********************
     function submitSearchKeyword(event){
@@ -163,14 +218,17 @@
             searchResultUl.append(li);
         })
     }
-    // finished
-    //************************************************
+
+    //************추천 list 구현*******************
+    //recommandListUl
+
+
+
 
 
 
     //************user place list 구현*******************************
-    // 클릭한 장소 서버에 넘기기(추가되게) <추천 리스트 & 검색리스트 구분 없이 사용가능하도록>
-    // list에 이미 있으면 넣으면 안됨(alert)
+    // <추천 리스트 & 검색리스트 구분 없이 사용가능하도록>
     function sendPlaceToServer(event){
         // 클릭한 li 가져옴
         const li = event.target.closest('li');
@@ -184,7 +242,7 @@
             }
         }
 
-        //데이터베이스로 넘겨줄 것
+        //데이터베이스로 넘겨줄 obj
         const placeObj = {
             name : li.querySelector(".obj-name").innerHTML,
             address : li.querySelector(".obj-adress").innerHTML,
@@ -311,7 +369,8 @@
     chattingForm.addEventListener("submit", sendChattingMessage);
     socket.on("print_chatting_msg", printChattingMessage);
 
-    /***********************************************/
+  
+
 
 
     //eventListner
