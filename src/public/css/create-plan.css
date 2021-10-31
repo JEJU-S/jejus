@@ -6,7 +6,7 @@
     "footer footer footer";
 
   grid-template-columns: 310px 1214px;
-  grid-template-rows: 40px 630px 20px;
+  grid-template-rows: 50px 630px 20px;
 }
 
 .creator {

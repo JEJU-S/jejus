@@ -18,15 +18,16 @@
   height: 240px;
   text-overflow: ellipsis;
   text-align: center;
-  background-color: #f1f1f1;
+  background-color: #dfdfdf;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
 .photo-box {
-  width: 100px;
-  height: 100px;
+  margin-top: 20px;
+  width: 120px;
+  height: 120px;
   overflow: hidden;
-  border-radius: 70%;
+  border-radius: 100%;
 }
 
 .profile-img {
@@ -60,16 +61,32 @@
   align-items: center;
   justify-content: flex-start;
   gap: 15px;
-  width: calc(100% - 20px);
-  font-weight: bold;
+  font-weight: 600;
   font-size: 1.1rem;
-  padding: 15px 0 15px 20px;
+  padding: 10px 0 10px 40px;
+  color: #343434;
+}
+
+.menu-name:hover {
+  background-color: #68a9e9;
+  color: white;
+  transition: 0.3s;
+  cursor: pointer;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  opacity: 1;
+}
+
+.selected {
+  background-color: #68a9e9;
+  color: white;
+  z-index: 1000;
 }
 
 .group {
   display: flex;
   flex-direction: column !important;
   align-items: flex-start;
+  gap: 0px;
 }
 
 .mygroup {
@@ -79,22 +96,17 @@
   gap: 15px;
 }
 
-.menu-name:hover {
-  background-color: #2a58ff;
-  color: white;
-  transition: 0.3s;
-  cursor: pointer;
-  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
-  opacity: 1;
-}
-
 .menu-detail {
   display: none;
   flex-direction: column;
   max-height: 20vh;
-  font-size: 90%;
+  font-size: 80%;
   font-weight: normal;
   overflow: scroll;
+  text-align: left;
+  margin-left: 20px;
+  width: 80%;
+  text-overflow: clip;
 }
 
 .menu-detail::-webkit-scrollbar {
@@ -107,10 +119,10 @@
 
 .plan-title {
   margin-right: 10px;
-  color: rgb(0, 0, 0);
+  color: inherit;
+  font-size: 18px;
 }
 
 .plan-title:hover {
-  color: rgb(154, 161, 255);
-  transition: 0.3s;
+  color: burlywood;
 }

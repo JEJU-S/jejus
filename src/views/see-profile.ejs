@@ -11,6 +11,12 @@
         <!--구글 아이콘-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="/public/css/icon.css">
+        <!--구글 웹폰트-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+        <!--JQuery-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <title> Profile | Sample </title>
     </head>
     <body class="container">
@@ -33,7 +39,7 @@
             <!--사이드바 메뉴구성 시작-->
             <div class="menu">
                 <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
-                <div class="menu-name">
+                <div class="menu-name selected">
                     <span class="material-icons md-36">
                         account_circle
                         </span>
@@ -44,8 +50,8 @@
                         create_new_folder</span>
                     <span><a href="/plans/create">새 계획 만들기</a></span>
                 </div>
-                <div class="menu-name group" id="group">
-                    <div class="mygroup">
+                <div class="menu-name group">
+                    <div class="mygroup" id="group">
                         <span class="material-icons md-36 grid">
                             folder
                         </span>
@@ -71,30 +77,41 @@
         <main>
             <!--프로필 시작-->
                     <!--profile 부분 flex 컨테이너 main-profile-->
-            <div class="main-profile"> 
-            <!--프로필 사진 들어가는 부분 박스 profile-box-->
-                <div class="profile-box">
-                    <img src="<%=user.image_url%>" class="profile-photo" alt="user-photo">
+            <div class="main-content">
+                <div class="deco">
+                    <div class="box"></div>
+                    <h2 class="pf-title">
+                        Profile
+                    </h2>
                 </div>
-                    <!--닉네임-->
-                <div class="info-box">
-                    <h3>닉네임</h3>
-                    <span class="nickname"><%=user.name%></span>
-                </div>   
-            <!--이메일-->
-                <div class="info-box">
-                    <h3>이메일</h3>
-                    <span class="email"><%=user.gmail%></span>
+                <div class="main-profile"> 
+                <!--프로필 사진 들어가는 부분 박스 profile-box-->
+                    <div class="profile-box">
+                        <img src="<%=user.image_url%>" class="profile-photo" alt="user-photo">
+                    </div>
+                        <!--닉네임-->
+                    <div class="info-box">
+                        <h3>닉네임</h3>
+                        <span class="nickname"><%=user.name%></span>
+                    </div>   
+                <!--이메일-->
+                    <div class="info-box">
+                        <h3>이메일</h3>
+                        <span class="email"><%=user.gmail%></span>
+                    </div>
+                    <!--수정버튼-->
+                    <button class="edit-button" type="button" onclick= "location.href ='/users/<%=user._id%>/edit'">
+                        수정하기
+                    </button>
                 </div>
-                <!--수정버튼-->
-                <button class="edit-button" type="button" onclick= "location.href ='/users/<%=user._id%>/edit'">
-                    수정하기
-                </button>
             </div>
             <!--프로필 끝-->
             <!--초대창 시작-->
             <div class="inv-box">
-                <h2>초대장</h2>
+                <div class="deco">
+                    <div class="box"></div>
+                    <h2>Invitation</h2>    
+                </div>
                 <div class="inv-items">
                     <ul>
                         <li class="inv-item">

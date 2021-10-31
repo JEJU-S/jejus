@@ -38,6 +38,14 @@ footer {
   background-color: #2f3438;
 }
 
+a,
+h3,
+h1,
+h2,
+h4 {
+  font-family: "Gowun Dodum", sans-serif;
+}
+
 /*base css 끝*/
 /*헤더 css 시작*/
 
@@ -100,7 +108,7 @@ footer {
   color: white;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 0 auto 64px auto;
   width: 1130px;
   height: 100%;
   justify-content: center;
@@ -141,8 +149,8 @@ footer {
   width: auto;
   margin-top: 100px;
   margin-bottom: 50px;
-  padding: 15px 0;
-  border-bottom: 2px solid rgb(0, 0, 0);
+  padding: 10px 0;
+  border-bottom: 2px solid rgb(139, 139, 139);
 }
 
 /*컨텐츠 1 시작*/

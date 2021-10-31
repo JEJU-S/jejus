@@ -1,3 +1,8 @@
+* {
+  list-style: none;
+  font-family: "Gowun Dodum", sans-serif;
+}
+
 .title {
   font-weight: bold;
   font-size: 30px;

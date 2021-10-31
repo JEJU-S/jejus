@@ -1,7 +1,3 @@
-* {
-  list-style: none;
-}
-
 .container {
   grid-template-areas:
     "header header"
@@ -21,25 +17,35 @@ main {
   margin: 10px 0;
 }
 
+.main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1% 4% 2% 4%;
+  width: 90%;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  border-radius: 5px;
+}
+
+.pf-title {
+  margin: 10px 0;
+}
+
 .main-profile {
   display: flex;
   flex-direction: row;
   column-gap: 100px;
-  padding: 2% 4%;
-  width: 90%;
   color: rgb(0, 0, 0);
-  background-color: rgb(255, 255, 255);
-  border-radius: 5px;
-  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
 .profile-box {
   align-self: center;
+  margin-left: 5%;
   width: 180px;
   height: 180px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: rgb(124, 145, 118);
+  background-color: #dfdfdf;
 }
 
 .profile-photo {
@@ -88,7 +94,7 @@ input[type="text"]:focus {
   text-overflow: clip;
 }
 .edit-button {
-  background-color: #2a58ff;
+  background-color: #68a9e9;
   padding: 7.5px 1px;
   color: #fff;
   text-align: center;
@@ -106,7 +112,7 @@ input[type="text"]:focus {
 .edit-button:hover {
   background-color: rgb(39, 95, 141);
   color: rgb(255, 255, 255);
-  transition: 0.5s;
+  transition: 0.1s;
 }
 
 .inv-box {
@@ -126,9 +132,8 @@ input[type="text"]:focus {
 .inv-items {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
   min-height: 120px;
-  height: 37vh;
+  height: 34vh;
   overflow: scroll;
 }
 
@@ -140,7 +145,7 @@ input[type="text"]:focus {
   color: #474747;
   background-color: #ffffff;
   border-radius: 4px;
-  padding: 15px;
+  padding: 1%;
   line-height: 2;
   border-bottom: 1px solid #8d8d8d2e;
 }
@@ -161,7 +166,7 @@ input[type="text"]:focus {
 }
 
 .inv-btn {
-  display: inline-block;
+  display: block;
   float: right;
   border-radius: 4px;
   border: none;
@@ -171,7 +176,7 @@ input[type="text"]:focus {
 
 .accept {
   color: white;
-  background-color: #2a58ff;
+  background-color: #5ac760;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -187,7 +192,7 @@ input[type="text"]:focus {
 
 .refuse {
   color: white;
-  background-color: #2a58ff;
+  background-color: #aaaaaa;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -199,3 +204,26 @@ input[type="text"]:focus {
   background-color: #2a58ff;
   transition: 0.1s;
 }
+
+.deco {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.box {
+  width: 10px;
+  height: 30px;
+  background-color: #6662f5;
+}
+
+/*
+.accept,
+.refuse,
+header,
+.edit-button,
+.selected {
+  background-color: red !important;
+}
+*/
