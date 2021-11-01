@@ -5,7 +5,7 @@
     "footer footer";
 
   grid-template-columns: 310px auto;
-  grid-template-rows: 50px 90vh 20px;
+  grid-template-rows: 50px auto 20px;
 }
 
 main {
@@ -46,6 +46,11 @@ main {
   border-radius: 50%;
   overflow: hidden;
   background-color: #dfdfdf;
+}
+
+.edit-profile-box {
+  width: 100%;
+  background-color: white;
 }
 
 .profile-photo {

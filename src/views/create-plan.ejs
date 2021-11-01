@@ -38,7 +38,7 @@
                     </div>
                     <!--프로필 내 정보들을 box로 묶기 위해 "user-info" div 추가-->
                     <div class="user-info">
-                        <p><%=user.name%></p>
+                        <p class="side-user-name"><%=user.name%></p>
                         <p><%=user.gmail%></p>
                     </div>
                 </div>
@@ -46,15 +46,26 @@
                 <div class="menu">
                     <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
                     <div class="menu-name">
-                        <span><a href="/users/<%=user._id%>">마이페이지</a></span>
+                        <span class="material-icons md-36">
+                            account_circle
+                            </span>
+                            <span><a href="">마이페이지</a></span>
                     </div>
-                    <div class="menu-name">
-                        <span><a href="plans/create">새 계획 만들기</a></span>
+                    <div class="menu-name selected">
+                        <span class="material-icons md-36">
+                            create_new_folder</span>
+                        <span><a href="/plans/create">새 계획 만들기</a></span>
                     </div>
-                    <div class="menu-name">
-                        <span>내 그룹</span>
+                    <div class="menu-name group">
+                        <div class="mygroup" id="group">
+                            <span class="material-icons md-36 grid">
+                                folder
+                            </span>
+                            <span >내 그룹</span>
+                            
+                        </div>
                         <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
-                        <div class="menu-detail">
+                        <div class="menu-detail" id="mygroup">
                             <ul>
                                 <%totPlanTitles.forEach(function(title){ %>
                                 <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
@@ -62,8 +73,10 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="menu-name">
-                        <span><a href="/users/logout">로그아웃</a></span>
+                    <div class="menu-name logout">
+                        <span class="material-icons md-36">
+                            logout
+                            </span><a href="/users/logout">로그아웃</a>
                     </div>
                 </div>
             </div>

@@ -117,12 +117,12 @@
   padding: 0;
 }
 
-.plan-title {
+.side-plan-title {
   margin-right: 10px;
   color: inherit;
   font-size: 18px;
 }
 
-.plan-title:hover {
+.side-plan-title:hover {
   color: burlywood;
 }

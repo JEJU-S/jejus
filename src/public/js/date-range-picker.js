@@ -1,7 +1,7 @@
 $(function () {
     $('#dates').daterangepicker({
         "locale": { 
-            "format": "MM-DD", 
+            "format": "YY.MM.DD", 
             "separator": " ~ ",
             "applyLabel": "입력", 
             "cancelLabel": "취소", 
@@ -14,11 +14,13 @@ $(function () {
             "firstDay": 1 
         }, 
         "maxSpan": {
-            "days": 3
+            "days": 4
         },
         "startDate": new Date(),
         "endDate": new Date(), 
-        "drops": "down" 
+        "drops": "down",
+        "autoApply":true,
+        "minDate": new Date()
     }, function (start, end, label) { 
         console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
 })
