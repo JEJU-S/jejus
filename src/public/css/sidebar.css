@@ -97,6 +97,7 @@
 }
 
 .menu-detail {
+  display: none;
   flex-direction: column;
   max-height: 20vh;
   font-size: 80%;
