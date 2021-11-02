@@ -10,13 +10,16 @@
 		<link rel="stylesheet" href="/public/css/footer.css">
         <link rel="stylesheet" href="/public/css/create-plan.css">
 
-        <!--날짜 선택기 jqeury-->
+        <!--날짜 선택기 jqeury
         <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
         <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
         <script type="text/javascript" src="/public/js/date-range-picker.js"></script>
-        <!--날짜선택기 끝-->
+        <script type="text/javascript" src="/public/js/create-plan.js"></script>
+        날짜선택기 끝
+    -->
+
         
         <title> 새 계획 생성하기 | Sample </title>
     </head>
@@ -54,6 +57,12 @@
                                 <%totPlanTitles.forEach(function(title){ %>
                                 <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
                                 <% })%>
+                                <!--
+                                     <%totPlanTitles.forEach(function(title){ %>
+                                <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                                <% })%>
+                                    
+                                -->
                             </ul>
                         </div>
                     </div>
@@ -63,7 +72,7 @@
                 </div>
             </div>
         <main>
-            <form method="POST" class="creator">
+            <form method="POST" class="creator" id = "date-form">
                 <h1>
                     새 계획 만들기
                 </h1>
@@ -73,7 +82,10 @@
                 </div>
                 <div class="date-box">
                     <h2>여행 일정</h2>
-                    <input type="text" name="dates", id="dates", required>
+
+                        출발일 : <input type="date" name="start">
+                        도착일 : <input type="date" name="end">
+                    <!--<input type="text" name="dates", id="dates", required>-->
                 </div>
                 <input type="submit" value="생성하기" class="creat-btn">
             </form>
@@ -81,5 +93,6 @@
         <footer>
             &copy; 2021 Sample Project
         </footer>
+        <script type="text/javascript" src="/public/js/create-plan.js"></script>
     </body>
 </html>

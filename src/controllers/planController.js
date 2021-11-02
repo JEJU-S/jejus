@@ -55,18 +55,23 @@ export const getCreatePlan = (req, res) => {
 }
 
 export const postCreatePlan = (req, res) => {
-    const {title, dates} = req.body;
-    console.log("여행 계획 : " , title, dates);
-    const days = dates.split("~");
+    //const {title, dates} = req.body;
+    const {title, start, end} = req.body;
 
-    let startDate = new Date(days[0]);
-    let endDate =  new Date(days[1]);
+    //console.log("여행 계획 : " , title, dates);
+    //const days = dates.split("~");
 
-
-    startDate.setDate(startDate.getDate() + 1);
-    endDate.setDate(endDate.getDate() + 1);
+    //let startDate = new Date(days[0]);
+    //let endDate =  new Date(days[1]);
 
 
+    //startDate.setDate(startDate.getDate() + 1);
+    //endDate.setDate(endDate.getDate() + 1);
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    console.log("startDate : ", startDate, "endDate : ",endDate);
 
     let tempDate = new Date(startDate);
     const dayArray = [];

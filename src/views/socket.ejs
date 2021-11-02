@@ -30,13 +30,13 @@
             출발일 : <span><%="2021-11-23"%></span>
             도착일 : <span><%="2021-11-25"%></span>
         </div>
-        <!--
+        
         <form class="date-form">
             출발일 : <input type="date" name="start-date">
             도착일 : <input type="date" name="end-date">
             <input type="submit">
         </form>
-        -->
+        
     </header>
     <main>
         
@@ -195,8 +195,8 @@
         endDate.max = `${maxDate.getFullYear()}-${maxDate.getMonth() + 1}-${maxDate.getDate()}`;
     }
 
-    //dateForm.addEventListener("submit", checkDate);
-    //dateForm.querySelector("input[name='start-date']").addEventListener("change", startDateChange);
+    dateForm.addEventListener("submit", checkDate);
+    dateForm.querySelector("input[name='start-date']").addEventListener("change", startDateChange);
 
     //**********지도*****************************
     const markerList = [];

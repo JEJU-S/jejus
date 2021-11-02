@@ -63,10 +63,6 @@ input[type="date"]:focus {
   box-shadow: 0 0 8px 0 dodgetBlue;
 }
 
-input[type="date"]::-webkit-calendar-picker-indicator {
-  background: none;
-  display: none;
-}
 
 .title-box {
   display: flex;
