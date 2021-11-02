@@ -174,9 +174,6 @@ export const callback = async(req, res) => {
         console.log(req.session.totPlanTitleList);
         
         // //profile 페이지로 redirect(seeProfile 함수)
-
-        //res.local 사용하기 
-
         res.redirect(`/users/${req.session.user._id}`);
     }
     else {
@@ -206,7 +203,7 @@ export const postEditProfile = (req, res) => {
 };
 
 export const seeProfile = (req, res) => {
-    
+
     return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
 };
 

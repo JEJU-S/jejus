@@ -29,16 +29,15 @@ function startDateChange(){
     endDate.value="";
 }
 
-function endDateChange(){
-    
-}
-
 dateForm.addEventListener("submit", check);
 startDate.addEventListener("change", startDateChange);
 
-window.onpageshow = function(event) {
-    if(event.persisted)
-        alert("event");
 
-};
+//뒤로가기 하면 데이터 다 지워져아 함
 
+
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted || window.performance.navigation.type == 2) {
+      location.reload();
+    }
+});

@@ -6,8 +6,10 @@ export const fakeUser = {
     name : "홍길동",
     image_url : "https://cdn.pixabay.com/photo/2021/07/20/03/39/fisherman-6479663__340.jpg",
     gmail : "fake123@gmail.com",
-    totPlan_list : [{_id:"507f191e810c19729de860ea", title:  "첫 제주도 여행🚗"} 
-    ,{_id:"13jbrkw3494msd3j3456e245" , title : "여행2"}]
+    totPlan_list : [
+        {_id:"507f191e810c19729de860ea", title:  "첫 제주도 여행🚗"},
+        {_id:"13jbrkw3494msd3j3456e245" , title : "여행2"}
+    ]
 }
 
 export const fakeTotPlan1 = {

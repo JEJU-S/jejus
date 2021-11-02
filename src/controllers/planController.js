@@ -92,4 +92,3 @@ export const postCreatePlan = (req, res) => {
 
 // admin만 삭제 가능하게 만들어야 함 아직 작업 x
 export const del = (req, res) => res.send("delete plans");
-

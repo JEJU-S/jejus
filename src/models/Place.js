@@ -1,16 +1,29 @@
 const mongoose = require('mongoose');
 
-const placeSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    name: String,
-    road_adr: String,
-    coordinates: {
-        x : Number,
-        y : Number
+const totplanSchema = new mongoose.Schema({
+    title: {type: String, unique: true},
+    admin: {
+        _id: mongoose.Schema.Types.ObjectId,
+        name: String
     },
-    map_link: String
+    participants: [{
+        _id: mongoose.Schema.Types.ObjectId,
+        name: String
+    }],
+    day_plan: [{
+       date: {type :Date, requried:true}, 
+       place: [{
+           name: String,
+           road_adr: String,
+           // img 추가할건지 판단
+           x : Number,
+           y : Number,
+           map_link: String
+       }]
+    }
+    ]
 })
 
-const Place = mongoose.model('Place', placeSchema);
+const TotPlan = mongoose.model('TotPlan', totplanSchema );
 
-module.exports = {Place}
+module.exports = {TotPlan}
