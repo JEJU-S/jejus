@@ -55,6 +55,7 @@ app.use("/public", express.static(srcPath));
 // post 내용 받아옴
 
 app.use(express.urlencoded({ extended: true}));
+
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/plans", planRouter);

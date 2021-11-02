@@ -99,6 +99,15 @@
                             <%=participant['name']%>
                         <% })%>
                     </span>
+
+                    <button class="inv-btn">초대</button>
+        
+                    <form class="email-form" method="post" style="display : none">
+                        <input type="email", placeholder="gmail을 입력하세요" name="gmail">
+                        <input type="submit" value="초대장 전송">
+                        <input type= "reset" value="취소">
+                    </form>
+                    
                     <span class="date">
                         <%=totPlan.day_plan[0]['date']%>
                             ~

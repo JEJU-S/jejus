@@ -13,15 +13,9 @@
         <!--구글 아이콘-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="/public/css/icon.css">
-        <!--JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <!--날짜 선택기 jqeury-->
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <script type="text/javascript" src="/public/js/date-range-picker.js"></script>
-        <!--날짜선택기 끝-->
+        <script type="text/javascript" src="/public/js/create-plan.js"></script>
+    
+
         
         <title> 새 계획 생성하기 | Sample </title>
     </head>
@@ -51,9 +45,11 @@
                             </span>
                             <span><a href="">마이페이지</a></span>
                     </div>
+
                     <div class="menu-name selected">
                         <span class="material-icons md-36">
                             create_new_folder</span>
+
                         <span><a href="/plans/create">새 계획 만들기</a></span>
                     </div>
                     <div class="menu-name group">
@@ -70,6 +66,12 @@
                                 <%totPlanTitles.forEach(function(title){ %>
                                 <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
                                 <% })%>
+                                <!--
+                                     <%totPlanTitles.forEach(function(title){ %>
+                                <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                                <% })%>
+                                    
+                                -->
                             </ul>
                         </div>
                     </div>
@@ -81,17 +83,20 @@
                 </div>
             </div>
         <main>
-            <form method="POST" class="creator">
+            <form method="POST" class="creator" id = "date-form">
                 <h1>
                     새 계획 만들기
                 </h1>
                 <div class="title-box">
                     <h2>여행 제목</h2>
-                    <input type="text" name="title", placeholder="제목">
+                    <input type="text" name="title", placeholder="제목", required>
                 </div>
                 <div class="date-box">
                     <h2>여행 일정</h2>
-                    <input type="text" name="dates", id="dates">
+
+                        출발일 : <input type="date" name="start">
+                        도착일 : <input type="date" name="end">
+                    <!--<input type="text" name="dates", id="dates", required>-->
                 </div>
                 <input type="submit" value="생성하기" class="creat-btn">
             </form>
@@ -99,6 +104,9 @@
         <footer>
             &copy; 2021 Sample Project
         </footer>
+
+        <script type="text/javascript" src="/public/js/create-plan.js"></script>
         <script type="text/javascript" src="/public/js/menu-opener.js"></script>
+
     </body>
 </html>
