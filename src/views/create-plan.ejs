@@ -55,8 +55,8 @@
 
                         <span><a href="/plans/create">새 계획 만들기</a></span>
                     </div>
-                    <div class="menu-name group" id="group">
-                        <div class="mygroup">
+                    <div class="menu-name group">
+                        <div class="mygroup" id="group">
                             <span class="material-icons md-36 grid">
                                 folder
                             </span>
@@ -69,7 +69,7 @@
                                 <li><a href="/plans/<%=title['_id']%>" class="side-plan-title"><%=title['title']%></a></li>
                                 <% })%>
                                 <!--
-                                     <%totPlanTitles.forEach(function(title){ %>
+                                    <%totPlanTitles.forEach(function(title){ %>
                                 <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
                                 <% })%>
 
@@ -109,6 +109,5 @@
 
         <script type="text/javascript" src="/public/js/create-plan.js"></script>
         <script type="text/javascript" src="/public/js/menu-opener.js"></script>
-
     </body>
 </html>
