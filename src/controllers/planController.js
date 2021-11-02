@@ -17,6 +17,16 @@ export const seePlan = (req, res) =>
         map_cl : process.env.MAP_CLIENT
     });
 }
+
+export const sendInvitation = (req, res) => {
+    //Database 작업(초대장 전송)
+    const {id} = req.params; //plan id
+    const {gmail} = req.body; //초대장을 보낼 이메일
+
+    //**DB
+    
+    res.redirect(`/plans/${id}`);
+}
  
 export const editPlan = (req, res) => 
 {
@@ -46,19 +56,26 @@ export const getCreatePlan = (req, res) => {
 
 export const postCreatePlan = (req, res) => {
     const {title, dates} = req.body;
-    //console.log("여행 계획 : " , title, dates);
-
+    console.log("여행 계획 : " , title, dates);
     const days = dates.split("~");
 
     let startDate = new Date(days[0]);
     let endDate =  new Date(days[1]);
 
+
     startDate.setDate(startDate.getDate() + 1);
     endDate.setDate(endDate.getDate() + 1);
 
-    //console.log(startDate);
-    //console.log(endDate);
+
+
+    let tempDate = new Date(startDate);
+    const dayArray = [];
+
+    for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
+        dayArray.push(new Date(tempDate));
+    }
     
+
     
     // database => 새 plan 생성 뒤 user에 추가
 

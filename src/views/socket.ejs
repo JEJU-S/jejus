@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    
     <title> Edit <%=totPlan.title%> | Sample </title>
 </head>
-<body class= "container">
+<body class="container">
     <!--hidden(javascript 값 위해 설정한 것)-->
     <div id="plan-id" hidden><%=totPlan._id%></div>
     <div id="user-name" hidden><%=user.name%></div>
@@ -76,9 +77,11 @@
 </body>
 
 <script>
+    
     //room 생성
     const planId = document.querySelector("#plan-id").innerHTML;
     const userName = document.querySelector("#user-name").innerHTML;
+
     const planDate = document.querySelector(".plan-date");
     const placeBox = document.querySelector(".place-box");
     
@@ -88,25 +91,14 @@
     socket.emit("join_room", planId, userName, init); // 방 만들기(planid 별 방 만들기)
     function init(){
 
-        let tempDate = new Date(planDate.querySelectorAll("span")[0].innerText);
+        
+        // 날짜별 div 박스 생성
         const startDate = new Date(planDate.querySelectorAll("span")[0].innerText);
         const endDate = new Date(planDate.querySelectorAll("span")[1].innerText);
+        const daylength = Math.abs(endDate - startDate)/(1000 * 3600 *24);
 
-        console.log(startDate);
-        console.log(endDate);
-        console.log(tempDate);
-        //데이터베이스에서 꺼내온 것 초기화
-    }
-
-    //***********날짜 div 생성=> init에 들어갈 함수 ****************
-    function createDateDiv(){
-        // temp 지점 => start 지점으로 정해줌
-
-        //start부터 end까지 for문 구현
-        let dayIndex = 1;
-        for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1))
-        {   
-            console.log("temp date : ", tempDate);
+        for(let dayIndex = 1; dayIndex <= daylength + 1; dayIndex++){  
+            console.log(dayIndex); 
 
             //날짜별 dayPlanDiv 생성
             const dayPlanDiv = document.createElement("div");
@@ -119,15 +111,13 @@
             
             date.innerHTML = `day ${dayIndex}`;
             dayDisplay.append(date);
-            dayPlanDiv.append(dateDisplay);
+            dayPlanDiv.append(dayDisplay);
 
             placeBox.append(dayPlanDiv);
-            dayIndex++;
         }
 
-        return 1;
+        //데이터베이스에서 꺼내온 것 초기화
     }
-
 
 
     // element 요소

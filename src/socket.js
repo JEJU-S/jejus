@@ -4,7 +4,6 @@ import app from "./server";
 import SocketIO from "socket.io";
 import http from "http";
 import dotdev from "dotenv";
-import { start } from "repl";
 dotdev.config();
 
 const server = http.createServer(app);
@@ -35,7 +34,7 @@ async function searchPlace(keyword){
     result["documents"].forEach((document) => { 
             searchResults.push(document);
     });
-
+    console.log(searchResults);
     return searchResults;
 }
 
