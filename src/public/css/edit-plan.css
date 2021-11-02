@@ -137,6 +137,7 @@ input[type="text"]:focus {
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  height: 87vh;
 }
 
 .add-btn {
@@ -158,7 +159,7 @@ input[type="text"]:focus {
   display: flex;
   flex-direction: column;
   background-color: white;
-  height: 72.5vh;
+  height: 100%;
   overflow: scroll;
 }
 

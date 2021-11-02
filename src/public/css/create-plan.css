@@ -1,12 +1,11 @@
 .container {
   grid-template-areas:
-    "header header header"
-    "sidebar creator creator"
-    "sidebar creator creator"
-    "footer footer footer";
+    "header header"
+    "sidebar creator"
+    "footer footer";
 
-  grid-template-columns: 310px 1214px;
-  grid-template-rows: 40px 630px 20px;
+  grid-template-columns: 310px auto;
+  grid-template-rows: 50px auto 20px;
 }
 
 .creator {
