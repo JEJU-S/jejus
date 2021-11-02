@@ -15,8 +15,6 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-        <!--JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <title> Profile | Sample </title>
     </head>
     <body class="container">
@@ -43,7 +41,7 @@
                     <span class="material-icons md-36">
                         account_circle
                         </span>
-                        <span><a href="">마이페이지</a></span>
+                        <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
                     <span class="material-icons md-36">
@@ -62,7 +60,7 @@
                     <div class="menu-detail" id="mygroup">
                         <ul>
                             <%totPlanTitles.forEach(function(title){ %>
-                            <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <li><a href="/plans/<%=title['_id']%>" class="side-plan-title"><%=title['title']%></a></li>
                             <% })%>
                         </ul>
                     </div>
@@ -132,6 +130,5 @@
         <footer>
             &copy; <%=new Date().getFullYear()%> Sample Project
         </footer>
-        <script type="text/javascript" src="/public/js/menu-opener.js"></script>
     </body>
 </html>

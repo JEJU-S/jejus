@@ -13,15 +13,10 @@
         <!--구글 아이콘-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="/public/css/icon.css">
-        <!--JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <!--날짜 선택기 jqeury-->
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-        <script type="text/javascript" src="/public/js/date-range-picker.js"></script>
-        <!--날짜선택기 끝-->
+        <!--구글 웹폰트-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
         
         <title> 새 계획 생성하기 | Sample </title>
     </head>
@@ -49,7 +44,7 @@
                         <span class="material-icons md-36">
                             account_circle
                             </span>
-                            <span><a href="">마이페이지</a></span>
+                            <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                     </div>
                     <div class="menu-name selected">
                         <span class="material-icons md-36">
@@ -62,13 +57,12 @@
                                 folder
                             </span>
                             <span >내 그룹</span>
-                            
                         </div>
                         <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
                         <div class="menu-detail" id="mygroup">
                             <ul>
                                 <%totPlanTitles.forEach(function(title){ %>
-                                <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                                <li><a href="/plans/<%=title['_id']%>" class="side-plan-title"><%=title['title']%></a></li>
                                 <% })%>
                             </ul>
                         </div>
@@ -99,6 +93,5 @@
         <footer>
             &copy; 2021 Sample Project
         </footer>
-        <script type="text/javascript" src="/public/js/menu-opener.js"></script>
     </body>
 </html>
