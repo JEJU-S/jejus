@@ -1,7 +1,8 @@
+
 const mongoose = require('mongoose');
 
 const totplanSchema = new mongoose.Schema({
-    title: String,
+    title: {type: String, unique: true},
     admin: {
         _id: mongoose.Schema.Types.ObjectId,
         name: String
@@ -11,18 +12,17 @@ const totplanSchema = new mongoose.Schema({
         name: String
     }],
     day_plan: [{
-       date: Date,
+       date: {type :Date, requried:true}, 
        place: [{
            name: String,
            road_adr: String,
-           coordinates: {
-            x : Number,
-            y : Number
-        }
+           // img 추가할건지 판단
+           x : Number,
+           y : Number,
+           map_link: String
        }]
     }
-    ],
-    map_link: String
+    ]
 })
 
 const TotPlan = mongoose.model('TotPlan', totplanSchema );

@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="/public/css/header.css">
 		<link rel="stylesheet" href="/public/css/footer.css">
         <link rel="stylesheet" href="/public/css/create-plan.css">
-        
+
         <!--구글 아이콘-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="/public/css/icon.css">
@@ -19,7 +19,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-        
+
         <title> 새 계획 생성하기 | Sample </title>
     </head>
     <body class="container">
@@ -48,9 +48,11 @@
                             </span>
                             <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                     </div>
+
                     <div class="menu-name selected">
                         <span class="material-icons md-36">
                             create_new_folder</span>
+
                         <span><a href="/plans/create">새 계획 만들기</a></span>
                     </div>
                     <div class="menu-name group" id="group">
@@ -66,6 +68,12 @@
                                 <%totPlanTitles.forEach(function(title){ %>
                                 <li><a href="/plans/<%=title['_id']%>" class="side-plan-title"><%=title['title']%></a></li>
                                 <% })%>
+                                <!--
+                                     <%totPlanTitles.forEach(function(title){ %>
+                                <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                                <% })%>
+
+                                -->
                             </ul>
                         </div>
                     </div>
@@ -77,24 +85,30 @@
                 </div>
             </div>
         <main>
-            <form method="POST" class="creator">
+            <form method="POST" class="creator" id = "date-form">
                 <h1>
                     새 계획 만들기
                 </h1>
                 <div class="title-box">
                     <h2>여행 제목</h2>
-                    <input type="text" name="title", placeholder="제목">
+                    <input type="text" name="title", placeholder="제목", required>
                 </div>
                 <div class="date-box">
                     <h2>여행 일정</h2>
-                    <input type="text" name="dates", id="dates">
+
+                        출발일 : <input type="date" name="start">
+                        도착일 : <input type="date" name="end">
+                    <!--<input type="text" name="dates", id="dates", required>-->
                 </div>
                 <input type="submit" value="생성하기" class="creat-btn">
             </form>
-        </main>    
+        </main>
         <footer>
             &copy; 2021 Sample Project
         </footer>
+
+        <script type="text/javascript" src="/public/js/create-plan.js"></script>
         <script type="text/javascript" src="/public/js/menu-opener.js"></script>
+
     </body>
 </html>

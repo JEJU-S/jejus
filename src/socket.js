@@ -34,7 +34,7 @@ async function searchPlace(keyword){
     result["documents"].forEach((document) => { 
             searchResults.push(document);
     });
-
+    console.log(searchResults);
     return searchResults;
 }
 
@@ -62,13 +62,30 @@ io.on("connection", (socket) => {
         socket.join(planId);
         socket["userName"] = userName;
         console.log(socket.rooms);
+
         socket.to(planId).emit("server_msg", {
             roomId : planId,
             userName : socket.userName, 
             message : `${socket.userName}님이 입장하셨습니다.`
         });
         init();
+
     });
+
+    socket.on("send_inviataion", (gmail) => {
+        //DB******** 초대장 gmail로 전송
+        console.log(gmail);
+    })
+
+    socket.on("change_date", (start, end, planId) => {
+        //DB****** 날짜 바꾸기
+        console.log(planId);
+        console.log(start);
+        console.log(end);
+
+        socket.to(planId).emit("create_date_div", start, end);
+        socket.emit("create_date_div", start , end);
+    })
 
     socket.on("send_chatting_msg", (msgObj) => {
         socket.to(msgObj.roomId).emit("print_chatting_msg", msgObj);
@@ -82,13 +99,14 @@ io.on("connection", (socket) => {
     });
     
     socket.on("add_to_placelist", (placeObj, planId) => {
-        //database 작업
+        //database 작업 필요
+        //해당 plan
         socket.to(planId).emit("place_add_map", placeObj);
         socket.emit("place_add_map", placeObj);
     });
 
     socket.on("del_from_placelist", (coordinates, planId) => {
-        //database 작업
+        //database 작업 필요
         // list에서 해당 좌표를 가진 place 삭제
         socket.to(planId).emit("place_delete_map", coordinates);
         socket.emit("place_delete_map", coordinates);

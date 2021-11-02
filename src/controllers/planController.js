@@ -1,20 +1,5 @@
 import dotdev from "dotenv";
 dotdev.config();
-//goes to plan router
-
-// const fake_plan = '시청' 
-
-// // 
-// User.findOne({gmail: user_gmail}).exec(async function(err, res){
-//     if(res){
-//         res.totPlan_id.push(fake_plan);
-//         res.save(async function(err, plan){
-//             console.log("save sucess");
-//         });
-//     }
-// });
-
-
 
 // fake database(json) 추후 진짜 데이터베이스로 바꿔야 함
 import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
@@ -31,6 +16,16 @@ export const seePlan = (req, res) =>
         totPlan : fakeTotPlan1,
         map_cl : process.env.MAP_CLIENT
     });
+}
+
+export const sendInvitation = (req, res) => {
+    //Database 작업(초대장 전송)
+    const {id} = req.params; //plan id
+    const {gmail} = req.body; //초대장을 보낼 이메일
+
+    //**DB
+    
+    res.redirect(`/plans/${id}`);
 }
  
 export const editPlan = (req, res) => 
@@ -55,14 +50,29 @@ export const editPlan = (req, res) =>
 }
 
 export const getCreatePlan = (req, res) => {
+
     res.render("create-plan", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList });
 }
 
 export const postCreatePlan = (req, res) => {
+    //const {title, dates} = req.body;
+    const {title, start, end} = req.body;
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    console.log("startDate : ", startDate, "endDate : ",endDate);
+
+    let tempDate = new Date(startDate);
+    const dayArray = [];
+
+    for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
+        dayArray.push(new Date(tempDate));
+    }
+    
     // database => 새 plan 생성 뒤 user에 추가
     res.redirect(`/users/${req.session.user._id}`); 
 }
 
 // admin만 삭제 가능하게 만들어야 함 아직 작업 x
 export const del = (req, res) => res.send("delete plans");
-
