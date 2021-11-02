@@ -1,6 +1,7 @@
 $(function () {
     $('#dates').daterangepicker({
         "locale": { 
+
             "format": "YYYY-MM-DD", 
             "separator": " ~ ",
             "applyLabel": "입력", 
@@ -14,11 +15,14 @@ $(function () {
             "firstDay": 1 
         }, 
         "maxSpan": {
+
             "days": 5
         },
         "startDate": new Date(),
         "endDate": new Date(), 
-        "drops": "down" 
+        "drops": "down",
+        "autoApply":true,
+        "minDate": new Date()
     }, function (start, end, label) { 
         console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); });
 })

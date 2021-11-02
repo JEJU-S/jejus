@@ -1,22 +1,21 @@
 .container {
   grid-template-areas:
-    "header header header"
-    "sidebar day-btn day-btn"
-    "sidebar main main"
-    "sidebar main main"
-    "footer footer footer";
-  grid-template-columns: 310px 1170px;
-  grid-template-rows: 40px 50px 0 600px 20px;
+    "header header"
+    "sidebar day-btn"
+    "sidebar main"
+    "footer footer";
+  grid-template-columns: 310px auto;
+  grid-template-rows: 50px 50px auto 20px;
 }
 
 main {
   background-color: rgb(255, 255, 255);
   grid-area: main;
-  margin: 15px 0 0 0px;
-  border-radius: 0 15px 15px 15px;
+  margin: 10px 15px;
+  border-radius: 0 5px 5px 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 19%);
-  height: 572px;
-  width: 1140px;
+  height: auto;
+  width: auto;
 }
 
 .day-button {
@@ -24,17 +23,18 @@ main {
   display: flex;
   flex-direction: row;
   text-align: center;
-  margin: 15px 0 0 0px;
+  margin: 15px 0 0 15px;
 }
 
 .btn {
   background-color: rgb(229 229 229);
   width: 120px;
-  height: 50px;
+  height: 45px;
   max-width: 186px;
   border-radius: 15px 15px 0 0;
   line-height: 3;
-  box-shadow: -1px -2px 4px 0 rgb(0 0 0 / 11%);
+  box-shadow: -2px -3px 4px 0 rgb(0 0 0 / 11%);
+  cursor: pointer;
 }
 
 /*info가 선택되었는지, 아닌지에 따라 day-plan과 whole-plan의
@@ -48,7 +48,8 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 #total-map {
   width: 80%;
-  height: 400px;
+  height: auto;
+  min-height: 600px;
   border-radius: 10px;
 }
 

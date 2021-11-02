@@ -1,34 +1,56 @@
 .container {
   grid-template-areas:
-    "header header header"
-    "sidebar profile profile"
-    "sidebar invite invite"
-    "footer footer footer";
+    "header header"
+    "sidebar main"
+    "footer footer";
 
-  grid-template-columns: 310px 1170px;
-  grid-template-rows: 40px 630px 20px;
+  grid-template-columns: 310px auto;
+  grid-template-rows: 50px auto 20px;
+}
+
+main {
+  grid-area: main;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1% 4% 2% 4%;
+  width: 90%;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  border-radius: 5px;
+}
+
+.pf-title {
+  margin: 10px 0;
 }
 
 .main-profile {
-  grid-area: profile;
   display: flex;
   flex-direction: row;
-  column-gap: 20px;
-  padding: 2% 4%;
-  width: 1055px;
+  column-gap: 100px;
   color: rgb(0, 0, 0);
-  margin: 15px 0;
-  background-color: rgb(255, 255, 255);
-  border-radius: 16px;
-  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
 .profile-box {
   align-self: center;
-  width: 200px;
-  height: 200px;
+  margin-left: 5%;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   overflow: hidden;
+  background-color: #dfdfdf;
+}
+
+.edit-profile-box {
+  width: 100%;
+  background-color: white;
 }
 
 .profile-photo {
@@ -38,20 +60,15 @@
 }
 
 .info-box {
-  width: 200px;
-  text-overflow: clip;
-  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
 }
 
-.nickname {
-  width: 20%;
-  margin: 16px 35px;
-}
-
+.nickname,
 .email {
-  width: 30%;
-  margin: 16px 35px;
-  text-overflow: clip;
+  text-align: center;
+  padding: 20px;
 }
 
 .nickname-edit {
@@ -82,7 +99,7 @@ input[type="text"]:focus {
   text-overflow: clip;
 }
 .edit-button {
-  background-color: rgb(72, 173, 255);
+  background-color: #68a9e9;
   padding: 7.5px 1px;
   color: #fff;
   text-align: center;
@@ -100,23 +117,19 @@ input[type="text"]:focus {
 .edit-button:hover {
   background-color: rgb(39, 95, 141);
   color: rgb(255, 255, 255);
-  transition: 0.5s;
+  transition: 0.1s;
 }
 
 .inv-box {
   display: flex;
   flex-direction: column;
-  padding: 0 48px;
-  padding-bottom: 40px;
-  height: auto;
-  min-height: 120px;
-  max-height: 317px;
-  width: 1053px;
+  padding: 2% 4%;
+  height: 100%;
+  width: 90%;
   color: rgb(0, 0, 0);
   margin-bottom: 1px;
   background-color: white;
-  list-style: none;
-  border-radius: 16px;
+  border-radius: 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   justify-content: flex-start;
 }
@@ -124,21 +137,33 @@ input[type="text"]:focus {
 .inv-items {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 15px;
+  min-height: 120px;
+  height: 34vh;
+  overflow: scroll;
+}
+
+.inv-items::-webkit-scrollbar {
+  display: none;
 }
 
 .inv-item {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
+  color: #474747;
+  background-color: #ffffff;
   border-radius: 4px;
-  padding: 5px;
+  padding: 1%;
   line-height: 2;
+  border-bottom: 1px solid #8d8d8d2e;
+}
+
+.inv-item:hover {
+  background-color: #f1f1f1a4;
+  border-bottom: 1px solid rgba(255, 0, 0, 0);
 }
 
 .inv-title {
   margin-left: 30px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .inv-host {
@@ -146,17 +171,17 @@ input[type="text"]:focus {
 }
 
 .inv-btn {
-  display: inline-block;
+  display: block;
   float: right;
   border-radius: 4px;
   border: none;
   margin-right: 40px;
-  line-height: 1;
+  line-height: 2.5;
 }
 
 .accept {
   color: white;
-  background-color: #48adff;
+  background-color: #5ac760;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -166,13 +191,13 @@ input[type="text"]:focus {
   cursor: pointer;
 }
 .accept:hover {
-  background-color: #1e9aff;
+  background-color: #2a58ff;
   transition: 0.1s;
 }
 
 .refuse {
   color: white;
-  background-color: #ffb62a;
+  background-color: #aaaaaa;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -181,6 +206,29 @@ input[type="text"]:focus {
   cursor: pointer;
 }
 .refuse:hover {
-  background-color: #ffa908;
+  background-color: #2a58ff;
   transition: 0.1s;
 }
+
+.deco {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.box {
+  width: 10px;
+  height: 30px;
+  background-color: #6662f5;
+}
+
+/*
+.accept,
+.refuse,
+header,
+.edit-button,
+.selected {
+  background-color: red !important;
+}
+*/
