@@ -58,16 +58,6 @@ export const postCreatePlan = (req, res) => {
     //const {title, dates} = req.body;
     const {title, start, end} = req.body;
 
-    //console.log("여행 계획 : " , title, dates);
-    //const days = dates.split("~");
-
-    //let startDate = new Date(days[0]);
-    //let endDate =  new Date(days[1]);
-
-
-    //startDate.setDate(startDate.getDate() + 1);
-    //endDate.setDate(endDate.getDate() + 1);
-
     const startDate = new Date(start);
     const endDate = new Date(end);
 
@@ -80,13 +70,7 @@ export const postCreatePlan = (req, res) => {
         dayArray.push(new Date(tempDate));
     }
     
-
-    
     // database => 새 plan 생성 뒤 user에 추가
-
-
-
-
     res.redirect(`/users/${req.session.user._id}`); 
 }
 
