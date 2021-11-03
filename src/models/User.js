@@ -2,9 +2,13 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     name: String,
-    gmail: {type: String, required: true, unique: true},
+    gmail: String,
     image_url: String,
-    totPlan_id: [mongoose.Schema.Types.ObjectId]
+    totPlan_list:[{_id: mongoose.Schema.Types.ObjectId , title: String}],
+    call_list : [{
+        host : String,
+        plan_title : String
+    }]
 })
 
 const User = mongoose.model('User', userSchema );

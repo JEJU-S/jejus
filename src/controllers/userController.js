@@ -13,6 +13,28 @@ import { Mongoose } from "mongoose";
 import { app } from "cli";
 import { Db } from "mongoose/node_modules/mongodb";
 
+async function findUser(user_gmail){
+    const user_info = await User.findOne({gmail : user_gmail}).lean();
+    try{
+        if(!user_info){            
+        const user_info_N = await User.findOne({gmail: user_gmail}).lean();
+        console.log('1111111111')
+        console.log(user_info_N);
+        return login_id, login_name, login_gmail, login_image, login_totPlan_list, login_call_list;
+        }
+        else{
+            let user_info = await User.findOne({gmail: user_gmail}).lean();
+            console.log('22222222222')
+            console.log(user_info);
+            return user_info;
+        }
+    }catch(err) {
+        const user_info = await User.findOne({gmail: user_gmail}).lean();
+        console.log('3333333333333')
+        console.log(user_info);
+        return user_info;
+    }
+}
 
 const PORT = process.env.PORT || 8080;
 
@@ -22,6 +44,7 @@ export const main = (req, res) => {
     console.log(hostname["Loopback Pseudo-Interface 1"][1]["address"]);
     return res.render("main");
 };
+
 
 // --로그인 작업--
 //Main -> Profile 로 가는 process function 
@@ -87,20 +110,20 @@ export const callback = async(req, res) => {
         
         // 사용자 정보 console에 출력 -> db로 받아서 
         console.log(userRequest);
-        const user_name = userRequest['names'][0]['displayName'];
-        const user_gmail = userRequest['emailAddresses'][0]['value'];
-        const user_image_url = userRequest['photos'][0]['url'];
+        const user_name = await userRequest['names'][0]['displayName'];
+        const user_gmail = await userRequest['emailAddresses'][0]['value'];
+        const user_image_url = await userRequest['photos'][0]['url'];
         
         console.log("-----------user info-------------");
         console.log(user_name);
         console.log(user_gmail);
         console.log(user_image_url);
-
         console.log("---------------------------------");
    
 
         // 유저 유무 파악(없다면 저장, 있으면 login successfully)
-        User.findOne({gmail: user_gmail}).exec(async function(err, user){
+
+        User.findOne({gmail: user_gmail}).exec(function(err, user){
             if(!user){
                 console.log("!no user!");
                 new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
@@ -110,30 +133,19 @@ export const callback = async(req, res) => {
                 .catch((err) => {
                     console.error(err);
                  });
-                }
+            }
             else{
                 console.log("login successfully!")
             }
         });
-     
-        
-        const user_info = await User.findOne({gmail: user_gmail}).lean();
-        if(!user_info){
-            const user_info_N = await User.findOne({gmail: user_gmail}).lean();
-            var login_id = await user_info_N._id;
-            var login_name = await user_info_N.name;
-            var login_gmail = await user_info_N.gmail;
-            var login_image = await user_info_N.image_url;
-            var login_totPlan_id = await user_info_N.totPlan_id;
-        }
-        else{
-            const user_info = await User.findOne({gmail: user_gmail}).lean();
-            var login_id = await user_info._id
-            var login_name = await user_info.name;
-            var login_gmail = await user_info.gmail;
-            var login_image = await user_info.image_url;
-            var login_totPlan_id = await user_info.totPlan_id;
-        }
+
+        let user_info = await findUser(user_gmail);
+        let login_id = await user_info._id
+        let login_name = await user_info.name;
+        let login_gmail = await user_info.gmail;
+        let login_image = await user_info.image_url;
+        let login_totPlan_list = await user_info.totPlan_list;
+        let login_call_list = await user_info.call_list;
 
        console.log('---------------------------')
        console.log('UserInfo from MongoDB')
@@ -141,7 +153,8 @@ export const callback = async(req, res) => {
        console.log(login_name);
        console.log(login_gmail);
        console.log(login_image);
-       console.log(login_totPlan_id);
+       console.log(login_totPlan_list);
+       console.log(login_call_list);
        console.log('---------------------------')
 
 
@@ -161,7 +174,8 @@ export const callback = async(req, res) => {
             name : login_name,
             image_url : login_image,
             gmail : login_gmail,
-            totPlan_id : login_totPlan_id
+            totPlan_list : login_totPlan_list,
+            call_list : login_call_list // 초대장 리스트
         };
 
         // // user가 가지고 있는 plan 뽑아서 id, title을 저장

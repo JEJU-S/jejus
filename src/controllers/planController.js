@@ -9,10 +9,10 @@ const mongoose = require('mongoose');
 import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 
 async function findID(id) {
-    const user_TotPlan = await TotPlan.findOne({_id: id}).lean();       
-    console.log(user_TotPlan);
+    const user_TotPlan = await TotPlan.find({_id: id}).lean();
     return user_TotPlan;
 }
+
 
 //사용자 마다 완성된 plan 보여주기 위한 것
 export const seePlan = async(req, res) => 
@@ -21,6 +21,7 @@ export const seePlan = async(req, res) =>
 
     let user_plan = await findID(id);
     console.log(user_plan);
+
 
     //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
     res.render(`see-plan`, {
@@ -31,15 +32,17 @@ export const seePlan = async(req, res) =>
     });
 }
  
-export const editPlan = (req, res) => 
+export const editPlan = async(req, res) => 
 {
     // database => 접근하고자 하는 plan id를 통해 user가 plan 사용자에 포함되어있는지 확인
     // 포함되어있으면 들어가게, 아니면 접근 x 하게 만들어야 함
     const {id} = req.params;
     
+
+
     res.render("socket", {
         user : req.session.user,
-        totPlan : fakeTotPlan1,
+        totPlan : user_ID,
         map_cl : process.env.MAP_CLIENT
     });
     
