@@ -145,12 +145,12 @@ export const callback = async(req, res) => {
         //     }
         // });
 
-        new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
+        await new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
                 .then(() => {
                     console.log('Saved successfully');
                  })
                 .catch((err) => {
-                    console.error(err);
+                    console.log('existing user')
                  });
 
         const user_info = await finduser(user_gmail);
