@@ -83,7 +83,6 @@ export const sendInvitation = async (req, res) => {
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
-    const insert_plan = {_id : totplan_id, title: totplan_title};
     const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
     // 초대장을 받음
@@ -91,7 +90,6 @@ export const sendInvitation = async (req, res) => {
     console.log("초대한 유저",par_userinfo);
     const par_id = par_userinfo._id;
     const par_name = par_userinfo.name;
-    const par_info = {_id: par_id, name: par_name};
 
     
     //  user(참가자)의 totplan_list추가(totplan_id, totplan.name)
@@ -209,44 +207,81 @@ export const postCreatePlan = async (req, res) => {
 
 export const accept = async (req, res) => {
     //***DB
-
-    const {id} = req.params;
-    // const usertotplan = await finduserPlan(id);
-    // console.log("초대한 계획",usertotplan)
-    // const totplan_title = usertotplan.title;
-    // const totplan_id = usertotplan._id;
-    // const hostname = usertotplan.admin.name;
-    // const insert_plan = {_id : totplan_id, title: totplan_title};
-    // const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
-
-    // // 초대장을 받음
-    // const par_userinfo = await finduser(req.session.user._id);
-    // console.log("초대한 유저",par_userinfo);
-    // const par_id = par_userinfo._id;
-    // const par_name = par_userinfo.name;
-    // const par_info = {_id: par_id, name: par_name};
-
     
-    // User.findOne({_id: req.session.user._id}).exec(function(err, res){
-    //     if(res){
-    //         res.totPlan_list.push(insert_plan);
-    //         res.save();
-    //     }
-    // });
+    const {id, tid} = req.params;
+
+    console.log(id)
+    console.log(tid)
+
+    const accept_id = req.session.user._id;
+
+    const par_userinfo = await finduser(req.session.user.gmail);
+
+    const usertotplan = await finduserPlan(id);
+
+    console.log("초대받은 계획",usertotplan)
+
+    const totplan_title = usertotplan.title;
+    const totplan_id = usertotplan._id;
+    const insert_plan = {_id : totplan_id, title: totplan_title};
+    const hostname = usertotplan.admin.name;
+
+    const insert_host = { host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid };
+
+    console.log("insert host --- ")
+    const par_info = {_id: par_userinfo._id, name: par_userinfo.name, image_url: par_userinfo.image_url};
+    console.log("par in fo  --- ")
+    
+    TotPlan.findOne({_id:id}).exec(function(err, res){
+        if(res){
+            res.participants.push(par_info);
+            res.save();
+        }
+    });
+    console.log("////_@_ 3-- ")
+
+    User.findOne({_id: accept_id}).exec(function(err, res){
+        if(res){
+            res.totPlan_list.push(insert_plan);
+            res.call_list.pull(insert_host);
+            res.save();
+        }
+    });
+    console.log("////_@_ --- ")
+    
     // // 초대 수락시
-    // // tot_plan participant추가
-    // TotPlan.findOne({_id:totplan_id}).exec(function(err, res){
-    //     if(res){
-    //         res.participants.push(par_info);
-    //         res.save();
-    //     }
-    // });
+    // tot_plan participant추가
+    
     res.redirect(`/users/${req.session.user._id}`);
 }
 
-export const refuse = (req, res) => {
+export const refuse = async (req, res) => {
     //***DB
+    const {id,tid} = req.params;
+
+    console.log(id)
+    console.log(tid)
+
+    const refuse_id = req.session.user._id
+    const par_userinfo = await finduser(req.session.user.gmail);
+
+    const usertotplan = await finduserPlan(id);
+
+    console.log("초대받은 계획",usertotplan)
+
+    const totplan_title = usertotplan.title;
+    const totplan_id = usertotplan._id;
+    const hostname = usertotplan.admin.name;
+    const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid};
+
     
+    User.findOne({_id: refuse_id}).exec(function(err, res){
+        if(res){
+            res.call_list.pop(insert_host);
+            res.save();
+        }
+    });
+
     res.redirect(`/users/${req.session.user._id}`);
 }
 

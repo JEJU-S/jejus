@@ -247,7 +247,7 @@ exports.postEditProfile = postEditProfile;
 
 var seeProfile = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var user_call_list;
+    var user_data;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -256,14 +256,15 @@ var seeProfile = /*#__PURE__*/function () {
             return finduser(req.session.user.gmail);
 
           case 2:
-            user_call_list = _context2.sent;
-            req.session.user.call_list = user_call_list.call_list;
+            user_data = _context2.sent;
+            req.session.user.call_list = user_data.call_list;
+            req.sesion.user.totPlan_list = user_data.totPlan_list;
             return _context2.abrupt("return", res.render("see-profile", {
               user: req.session.user,
               totPlanTitles: req.session.user.totPlan_list
             }));
 
-          case 5:
+          case 6:
           case "end":
             return _context2.stop();
         }
