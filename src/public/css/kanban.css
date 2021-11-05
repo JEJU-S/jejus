@@ -1,0 +1,100 @@
+html::-webkit-scrollbar {
+  display: none;
+}
+
+/*칸반 css 시작*/
+
+.kanban {
+  color: white;
+  display: flex;
+  width: 20%;
+  height: 95%;
+  background: #c9c9c9;
+  border-radius: 5px;
+  flex-direction: column;
+  overflow: scroll;
+  max-height: 89vh;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+}
+
+.kanban::-webkit-scrollbar {
+  display: none;
+}
+
+.kanban__column {
+  margin: 15px;
+  background-color: rgb(255, 255, 255);
+}
+
+.kanban__column-title {
+  padding: 10px 0;
+  font-size: 2rem;
+  text-align: center;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  user-select: none;
+  background-color: rgb(218, 218, 218);
+}
+
+.kanban__dropzone {
+  grid-area: dr;
+  height: 20px;
+  background-color: #ffffff;
+  transition: background 0.15s, height 0.15s;
+}
+
+.kanban__dropzone--active {
+  height: 30px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.kanban__item {
+  display: grid;
+  grid-template-areas:
+    "title del"
+    "adr adr"
+    "dr dr";
+  grid-template-columns: 72% 28%;
+  cursor: grab;
+}
+
+.kanban__item:active {
+  cursor: grabbing;
+}
+
+.kanban__item-name {
+  grid-area: title;
+  margin-left: 1rem;
+  padding: 10px 0px 0px 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 5px 0px 0px 0px;
+  z-index: 1001;
+}
+
+.kanban__item-road_adr {
+  grid-area: adr;
+  font-size: 0.8rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 0 10px 10px 20px;
+  border-radius: 0px 0px 5px 5px;
+  z-index: 1000;
+  box-shadow: 5px 7px 20px 0px #3c63228a;
+}
+
+.kanban__item button {
+  grid-area: del;
+  border: none;
+  cursor: pointer;
+  margin-right: 1rem;
+  background-color: white;
+  padding: 17px 20px 0px 0px;
+  border-radius: 0 5px 0 0;
+  z-index: 1001;
+  color: white;
+}
+
+.kanban__item button:hover {
+  color: red;
+}

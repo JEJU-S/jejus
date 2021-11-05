@@ -1,0 +1,288 @@
+.plan-title {
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+.participant {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.participant div {
+  width: 2rem;
+  height: 2rem;
+}
+
+.participant div img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.notattend {
+  opacity: 0.2;
+}
+
+.plan-date {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.plan-date span {
+  font-weight: normal;
+  font-size: 1.2rem;
+  margin: 0 1rem;
+  padding-top: 0.3rem;
+}
+
+.main-content {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  background-color: whitesmoke;
+}
+
+.recommandation {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 20%;
+  height: 95%;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  border-radius: 5px;
+}
+
+.region-select {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  text-align: center;
+  border: none;
+  height: 8vh;
+  cursor: pointer;
+  font-size: 1.52rem;
+  font-weight: bold;
+}
+
+.recommandation__categories {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.recommandation__categories div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 8vh;
+  line-height: 8vh;
+  background-color: #20253b;
+  color: white;
+  cursor: pointer;
+}
+
+.recommandation__categories div:hover {
+  background-color: white;
+  color: #20253b;
+  transition: 0.2s;
+}
+
+.recommandation__list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5px;
+  gap: 10px;
+  overflow: scroll;
+  max-height: 70vh;
+}
+
+.recommandation__list::-webkit-scrollbar {
+  display: none;
+}
+
+.recommandation__list li {
+  display: flex;
+  background-color: yellowgreen;
+  gap: 3px;
+}
+
+.recommandation__list li img {
+  border-radius: 10px;
+  width: 40%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.recommandation__list li div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.recommandation__list li div div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 0;
+}
+
+.recommandation__list li div div button {
+  float: right;
+}
+
+.wrap-star {
+  padding: 0 !important;
+}
+
+.star-rating {
+  display: flex;
+  flex-direction: row !important;
+  padding: 10px 0 !important;
+  width: 100%;
+  position: relative;
+}
+
+.star-rating span {
+  float: left;
+}
+
+.star {
+  width: 127px;
+  height: 24px;
+  background: url("star.png") no-repeat;
+}
+
+.rating {
+  width: 100% !important;
+  height: 23px;
+  overflow: hidden !important;
+
+  background: url("star-filled2.png") no-repeat;
+  z-index: 100;
+}
+
+.search-list {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  width: 20%;
+  height: 95%;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  border-radius: 5px;
+}
+
+#search-form {
+  display: flex;
+  flex-direction: row;
+  background-color: whitesmoke;
+}
+
+#search-form input {
+  padding: 20px 10px;
+  width: 80%;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 3px solid black;
+  border-radius: 0;
+  margin: 0 0 0 1rem;
+  background-color: whitesmoke;
+}
+
+.search-btn {
+  width: 20% !important;
+  margin: 0 1rem 0 0;
+  cursor: pointer;
+  border: none;
+  line-height: 10%;
+  background-color: whitesmoke;
+}
+
+.search-list ul {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  max-height: 77vh;
+  margin: 10px 0;
+  padding: 10px 0px;
+}
+
+.search-list ul::-webkit-scrollbar {
+  display: none;
+}
+
+.search-list ul li {
+  border: 2px solid rgba(255, 255, 255, 0);
+  padding: 10px 10px;
+  border-bottom: 2px solid rgba(223, 223, 223, 0.363);
+}
+
+.search-list ul li:hover {
+  background-color: whitesmoke;
+}
+
+.search-list ul li span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.search-list ul li p {
+  font-size: 0.8rem;
+}
+
+.more-btn {
+  float: right;
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: none;
+  margin-top: 5px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.more-btn:hover {
+  color: red;
+}
+
+#map {
+  background-color: brown;
+  width: 37%;
+  height: 65%;
+  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
+  border-radius: 5px;
+}
+
+input[type="text"]:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  border: none;
+  outline: none;
+}
+
+textarea:focus {
+  border-color: rgb(29, 142, 255);
+  background-color: rgb(241, 248, 255);
+  border: none;
+  outline: none;
+}
+
+.kanban__item-name,
+.kanban__item-road_adr,
+.kanban__item button,
+.region-select {
+  background-color: rgb(29, 90, 32);
+}
