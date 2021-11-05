@@ -97,6 +97,10 @@ export const sendInvitation = async (req, res) => {
     //  user(참가자)의 totplan_list추가(totplan_id, totplan.name)
     //  user(참가자)의 calllist 추가(host, plantitle)
     
+    
+    // DB 수락 거절 판별
+
+    //수락 버튼 눌렀을 떼 실행되어야할 코드
     let hostarr = par_userinfo.call_list;
     if(checkcall(hostarr,totplan_title)){
         console.log("이미 초대됨")
@@ -107,9 +111,9 @@ export const sendInvitation = async (req, res) => {
                 res.totPlan_list.push(insert_plan);
                 res.call_list.push(insert_host);
                 res.save();
-            }
+            }   
         });
-        // 초대 수락시
+
         // tot_plan participant추가
         TotPlan.findOne({_id:totplan_id}).exec(function(err, res){
             if(res){
@@ -117,10 +121,22 @@ export const sendInvitation = async (req, res) => {
                 res.save();
             }
         });
-       
+        User.deleteOne({call_list: insert_host}).exec();
     }
-    
-    // DB 수락 거절 판별
+
+    //거절버튼 눌렀을 때 실행되어야 할 버튼
+    if(checkcall(hostarr,totplan_title)){
+        console.log("이미 초대됨")
+    }
+    else{
+        User.findOne({gmail: gmail}).exec(function(err, res){
+            if(res){
+                res.call_list.push(insert_host);
+                res.save();
+            }   
+        });
+        User.deleteOne({call_list: insert_host}).exec();
+        }
     
     res.redirect(`/plans/${id}`);
 }
@@ -150,9 +166,6 @@ export const editPlan = async (req, res) =>
     }
 
     // 진행중
-
-    
-    
 }
 
 export const getCreatePlan = (req, res) => {
@@ -231,4 +244,3 @@ export const refuse = (req, res) => {
 
 // admin만 삭제 가능하게 만들어야 함 아직 작업 x
 export const del = (req, res) => res.send("delete plans");
-
