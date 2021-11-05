@@ -1,4 +1,5 @@
 import dotdev from "dotenv";
+import { values } from "regenerator-runtime";
 dotdev.config();
 //goes to plan router
 const mongoose = require('mongoose');
@@ -34,6 +35,7 @@ function checkath(parti,check){
     })
     return x;
 }
+
 function checkcall(call,check){
     let x = false;
     call.forEach(function(i){
@@ -46,6 +48,26 @@ function checkcall(call,check){
     })
     return x;
 }
+
+function deletePlan(adminUser){
+    const user_DelPlan = await User.deleteOne({admin : adminUser}).lean();
+    return user_DelPlan;
+}
+
+function delCall(gmail){
+const par_userinfo = await finduser(gmail);
+const par_calllist = par_userinfo.call_list;
+   // total plan 삭제
+const usertotplan = await finduserPlan(id);
+const hostname = usertotplan.admin.name;
+const totplan_title = usertotplan.title;
+const delCall_list = {host: hostname, plan_title: totplan_title};
+let par_delcalllist = par_calllist.filter(call => call !== delCall_list);
+console.log(par_delcalllist)
+return par_delcalllist
+}
+
+
 
 //사용자 마다 완성된 plan 보여주기 위한 것
 export const seePlan = async (req, res) => 
@@ -92,6 +114,7 @@ export const sendInvitation = async (req, res) => {
     const par_id = par_userinfo._id;
     const par_name = par_userinfo.name;
     const par_info = {_id: par_id, name: par_name};
+
 
     
     //  user(참가자)의 totplan_list추가(totplan_id, totplan.name)
