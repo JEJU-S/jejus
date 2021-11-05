@@ -1,3 +1,84 @@
+.inv-btn {
+  border: none;
+  background-color: red;
+  z-index: 2000;
+  cursor: pointer;
+}
+
+.inv-area {
+  display: block;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.425);
+  z-index: 2000;
+}
+
+form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  width: 450px;
+  height: 220px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+form div {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 20px;
+}
+
+form span {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+form button {
+  float: right;
+}
+
+input[type="reset"] {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+input[name="gmail"] {
+  width: 85%;
+  align-self: center;
+  height: 3rem;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  margin: 1rem;
+  padding: 0 20px;
+  background: whitesmoke;
+}
+
+input[type="submit"] {
+  width: 5rem;
+  height: 3rem;
+  align-self: self-end;
+  margin-top: 1rem;
+  margin-right: 1rem;
+  border: none;
+  border-radius: 5px;
+  background: rgb(255, 172, 48);
+  color: white;
+}
+
+input[type="submit"]:hover {
+  background: rgb(204, 138, 38);
+  transition: 0.2s;
+  cursor: pointer;
+}
+
 .container {
   grid-template-areas:
     "header header"

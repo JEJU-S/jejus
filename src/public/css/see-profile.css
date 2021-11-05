@@ -34,15 +34,16 @@ main {
 .main-profile {
   display: flex;
   flex-direction: row;
-  column-gap: 100px;
+  justify-content: space-around;
   color: rgb(0, 0, 0);
 }
 
 .profile-box {
   align-self: center;
-  margin-left: 5%;
-  width: 180px;
-  height: 180px;
+  width: 10rem;
+  height: 10rem;
+  min-width: 10rem;
+  min-height: 10rem;
   border-radius: 50%;
   overflow: hidden;
   background-color: #dfdfdf;
@@ -99,19 +100,14 @@ input[type="text"]:focus {
   text-overflow: clip;
 }
 .edit-button {
+  align-self: flex-end;
   background-color: #68a9e9;
-  padding: 7.5px 1px;
+  padding: 10px 20px;
   color: #fff;
   text-align: center;
-  text-decoration: none;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  align-self: center;
-  width: 13%;
-  margin-top: 13%;
-  margin-left: auto;
-  margin-right: 50px;
 }
 
 .edit-button:hover {
@@ -126,9 +122,11 @@ input[type="text"]:focus {
   padding: 2% 4%;
   height: 100%;
   width: 90%;
-  color: rgb(0, 0, 0);
+  color: white;
   margin-bottom: 1px;
-  background-color: white;
+  background: url("../images/bgimg.jpg");
+  background-size: cover;
+  overflow: hidden;
   border-radius: 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   justify-content: flex-start;
@@ -146,13 +144,20 @@ input[type="text"]:focus {
   display: none;
 }
 
+.inv-items ul {
+  display: flex;
+  justify-content: center;
+}
+
 .inv-item {
+  width: 80%;
   color: #474747;
   background-color: #ffffff;
   border-radius: 4px;
   padding: 1%;
   line-height: 2;
   border-bottom: 1px solid #8d8d8d2e;
+  box-shadow: 0 0 black;
 }
 
 .inv-item:hover {
