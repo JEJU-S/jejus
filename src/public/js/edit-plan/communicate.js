@@ -1,8 +1,8 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
-import SearchList from "/public/js/edit-plan//SearchList.js";
-import Kanban from "/public/js/edit-plan//Kanban.js";
+import SearchList from "/public/js/edit-plan/SearchList.js";
+import Kanban from "/public/js/edit-plan/Kanban.js";
 
-/*************채팅**************/
+/*
 
 const chattingList = new ChattingList(document.querySelector(".chat-box"));
 
@@ -31,7 +31,7 @@ function receiveSystemMessage(name, enter){
     chattingList.addMessage(name, message, "system");
     chatBox.scrollTop = chatBox.scrollHeight;
 }
-/***************검색리스트******************/
+
 
 const searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", submitSearchKeyword);
@@ -50,10 +50,21 @@ function socketReturn(){
   const searchList = new SearchList(document.querySelector(".search-list ul"), samplePlaceList);
 }
 
-/******************칸반보드********************/
+
 new Kanban( document.querySelector(".kanban"), fakeItems2);
 
+/************************************* */
+const socket = io(); 
+/************************************* */
 
+const planId = document.querySelector("#plan-id").innerHTML;
+const userName = document.querySelector("#user-name").innerHTML;
+
+socket.emit("join_room", planId, userName, init);
+
+function init(){
+  //new Kanban(document.querySelector(".kanban"), fakeItems2);
+}
 
 
 

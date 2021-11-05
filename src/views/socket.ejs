@@ -91,7 +91,6 @@
     socket.emit("join_room", planId, userName, init); // 방 만들기(planid 별 방 만들기)
     function init(){
 
-        
         // 날짜별 div 박스 생성
         const startDate = new Date(planDate.querySelectorAll("span")[0].innerText);
         const endDate = new Date(planDate.querySelectorAll("span")[1].innerText);

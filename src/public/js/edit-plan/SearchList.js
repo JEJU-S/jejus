@@ -257,7 +257,7 @@ class PlaceItem {
             event.stopPropagation();
         });
         // 마우스가 올라갈 시 맵에 띄워줌 mouseenter
-        this.elements.root.addEventListener("click", () => {
+        this.elements.root.addEventListener("mouseenter", () => {
             this.elements.marker = createMapMarker(x, y);
             mapPanToBound(x, y);
         });

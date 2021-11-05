@@ -63,13 +63,15 @@ io.on("connection", (socket) => {
         socket["userName"] = userName;
         console.log(socket.rooms);
 
+        console.log("*****************************");
+        /*
         socket.to(planId).emit("server_msg", {
             roomId : planId,
             userName : socket.userName, 
             message : `${socket.userName}님이 입장하셨습니다.`
         });
         init();
-
+        */
     });
 
     socket.on("send_inviataion", (gmail) => {
