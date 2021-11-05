@@ -22,7 +22,7 @@
     <body class="container">
         <header>
             <div class="logo-box">
-                <img src="/public/images/logo-wt.png" alt="logo" class="logo">
+                <a href="/users/<%=user._id%>"><img src="/public/images/logo-wt.png" alt="logo" class="logo"></a>
             </div>
             </header>
         <div class="sidebar"> <!--사이드 바-->
@@ -43,7 +43,7 @@
                     <span class="material-icons md-36">
                         account_circle
                         </span>
-                        <span><a href="">마이페이지</a></span>
+                        <span><a href="/users/<%=user._id%>">마이페이지</a></span>
                 </div>
                 <div class="menu-name">
                     <span class="material-icons md-36">
@@ -51,7 +51,7 @@
                     <span><a href="/plans/create">새 계획 만들기</a></span>
                 </div>
                 <div class="menu-name group">
-                    <div class="mygroup" id="group">
+                    <div class="mygroup"  id="group">
                         <span class="material-icons md-36 grid">
                             folder
                         </span>
@@ -62,7 +62,7 @@
                     <div class="menu-detail" id="mygroup">
                         <ul>
                             <%totPlanTitles.forEach(function(title){ %>
-                            <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
+                            <li><a href="/plans/<%=title['_id']%>" class="side-plan-title"><%=title['title']%></a></li>
                             <% })%>
                         </ul>
                     </div>

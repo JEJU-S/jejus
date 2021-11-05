@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="/public/css/footer.css">
 		<link rel="stylesheet" href="/public/css/see-plan.css">
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
-        
+
         <!--구글 아이콘-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="/public/css/icon.css">
@@ -25,7 +25,7 @@
     <body class="container">
         <header>
             <div class="logo-box">
-                <img src="/public/images/logo-wt.png" alt="logo" class="logo">
+                <a href="/users/<%=user._id%>"><img src="/public/images/logo-wt.png" alt="logo" class="logo"></a>
             </div>
             </header>
         <div class="sidebar"> <!--사이드 바-->
@@ -54,12 +54,12 @@
                     <span><a href="/plans/create">새 계획 만들기</a></span>
                 </div>
                 <div class="menu-name group selected">
-                    <div class="mygroup" id="group">
+                    <div class="mygroup"  id="group">
                         <span class="material-icons md-36 grid">
                             folder
                         </span>
                         <span >내 그룹</span>
-                        
+
                     </div>
                     <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
                     <div class="menu-detail" id="mygroup">
@@ -93,28 +93,28 @@
             <div class="whole-plan">
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <div class="plan-info">
-                    <span class="user"> 
-                        user : 
+                    <span class="user">
+                        user :
                         <%totPlan.participants.forEach(function(participant){%>
                             <%=participant['name']%>
                         <% })%>
                     </span>
 
                     <button class="inv-btn">초대</button>
-        
+
                     <form class="email-form" method="post" style="display : none">
                         <input type="email", placeholder="gmail을 입력하세요" name="gmail">
                         <input type="submit" value="초대장 전송">
                         <input type= "reset" value="취소">
                     </form>
-                    
+
                     <span class="date">
                         <%=totPlan.day_plan[0]['date']%>
                             ~
                         <%=totPlan.day_plan[day-1]['date']%>
                     </span>
                 </div>
-                
+
                 <!--total-map(전체 경로 마커) 처리 부분-->
                 <div id="total-map"></div>
                 <script>
@@ -127,7 +127,7 @@
                     const totMap = new naver.maps.Map('total-map', mapOptions);
 
                     // 마커 여러개 찍기
-                    
+
                     for(let i =0; i < totPlan.day_plan.length; i++){
                         for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
                             new naver.maps.Marker({
@@ -139,15 +139,56 @@
                             })
                         }
                     }
-    
+
+                        // 마커 여러개 찍기
+
+                        for(let i =0; i < totPlan.day_plan.length; i++){
+                            for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
+                                new naver.maps.Marker({
+                                    position : new naver.maps.LatLng(
+                                        totPlan.day_plan[i]['place'][j]['adr'][0],
+                                        totPlan.day_plan[i]['place'][j]['adr'][1],
+                                    ),
+                                    map : totMap
+                                })
+                            }
+                        }
+
                     const dayMapList = [];
-                </script>
-                <div class="plan-buttons">
-                    <button type="button" class="edit-btn" onclick= "location.href ='/plans/<%=totPlan._id%>/edit'">편집하기</button>
-                    <%if(user._id == totPlan.admin["_id"]){%>
-                        <button type="button" class="del-btn">삭제</button>
-                    <%}%>
-                </div> 
+                    </script>
+                    <div class="participants">
+                        <div class="user">
+                            <div class="user">
+                                <img class="profile-img" src="<%=user.image_url%>" alt="user photo"/>
+                            </div>
+                        </div>
+                        <div class="user">
+                            <%totPlan.participants.forEach(function(participant){%>
+                                <%=participant['name']%>
+                            <% })%>
+                        </div>
+                        <div class="user">
+                            <%totPlan.participants.forEach(function(participant){%>
+                                <%=participant['name']%>
+                            <% })%>
+                        </div>
+                        <div class="user invite">
+                            user : im invite
+                        </div>
+                    </div>
+                    <div class="date">
+                            <%=totPlan.day_plan[0]['date']%>                                    ~
+                            <%=totPlan.day_plan[day-1]['date']%>
+                    </div>
+                    <div class="btns">
+                        <div class="plan-buttons">
+                            <button type="button" class="edit-btn" onclick= "location.href ='/plans/<%=totPlan._id%>/edit'">편집하기</button>
+                            <%if(user._id == totPlan.admin["_id"]){%>
+                                <button type="button" class="del-btn">삭제</button>
+                            <%}%>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!--day plan-->
             <%for(day=0; day < totPlan.day_plan.length; day++){%>
@@ -167,20 +208,20 @@
                                 ),
                                 map : dayMapList["<%=day%>"]
                             })
-                        }  
+                        }
                 </script>
-                
+
                 <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
                             <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>
                             <p class="obj-adress"><%=totPlan.day_plan[day]['place'][placeIndex]['adr']%></p>
                             <p class="obj-memo"><%=totPlan.day_plan[day]['place'][placeIndex]['memo']%></p>
-                        </div>              
+                        </div>
                     <%}%>
-                </div> 
+                </div>
             </div>
-            <%}%> 
+            <%}%>
         </main>
             <footer>
                 &copy; <%=new Date().getFullYear()%> Sample Project

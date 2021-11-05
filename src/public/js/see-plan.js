@@ -11,7 +11,7 @@ function dayButtonClick(day){
     for(let i = 0; i < dayPlans.length; i++){
         if(day == i + 1){
             planBtns[i+1].style.backgroundColor = "white";
-            planBtns[i+1].style.zIndex = 1;
+            planBtns[i+1].style.zIndex = 10;
             dayPlans[i].style.display = "grid";
             
         }
