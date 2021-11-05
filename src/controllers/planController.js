@@ -49,12 +49,12 @@ function checkcall(call,check){
     return x;
 }
 
-function deletePlan(adminUser){
+async function deletePlan(adminUser){
     const user_DelPlan = await User.deleteOne({admin : adminUser}).lean();
     return user_DelPlan;
 }
 
-function delCall(gmail){
+async function delCall(gmail){
 const par_userinfo = await finduser(gmail);
 const par_calllist = par_userinfo.call_list;
    // total plan 삭제
