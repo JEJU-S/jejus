@@ -2,31 +2,25 @@
     <html lang="en">
         <head>
         <meta charset="UTF-8">
-        <!--
+
         <link rel="stylesheet" href="kanban.css">
         <link rel="stylesheet" href="main-content.css">
         <link rel="stylesheet" href="chatting.css">
         <link rel="stylesheet" href="frame.css">
         <link rel="stylesheet" href="icon.css">
-        -->
+
         <!--구글 웹폰트-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
         <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
-		<link rel="stylesheet" href="/public/css/header.css">
-        <link rel="stylesheet" href="/public/css/base.css">
-		<link rel="stylesheet" href="/public/css/footer.css">
-        <link rel="stylesheet" href="/public/css/edit-plan.css">
-        <!--구글 웹폰트-->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
+
         <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
 <body class="container">
@@ -76,9 +70,9 @@
                 </li>
             </ul>
         </div>
-        
+
         <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
-    
+
         <div class="search-list">
             <form id="search-form">
                 <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
@@ -109,16 +103,16 @@
                             <div class="kanban__item-road_adr">도로명주소 1</div></div>
                             <button>삭제</button>
                             <div class="kanban__dropzone"></div>
-                        </div>                    
+                        </div>
                 </div>
             </div>
-            -->  
+            -->
         </div>
-        
+
         <button id="popup"><span class="material-icons-outlined">
             mode_comment
             </span>채팅</button>
-                
+
         <!--chatting으로 모든 챗박스 묶고, 추가 클래스로 개별 스타일 부여-->
         <div class="chatting" id="chatArea">
             <div id="chatAreaheader">
@@ -156,16 +150,16 @@
                 </form>
             </div>
         </div>
-        
+
 
         </main>
     </body>
     <script type="module" src="/public/js/edit-plan/Map.js"></script>
     <script type="module" src="/public/js/edit-plan/SearchList.js"></script>
-    <script type="module" src="/public/js/edit-plan/Message.js"></script> 
+    <script type="module" src="/public/js/edit-plan/Message.js"></script>
     <script type="module" src="/public/js/edit-plan/Kanban.js"></script>
     <script type="module" src="/public/js/edit-plan/chat.js"></script>
     <script type="module" src="/public/js/edit-plan/textarea.js"></script>
     <script type="module" src="/public/js/edit-plan/RecList.js"></script>
-    
+
 </html>
