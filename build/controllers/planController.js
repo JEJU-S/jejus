@@ -29,27 +29,27 @@ function findtitle(_x) {
 }
 
 function _findtitle() {
-  _findtitle = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(title) {
+  _findtitle = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(title) {
     var totplans;
-    return _regenerator["default"].wrap(function _callee5$(_context5) {
+    return _regenerator["default"].wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            _context5.next = 2;
+            _context6.next = 2;
             return _TotPlan.TotPlan.findOne({
               title: title
             }).lean();
 
           case 2:
-            totplans = _context5.sent;
-            return _context5.abrupt("return", totplans);
+            totplans = _context6.sent;
+            return _context6.abrupt("return", totplans);
 
           case 4:
           case "end":
-            return _context5.stop();
+            return _context6.stop();
         }
       }
-    }, _callee5);
+    }, _callee6);
   }));
   return _findtitle.apply(this, arguments);
 }
@@ -59,45 +59,15 @@ function finduserPlan(_x2) {
 }
 
 function _finduserPlan() {
-  _finduserPlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(id) {
-    var usertotplan;
-    return _regenerator["default"].wrap(function _callee6$(_context6) {
-      while (1) {
-        switch (_context6.prev = _context6.next) {
-          case 0:
-            _context6.next = 2;
-            return _TotPlan.TotPlan.findOne({
-              _id: id
-            }).lean();
-
-          case 2:
-            usertotplan = _context6.sent;
-            return _context6.abrupt("return", usertotplan);
-
-          case 4:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6);
-  }));
-  return _finduserPlan.apply(this, arguments);
-}
-
-function finduser(_x3) {
-  return _finduser.apply(this, arguments);
-}
-
-function _finduser() {
-  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(gmail) {
+  _finduserPlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(id) {
     var usertotplan;
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
           case 0:
             _context7.next = 2;
-            return _User.User.findOne({
-              gmail: gmail
+            return _TotPlan.TotPlan.findOne({
+              _id: id
             }).lean();
 
           case 2:
@@ -110,6 +80,36 @@ function _finduser() {
         }
       }
     }, _callee7);
+  }));
+  return _finduserPlan.apply(this, arguments);
+}
+
+function finduser(_x3) {
+  return _finduser.apply(this, arguments);
+}
+
+function _finduser() {
+  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(gmail) {
+    var usertotplan;
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.next = 2;
+            return _User.User.findOne({
+              gmail: gmail
+            }).lean();
+
+          case 2:
+            usertotplan = _context8.sent;
+            return _context8.abrupt("return", usertotplan);
+
+          case 4:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8);
   }));
   return _finduser.apply(this, arguments);
 }
@@ -211,7 +211,8 @@ var sendInvitation = /*#__PURE__*/function () {
             };
             insert_host = {
               host: hostname,
-              plan_title: totplan_title
+              plan_title: totplan_title,
+              plan_id: totplan_id
             }; // 초대장을 받음
 
             _context2.next = 13;
@@ -230,26 +231,14 @@ var sendInvitation = /*#__PURE__*/function () {
 
             hostarr = par_userinfo.call_list;
 
-            if (checkcall(hostarr, totplan_title)) {
+            if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id) {
               console.log("이미 초대됨");
             } else {
               _User.User.findOne({
                 gmail: gmail
               }).exec(function (err, res) {
                 if (res) {
-                  res.totPlan_list.push(insert_plan);
                   res.call_list.push(insert_host);
-                  res.save();
-                }
-              }); // 초대 수락시
-              // tot_plan participant추가
-
-
-              _TotPlan.TotPlan.findOne({
-                _id: totplan_id
-              }).exec(function (err, res) {
-                if (res) {
-                  res.participants.push(par_info);
                   res.save();
                 }
               });
@@ -428,10 +417,56 @@ var postCreatePlan = /*#__PURE__*/function () {
 
 exports.postCreatePlan = postCreatePlan;
 
-var accept = function accept(req, res) {
-  //***DB
-  res.redirect("/users/".concat(req.session.user._id));
-};
+var accept = /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
+    var id;
+    return _regenerator["default"].wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            //***DB
+            id = req.params.id; // const usertotplan = await finduserPlan(id);
+            // console.log("초대한 계획",usertotplan)
+            // const totplan_title = usertotplan.title;
+            // const totplan_id = usertotplan._id;
+            // const hostname = usertotplan.admin.name;
+            // const insert_plan = {_id : totplan_id, title: totplan_title};
+            // const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
+            // // 초대장을 받음
+            // const par_userinfo = await finduser(req.session.user._id);
+            // console.log("초대한 유저",par_userinfo);
+            // const par_id = par_userinfo._id;
+            // const par_name = par_userinfo.name;
+            // const par_info = {_id: par_id, name: par_name};
+            // User.findOne({_id: req.session.user._id}).exec(function(err, res){
+            //     if(res){
+            //         res.totPlan_list.push(insert_plan);
+            //         res.save();
+            //     }
+            // });
+            // // 초대 수락시
+            // // tot_plan participant추가
+            // TotPlan.findOne({_id:totplan_id}).exec(function(err, res){
+            //     if(res){
+            //         res.participants.push(par_info);
+            //         res.save();
+            //     }
+            // });
+
+            res.redirect("/users/".concat(req.session.user._id));
+
+          case 2:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+
+  return function accept(_x12, _x13) {
+    return _ref5.apply(this, arguments);
+  };
+}();
 
 exports.accept = accept;
 

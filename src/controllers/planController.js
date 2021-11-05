@@ -84,7 +84,7 @@ export const sendInvitation = async (req, res) => {
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
     const insert_plan = {_id : totplan_id, title: totplan_title};
-    const insert_host = {host: hostname, plan_title: totplan_title};
+    const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
@@ -98,26 +98,16 @@ export const sendInvitation = async (req, res) => {
     //  user(참가자)의 calllist 추가(host, plantitle)
     
     let hostarr = par_userinfo.call_list;
-    if(checkcall(hostarr,totplan_title)){
+    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id ){
         console.log("이미 초대됨")
     }
     else{
         User.findOne({gmail: gmail}).exec(function(err, res){
             if(res){
-                res.totPlan_list.push(insert_plan);
                 res.call_list.push(insert_host);
                 res.save();
             }
         });
-        // 초대 수락시
-        // tot_plan participant추가
-        TotPlan.findOne({_id:totplan_id}).exec(function(err, res){
-            if(res){
-                res.participants.push(par_info);
-                res.save();
-            }
-        });
-       
     }
     
     // DB 수락 거절 판별
@@ -217,9 +207,40 @@ export const postCreatePlan = async (req, res) => {
     res.redirect(`/users/${pC_id}`); 
 }
 
-export const accept = (req, res) => {
+export const accept = async (req, res) => {
     //***DB
+
+    const {id} = req.params;
+    // const usertotplan = await finduserPlan(id);
+    // console.log("초대한 계획",usertotplan)
+    // const totplan_title = usertotplan.title;
+    // const totplan_id = usertotplan._id;
+    // const hostname = usertotplan.admin.name;
+    // const insert_plan = {_id : totplan_id, title: totplan_title};
+    // const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
+
+    // // 초대장을 받음
+    // const par_userinfo = await finduser(req.session.user._id);
+    // console.log("초대한 유저",par_userinfo);
+    // const par_id = par_userinfo._id;
+    // const par_name = par_userinfo.name;
+    // const par_info = {_id: par_id, name: par_name};
+
     
+    // User.findOne({_id: req.session.user._id}).exec(function(err, res){
+    //     if(res){
+    //         res.totPlan_list.push(insert_plan);
+    //         res.save();
+    //     }
+    // });
+    // // 초대 수락시
+    // // tot_plan participant추가
+    // TotPlan.findOne({_id:totplan_id}).exec(function(err, res){
+    //     if(res){
+    //         res.participants.push(par_info);
+    //         res.save();
+    //     }
+    // });
     res.redirect(`/users/${req.session.user._id}`);
 }
 

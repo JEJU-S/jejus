@@ -19,8 +19,6 @@ var _os = _interopRequireDefault(require("os"));
 
 var _User = require("../models/User");
 
-var _fakeDB = require("./fakeDB");
-
 var _mongoose = require("mongoose");
 
 var _cli = require("cli");
@@ -44,27 +42,27 @@ function finduser(_x) {
 
 
 function _finduser() {
-  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(user_gmail) {
+  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(user_gmail) {
     var user_info;
-    return _regenerator["default"].wrap(function _callee2$(_context2) {
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context2.prev = _context2.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
-            _context2.next = 2;
+            _context3.next = 2;
             return _User.User.findOne({
               gmail: user_gmail
             }).lean();
 
           case 2:
-            user_info = _context2.sent;
-            return _context2.abrupt("return", user_info);
+            user_info = _context3.sent;
+            return _context3.abrupt("return", user_info);
 
           case 4:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2);
+    }, _callee3);
   }));
   return _finduser.apply(this, arguments);
 }
@@ -247,13 +245,36 @@ var postEditProfile = function postEditProfile(req, res) {
 
 exports.postEditProfile = postEditProfile;
 
-var seeProfile = function seeProfile(req, res) {
-  // session user 가 받은 초대를 
-  return res.render("see-profile", {
-    user: req.session.user,
-    totPlanTitles: req.session.user.totPlan_list
-  });
-}; //로그아웃 -> main 페이지로 간다
+var seeProfile = /*#__PURE__*/function () {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
+    var user_call_list;
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return finduser(req.session.user.gmail);
+
+          case 2:
+            user_call_list = _context2.sent;
+            req.session.user.call_list = user_call_list.call_list;
+            return _context2.abrupt("return", res.render("see-profile", {
+              user: req.session.user,
+              totPlanTitles: req.session.user.totPlan_list
+            }));
+
+          case 5:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function seeProfile(_x4, _x5) {
+    return _ref2.apply(this, arguments);
+  };
+}(); //로그아웃 -> main 페이지로 간다
 
 
 exports.seeProfile = seeProfile;
