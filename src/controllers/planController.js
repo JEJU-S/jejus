@@ -34,7 +34,7 @@ export const editPlan = (req, res) =>
     // 포함되어있으면 들어가게, 아니면 접근 x 하게 만들어야 함
     const {id} = req.params;
     
-    res.render("socket", {
+    res.render("kanban", {
         user : req.session.user,
         totPlan : fakeTotPlan1,
         map_cl : process.env.MAP_CLIENT

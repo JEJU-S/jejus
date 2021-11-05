@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
+		<link rel="stylesheet" href="/public/css/header.css">
+        <link rel="stylesheet" href="/public/css/base.css">
+		<link rel="stylesheet" href="/public/css/footer.css">
+        <link rel="stylesheet" href="/public/css/edit-plan.css">
+        <title> Edit <%=totPlan.title%> | Sample </title>
+    </head>
+    <body class="container">
+        <div class="region-place" id="regionplace">
+            <div class="jejumap">
+                <img src="../../src/public/images/jejumap.png">
+                <div>
+                    <img src="../../src/public/images/ahndeok.png" class="jeju-region ad">
+                    <img src="../../src/public/images/daejeong.png" class="jeju-region dj">
+                    <img src="../../src/public/images/hankyoung.png" class="jeju-region hk">
+                    <img src="../../src/public/images/joongmoon.png" class="jeju-region jm">
+                    <img src="../../src/public/images/seokeepoo.png" class="jeju-region skp">
+                    <img src="../../src/public/images/koojwa.png" class="jeju-region kj">
+                    <img src="../../src/public/images/jocheon.png" class="jeju-region jc">
+                    <img src="../../src/public/images/jeju.png" class="jeju-region jj">
+                    <img src="../../src/public/images/aewol.png" class="jeju-region aw">
+                    <img src="../../src/public/images/hanlim.png" class="jeju-region hl">
+                    <img src="../../src/public/images/sungsan.png" class="jeju-region ss">
+                    <img src="../../src/public/images/pyoseon.png" class="jeju-region ps">
+                    <img src="../../src/public/images/namwon.png" class="jeju-region nw">
+                    <img src="../../src/public/images/woodo.png" class="jeju-region wd">
+                </div>
+            </div>
+        </div>
+        <header>
+            <h1><%=totPlan.title%></h1>
+            참여자 : 
+            <%totPlan.participants.forEach(function(participant){%>
+                <%=participant['name']%>
+            <% })%>
+            <button class="inv-btn">초대</button>
+            <p>출발일 : </p>
+            <p>도착일 : </p>
+            
+        </header>
+        <main>
+            <!--네이버 지도, 검색창 자리 수정 필요-->
+            <div id="place" class="search">
+                <input type="text" name ="search-input" placeholder="검색어를 입력하세요">
+                <div class="search-result">
+                    <ul>
+                        <li class="result">
+                            <span class="obj-name">봄날</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날공인중개사</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날의류판매점</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날막걸리</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날햄버거</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날 보드게임 카페</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날 스쿠버다이빙</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                        <li class="result">
+                            <span class="obj-name">봄날의류판매점</span>
+                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="toast">장소가 추가되었습니다🚀</div>
+            
+            <div id="map" class="map">
+            </div>
+            <script>
+                const mapOptions = {
+                    center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+                    zoom : 10
+                };
+                const map = new naver.maps.Map('map', mapOptions);
+
+            </script>
+
+            <div class= "place-box">
+                <button class="add-btn">일정 추가</button>
+                <!--일정 마다 day 다르게, input으로-->
+                <div class="place-list" id="plcBox">
+                    <div class="day-box">
+                        <h3>Day1</h3>
+                    </div>
+                    <div id="place-obj">
+                        <div class="place-object">
+                            <button class="del-btn">❌</button>
+                            <h4 class="obj-name">상호명</h4> <!--편집가능하게-->
+                            <textarea class="obj-memo" placeholder="메모"></textarea>
+                        </div>    
+                    </div>
+                </div>
+                <button class="save-btn">저장하기</button>
+            </div>
+            <div class="recommandation">
+                <button type="button" class="region-select-btn" id="regionbtn">권역 선택</button>
+                <div class="categories">
+                    <div class="category">
+                        관광
+                    </div>
+                    <div class="category">
+                        식당
+                    </div>
+                    <div class="category">
+                        카페
+                    </div>
+                    <div class="category">
+                        레저/<br>스포츠
+                    </div>
+                </div>
+                <div class="recommandation-box">
+                    <ul>
+                        <li class="recommandation-object" draggable="true">
+                            <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
+                            <div class="obj-textbox">
+                                <span class="obj-name">관광지명</span>
+                                <p class="obj-info">대충설명</p>
+                            </div>
+                        </li>
+                    </ul>
+            </div>
+        </main>
+        <footer>
+            &copy; <%=new Date().getFullYear()%> Sample Project
+        </footer>
+        <script type="text/javascript" src="/public/js/toastr.js"></script>
+        <script type="text/javascript" src="/public/js/regionSelect.js"></script>
+        <script type="text/javascript" src="/public/js/categorySelect.js"></script>
+    </body>
+</html>
