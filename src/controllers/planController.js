@@ -27,8 +27,8 @@ async function finduserPlan(id){
     return usertotplan;
 }
 
-async function finduserGmail(par_gmail){
-    const userGmail = await User.findOne({gmail : par_gmail}).lean();
+async function finduserGmail(gmail){
+    const userGmail = await User.findOne({gmail : gmail}).lean();
     return userGmail;
 }
 
@@ -55,7 +55,7 @@ export const seePlan = async (req, res) =>
 export const sendInvitation = (req, res) => {
     //Database 작업(초대장 전송)
     const {id} = req.params; //plan id
-    const {par_gmail} = req.body; //초대장을 보낼 이메일
+    const {gmail} = req.body; //초대장을 보낼 이메일
 
     // 초대장을 전송
     const usertotplan = await finduserPlan(id);
@@ -64,10 +64,10 @@ export const sendInvitation = (req, res) => {
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
     const insert_plan = {_id : totplan_id, title: totplan_title};
-    const insert_host = {host: hostname, plan_title: totplan_title}
+    const insert_host = {host: hostname, plan_title: totplan_title};
 
     // 초대장을 받음
-    const par_userinfo = await finduserGmail(par_gmail);
+    const par_userinfo = await finduserGmail(gmail);
     console.log(par_userinfo);
     const par_id = par_userinfo._id;
     const par_name = par_userinfo.name;
@@ -77,27 +77,40 @@ export const sendInvitation = (req, res) => {
     
     // DB 수정
     // 1. tot_plan participant추가
-    TotPlan.findOne({gmail: par_gmail}).exec(function(err, res){
+    TotPlan.findOne({_id: totplan_id}).exec(function(err, res){
         if(res){
             res.participants.push(par_info);
-            res.save(function(err, plan){
-                console.log("save sucess");
-            });
-        }
-    });
-    
-    // 2. user(참가자)의 totplan_list추가(totplan_id, totplan.name)
-    // 3. user(참가자)의 calllist 추가(host, plantitle)
-    User.findOne({gmail: par_gmail}).exec(function(err, res){
-        if(res){
-            res.totPlan_list.push(insert_plan);
-            res.call_list.push(insert_host);
-            res.save(function(err, plan){
+            res.save(function(err, res){
                 console.log("save sucess");
             });
         }
     });
 
+    
+
+    // 2. user(참가자)의 totplan_list추가(totplan_id, totplan.name)
+    // 3. user(참가자)의 calllist 추가(host, plantitle)
+    const hostarr = par_userinfo.call_list;
+
+    function includehost(insert_host){
+        return hostarr = insert_host;
+    }
+    
+    const findhostarr = hostarr.some(includehost);
+    if(findhostarr = false){
+        User.findOne({gmail: gmail}).exec(function(err, res){
+            if(res){
+                res.totPlan_list.push(insert_plan);
+                res.call_list.push(insert_host);
+                res.save(function(err, res){
+                    console.log("save sucess");
+                });
+            }
+        });
+        console.log("invite particpants successfully");
+    } else {
+        console.log("you can't invite same particpants");
+    }
 
     // //**DB
     
