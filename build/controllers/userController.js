@@ -19,8 +19,6 @@ var _os = _interopRequireDefault(require("os"));
 
 var _User = require("../models/User");
 
-var _fakeDB = require("./fakeDB");
-
 var _mongoose = require("mongoose");
 
 var _cli = require("cli");
