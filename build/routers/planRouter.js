@@ -17,8 +17,12 @@ var planRouter = _express["default"].Router();
 
 // /plans/~~
 planRouter.get("/:id([0-9a-f]{24})", _middleware.protectMiddleware, _planController.seePlan);
+planRouter.post("/:id([0-9a-f]{24})", _middleware.protectMiddleware, _planController.sendInvitation);
 planRouter.get("/:id([0-9a-f]{24})/edit", _middleware.protectMiddleware, _planController.editPlan);
 planRouter.get("/:id([0-9a-f]{24})/delete", _middleware.protectMiddleware, _planController.del);
-planRouter.get("/create", _middleware.protectMiddleware, _planController.createPlan);
+planRouter.route("/create", _middleware.protectMiddleware).get(_planController.getCreatePlan).post(_planController.postCreatePlan); //초대장 수락 / 거절
+
+planRouter.get("/:id([0-9a-f]{24})/accept", _planController.accept);
+planRouter.get("/:id([0-9a-f]{24})/refuse", _planController.refuse);
 var _default = planRouter;
 exports["default"] = _default;

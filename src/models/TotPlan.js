@@ -9,7 +9,8 @@ const totplanSchema = new mongoose.Schema({
     },
     participants: [{
         _id: mongoose.Schema.Types.ObjectId,
-        name: String
+        name: String,
+        image_url: String
     }],
     day_plan: [{
        date: {type :Date, requried:true}, 

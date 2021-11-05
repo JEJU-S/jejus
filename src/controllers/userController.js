@@ -1,27 +1,30 @@
 import fetch from "node-fetch";
 import dotdev from "dotenv";
-import os from "os";
 dotdev.config();
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+import os from "os";
 import {User} from '../models/User'
-
 // 추후 진짜 db로 바꿔야 함
-import { fakeUser } from "./fakeDB";
-import { fakeTotPlan1, fakeTotPlan2} from "./fakeDB";
 import { Mongoose } from "mongoose";
 import { app } from "cli";
 import { Db } from "mongoose/node_modules/mongodb";
 
-
+//
+const hostname = os.networkInterfaces();
 const PORT = process.env.PORT || 8080;
 
-const hostname = os.networkInterfaces();
+async function finduser(user_gmail){
+    const user_info = await User.findOne({gmail : user_gmail}).lean();
+    return user_info;
+}
+
+
 // Main Page 
 export const main = (req, res) => {
-    console.log(hostname["Loopback Pseudo-Interface 1"][1]["address"]);
-    return res.render("main");
+        return res.render("main");
 };
+
 
 // --로그인 작업--
 //Main -> Profile 로 가는 process function 
@@ -43,6 +46,8 @@ export const login = (req, res) =>
 }
 
 export const callback = async(req, res) => {
+
+    console.log("call back function!");
     const baseURL = "https://oauth2.googleapis.com/token";
 
     const config = {
@@ -50,7 +55,7 @@ export const callback = async(req, res) => {
         client_secret : process.env.GL_SECRET,
         code : req.query.code,
         grant_type : "authorization_code",
-        redirect_uri : `http://localhost:${PORT}/users/callback`
+        redirect_uri : `http://localhost:${PORT}/users/callback`,
     }
 
     const params  = new URLSearchParams(config).toString();
@@ -84,100 +89,56 @@ export const callback = async(req, res) => {
             method : "GET"
         })
         ).json();
-        
-        // 사용자 정보 console에 출력 -> db로 받아서 
-        console.log(userRequest);
+
         const user_name = userRequest['names'][0]['displayName'];
         const user_gmail = userRequest['emailAddresses'][0]['value'];
         const user_image_url = userRequest['photos'][0]['url'];
-        
-        console.log("-----------user info-------------");
-        console.log(user_name);
-        console.log(user_gmail);
-        console.log(user_image_url);
-
-        console.log("---------------------------------");
-   
-
-        // 유저 유무 파악(없다면 저장, 있으면 login successfully)
-        User.findOne({gmail: user_gmail}).exec(async function(err, user){
-            if(!user){
-                console.log("!no user!");
-                new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
-                .then(() => {
-                    console.log('Saved successfully');
-                 })
-                .catch((err) => {
-                    console.error(err);
-                 });
-                }
-            else{
-                console.log("login successfully!")
-            }
+ 
+        await new User({name: user_name, gmail: user_gmail, image_url: user_image_url}).save()
+        .then(() => {
+            console.log('Saved successfully');
+        })
+        .catch((err) => {
+            console.log("already exist")
         });
-     
+
+        const user_info = await finduser(user_gmail);
+
+        let login_id =  user_info._id;
+        let login_name =  user_info.name;
+        let login_gmail =  user_info.gmail;
+        let login_image =  user_info.image_url;
+        let login_totPlan_list =  user_info.totPlan_list;
+        let login_call_list =  user_info.call_list;
         
-        const user_info = await User.findOne({gmail: user_gmail}).lean();
-        if(!user_info){
-            const user_info_N = await User.findOne({gmail: user_gmail}).lean();
-            var login_id = await user_info_N._id;
-            var login_name = await user_info_N.name;
-            var login_gmail = await user_info_N.gmail;
-            var login_image = await user_info_N.image_url;
-            var login_totPlan_id = await user_info_N.totPlan_id;
-        }
-        else{
-            const user_info = await User.findOne({gmail: user_gmail}).lean();
-            var login_id = await user_info._id
-            var login_name = await user_info.name;
-            var login_gmail = await user_info.gmail;
-            var login_image = await user_info.image_url;
-            var login_totPlan_id = await user_info.totPlan_id;
-        }
+        console.log('---------------------------')
+        console.log('UserInfo from MongoDB')
+        console.log(login_id);
+        console.log(login_name);
+        console.log(login_gmail);
+        console.log(login_image);
+        console.log(login_totPlan_list);
+        console.log(login_call_list);
+        console.log('---------------------------')
 
-       console.log('---------------------------')
-       console.log('UserInfo from MongoDB')
-       console.log(login_id);
-       console.log(login_name);
-       console.log(login_gmail);
-       console.log(login_image);
-       console.log(login_totPlan_id);
-       console.log('---------------------------')
-
-
-          // 배열 추가 부분 따로 구현해서 붙여넣기, 추후 await 처리해서 함수 안으로 넣어주기
-   
-        // // db에서 사용자 찾을 수 있다면
-        // //올바른 이름, 형식인지 체크
-        // // => select
-           
-        //session 초기화(만든다)
-        
         req.session.loggedIn = true;
-        
-        // //session User 저장(DB에서 user찾아서) // 받아온 세션을 여기다가 넣을 것
+        // session User 저장(DB에서 user찾아서)
         req.session.user = {
             _id : login_id, 
             name : login_name,
             image_url : login_image,
             gmail : login_gmail,
-            totPlan_id : login_totPlan_id
+            totPlan_list : login_totPlan_list, // user가 가지고 있는 plan 뽑아서 id, title을 저장
+            call_list : login_call_list // 초대장 리스트
         };
-
-        // // user가 가지고 있는 plan 뽑아서 id, title을 저장
-        // // fake db에서는 2개 만든걸로 있는 걸로 넣음
-        req.session.totPlanTitleList = [
-            { title : fakeTotPlan1.title, _id : fakeTotPlan1._id},
-            { title : fakeTotPlan2.title, _id : fakeTotPlan2._id},
-        ]
-
-        console.log(req.session.totPlanTitleList);
+        console.log(req.session.user)
         
-        // //profile 페이지로 redirect(seeProfile 함수)
+        //profile 페이지로 redirect(seeProfile 함수)
         res.redirect(`/users/${req.session.user._id}`);
     }
+
     else {
-        console.log("error 알림 해줘야 함");
+        console.log("error");
     
         res.redirect("/");
     }
@@ -186,15 +147,13 @@ export const callback = async(req, res) => {
 //goes to user router
 export const getEditProfile = (req, res) => {
    
-    res.render("edit-profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
+    res.render("edit-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list});
 };
 
 
 export const postEditProfile = (req, res) => {
-
     //**DB** : => user 변경사항 다시 저장
     //session에서 user 다시 저장
-
     const {id} = req.params;
     const {name} = req.body;
 
@@ -203,8 +162,8 @@ export const postEditProfile = (req, res) => {
 };
 
 export const seeProfile = (req, res) => {
-
-    return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.totPlanTitleList});
+    // session user 가 받은 초대를 
+    return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list});
 };
 
 
@@ -213,3 +172,10 @@ export const logout = (req, res) => {
     req.session.destroy();
     res.redirect("/");
 };
+
+
+
+
+
+
+

@@ -113,18 +113,20 @@
                 </div>
                 <div class="inv-items">
                     <ul>
-                        <li class="inv-item">
-                            <span href="#" class="inv-title">초대장1</span>
-                            <span class="inv-host">호스트:
-                            </span>
-                            <span calss="host-nickname">
-                                권내영
-                            </span>
-                            <div class="inv-btn">
-                                <button class="accept">수락</button>
-                                <button class="refuse">거절</button>
-                            </div>
-                        </li>
+                        <%user.call_list.forEach((list) => {%>
+                            <li class="inv-item">
+                                <span hrep="#" class="inv-title"><%=list.plan_title%></span>
+                                <span class="inv-host">호스트:
+                                </span>
+                                <span calss="host-nickname">
+                                    <%=list.host%>
+                                </span>
+                                <div class="inv-btn">
+                                    <button class="accept">수락</button>
+                                    <button class="refuse">거절</button>
+                                </div>
+                            </li>
+                            <%})%>
                     </ul>
                 </div>
             </div >
