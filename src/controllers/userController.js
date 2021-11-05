@@ -166,7 +166,7 @@ export const seeProfile = async (req, res) => {
     // session user 가 받은 초대를 
     let user_data = await finduser(req.session.user.gmail);
     req.session.user.call_list = user_data.call_list;
-    req.sesion.user.totPlan_list = user_data.totPlan_list;
+    req.session.user.totPlan_list = user_data.totPlan_list;
     return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list});
 };
 
