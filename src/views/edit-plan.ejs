@@ -1,152 +1,160 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset = "UTF-8">
+    <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+        <!--
+        <link rel="stylesheet" href="kanban.css">
+        <link rel="stylesheet" href="main-content.css">
+        <link rel="stylesheet" href="chatting.css">
+        <link rel="stylesheet" href="frame.css">
+        <link rel="stylesheet" href="icon.css">
+        -->
+        <!--구글 웹폰트-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
-		<link rel="stylesheet" href="/public/css/header.css">
-        <link rel="stylesheet" href="/public/css/base.css">
-		<link rel="stylesheet" href="/public/css/footer.css">
-        <link rel="stylesheet" href="/public/css/edit-plan.css">
+
         <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
-    <body class="container">
-        <div class="region-place" id="regionplace">
-            <div class="jejumap">
-                <img src="../../src/public/images/jejumap.png">
-                <div>
-                    <img src="../../src/public/images/ahndeok.png" class="jeju-region ad">
-                    <img src="../../src/public/images/daejeong.png" class="jeju-region dj">
-                    <img src="../../src/public/images/hankyoung.png" class="jeju-region hk">
-                    <img src="../../src/public/images/joongmoon.png" class="jeju-region jm">
-                    <img src="../../src/public/images/seokeepoo.png" class="jeju-region skp">
-                    <img src="../../src/public/images/koojwa.png" class="jeju-region kj">
-                    <img src="../../src/public/images/jocheon.png" class="jeju-region jc">
-                    <img src="../../src/public/images/jeju.png" class="jeju-region jj">
-                    <img src="../../src/public/images/aewol.png" class="jeju-region aw">
-                    <img src="../../src/public/images/hanlim.png" class="jeju-region hl">
-                    <img src="../../src/public/images/sungsan.png" class="jeju-region ss">
-                    <img src="../../src/public/images/pyoseon.png" class="jeju-region ps">
-                    <img src="../../src/public/images/namwon.png" class="jeju-region nw">
-                    <img src="../../src/public/images/woodo.png" class="jeju-region wd">
+<body class="container">
+    <header>
+        <div class="plan-title">
+            <%=totPlan.title%>
+        </div>
+        <div class="participant"> <!--notattend-->
+        <%totPlan.participants.forEach(function(participant){%>
+            <div><%=participant.name%></div>
+        <%})%>
+        </div>
+
+        <div class="plan-date">
+            출발일 : <span><%="2021-11-23"%></span>
+            도착일 : <span><%="2021-11-25"%></span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="recommandation">
+            <button type="button" class="region-select"><span class="material-icons md-2">map</span>
+                권역 선택</button>
+            <div class="recommandation__categories">
+                <div><span class="material-icons">view_module</span>전체</div>
+                <div><span class="material-icons">landscape</span>관광</div>
+                <div><span class="material-icons">flatware</span>식당</div>
+                <div><span class="material-icons">local_cafe</span>카페</div>
+            </div>
+
+            <ul class="recommandation__list">
+                <li>
+                    <img src="", alt="추천 장소">
+                        <div>
+                            <span>관광지명</span>
+                            <button class="more-btn"><span class="material-icons">open_in_new</span>더보기</button>
+                            <div class="wrap-star">
+                                <div class="star-rating">
+                                    <span>star</span>
+                                </div>
+                            </div>
+                            <span>'프로젝트'의 평가: </span><span>A</span>
+                        </div>
+                </li>
+            </ul>
+        </div>
+        
+        <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
+    
+        <div class="search-list">
+            <form id="search-form">
+                <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
+                <button class="search-btn"><span class="material-icons">
+                    search
+                    </span>
+                    </button>
+            </form>
+            <ul>
+                <!--
+                <li draggable ="true">
+                    <span>봄날</span>
+                    <button class="more-btn">더보기</button>
+                    <p>제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                </li>
+                -->
+            </ul>
+        </div>
+        <div id="map"></div>
+
+        <div class="kanban">
+            <!--
+            <div class="kanban__column">
+                <div class="kanban__column-title">Not started</div>
+                    <div class="kanban__items">
+                        <div class="kanban__item" draggable="true">
+                            <div class="kanban__item-name">place 1</div>
+                            <div class="kanban__item-road_adr">도로명주소 1</div></div>
+                            <button>삭제</button>
+                            <div class="kanban__dropzone"></div>
+                        </div>                    
                 </div>
+            </div>
+            -->  
+        </div>
+        
+        <button id="popup"><span class="material-icons-outlined">
+            mode_comment
+            </span>채팅</button>
+                
+        <!--chatting으로 모든 챗박스 묶고, 추가 클래스로 개별 스타일 부여-->
+        <div class="chatting" id="chatArea">
+            <div id="chatAreaheader">
+                <button>➖</button>
+            </div>
+            <div class="chat-box">
+            <!--
+                <div class="chat system">
+                    <div class="chat-message">
+                        오정환님이 입장하셨습니다.
+                    </div>
+                </div>
+                <div class="chat incoming">
+                    <div class="chat-image">
+                        <img src="userimg.jpg">
+                    </div>
+                    <div class="chat-message">gdgd
+                    </div>
+                </div>
+                <div class="chat outgoing">
+                    <div class="chat-message">gdgd
+                    </div>
+                </div>
+                <div class="chat system">
+                    <div class="chat-message">
+                        오정환님이 퇴장하셨습니다.
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="send-box">
+                <form name="formname">
+                    <textarea type="text" name="chatting-input", class="chatting-input" id ="form"placeholder="메시지 전송하기", required></textarea>
+                    <input type="submit", value="전송" class="send-message">
+                </form>
             </div>
         </div>
-        <header>
-            <h1><%=totPlan.title%></h1>
-            참여자 : 
-            <%totPlan.participants.forEach(function(participant){%>
-                <%=participant['name']%>
-            <% })%>
-            <button class="inv-btn">초대</button>
-            <p>출발일 : </p>
-            <p>도착일 : </p>
-            
-        </header>
-        <main>
-            <!--네이버 지도, 검색창 자리 수정 필요-->
-            <div id="place" class="search">
-                <input type="text" name ="search-input" placeholder="검색어를 입력하세요">
-                <div class="search-result">
-                    <ul>
-                        <li class="result">
-                            <span class="obj-name">봄날</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날공인중개사</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날의류판매점</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날막걸리</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날햄버거</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날 보드게임 카페</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날 스쿠버다이빙</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                        <li class="result">
-                            <span class="obj-name">봄날의류판매점</span>
-                            <p class="obj-adress">제주특별자치도 제주시 애월읍 애월로 27-1</p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div id="toast">장소가 추가되었습니다🚀</div>
-            
-            <div id="map" class="map">
-            </div>
-            <script>
-                const mapOptions = {
-                    center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
-                    zoom : 10
-                };
-                const map = new naver.maps.Map('map', mapOptions);
+        
 
-            </script>
-
-            <div class= "place-box">
-                <button class="add-btn">일정 추가</button>
-                <!--일정 마다 day 다르게, input으로-->
-                <div class="place-list" id="plcBox">
-                    <div class="day-box">
-                        <h3>Day1</h3>
-                    </div>
-                    <div id="place-obj">
-                        <div class="place-object">
-                            <button class="del-btn">❌</button>
-                            <h4 class="obj-name">상호명</h4> <!--편집가능하게-->
-                            <textarea class="obj-memo" placeholder="메모"></textarea>
-                        </div>    
-                    </div>
-                </div>
-                <button class="save-btn">저장하기</button>
-            </div>
-            <div class="recommandation">
-                <button type="button" class="region-select-btn" id="regionbtn">권역 선택</button>
-                <div class="categories">
-                    <div class="category">
-                        관광
-                    </div>
-                    <div class="category">
-                        식당
-                    </div>
-                    <div class="category">
-                        카페
-                    </div>
-                    <div class="category">
-                        레저/<br>스포츠
-                    </div>
-                </div>
-                <div class="recommandation-box">
-                    <ul>
-                        <li class="recommandation-object" draggable="true">
-                            <img src="http://t1.kakaocdn.net/thumb/T800x0.q80/?fname=http%3A%2F%2Ft1.daumcdn.net%2Flocalad_thumb%2Ft%2F3c88d4d6d9374d4212ccdd16529386671367cd68", alt="추천 장소" class="obj-img">
-                            <div class="obj-textbox">
-                                <span class="obj-name">관광지명</span>
-                                <p class="obj-info">대충설명</p>
-                            </div>
-                        </li>
-                    </ul>
-            </div>
         </main>
-        <footer>
-            &copy; <%=new Date().getFullYear()%> Sample Project
-        </footer>
-        <script type="text/javascript" src="/public/js/toastr.js"></script>
-        <script type="text/javascript" src="/public/js/regionSelect.js"></script>
-        <script type="text/javascript" src="/public/js/categorySelect.js"></script>
     </body>
+    <script type="module" src="/public/js/edit-plan/Map.js"></script>
+    <script type="module" src="/public/js/edit-plan/SearchList.js"></script>
+    <script type="module" src="/public/js/edit-plan/Message.js"></script> 
+    <script type="module" src="/public/js/edit-plan/Kanban.js"></script>
+    <script type="module" src="/public/js/edit-plan/chat.js"></script>
+    <script type="module" src="/public/js/edit-plan/textarea.js"></script>
+    <script type="module" src="/public/js/edit-plan/RecList.js"></script>
+    
 </html>

@@ -46,13 +46,13 @@ function showInvitationForm(){
 
 function sendInvitationToGmail(event){
     //변경해야 함
-    const regex = new RegExp(/@gmail.com$/);
+    const regex = new RegExp(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i);
 
     const gmailInput = emailForm.querySelector("input[type='email']");
     console.log(gmailInput.value);
     
     if(!regex.test(gmailInput.value)){
-        alert("@gmail.com 형식으로 입력해주세요");
+        alert("email 형식으로 입력해주세요");
         return;
     }
     //server로 키워드 전송
