@@ -42,14 +42,6 @@ async function sendSearchResults(keyword, socket){
     socket.emit("search_result", searchResults);
 }
 
-function addPlaceToDataBase(){
-    // DATABASE 작업
-}
-
-function delPlaceFromDataBase(){
-    // DATABASE 작업
-}
-
 io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
@@ -89,7 +81,7 @@ io.on("connection", (socket) => {
         socket.to(planId).emit("create_date_div", start, end);
         socket.emit("create_date_div", start , end);
     })
-    */
+    
 
     socket.on("add_to_placelist", (placeObj, planId) => {
         //database 작업 필요
@@ -97,15 +89,16 @@ io.on("connection", (socket) => {
         socket.to(planId).emit("place_add_map", placeObj);
         socket.emit("place_add_map", placeObj);
     });
-    
-    /*
-    socket.on("del_from_placelist", (coordinates, planId) => {
-        //database 작업 필요
-        // list에서 해당 좌표를 가진 place 삭제
-        socket.to(planId).emit("place_delete_map", coordinates);
-        socket.emit("place_delete_map", coordinates);
-    })
     */
+    
+    
+    socket.on("delete_from_list", (itemId, planId) => {
+        console.log(itemId);
+        //database 작업 필요
+        //list에서 해당 id를 가진 place 삭제
+        socket.to(planId).emit("delete_from_list", itemId);
+    })
+    
     // 다시 짜야 할 수 있음 testing 중
 });
 

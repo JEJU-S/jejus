@@ -4,19 +4,22 @@ import SearchList from "/public/js/edit-plan/SearchList.js";
 
 
 /******************socket 생성************************/
-const socket = io(); 
+export const socket = io(); 
 
-const planId = document.querySelector("#plan-id").innerHTML;
+export const planId = document.querySelector("#plan-id").innerHTML;
 const userName = document.querySelector("#user-name").innerHTML;
 const image_url = document.querySelector("#user-image").innerHTML;
 /**************************************/
-
+//들어올 때 서버로 보내기💨
 socket.emit("join_room", planId, userName, init);
 
 function init(){
+
+  //database에서 초기 값 꺼내 온다
   //new Kanban(document.querySelector(".kanban"), fakeItems2);
+
+
 }
-// 서버에서 받아 와야 함
 
 /***************************************/
 
@@ -51,7 +54,7 @@ function receiveSystemMessage(name, enter){
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-/********************************/
+/*****************검색창***************************/
 const searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", submitSearchKeyword);
 
@@ -66,8 +69,8 @@ function submitSearchKeyword(event){
 socket.on("search_result", printSearchList);
 
 function printSearchList(resultList){
-  console.log(resultList);
   new SearchList(document.querySelector(".search-list ul"), resultList);
 }
 
+/*******************Kanban*******************************/
 
