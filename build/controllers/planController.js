@@ -185,7 +185,7 @@ exports.seePlan = seePlan;
 
 var sendInvitation = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, par_userinfo, par_id, par_name, hostarr;
+    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, par_id, par_name, hostarr;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -209,12 +209,13 @@ var sendInvitation = /*#__PURE__*/function () {
               host: hostname,
               plan_title: totplan_title,
               plan_id: totplan_id
-            }; // 초대장을 받음
+            };
+            parti = usertotplan.participants; // 초대장을 받음
 
-            _context2.next = 12;
+            _context2.next = 13;
             return finduser(gmail);
 
-          case 12:
+          case 13:
             par_userinfo = _context2.sent;
             console.log("초대한 유저", par_userinfo);
             par_id = par_userinfo._id;
@@ -223,7 +224,7 @@ var sendInvitation = /*#__PURE__*/function () {
 
             hostarr = par_userinfo.call_list;
 
-            if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id) {
+            if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id || checkath(parti, par_id)) {
               console.log("이미 초대됨");
             } else {
               _User.User.findOne({
@@ -239,7 +240,7 @@ var sendInvitation = /*#__PURE__*/function () {
 
             res.redirect("/plans/".concat(id));
 
-          case 19:
+          case 20:
           case "end":
             return _context2.stop();
         }
@@ -533,7 +534,7 @@ var refuse = /*#__PURE__*/function () {
               _id: refuse_id
             }).exec(function (err, res) {
               if (res) {
-                res.call_list.pop(insert_host);
+                res.call_list.pull(insert_host);
                 res.save();
               }
             });

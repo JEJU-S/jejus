@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+// 데이터셋에 맞춰 바뀔예정
 const recplaceSchema = new mongoose.Schema({
     id: Number,
     name: String,

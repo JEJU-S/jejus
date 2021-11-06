@@ -85,18 +85,16 @@ export const sendInvitation = async (req, res) => {
     const hostname = usertotplan.admin.name;
     const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
+    let parti = usertotplan.participants;
+    
+
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
     console.log("초대한 유저",par_userinfo);
     const par_id = par_userinfo._id;
-    const par_name = par_userinfo.name;
-
-    
-    //  user(참가자)의 totplan_list추가(totplan_id, totplan.name)
-    //  user(참가자)의 calllist 추가(host, plantitle)
     
     let hostarr = par_userinfo.call_list;
-    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id ){
+    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checkath(parti,par_id) ){
         console.log("이미 초대됨")
     }
     else{
@@ -277,7 +275,7 @@ export const refuse = async (req, res) => {
     
     User.findOne({_id: refuse_id}).exec(function(err, res){
         if(res){
-            res.call_list.pop(insert_host);
+            res.call_list.pull(insert_host);
             res.save();
         }
     });
