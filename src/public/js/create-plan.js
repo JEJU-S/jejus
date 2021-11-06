@@ -3,6 +3,20 @@ const dateForm = document.querySelector("#date-form");
 const startDate = dateForm.querySelector("input[name='start']");
 const endDate = dateForm.querySelector("input[name='end']");
 
+const today = new Date();
+const Year = `${today.getFullYear()}`;
+const Month = (today.getMonth() + 1) < 10? `0${today.getMonth() + 1}` : `${today.getMonth() + 1}`;
+const Day = (today.getDate()) < 10? `0${today.getDate()}` : `${today.getDate()}`;
+
+const toDay = `${Year}-${Month}-${Day}`
+
+
+
+startDate.min = toDay;
+startDate.value = toDay;
+
+endDate.min = toDay;
+endDate.value = toDay;
 const MAX_DAYS = 4;
 
 function check(event){
