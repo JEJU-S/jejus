@@ -6,6 +6,76 @@ import http from "http";
 import dotdev from "dotenv";
 dotdev.config();
 
+
+/* 추후 삭제 해야 함*****************************/
+const fakePlaceList = [
+    {
+    _id : "507f191e810c19729de860e1",
+    date : new Date("2021-05-04"),
+    place : [
+        {   
+            _id : "5bf142459b72e12b2b1b2c11",
+            name : "place 1",
+            road_adr : "도로명 주소1",
+            x : "126.52001020252465",
+            y : "33.48137202695348",
+            map_link : ""
+        },
+        {   
+            _id : "5bf142459b72e12b2b1b2c12",
+            name : "place 2",
+            road_adr : "도로명 주소2",
+            x : "126.53001020252465",
+            y : "33.48437202695348",
+            map_link : ""
+        }
+    ]},
+    {
+        _id : "507f191e810c19729de860e2",
+        date : new Date("2021-05-05"),
+        place : [
+            {   
+                _id : "5bf142459b72e12b2b1b2c13",
+                name : "place 3",
+                road_adr : "도로명 주소3",
+                x : "126.54001020252465",
+                y : "33.48137205695348",
+                map_link : ""
+            },
+            {   
+                _id : "5bf142459b72e12b2b1b2c14",
+                name : "place 4",
+                road_adr : "도로명 주소4",
+                x : "126.55001020252465",
+                y : "33.48137202695348",
+                map_link : ""
+            }
+        ]},
+        {
+            _id : "507f191e810c19729de860e3",
+            date : new Date("2021-05-06"),
+            place : [
+                {   
+                    _id : "5bf142459b72e12b2b1b2c15",
+                    name : "place 5",
+                    road_adr : "도로명 주소5",
+                    x : "126.56001020252465",
+                    y : "33.48337202695348",
+                    map_link : ""
+                },
+                {   
+                    _id : "5bf142459b72e12b2b1b2c16",
+                    name : "place 6",
+                    road_adr : "도로명 주소6",
+                    x : "126.57001020252465",
+                    y : "33.42337202695348",
+                    map_link : ""
+                }
+        ]}
+]
+
+/******************************/
+
 const server = http.createServer(app);
 const io = SocketIO(server);
 
@@ -33,7 +103,6 @@ async function searchPlace(keyword){
     result["documents"].forEach((document) => { 
             searchResults.push(document);
     });
-    //console.log(searchResults);
     return searchResults;
 }
 
@@ -55,9 +124,10 @@ io.on("connection", (socket) => {
         console.log(socket.rooms);
 
         console.log("*****************************");
-        
+        //DB** 처음 칸반 장소 리스트 불러오기
+        const placeList = fakePlaceList;
         socket.to(planId).emit("server_msg", userName, true);
-        init();
+        init(placeList);
     });
 
 
@@ -71,7 +141,7 @@ io.on("connection", (socket) => {
         sendSearchResults(keyword, socket);
     });
 
-    /*
+    /* option
     socket.on("change_date", (start, end, planId) => {
         //DB****** 날짜 바꾸기
         console.log(planId);
@@ -83,17 +153,17 @@ io.on("connection", (socket) => {
     })
     */
 
+
     socket.on("add_to_placelist", (newPlace, columnId, droppedIndex, planId) => {
-        //**DB 작업 필요 */
+        //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
         console.log(newPlace);
         const newId = "507f191e810c19729de860ab"; 
+
         socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
         socket.emit("add_to_placelist" ,  newId, newPlace, columnId, droppedIndex);
     });
     
     socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
-
-        
 
         socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
         socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
@@ -105,8 +175,10 @@ io.on("connection", (socket) => {
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
     })
-    
-    // 다시 짜야 할 수 있음 testing 중
+
+    socket.on("rec_list", () => {
+
+    })
 });
 
 export default server;
