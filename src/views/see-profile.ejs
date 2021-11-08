@@ -84,52 +84,50 @@
                         Profile
                     </h2>
                 </div>
-                <div class="main-profile"> 
-                    <div class="profile-box">
-                        <img src="<%=user.image_url%>" class="profile-photo" alt="user-photo">
+                <div>
+                    <div class="main-profile"> 
+                        <div class="profile-box">
+                            <img src="<%=user.image_url%>" class="profile-photo" alt="user-photo">
+                        </div>
+                            <!--닉네임-->
+                        <div class="info-box">
+                            <h3>닉네임</h3>
+                            <span class="nickname"><%=user.name%></span>
+                        </div>   
+                    <!--이메일-->
+                        <div class="info-box">
+                            <h3>이메일</h3>
+                            <span class="email"><%=user.gmail%></span>
+                        </div>
+                        <!--수정버튼-->
+                        <button class="edit-button" type="button" onclick= "location.href ='/users/<%=user._id%>/edit'">
+                            수정하기
+                        </button>
                     </div>
-                        <!--닉네임-->
-                    <div class="info-box">
-                        <h3>닉네임</h3>
-                        <span class="nickname"><%=user.name%></span>
-                    </div>   
-                <!--이메일-->
-                    <div class="info-box">
-                        <h3>이메일</h3>
-                        <span class="email"><%=user.gmail%></span>
-                    </div>
-                    <!--수정버튼-->
-                    <button class="edit-button" type="button" onclick= "location.href ='/users/<%=user._id%>/edit'">
-                        수정하기
-                    </button>
                 </div>
             </div>
             <!--프로필 끝-->
             <!--초대창 시작-->
             <div class="inv-box">
-                <div class="deco">
-                    <div class="box"></div>
-                    <h2>Invitation</h2>    
-                </div>
-                <div class="inv-items">
-                    <ul>
-                        <%user.call_list.forEach((list) => {%>
+                    <div class="deco">
+                        <div class="box"></div>
+                        <h2>Invitation</h2>    
+                    </div>
+                    <div class="inv-items">
+                        <ul>
                             <li class="inv-item">
-                                <span hrep="#" class="inv-title"><%=list.plan_title%></span>
-                                <span class="inv-host">호스트:
+                                <span href="#" class="inv-title">초대장 1
                                 </span>
-                                <span calss="host-nickname">
-                                    <%=list.host%>
+                                <span class="inv-host">호스트: 권내영
                                 </span>
                                 <div class="inv-btn">
                                     <button class="accept">수락</button>
                                     <button class="refuse">거절</button>
                                 </div>
                             </li>
-                            <%})%>
-                    </ul>
+                        </ul>
                 </div>
-            </div >
+            </div>
         </main>    
         <footer>
             &copy; <%=new Date().getFullYear()%> Sample Project
