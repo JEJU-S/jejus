@@ -60,6 +60,11 @@ function checktitle(tot,check){
     return x;
 }
 
+async function deletePlan(adminUser){
+    const user_DelPlan = await TotPlan.deleteOne({admin : adminUser}).lean();
+    return user_DelPlan;
+}
+
 //사용자 마다 완성된 plan 보여주기 위한 것
 export const seePlan = async (req, res) => 
 {
@@ -299,12 +304,39 @@ export const refuse = async (req, res) => {
     res.redirect(`/users/${req.session.user._id}`);
 }
 
-// admin만 삭제 가능하게 만들어야 함 아직 작업 x
-export const del = (req, res) => {
+export const del = async(req, res) => {
     //삭제할 totPlan id
     const {id} = req.params;
     
+    const usertotplan = await finduserPlan(id);
+    let hostid = usertotplan.admin._id;
+    let hostname = usertotplan.admin.name;
+    let totplan_id = usertotplan._id;
+    let totplan_title = usertotplan.title;
+
+    let adminUser = {_id: hostid, name: hostname};
+    let delete_callList = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
+    let delete_planList = {_id: totplan_id,title: totplan_title};
+
+    if(hostid = req.session.user._id){
+
+        console.log('delete Test');
+        let delete_plan = await deletePlan(adminUser)
+        console.log(delete_plan);
+        console.log('delete Test');
+
+        User.findOne({_id: req.session.user._id}).exec(function(err, res){
+            if(res){
+                res.call_list.pull(delete_callList);
+                res.totPlan_list.pull(delete_planList);
+                res.save();
+            }
+        });
+    
+    }else{
+        console.log(' You are not host :( ')
+    }
+   
 
     res.redirect(`/users/${req.session.user._id}`);
 }
-
