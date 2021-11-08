@@ -26,7 +26,7 @@ class PlaceItem {
         });
         // 마우스가 올라갈 시 맵에 띄워줌 mouseenter
         this.elements.root.addEventListener("mouseenter", () => {
-            this.elements.marker = createMapMarker(x, y);
+            this.elements.marker = createMapMarker(x, y , "marker-search");
             mapPanToBound(x, y);
         });
 

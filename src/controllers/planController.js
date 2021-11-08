@@ -107,8 +107,9 @@ export const sendInvitation = async (req, res) => {
     console.log("초대한 유저",par_userinfo);
     const par_id = par_userinfo._id;
     let hostarr = par_userinfo.call_list;
-
-    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checkac(checkarr , totplan_title) ){ // checkath 수정필요
+    let par_tot = par_userinfo.totPlan_list;
+    
+    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checktitle(par_tot , totplan_title) ){ // checkath 수정필요
         console.log("이미 초대됨")
     }
     else{

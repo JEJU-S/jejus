@@ -8,17 +8,16 @@
 const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
 
 
-export function createMapMarker(lon, lat, option){
-    /*
-    switch(option){
-    case "rec" : "red";
-    case "srh" : "yellow";
-    case "kbn" : "blue";
-    }
-    */
+export function createMapMarker(lon, lat, image){
+
+    
     const marker = new naver.maps.Marker({  // 위도 경도
             position : new naver.maps.LatLng(lat, lon),
-            map : map
+            map : map,
+            icon : {
+                url : `/public/images/${image}`,
+                size : new naver.maps.Size(30, 30)
+            }
         })
     return marker;
 }

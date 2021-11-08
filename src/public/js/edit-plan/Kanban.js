@@ -6,7 +6,7 @@ export const mapMarkerList = [];
 class MapMarker {
     constructor(id, x, y){
         this.id = id;
-        this.marker = createMapMarker(x, y);
+        this.marker = createMapMarker(x, y, "marker-user");
     } 
 }
 
