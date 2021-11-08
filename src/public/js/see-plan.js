@@ -63,7 +63,7 @@ function sendInvitationToGmail(event){
 
 function closeInvitaitonToGmail(event){
     event.preventDefault();
-    const gmailInput = emailForm.querySelector("input[type='email']");
+    const gmailInput = document.querySelector(".inv-area input[type='email']");
     gmailInput.value ="";
     emailForm.style.display = "none";
 }

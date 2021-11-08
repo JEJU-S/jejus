@@ -1,61 +1,81 @@
 
-/*
-const recplaceSchema = new mongoose.Schema({
-    id: Number,
-    name: String,
-    road_adr: String,
-    x : Number,
-    y : Number,
-    img_url: String,
-    score: Number,
-    map_link: String
-})
-*/
-const sampleRecList = [];
+import {socket, planId} from "./communicate.js";
 
-const regionBtn = document.querySelector(".region-select");
-const fakeRegion = "애월";
+/***********************/
+
+let fakeRegion = "전체";
 
 const categoryBtns = document.querySelectorAll(".recommandation__categories");
-function selectCategory(event){
-    const category = event.target;
-    return category.textContent;
-}
-
 categoryBtns.forEach((btn) => {
     btn.addEventListener("click", selectCategory);
 })
 
+function selectCategory(event){
+    const category = event.target.closest('div').dataset.category;
+    console.log(category);
+
+    socket.emit("rec_keyword", fakeRegion, category);
+}
 
 //******************** */
 class RecItem {
-    constructor(place_name, road_address_name, place_url, x, y, image_url, score){
+    constructor(id, place_name, road_address_name, place_url, x, y, image_url, score, model_grade){
         this.elements = {};
+        this.elements.root = RecItem.createRoot();
+        this.elements.img = this.elements.root.querySelector("img");
+        this.elements.name = this.elements.root.querySelector(".reco-title");
+        this.elements.moreBtn = this.elements.root.querySelector("button");
+        this.elements.rating = this.elements.root.querySelector(".rating");
+        this.elements.grade = this.elements.root.querySelector(".grade");
 
-        this.elements.root = PlaceItem.createRoot();
-        this.elements.title = this.elements.root.querySelector("span");
-        this.elements.roadAdr = this.elements.root.querySelector("p");
+        this.elements.img.src = image_url;
+        this.elements.img.alt= "추천 장소";
+        this.elements.name.textContent = place_name;
+
+        this.elements.root.dataset.x = x;
+        this.elements.root.dataset.y = y;
+        this.elements.root.dataset.road_adr = road_address_name;
+        this.elements.root.dataset.id = id;
         
+        //별점 비율
+        this.elements.rating.style.width = `${score/5 * 100}%`;
+        this.elements.grade.textContent = model_grade;
 
+        this.elements.moreBtn.addEventListener("click", (event) => {
+            window.open(place_url);
+            event.stopPropagation();
+        })
 
+        this.elements.root.addEventListener("dragstart", (event) => {
+
+            event.dataTransfer.setData("text/plain", JSON.stringify({
+                name : place_name, 
+                road_adr : road_address_name, 
+                x : x, 
+                y : y, 
+                map_link : place_url,
+            }));
+        });
     }
 
     static createRoot(){
         const range = document.createRange();
         range.selectNode(document.body);
         return range.createContextualFragment(`
-                <li>
-                    <img src="", alt="추천 장소">
+                <li draggable = "true">
+                    <img>
                     <div>
-                        <span></span>
-                        <button class="more-btn"><span class="material-icons"></span>더보기</button>
-                        <div class="wrap-star">
-                            <div class="star-rating">
-                                <span></span>
-                            </div>
+                        <div>
+                            <span class="reco-title"></span>
+                            <button class="more-btn"><span class="material-icons">open_in_new</span>더보기</button>
                         </div>
-                        <span></span>
-                        <span>A</span>
+                        <div class="star-rating">
+                            <span>별점 : </span>
+                            <span class="star"><span class="rating"></span></span>
+                        </div>
+                        <div>
+                            <span>자체 평점 : </span><span class="grade"></span>
+                        </div>
                     </div>
                 <li>
         `).children[0];
@@ -63,9 +83,10 @@ class RecItem {
 
 }
 
-class RecList  {
+class RecList {
     constructor(root, placeList){
         this.root = root;
+        this.deleteItems();
 
         placeList.forEach((place) => {
             this.renderItem(place);
@@ -73,16 +94,30 @@ class RecList  {
     }
 
     renderItem(place){
-        const placeItem = new PlaceItem(
+        const recItem = new RecItem(
+            place.id,
             place.name, 
             place.road_adr, 
             place.map_link,
             place.x, 
             place.y,
             place.img_url,
-            place.srore,
+            place.score,
+            place.model_grade
             );
             //뒤에 2개 더 들어감
-        this.root.appendChild(placeItem.elements.root);
+        this.root.appendChild(recItem.elements.root);
     }
+
+    deleteItems(){
+        this.root.textContent = "";
+    }
+}
+
+// 지역, 카테고리
+
+socket.on("rec_result", showRecResult);
+function showRecResult(placeList){
+
+    new RecList(document.querySelector(".recommandation__list"), placeList);
 }

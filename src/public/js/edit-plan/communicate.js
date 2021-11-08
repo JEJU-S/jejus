@@ -78,7 +78,7 @@ function deleteFromList(itemId){
     console.log("***********삭제 시작");
     console.log(kanbanList.root);
     //item 삭제
-    const deletedItem = kanbanList.root.querySelector(`div[data-id="${itemId}"]`);
+    const deletedItem = kanbanList.root.querySelector(`.kanban div[data-id="${itemId}"]`);
 
     //map 삭제
     let mapIndex;
@@ -114,7 +114,7 @@ function addFromList(newId, newPlace, columnId, droppedIndex){
 }
 
 function moveInList(itemId, columnId, droppedIndex){
-    const droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);
+    const droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
     console.log(droppedItemElement);
 
     const columnElement = document.querySelector(`.kanban div[data-id="${columnId}"]`);

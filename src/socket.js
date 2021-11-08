@@ -74,6 +74,32 @@ const fakePlaceList = [
         ]}
 ]
 
+const fakeRecPlaceList = [
+    {
+        id: "61888956e021ad2845181dea",
+        name: "식빵가게1",
+        road_adr: "제주특별자치도 제주시 월성로10길 1 1층",
+        x : 126.5053189,
+        y : 33.5011685,
+        img_url: "",
+        score: 4.3,
+        map_link: "https://place.map.kakao.com/615988591",
+        model_grade : 9.0
+    },
+
+    {
+        id: "61888956e021ad2845181deb",
+        name: "식빵가게2",
+        road_adr: "제주특별자치도 제주시 월성로10길 2 2층",
+        x : 126.6053189,
+        y : 33.6011685,
+        img_url: "",
+        score: 4,
+        map_link: "https://place.map.kakao.com/615988591",
+        model_grade : 6.7
+    }
+];
+
 /******************************/
 
 const server = http.createServer(app);
@@ -129,16 +155,25 @@ io.on("connection", (socket) => {
         socket.to(planId).emit("server_msg", userName, true);
         init(placeList);
     });
-
+    /*****채팅 메시지***/
 
     socket.on("send_chatting_msg", (image_url, message, planId) => {
         socket.to(planId).emit("incomming_chatting_msg", image_url, message);
         //socket.nsp.to(room).emit(event) => nsp 문서 확인 후 적용
     })
-
+    /*****검색 리스트*/
     //search_keyword로 찾기
     socket.on("search_keyword", (keyword) => {
         sendSearchResults(keyword, socket);
+    });
+
+    socket.on("rec_keyword", (region, category) => {
+
+        //****DB 추천 리스트 반환*/
+        console.log(region, category);
+
+        const recList = fakeRecPlaceList;
+        socket.emit("rec_result", recList);
     });
 
     /* option
@@ -153,7 +188,7 @@ io.on("connection", (socket) => {
     })
     */
 
-
+    /*****칸반리스트***/
     socket.on("add_to_placelist", (newPlace, columnId, droppedIndex, planId) => {
         //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
         console.log(newPlace);
@@ -174,10 +209,6 @@ io.on("connection", (socket) => {
         //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
-    })
-
-    socket.on("rec_list", () => {
-
     })
 });
 

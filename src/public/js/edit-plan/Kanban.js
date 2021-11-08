@@ -83,7 +83,7 @@ class DropZone {
             }
             else{
                 const itemId = event.dataTransfer.getData("text/plain");
-                droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);
+                droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
                 console.log(droppedItemElement);
             
                 /************************* */
