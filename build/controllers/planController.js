@@ -148,12 +148,38 @@ function checktitle(tot, check) {
     }
   });
   return x;
-} // async function deletePlan(adminUser){
-//     const user_DelPlan = await TotPlan.deleteOne({admin : adminUser}).lean();
-//     return user_DelPlan;
-// }
-//사용자 마다 완성된 plan 보여주기 위한 것
+}
 
+function deletePlan(_x4) {
+  return _deletePlan.apply(this, arguments);
+} //사용자 마다 완성된 plan 보여주기 위한 것
+
+
+function _deletePlan() {
+  _deletePlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(adminUser) {
+    var user_DelPlan;
+    return _regenerator["default"].wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.next = 2;
+            return _TotPlan.TotPlan.deleteOne({
+              admin: adminUser
+            }).lean();
+
+          case 2:
+            user_DelPlan = _context11.sent;
+            return _context11.abrupt("return", user_DelPlan);
+
+          case 4:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11);
+  }));
+  return _deletePlan.apply(this, arguments);
+}
 
 var seePlan = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
@@ -193,7 +219,7 @@ var seePlan = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function seePlan(_x4, _x5) {
+  return function seePlan(_x5, _x6) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -241,6 +267,7 @@ var sendInvitation = /*#__PURE__*/function () {
             par_tot = par_userinfo.totPlan_list;
 
             if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id || checktitle(par_tot, totplan_title)) {
+              // checkath 수정필요
               console.log("이미 초대됨");
             } else {
               _User.User.findOne({
@@ -264,7 +291,7 @@ var sendInvitation = /*#__PURE__*/function () {
     }, _callee2);
   }));
 
-  return function sendInvitation(_x6, _x7) {
+  return function sendInvitation(_x7, _x8) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -310,7 +337,7 @@ var editPlan = /*#__PURE__*/function () {
     }, _callee3);
   }));
 
-  return function editPlan(_x8, _x9) {
+  return function editPlan(_x9, _x10) {
     return _ref3.apply(this, arguments);
   };
 }();
@@ -423,7 +450,7 @@ var postCreatePlan = /*#__PURE__*/function () {
     }, _callee4);
   }));
 
-  return function postCreatePlan(_x10, _x11) {
+  return function postCreatePlan(_x11, _x12) {
     return _ref4.apply(this, arguments);
   };
 }();
@@ -508,7 +535,7 @@ var accept = /*#__PURE__*/function () {
     }, _callee5);
   }));
 
-  return function accept(_x12, _x13) {
+  return function accept(_x13, _x14) {
     return _ref5.apply(this, arguments);
   };
 }();
@@ -568,7 +595,7 @@ var refuse = /*#__PURE__*/function () {
     }, _callee6);
   }));
 
-  return function refuse(_x14, _x15) {
+  return function refuse(_x15, _x16) {
     return _ref6.apply(this, arguments);
   };
 }();
@@ -648,7 +675,7 @@ var del = /*#__PURE__*/function () {
     }, _callee7);
   }));
 
-  return function del(_x16, _x17) {
+  return function del(_x17, _x18) {
     return _ref7.apply(this, arguments);
   };
 }();
