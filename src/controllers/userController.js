@@ -10,6 +10,7 @@ import { Mongoose } from "mongoose";
 import { app } from "cli";
 import { Db } from "mongoose/node_modules/mongodb";
 
+
 //
 const hostname = os.networkInterfaces();
 const PORT = process.env.PORT || 8080;
@@ -150,7 +151,7 @@ export const callback = async(req, res) => {
 //goes to user router
 export const getEditProfile = (req, res) => {
    
-    res.render("edit-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list});
+    res.render("edit-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list } );
 };
 
 
@@ -164,8 +165,12 @@ export const postEditProfile = (req, res) => {
     res.redirect(`/users/${id}`);
 };
 
-export const seeProfile = (req, res) => {
+export const seeProfile = async (req, res) => {
     // session user 가 받은 초대를 
+    let user_data = await finduser(req.session.user.gmail);
+    req.session.user = user_data;
+    // req.session.user.call_list = user_data.call_list;
+    // req.session.user.totPlan_list = user_data.totPlan_list;
     return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list});
 };
 

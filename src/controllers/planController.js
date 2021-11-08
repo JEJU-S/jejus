@@ -47,6 +47,19 @@ function checkcall(call,check){
     return x;
 }
 
+function checktitle(tot,check){
+    let x = false;
+    tot.forEach(function(i){
+        if(i['title']==check){
+            x=true;
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
+}
+
 //사용자 마다 완성된 plan 보여주기 위한 것
 export const seePlan = async (req, res) => 
 {
@@ -56,8 +69,9 @@ export const seePlan = async (req, res) =>
     let parti = usertotplan.participants;
     
     console.log("접근 권한 테스트")
-
+    
     if(checkath(parti,req.session.user._id)){
+        console.log("권한허용")
         res.render(`see-plan`, {
             user : req.session.user,
             totPlanTitles : req.session.user.totPlan_list,
@@ -83,41 +97,27 @@ export const sendInvitation = async (req, res) => {
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
-    const insert_plan = {_id : totplan_id, title: totplan_title};
-    const insert_host = {host: hostname, plan_title: totplan_title};
+    const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
+    let parti = usertotplan.participants;
+    console.log(parti)
+    
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
     console.log("초대한 유저",par_userinfo);
     const par_id = par_userinfo._id;
-    const par_name = par_userinfo.name;
-    const par_info = {_id: par_id, name: par_name};
-
-    
-    //  user(참가자)의 totplan_list추가(totplan_id, totplan.name)
-    //  user(참가자)의 calllist 추가(host, plantitle)
-    
     let hostarr = par_userinfo.call_list;
-    if(checkcall(hostarr,totplan_title)){
+
+    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checkac(checkarr , totplan_title) ){ // checkath 수정필요
         console.log("이미 초대됨")
     }
     else{
         User.findOne({gmail: gmail}).exec(function(err, res){
             if(res){
-                res.totPlan_list.push(insert_plan);
                 res.call_list.push(insert_host);
                 res.save();
             }
         });
-        // 초대 수락시
-        // tot_plan participant추가
-        TotPlan.findOne({_id:totplan_id}).exec(function(err, res){
-            if(res){
-                res.participants.push(par_info);
-                res.save();
-            }
-        });
-       
     }
     
     // DB 수락 거절 판별
@@ -139,7 +139,9 @@ export const editPlan = async (req, res) =>
     console.log("접근 권한 테스트")
     console.log(req.session.user);
 
+
     if(checkath(parti, req.session.user._id)){
+        console.log("권한허용")
         res.render("edit-plan", {
             user : req.session.user,
             totPlan : usertotplan,
@@ -170,7 +172,7 @@ export const postCreatePlan = async (req, res) => {
 
     const pC_id = req.session.user._id;
     const pC_user = req.session.user.name;
-  
+    const pC_image_url = req.session.user.image_url;
 
     let tempDate = new Date(startDate);
     const dayArray = [];
@@ -178,7 +180,7 @@ export const postCreatePlan = async (req, res) => {
     await new TotPlan({
         title:title , 
         admin : {_id: pC_id, name: pC_user},
-        participants : [{_id: pC_id, name: pC_user}],
+        participants : [{_id: pC_id, name: pC_user, image_url : pC_image_url}],
         // day_plan: [{
         //     date: dayArray,
         //     place: [{
@@ -215,14 +217,84 @@ export const postCreatePlan = async (req, res) => {
     res.redirect(`/users/${pC_id}`); 
 }
 
-export const accept = (req, res) => {
-    //***DB
+export const accept = async (req, res) => {
+
+    
+    const {id, tid} = req.params;
+
+    console.log(id)
+    console.log(tid)
+
+    const accept_id = req.session.user._id;
+
+    const par_userinfo = await finduser(req.session.user.gmail);
+
+    const usertotplan = await finduserPlan(id);
+
+    console.log("초대받은 계획",usertotplan)
+
+    const totplan_title = usertotplan.title;
+    const totplan_id = usertotplan._id;
+    const insert_plan = {_id : totplan_id, title: totplan_title};
+    const hostname = usertotplan.admin.name;
+
+    const insert_host = { host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid };
+
+    console.log("insert host --- ")
+    const par_info = {_id: par_userinfo._id, name: par_userinfo.name, image_url: par_userinfo.image_url};
+    console.log("par in fo  --- ")
+    
+    TotPlan.findOne({_id:id}).exec(function(err, res){
+        if(res){
+            res.participants.push(par_info);
+            res.save();
+        }
+    });
+    console.log("////_@_ 3-- ")
+
+    User.findOne({_id: accept_id}).exec(function(err, res){
+        if(res){
+            res.totPlan_list.push(insert_plan);
+            res.call_list.pull(insert_host);
+            res.save();
+        }
+    });
+    console.log("////_@_ --- ")
+    
+    // // 초대 수락시
+    // tot_plan participant추가
+    
+
     res.redirect(`/users/${req.session.user._id}`);
 }
 
-export const refuse = (req, res) => {
+export const refuse = async (req, res) => {
     //***DB
+    const {id,tid} = req.params;
+
+    console.log(id)
+    console.log(tid)
+
+    const refuse_id = req.session.user._id
+    const par_userinfo = await finduser(req.session.user.gmail);
+
+    const usertotplan = await finduserPlan(id);
+
+    console.log("초대받은 계획",usertotplan)
+
+    const totplan_title = usertotplan.title;
+    const totplan_id = usertotplan._id;
+    const hostname = usertotplan.admin.name;
+    const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid};
+
     
+    User.findOne({_id: refuse_id}).exec(function(err, res){
+        if(res){
+            res.call_list.pull(insert_host);
+            res.save();
+        }
+    });
+
     res.redirect(`/users/${req.session.user._id}`);
 }
 

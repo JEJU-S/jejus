@@ -122,8 +122,8 @@
                                     <%=list.host%>
                                 </span>
                                 <div class="inv-btn">
-                                    <button class="accept">수락</button>
-                                    <button class="refuse">거절</button>
+                                    <button class="accept" onclick="location.href='/plans/<%=list.plan_id%>/<%=list._id%>/accept'">수락</button>
+                                    <button class="refuse" onclick="location.href='/plans/<%=list.plan_id%>/<%=list._id%>/refuse'">거절</button>
                                 </div>
                             </li>
                             <%})%>
