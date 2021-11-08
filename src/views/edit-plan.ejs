@@ -20,7 +20,11 @@
 
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
 
-
+        
+        <div id="plan-id" hidden><%=totPlan._id%></div>
+        <div id="user-name" hidden><%=user.name%></div>
+        <div id="user-image" hidden><%=user.image_url%></div>
+        
         <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
 <body class="container">
@@ -155,11 +159,11 @@
         </main>
     </body>
     <script type="module" src="/public/js/edit-plan/Map.js"></script>
-    <script type="module" src="/public/js/edit-plan/SearchList.js"></script>
     <script type="module" src="/public/js/edit-plan/Message.js"></script>
     <script type="module" src="/public/js/edit-plan/Kanban.js"></script>
     <script type="module" src="/public/js/edit-plan/chat.js"></script>
     <script type="module" src="/public/js/edit-plan/textarea.js"></script>
     <script type="module" src="/public/js/edit-plan/RecList.js"></script>
-
+    <script type="module" src="/public/js/edit-plan/communicate.js"></script>
+    
 </html>
