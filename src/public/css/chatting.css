@@ -13,6 +13,7 @@
   right: 2%;
   margin-top: 10px;
   background-color: rgb(191, 255, 247);
+  z-index: 9999;
 }
 
 #popup:hover {
