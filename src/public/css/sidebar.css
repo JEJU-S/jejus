@@ -3,7 +3,8 @@
   flex-direction: column;
   align-items: center;
   grid-area: sidebar;
-  border-radius: 0 0 5px 0;
+  margin: 5px 0 0 10px;
+  border-radius: 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   background-color: rgb(255, 255, 255);
 }
