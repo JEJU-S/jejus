@@ -138,9 +138,9 @@ function checkcall(call, check) {
   return x;
 }
 
-function checkac(call, check) {
+function checktitle(tot, check) {
   var x = false;
-  call.forEach(function (i) {
+  tot.forEach(function (i) {
     if (i['title'] == check) {
       x = true;
     } else {
@@ -198,7 +198,7 @@ exports.seePlan = seePlan;
 
 var sendInvitation = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, par_id, hostarr, checkarr, check1;
+    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, par_id, hostarr, par_tot;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -234,12 +234,9 @@ var sendInvitation = /*#__PURE__*/function () {
             console.log("초대한 유저", par_userinfo);
             par_id = par_userinfo._id;
             hostarr = par_userinfo.call_list;
-            checkarr = par_userinfo.totPlan_list;
-            check1 = checkac(checkarr, totplan_title);
-            console.log("@*@", check1);
+            par_tot = par_userinfo.totPlan_list;
 
-            if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id || checkath(parti, par_id)) {
-              // checkath 수정필요
+            if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id || checktitle(par_tot, totplan_title)) {
               console.log("이미 초대됨");
             } else {
               _User.User.findOne({
@@ -255,7 +252,7 @@ var sendInvitation = /*#__PURE__*/function () {
 
             res.redirect("/plans/".concat(id));
 
-          case 23:
+          case 21:
           case "end":
             return _context2.stop();
         }
@@ -287,6 +284,7 @@ var editPlan = /*#__PURE__*/function () {
             console.log(usertotplan);
             parti = usertotplan.participants;
             console.log("접근 권한 테스트");
+            console.log(req.session.user);
 
             if (checkath(parti, req.session.user._id)) {
               console.log("권한허용");
@@ -300,7 +298,7 @@ var editPlan = /*#__PURE__*/function () {
             } // 진행중
 
 
-          case 9:
+          case 10:
           case "end":
             return _context3.stop();
         }
@@ -436,7 +434,6 @@ var accept = /*#__PURE__*/function () {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
-            //***DB
             _req$params = req.params, id = _req$params.id, tid = _req$params.tid;
             console.log(id);
             console.log(tid);
@@ -576,7 +573,9 @@ var refuse = /*#__PURE__*/function () {
 exports.refuse = refuse;
 
 var del = function del(req, res) {
-  return res.send("delete plans");
+  //삭제할 totPlan id
+  var id = req.params.id;
+  res.redirect("/users/".concat(req.session.user._id));
 };
 
 exports.del = del;
