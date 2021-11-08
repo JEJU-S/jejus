@@ -206,19 +206,25 @@ export const postCreatePlan = async (req, res) => {
     let totplanidcall = await findtitle(title);
     let totplanid = totplanidcall._id;
     console.log(totplanid)
-    for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
-        console.log("temp date : ", tempDate);
-        dayArray.push(new Date(tempDate));
-        TotPlan.findByIdAndUpdate(totplanid, {$push : { 
-            day_plan: [{date : tempDate }] } } ).exec();
+    
+    if(totplanidcall.admin._id==pC_id)
+    {
+        for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
+            console.log("temp date : ", tempDate);
+            dayArray.push(new Date(tempDate));
+            TotPlan.findByIdAndUpdate(totplanid, {$push : { 
+                day_plan: [{date : tempDate }] } } ).exec();
+        }
+        const totplan = await findtitle(title);
 
+
+        User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } ).exec()
+        req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
     }
-   
-    const totplan = await findtitle(title);
-
-
-    User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } ).exec()
-    req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
+    else{
+        console.log("동일한 제목의 여행이 존재합니다.")
+    }
+    
     
     res.redirect(`/users/${pC_id}`); 
 }

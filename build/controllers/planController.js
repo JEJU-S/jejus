@@ -408,6 +408,11 @@ var postCreatePlan = /*#__PURE__*/function () {
             totplanid = totplanidcall._id;
             console.log(totplanid);
 
+            if (!(totplanidcall.admin._id == pC_id)) {
+              _context4.next = 25;
+              break;
+            }
+
             for (tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)) {
               console.log("temp date : ", tempDate);
               dayArray.push(new Date(tempDate));
@@ -421,10 +426,10 @@ var postCreatePlan = /*#__PURE__*/function () {
               }).exec();
             }
 
-            _context4.next = 19;
+            _context4.next = 20;
             return findtitle(title);
 
-          case 19:
+          case 20:
             totplan = _context4.sent;
 
             _User.User.findByIdAndUpdate(pC_id, {
@@ -440,9 +445,16 @@ var postCreatePlan = /*#__PURE__*/function () {
               _id: totplan._id,
               title: totplan.title
             });
+            _context4.next = 26;
+            break;
+
+          case 25:
+            console.log("동일한 제목의 여행이 존재합니다.");
+
+          case 26:
             res.redirect("/users/".concat(pC_id));
 
-          case 23:
+          case 27:
           case "end":
             return _context4.stop();
         }
