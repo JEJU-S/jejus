@@ -81,20 +81,27 @@ io.on("connection", (socket) => {
         socket.to(planId).emit("create_date_div", start, end);
         socket.emit("create_date_div", start , end);
     })
-    
-
-    socket.on("add_to_placelist", (placeObj, planId) => {
-        //database 작업 필요
-        //해당 plan
-        socket.to(planId).emit("place_add_map", placeObj);
-        socket.emit("place_add_map", placeObj);
-    });
     */
+
+    socket.on("add_to_placelist", (newPlace, columnId, droppedIndex, planId) => {
+        //**DB 작업 필요 */
+        console.log(newPlace);
+        const newId = "507f191e810c19729de860ab"; 
+        socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
+        socket.emit("add_to_placelist" ,  newId, newPlace, columnId, droppedIndex);
+    });
     
+    socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
+
+        
+
+        socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
+        socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
+    })
     
     socket.on("delete_from_list", (itemId, planId) => {
         console.log(itemId);
-        //database 작업 필요
+        //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
     })
