@@ -137,8 +137,10 @@ export const editPlan = async (req, res) =>
     let parti = usertotplan.participants;
     
     console.log("접근 권한 테스트")
+    console.log(req.session.user);
 
-    if(checkath(parti,req.session.user._id)){
+
+    if(checkath(parti, req.session.user._id)){
         console.log("권한허용")
         res.render("edit-plan", {
             user : req.session.user,
@@ -151,9 +153,6 @@ export const editPlan = async (req, res) =>
     }
 
     // 진행중
-
-    
-    
 }
 
 export const getCreatePlan = (req, res) => {
@@ -219,7 +218,7 @@ export const postCreatePlan = async (req, res) => {
 }
 
 export const accept = async (req, res) => {
-    //***DB
+
     
     const {id, tid} = req.params;
 
@@ -265,6 +264,7 @@ export const accept = async (req, res) => {
     // // 초대 수락시
     // tot_plan participant추가
     
+
     res.redirect(`/users/${req.session.user._id}`);
 }
 
@@ -299,5 +299,11 @@ export const refuse = async (req, res) => {
 }
 
 // admin만 삭제 가능하게 만들어야 함 아직 작업 x
-export const del = (req, res) => res.send("delete plans");
+export const del = (req, res) => {
+    //삭제할 totPlan id
+    const {id} = req.params;
+    
+
+    res.redirect(`/users/${req.session.user._id}`);
+}
 

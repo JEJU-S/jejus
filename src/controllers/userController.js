@@ -134,6 +134,9 @@ export const callback = async(req, res) => {
         };
         console.log(req.session.user)
         
+
+
+        
         //profile 페이지로 redirect(seeProfile 함수)
         res.redirect(`/users/${req.session.user._id}`);
     }

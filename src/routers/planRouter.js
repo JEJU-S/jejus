@@ -12,7 +12,7 @@ planRouter.get("/:id([0-9a-f]{24})",protectMiddleware , seePlan);
 planRouter.post("/:id([0-9a-f]{24})",protectMiddleware , sendInvitation);
 
 planRouter.get("/:id([0-9a-f]{24})/edit", protectMiddleware, editPlan);
-planRouter.get("/:id([0-9a-f]{24})/delete",protectMiddleware,  del);
+planRouter.get("/:id([0-9a-f]{24})/delete",protectMiddleware, del);
 
 planRouter.route("/create", protectMiddleware).get(getCreatePlan).post(postCreatePlan);
 
