@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="/public/css/chatting.css">
         <link rel="stylesheet" href="/public/css/frame.css">
         <link rel="stylesheet" href="/public/css/icon.css">
+        <link rel="stylesheet" href="/public/css/region-select.css">
 
         <!--구글 웹폰트-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +28,27 @@
         <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
 <body class="container">
+    <div class="region-place" id="regionplace">
+            <div class="jejumap">
+                <img src="/public/images/jejumap.png">
+                <div>
+                    <img src="/public/images/ahndeok.png" class="jeju-region ad">
+                    <img src="/public/images/daejeong.png" class="jeju-region dj">
+                    <img src="/public/images/hankyoung.png" class="jeju-region hk">
+                    <img src="/public/images/joongmoon.png" class="jeju-region jm">
+                    <img src="/public/images/seokeepoo.png" class="jeju-region skp">
+                    <img src="/public/images/koojwa.png" class="jeju-region kj">
+                    <img src="/public/images/jocheon.png" class="jeju-region jc">
+                    <img src="/public/images/jeju.png" class="jeju-region jj">
+                    <img src="/public/images/aewol.png" class="jeju-region aw">
+                    <img src="/public/images/hanlim.png" class="jeju-region hl">
+                    <img src="/public/images/sungsan.png" class="jeju-region ss">
+                    <img src="/public/images/pyoseon.png" class="jeju-region ps">
+                    <img src="/public/images/namwon.png" class="jeju-region nw">
+                    <img src="/public/images/woodo.png" class="jeju-region wd">
+                </div>
+            </div>
+        </div>
     <header>
         <div class="plan-title">
             <%=totPlan.title%>
@@ -41,25 +63,26 @@
             출발일 : <span><%="2021-11-23"%></span>
             도착일 : <span><%="2021-11-25"%></span>
         </div>
+        <button id="save">저장</button>
     </header>
 
     <main class="main-content">
         <div class="recommandation">
-            <button type="button" class="region-select"><span class="material-icons md-2">map</span>
+            <button type="button" id="regionbtn"><span class="material-icons md-2">map</span>
                 권역 선택</button>
             <div class="recommandation__categories">
-                <div><span class="material-icons">view_module</span>전체</div>
-                <div><span class="material-icons">landscape</span>관광</div>
-                <div><span class="material-icons">flatware</span>식당</div>
-                <div><span class="material-icons">local_cafe</span>카페</div>
+                <div class="category"><span class="material-icons">view_module</span><span class="category-name">전체</span></div>
+                <div class="category"><span class="material-icons">landscape</span><span class="category-name">관광</span></div>
+                <div class="category"><span class="material-icons">flatware</span><span class="category-name">식당</span></div>
+                <div class="category"><span class="material-icons">local_cafe</span><span class="category-name">카페</span></div>
             </div>
 
             <ul class="recommandation__list">
                 <li>
-                    <img src="userimg.jpg", alt="추천 장소">
+                    <img src="", alt="추천 장소">
                     <div>
                         <div>
-                            <span>관광지명</span>
+                            <span class="reco-title">관광지명</span>
                             <button class="more-btn"><span class="material-icons">open_in_new</span>더보기</button>
                         </div>
                         <div class="star-rating">
@@ -165,5 +188,6 @@
     <script type="module" src="/public/js/edit-plan/textarea.js"></script>
     <script type="module" src="/public/js/edit-plan/RecList.js"></script>
     <script type="module" src="/public/js/edit-plan/communicate.js"></script>
+    <script type="module" src="/public/js/regionSelect.js"></script>
 
 </html>

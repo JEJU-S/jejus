@@ -21,7 +21,7 @@ main {
   display: flex;
   flex-direction: column;
   padding: 1% 4% 2% 4%;
-  width: 90%;
+  width: 60%;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
@@ -121,10 +121,10 @@ input[type="text"]:focus {
   flex-direction: column;
   padding: 2% 4%;
   height: 100%;
-  width: 90%;
-  color: white;
+  width: 60%;
+  color: black;
   margin-bottom: 1px;
-  background: url("../images/bgimg.jpg");
+  background: white;
   background-size: cover;
   overflow: hidden;
   border-radius: 5px;
@@ -169,6 +169,7 @@ input[type="text"]:focus {
   margin-left: 30px;
   font-size: 20px;
   font-weight: bold;
+  color: black;
 }
 
 .inv-host {
