@@ -23,11 +23,21 @@
         <title> <%=totPlan.title%> | Sample </title>
     </head>
     <body class="container">
+        <div class="inv-area" >
+            <form class="email-form" method="post" >
+                <div>
+                    <span>그룹원 초대하기</span>
+                    <input type="reset" value="❌">
+                </div>
+                <input type="email", placeholder="gmail을 입력하세요" name="gmail" required>
+                <input type="submit" value="초대하기">
+            </form>
+        </div>
         <header>
             <div class="logo-box">
                 <a href="/users/<%=user._id%>"><img src="/public/images/logo-wt.png" alt="logo" class="logo"></a>
             </div>
-            </header>
+        </header>
         <div class="sidebar"> <!--사이드 바-->
             <div class="side-profile"> <!--프로필 사진 크기 맞춤을 위해 "photo-box" div 추가-->
                 <div class="photo-box"> <!--프로필 사진 크기 맞춤을 위해 사진에 "profile-img" class 추가-->
@@ -93,28 +103,11 @@
             <div class="whole-plan">
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <div class="plan-info">
-                    <span class="user">
-                        user :
-                        <%totPlan.participants.forEach(function(participant){%>
-                            <%=participant['name']%>
-                        <% })%>
-                    </span>
-
-                    <button class="inv-btn">초대</button>
-
-                    <form class="email-form" method="post" style="display : none">
-                        <input type="email", placeholder="gmail을 입력하세요" name="gmail">
-                        <input type="submit" value="초대장 전송">
-                        <input type= "reset" value="취소">
-                    </form>
-
                     <span class="date">
                         <%=totPlan.day_plan[0]['date']%>
                             ~
                         <%=totPlan.day_plan[day-1]['date']%>
                     </span>
-                </div>
-
                 <!--total-map(전체 경로 마커) 처리 부분-->
                 <div id="total-map"></div>
                 <script>
@@ -156,6 +149,8 @@
 
                     const dayMapList = [];
                     </script>
+
+
                     <div class="participants">
                         <div class="user">
                             <div class="user">
@@ -186,6 +181,7 @@
                             <%if(user._id == totPlan.admin["_id"]){%>
                                 <button type="button" class="del-btn" onclick= "location.href ='/plans/<%=totPlan._id%>/delete'">삭제</button>
                             <%}%>
+                            <button class="inv-btn">초대</button>
                         </div>
                     </div>
                 </div>

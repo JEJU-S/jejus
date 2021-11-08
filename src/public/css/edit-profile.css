@@ -41,8 +41,10 @@ main {
 .profile-box {
   margin-left: 5%;
   align-self: center;
-  width: 180px;
-  height: 180px;
+  width: 10rem;
+  height: 10rem;
+  max-width: 10rem;
+  max-height: 10rem;
   border-radius: 50%;
   overflow: hidden;
   background-color: #dfdfdf;

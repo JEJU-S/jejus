@@ -19,11 +19,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
-   
+
         <div id="plan-id" hidden><%=totPlan._id%></div>
         <div id="user-name" hidden><%=user.name%></div>
         <div id="user-image" hidden><%=user.image_url%></div>
-        
+
         <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
 <body class="container">
@@ -56,23 +56,26 @@
 
             <ul class="recommandation__list">
                 <li>
-                    <img src="", alt="추천 장소">
+                    <img src="userimg.jpg", alt="추천 장소">
+                    <div>
                         <div>
                             <span>관광지명</span>
                             <button class="more-btn"><span class="material-icons">open_in_new</span>더보기</button>
-                            <div class="wrap-star">
-                                <div class="star-rating">
-                                    <span>star</span>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="star-rating">
+                            <span>별점: </span>
+                            <span class="star"><span class="rating"></span></span>
+                        </div>
+                        <div>
                             <span>'프로젝트'의 평가: </span><span>A</span>
                         </div>
+                    </div>
                 </li>
             </ul>
         </div>
-        
+
         <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
-    
+
         <div class="search-list">
             <form id="search-form">
                 <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
@@ -103,16 +106,16 @@
                             <div class="kanban__item-road_adr">도로명주소 1</div></div>
                             <button>삭제</button>
                             <div class="kanban__dropzone"></div>
-                        </div>                    
+                        </div>
                 </div>
             </div>
-            -->  
+            -->
         </div>
-        
+
         <button id="popup"><span class="material-icons-outlined">
             mode_comment
             </span>채팅</button>
-                
+
         <!--chatting으로 모든 챗박스 묶고, 추가 클래스로 개별 스타일 부여-->
         <div class="chatting" id="chatArea">
             <div id="chatAreaheader">
@@ -150,17 +153,17 @@
                 </form>
             </div>
         </div>
-        
+
 
         </main>
     </body>
     <script type="module" src="/public/js/edit-plan/Map.js"></script>
-    
-    <script type="module" src="/public/js/edit-plan/Message.js"></script> 
+
+    <script type="module" src="/public/js/edit-plan/Message.js"></script>
     <script type="module" src="/public/js/edit-plan/Kanban.js"></script>
     <script type="module" src="/public/js/edit-plan/chat.js"></script>
     <script type="module" src="/public/js/edit-plan/textarea.js"></script>
     <script type="module" src="/public/js/edit-plan/RecList.js"></script>
     <script type="module" src="/public/js/edit-plan/communicate.js"></script>
-    
+
 </html>
