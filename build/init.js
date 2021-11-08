@@ -2,11 +2,13 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
+require("./db");
+
 require("regenerator-runtime");
 
 var _socket = _interopRequireDefault(require("./socket"));
 
-//import "./db"; // database 연결
+// database 연결
 //import app from "./server"; // 서버 객체, 라우터 
 var PORT = process.env.PORT || 8080;
 

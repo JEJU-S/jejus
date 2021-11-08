@@ -15,12 +15,57 @@ var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _fakeDB = require("./fakeDB");
+var _os = _interopRequireDefault(require("os"));
 
-_dotenv["default"].config(); // 추후 진짜 db로 바꿔야 함
+var _User = require("../models/User");
+
+var _mongoose = require("mongoose");
+
+var _cli = require("cli");
+
+var _mongodb = require("mongoose/node_modules/mongodb");
+
+_dotenv["default"].config();
+
+var mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise;
+
+//
+var hostname = _os["default"].networkInterfaces();
+
+var PORT = process.env.PORT || 8080;
+
+function finduser(_x) {
+  return _finduser.apply(this, arguments);
+} // Main Page 
 
 
-var PORT = process.env.PORT || 8080; // Main Page 
+function _finduser() {
+  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(user_gmail) {
+    var user_info;
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return _User.User.findOne({
+              gmail: user_gmail
+            }).lean();
+
+          case 2:
+            user_info = _context2.sent;
+            return _context2.abrupt("return", user_info);
+
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+  return _finduser.apply(this, arguments);
+}
 
 var main = function main(req, res) {
   return res.render("main");
@@ -49,7 +94,7 @@ exports.login = login;
 
 var callback = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var baseURL, config, params, finalURL, tokenRequest, access_token, _baseURL, _config, _params, _finalURL, userRequest;
+    var baseURL, config, params, finalURL, tokenRequest, access_token, _baseURL, _config, _params, _finalURL, userRequest, user_name, user_gmail, user_image_url, user_info, login_id, login_name, login_gmail, login_image, login_totPlan_list, login_call_list;
 
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
@@ -83,7 +128,7 @@ var callback = /*#__PURE__*/function () {
             tokenRequest = _context.sent;
 
             if (!("access_token" in tokenRequest)) {
-              _context.next = 34;
+              _context.next = 50;
               break;
             }
 
@@ -107,46 +152,64 @@ var callback = /*#__PURE__*/function () {
 
           case 20:
             userRequest = _context.sent;
-            console.log(userRequest);
-            console.log("-----------user info-------------");
-            console.log(userRequest['names'][0]['displayName']);
-            console.log(userRequest['photos'][0]['url']);
-            console.log(userRequest['emailAddresses'][0]['value']);
-            console.log("---------------------------------"); //**DB**
-            //db에서 사용자를 찾을 수 없다면 => 추가 
-            // db에서 사용자 찾을 수 있다면
-            // => select
-            //session 초기화(만든다)
+            user_name = userRequest['names'][0]['displayName'];
+            user_gmail = userRequest['emailAddresses'][0]['value'];
+            user_image_url = userRequest['photos'][0]['url'];
+            _context.next = 26;
+            return new _User.User({
+              name: user_name,
+              gmail: user_gmail,
+              image_url: user_image_url
+            }).save().then(function () {
+              console.log('Saved successfully');
+            })["catch"](function (err) {
+              console.log("already exist");
+            });
 
-            req.session.loggedIn = true; //session User 저장(DB에서 user찾아서)
+          case 26:
+            _context.next = 28;
+            return finduser(user_gmail);
+
+          case 28:
+            user_info = _context.sent;
+            login_id = user_info._id;
+            login_name = user_info.name;
+            login_gmail = user_info.gmail;
+            login_image = user_info.image_url;
+            login_totPlan_list = user_info.totPlan_list;
+            login_call_list = user_info.call_list;
+            console.log('---------------------------');
+            console.log('UserInfo from MongoDB');
+            console.log(login_id);
+            console.log(login_name);
+            console.log(login_gmail);
+            console.log(login_image);
+            console.log(login_totPlan_list);
+            console.log(login_call_list);
+            console.log('---------------------------');
+            req.session.loggedIn = true; // session User 저장(DB에서 user찾아서)
 
             req.session.user = {
-              _id: "3952ab947607509ee9654795",
-              name: userRequest['names'][0]['displayName'],
-              image_url: userRequest['photos'][0]['url'],
-              gmail: userRequest['emailAddresses'][0]['value'],
-              totPlan_id: ["507f191e810c19729de860ea", "13jbrkw3494msd3j3456e245"]
-            }; // user가 가지고 있는 plan 뽑아서 id, title을 저장
-            // fake db에서는 2개 만든걸로 있는 걸로 넣음
+              _id: login_id,
+              name: login_name,
+              image_url: login_image,
+              gmail: login_gmail,
+              totPlan_list: login_totPlan_list,
+              // user가 가지고 있는 plan 뽑아서 id, title을 저장
+              call_list: login_call_list // 초대장 리스트
 
-            req.session.totPlanTitleList = [{
-              title: _fakeDB.fakeTotPlan1.title,
-              _id: _fakeDB.fakeTotPlan1._id
-            }, {
-              title: _fakeDB.fakeTotPlan2.title,
-              _id: _fakeDB.fakeTotPlan2._id
-            }];
-            console.log(req.session.totPlanTitleList); //profile 페이지로 redirect(seeProfile 함수)
+            };
+            console.log(req.session.user); //profile 페이지로 redirect(seeProfile 함수)
 
             res.redirect("/users/".concat(req.session.user._id));
-            _context.next = 36;
+            _context.next = 52;
             break;
 
-          case 34:
-            console.log("error 알림 해줘야 함");
+          case 50:
+            console.log("error");
             res.redirect("/");
 
-          case 36:
+          case 52:
           case "end":
             return _context.stop();
         }
@@ -154,7 +217,7 @@ var callback = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function callback(_x, _x2) {
+  return function callback(_x2, _x3) {
     return _ref.apply(this, arguments);
   };
 }(); //goes to user router
@@ -165,16 +228,15 @@ exports.callback = callback;
 var getEditProfile = function getEditProfile(req, res) {
   res.render("edit-profile", {
     user: req.session.user,
-    totPlanTitles: req.session.totPlanTitleList
+    totPlanTitles: req.session.user.totPlan_list
   });
 };
 
 exports.getEditProfile = getEditProfile;
 
 var postEditProfile = function postEditProfile(req, res) {
-  console.log("post func"); //**DB** : => user 변경사항 다시 저장
+  //**DB** : => user 변경사항 다시 저장
   //session에서 user 다시 저장
-
   var id = req.params.id;
   var name = req.body.name;
   req.session.user.name = name;
@@ -184,9 +246,10 @@ var postEditProfile = function postEditProfile(req, res) {
 exports.postEditProfile = postEditProfile;
 
 var seeProfile = function seeProfile(req, res) {
+  // session user 가 받은 초대를 
   return res.render("see-profile", {
     user: req.session.user,
-    totPlanTitles: req.session.totPlanTitleList
+    totPlanTitles: req.session.user.totPlan_list
   });
 }; //로그아웃 -> main 페이지로 간다
 

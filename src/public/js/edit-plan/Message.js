@@ -1,32 +1,3 @@
-
-const chatForm = document.querySelector(".chatting form");
-const chatBox = document.querySelector(".chat-box");
-
-//chatForm.querySelector("textarea").addEventListener();
-
-chatForm.addEventListener("submit", sendChattingMessage);
-
-function sendChattingMessage(event){
-    event.preventDefault();
-    const input = chatForm.querySelector("textarea");
-    chatBox.scrollTop = chatBox.scrollHeight;
-    chattingList.addMessage("", input.value, "outgoing");
-    //서버로 보내기💨
-    input.value = "";
-}
-
-// server side에서 전달 받을 때 사용할 함수
-function receiveChattingMessage(image_url, message){
-    chattingList.addMessage(image_url, message, "incoming");
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
-function receiveSystemMessage(name, enter){
-    const message = (enter == true)? `${name}님이 입장하셨습니다` : `${name}님이 퇴장하셨습니다`;
-    chattingList.addMessage(name, message, "system");
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
-
 class Message {
     constructor(image_url, message, className){
         this.elements = {};
@@ -34,16 +5,16 @@ class Message {
         this.elements.root.classList.add(className);
         this.elements.message = this.elements.root.querySelector(".chat-message");
         this.elements.message.textContent = message;
-        
+
         if(className === "incoming"){
             const imageDiv = document.createElement("div");
             const image = document.createElement("img");
-            imageDiv.classList.add("chat-img");
+            imageDiv.classList.add("chat-image");
             image.src = image_url;
             image.alt="image_url";
             imageDiv.append(image);
 
-            this.elements.root.append(imageDiv);
+            this.elements.root.insertBefore(imageDiv, this.elements.message);
         }
     }
 
@@ -52,7 +23,7 @@ class Message {
 		range.selectNode(document.body);
 		return range.createContextualFragment(`
 			<div class="chat">
-            <div class="chat-message"></div>
+                <div class="chat-message"></div>
             </div>
 		`).children[0];
     }
@@ -68,8 +39,6 @@ export default class ChattingList {
         this.root.append(msg.elements.root);
     }
 }
-
-const chattingList = new ChattingList(document.querySelector(".chat-box"));
 
 //chattng popup click
 const chattingPopup = document.querySelector("#popup");
