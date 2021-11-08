@@ -1,3 +1,4 @@
+import {socket, planId} from "./communicate.js"
 
 import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
 const fakeItems2 = [
@@ -66,8 +67,20 @@ const fakeItems2 = [
         ]}
 ]
 
+const mapMarkerList = [];
+
+class MapMarker {
+    constructor(id, x, y){
+        this.id = id;
+        this.marker = createMapMarker(x, y);
+    } 
+}
 
 class DropZone {
+    constructor(){
+        this.root = createDropZone();
+    }
+
     static createDropZone(){
 		const range = document.createRange();
 		range.selectNode(document.body);
@@ -86,54 +99,89 @@ class DropZone {
         });
         //***********
 
-        let droppedItemElement;
+        // 새로운 아이템 추가, 아이템 이동
+        //DB, SOCKET 작업 필요✨
         dropZone.addEventListener("drop", (event) => {
             const idReg = new RegExp("[0-9a-f]{24}");
             event.preventDefault();
             dropZone.classList.remove("kanban__dropzone--active");
             console.log(typeof(event.dataTransfer.getData("text/plain")));
-        
+
+            let droppedItemElement;
             // 새로운 item 추가됐을 때
             if(!idReg.test(event.dataTransfer.getData("text/plain"))){
                 const newPlace = JSON.parse(event.dataTransfer.getData("text/plain"));
-                console.log(newPlace);
+                console.log(newPlace); 
+               
+
                 // DB에서 place item으로 부여해준다*************
                 //addPlaceToKanbanList(id, name, road_adr, x, y, map_link);
                 //진짜 아이디 넣어 주면 됨
-                const newItem = this.addPlaceToKanbanList("507f191e810c19729de860ab", newPlace.name, newPlace.road_adr, newPlace.x, newPlace.y, newPlace.map_link);
-                //addPlaceToKanbanList();
-                droppedItemElement = newItem.elements.root;
+                //const newItem = this.addPlaceToKanbanList("507f191e810c19729de860ab", newPlace.name, newPlace.road_adr, newPlace.x, newPlace.y, newPlace.map_link);
+                
+                //droppedItemElement = newItem.elements.root;
+
+                const columnElement = dropZone.closest(".kanban__column");
+                const columnId = columnElement.dataset.id;
+                const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
+                const droppedIndex = dropZonesInColumn.indexOf(dropZone);
+                console.log(droppedIndex);
+
+                 //socket server로 전송💨
+                socket.emit("add_to_placelist", newPlace, columnId, droppedIndex, planId);
+                /*
+                //console.log("columnElement :", columnElement);
+                //console.log("columnId :", columnId);
+
+                const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
+
+                if(droppedItemElement.contains(dropZone)){
+                    return;
+                }
+                //socket server로 전송💨
+                socket.emit("add_to_placelist", newPlace, columnId, planId);
+
+
+                //더해주는 부분임
+                insertAfter.after(droppedItemElement);
+                */
+
             }
             else{
-            const itemId = event.dataTransfer.getData("text/plain");
-            droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);
-            console.log(droppedItemElement);
-            }
-
-            const columnElement = dropZone.closest(".kanban__column");
-            const columnId = columnElement.dataset.id;
-
-            console.log("columnElement :", columnElement);
-            console.log("columnId :", columnId);
-            const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
-            const droppedIndex = dropZonesInColumn.indexOf(dropZone);
-            console.log(droppedIndex);
-
-            const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
-
-            if(droppedItemElement.contains(dropZone)){
-                return;
-            }
-
-            console.log(insertAfter);
-            insertAfter.after(droppedItemElement);
-            //console.log(itemId);
+                const itemId = event.dataTransfer.getData("text/plain");
+                droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);
+                console.log(droppedItemElement);
             
-            //소켓으로 보내준다 => ******DB에 저장
+                /************************* */
+                const columnElement = dropZone.closest(".kanban__column");
+                const columnId = columnElement.dataset.id;
+
+                //console.log("columnElement :", columnElement);
+                //console.log("columnId :", columnId);
+                const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
+                const droppedIndex = dropZonesInColumn.indexOf(dropZone);
+                console.log(droppedIndex);
+
+                socket.emit("move_in_placelist", itemId, columnId, droppedIndex, planId);
+
+                /*
+                const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
+
+                if(droppedItemElement.contains(dropZone)){
+                    return;
+                }
+
+                console.log(insertAfter);
+                insertAfter.after(droppedItemElement);
+                //console.log(itemId);
+                */
+            }
         })
+
+
         return dropZone;
     }
-
+    
     //id를 가진 Item으로 만들어준다 
     static addPlaceToKanbanList(id, name, road_adr, x, y, map_link){
         const newItem = new Item(id, name, road_adr, x, y, map_link);
@@ -146,6 +194,7 @@ class Item {
     constructor(id, name, road_adr, x, y, map_link){
 
         const bottomDropZone = DropZone.createDropZone();
+
         this.elements = {};
         this.elements.root = Item.createRoot();
         
@@ -162,26 +211,48 @@ class Item {
         this.elements.root.dataset.y = y; // 위도
         this.elements.root.dataset.map_link = map_link;
         
-        this.elements.marker = createMapMarker(x, y);
-        console.log(this.elements.marker);
+        //**** */
+        mapMarkerList.push(new MapMarker(this.elements.root.dataset.id, x, y));
+        console.log(mapMarkerList);
+        //this.elements.marker = createMapMarker(x, y);
 
-    
+        
         //this.elements.input.textContent = content;
         //this.content = content;
 
         this.elements.root.appendChild(bottomDropZone);
         
+        // 데이터베이스, 서버 작업 필요✨
         this.elements.delBtn.addEventListener("click", () => {
             const check = confirm("삭제하시겠습니까?");
-
             if (check){
+                
                 /*
                 fakeItems2.find(element => element._id == id).place.forEach((placeItem) => {
                 });
-                //소켓으로 업데이트 보내줘야 함
                 fakeItems.splice(id, 1); //DB에서 삭제*******
                 */
-                removeMapMarker(this.elements.marker);
+               //소켓서버에 보냄 💨
+               socket.emit("delete_from_list", this.elements.root.dataset.id, planId);
+
+               // map 삭제 find index 왜 안되는지 찾아보기💦
+                let mapIndex;
+                mapMarkerList.forEach((mapMarker, index) => {
+                    if(mapMarker.id == this.elements.root.dataset.id){
+                        removeMapMarker(mapMarker.marker);   
+                        mapIndex = index;
+                    } 
+                })
+                if(mapIndex != undefined){
+                    console.log(mapMarkerList);
+                    mapMarkerList.splice(mapIndex, 1);
+                }
+               /*
+                if(markerIndex != -1){
+                    removeMapMarker(mapMarkerList[markerIndex].marker);
+                    mapMarkerList.splice(markerIndex, 1);
+                }
+                */
                 this.elements.root.parentElement.removeChild(this.elements.root); // 컬럼에서 삭제
             }
         });
@@ -239,7 +310,7 @@ class Item {
 		});
         */ 
 
-        //추후 수정할 필요 있음
+        //추후 수정(실제 데이터로)
         fakeItems2.find(element => element._id == id).place.forEach((placeItem) => {
             this.renderItem(placeItem);
         });
@@ -266,6 +337,8 @@ class Item {
 export default class Kanban {
 	constructor(root, dayPlanList) {
 		this.root = root;
+        console.log(this.root);
+
 		Kanban.columns(dayPlanList).forEach(column => {
             const columnView = new Column(column.id, column.title);
             this.root.appendChild(columnView.elements.root);
@@ -285,7 +358,76 @@ export default class Kanban {
 
         return dayPlanListColumns;
     }
+
 }
 
+const kanbanList = new Kanban( document.querySelector(".kanban"), fakeItems2);
 
-new Kanban( document.querySelector(".kanban"), fakeItems2);
+
+socket.on("delete_from_list", deleteFromList);
+socket.on("add_to_placelist", addFromList);
+socket.on("move_in_placelist", moveInList);
+
+function deleteFromList(itemId){
+    console.log("***********삭제 시작");
+    console.log(kanbanList.root);
+    //item 삭제
+    const deletedItem = kanbanList.root.querySelector(`div[data-id="${itemId}"]`);
+
+    //map 삭제
+    let mapIndex;
+    mapMarkerList.forEach((mapMarker, index) => {
+        if(mapMarker.id == itemId){
+            removeMapMarker(mapMarker.marker);   
+            mapIndex = index;
+        } 
+    })
+    if(mapIndex != undefined){
+        console.log(mapMarkerList);
+        mapMarkerList.splice(mapIndex, 1);
+    }
+    deletedItem.parentElement.removeChild(deletedItem);
+    console.log("삭제 완료");
+}
+
+function addFromList(newId, newPlace, columnId, droppedIndex){
+
+    const newItem = new Item(newId, newPlace.name, newPlace.road_adr, newPlace.x, newPlace.y, newPlace.map_link);
+    const droppedItemElement = newItem.elements.root;
+
+    const columnElement = document.querySelector(`.kanban div[data-id="${columnId}"]`);
+    
+    const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
+
+    const dropZone = dropZonesInColumn[droppedIndex];
+    console.log("dropZoneIndex : ", droppedIndex);
+    const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
+
+    if(droppedItemElement.contains(dropZone)){
+        return;
+    }
+    insertAfter.after(droppedItemElement);
+}
+
+function moveInList(itemId, columnId, droppedIndex){
+    console.log("************");
+    const droppedItemElement = document.querySelector(`[data-id="${itemId}"]`);
+    console.log(droppedItemElement);
+
+    const columnElement = document.querySelector(`.kanban div[data-id="${columnId}"]`);
+    console.log(columnElement);
+
+
+    const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
+    
+    const dropZone = dropZonesInColumn[droppedIndex];
+
+    console.log("dropZoneIndex : ", droppedIndex);
+    const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
+
+    if(droppedItemElement.contains(dropZone)){
+        return;
+    }
+
+    insertAfter.after(droppedItemElement);
+}
