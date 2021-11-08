@@ -8,15 +8,17 @@
 }
 
 .jejumap {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 48%;
+  transform: translate(-50%, -50%);
   width: 808px;
   height: 498px;
-  margin: 10% 10% 10% 30%;
 }
 
 .jeju-region {
   position: absolute;
-  opacity: 0;
+  opacity: 1;
 }
 
 .jeju-region:hover {
@@ -24,102 +26,60 @@
   cursor: pointer;
 }
 
-.ad {
+.south {
   position: absolute;
   opacity: 0;
-  top: 275px;
-  left: 156px;
+  top: 185px;
+  left: 69px;
+  z-index: 0;
 }
 
-.dj {
+.west {
   position: absolute;
   opacity: 0;
-  top: 317px;
-  left: 63px;
-}
-
-.hk {
-  position: absolute;
-  opacity: 0;
-  top: 250px;
-  left: 58px;
-}
-
-.jm {
-  position: absolute;
-  opacity: 0;
-  top: 258px;
-  left: 227px;
-}
-
-.skp {
-  position: absolute;
-  opacity: 0;
-  top: 257px;
-  left: 359px;
-  z-index: 4;
-}
-
-.kj {
-  position: absolute;
-  opacity: 0;
-  top: 47px;
-  left: 515px;
-}
-
-.wd {
-  position: absolute;
-  opacity: 0;
-  top: 93px;
-  left: 715px;
-}
-
-.jc {
-  position: absolute;
-  opacity: 0;
-  top: 54px;
-  left: 390px;
+  top: 134px;
+  left: 70px;
+  z-index: 0;
 }
 
 .jj {
   position: absolute;
   opacity: 0;
   top: 76px;
-  left: 268px;
-  z-index: 4;
+  left: 276px;
+  z-index: 10;
 }
 
-.aw {
+.sswd {
   position: absolute;
   opacity: 0;
-  top: 124px;
-  left: 168px;
+  top: 99px;
+  left: 614px;
+  z-index: 1;
 }
 
-.hl {
+.ne {
   position: absolute;
   opacity: 0;
-  top: 173px;
-  left: 98px;
+  top: 52px;
+  left: 402px;
 }
 
-.ss {
+.jj-whole {
   position: absolute;
-  opacity: 0;
-  top: 137px;
-  left: 606px;
+  width: 18rem;
+  height: 11rem;
+  opacity: 1;
+  top: 301px;
+  left: 663px;
 }
 
-.ps {
+.jj-whole-hover {
   position: absolute;
+  width: 18rem;
+  height: 11rem;
   opacity: 0;
-  top: 178px;
-  left: 472px;
-}
-
-.nw {
-  position: absolute;
-  opacity: 0;
-  top: 226px;
-  left: 380px;
+  top: 301px;
+  left: 663px;
+  z-index: 300;
 }

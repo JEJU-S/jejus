@@ -133,8 +133,6 @@ input[type="text"]:focus {
 }
 
 .inv-items {
-  display: flex;
-  flex-direction: column;
   min-height: 120px;
   height: 34vh;
   overflow: scroll;
@@ -146,7 +144,17 @@ input[type="text"]:focus {
 
 .inv-items ul {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+}
+
+.inv-items li {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
 }
 
 .inv-item {
@@ -166,22 +174,17 @@ input[type="text"]:focus {
 }
 
 .inv-title {
-  margin-left: 30px;
   font-size: 20px;
   font-weight: bold;
   color: black;
 }
 
-.inv-host {
-  padding-left: 12%;
-}
-
 .inv-btn {
+  position: absolute;
+  right: 10px;
   display: block;
-  float: right;
   border-radius: 4px;
   border: none;
-  margin-right: 40px;
   line-height: 2.5;
 }
 
