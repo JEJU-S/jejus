@@ -1,24 +1,25 @@
 #popup {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
   gap: 0.2rem;
-  position: absolute;
   border: none;
   width: 8rem;
   height: 3rem;
-  border-radius: 20px;
-  left: 90%;
-  top: 88%;
+  border-radius: 5px;
+  top: 90%;
+  right: 2%;
+  margin-top: 10px;
   background-color: rgb(191, 255, 247);
-  z-index: 9999;
 }
 
 #popup:hover {
   background-color: rgb(151, 201, 195);
   transition: 0.3s;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .chatting {

@@ -37,10 +37,10 @@ function wholePlanClick(){
 
 // 초대장 전송
 
-const emailForm = document.querySelector(".email-form");
+const emailForm = document.querySelector(".inv-area");
 
 function showInvitationForm(){
-    emailForm.style.display = "block";
+    emailForm.style.display = "flex";
     // 배경 흐리게
 }
 
@@ -63,7 +63,7 @@ function sendInvitationToGmail(event){
 
 function closeInvitaitonToGmail(event){
     event.preventDefault();
-    const gmailInput = emailForm.querySelector("input[type='email']");
+    const gmailInput = document.querySelector(".inv-area input[type='email']");
     gmailInput.value ="";
     emailForm.style.display = "none";
 }

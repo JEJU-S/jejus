@@ -1,0 +1,85 @@
+.region-place {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.644);
+  z-index: 3;
+}
+
+.jejumap {
+  position: absolute;
+  top: 50%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  width: 808px;
+  height: 498px;
+}
+
+.jeju-region {
+  position: absolute;
+  opacity: 1;
+}
+
+.jeju-region:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.south {
+  position: absolute;
+  opacity: 0;
+  top: 185px;
+  left: 69px;
+  z-index: 0;
+}
+
+.west {
+  position: absolute;
+  opacity: 0;
+  top: 134px;
+  left: 70px;
+  z-index: 0;
+}
+
+.jj {
+  position: absolute;
+  opacity: 0;
+  top: 76px;
+  left: 276px;
+  z-index: 10;
+}
+
+.sswd {
+  position: absolute;
+  opacity: 0;
+  top: 99px;
+  left: 614px;
+  z-index: 1;
+}
+
+.ne {
+  position: absolute;
+  opacity: 0;
+  top: 52px;
+  left: 402px;
+}
+
+.jj-whole {
+  position: absolute;
+  width: 18rem;
+  height: 11rem;
+  opacity: 1;
+  top: 301px;
+  left: 663px;
+}
+
+.jj-whole-hover {
+  position: absolute;
+  width: 18rem;
+  height: 11rem;
+  opacity: 0;
+  top: 301px;
+  left: 663px;
+  z-index: 300;
+}

@@ -113,8 +113,8 @@ export const sendInvitation = async (req, res) => {
     const par_id = par_userinfo._id;
     let hostarr = par_userinfo.call_list;
     let par_tot = par_userinfo.totPlan_list;
-
-    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checktitle(par_tot, totplan_title) ){
+    
+    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checktitle(par_tot , totplan_title) ){ // checkath 수정필요
         console.log("이미 초대됨")
     }
     else{

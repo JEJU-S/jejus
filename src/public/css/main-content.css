@@ -62,7 +62,7 @@
   border-radius: 5px;
 }
 
-.region-select {
+#regionbtn {
   color: white;
   display: flex;
   align-items: center;
@@ -82,7 +82,7 @@
   justify-content: space-around;
 }
 
-.recommandation__categories div {
+.category {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -94,16 +94,25 @@
   cursor: pointer;
 }
 
-.recommandation__categories div:hover {
+.category:hover {
   background-color: white;
   color: #20253b;
   transition: 0.2s;
 }
 
+.category-name {
+  width: 0;
+  overflow: hidden;
+}
+
+.hovered {
+  width: auto;
+}
+
 .recommandation__list {
   display: flex;
   flex-direction: column;
-  padding: 0 5px;
+  padding: 0;
   gap: 10px;
   overflow: scroll;
   max-height: 70vh;
@@ -115,14 +124,19 @@
 
 .recommandation__list li {
   display: flex;
-  background-color: yellowgreen;
-  gap: 3px;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  padding: 0 5px;
+}
+
+.recommandation__list li:hover {
+  background-color: whitesmoke;
 }
 
 .recommandation__list li img {
   border-radius: 10px;
-  width: 40%;
-  height: 100%;
+  width: 6rem;
+  height: 6rem;
   object-fit: cover;
   overflow: hidden;
 }
@@ -130,19 +144,26 @@
 .recommandation__list li div {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 60%;
   padding: 10px 20px;
 }
 
 .recommandation__list li div div {
   display: flex;
   flex-direction: row;
+  align-items: center;
   width: 100%;
   padding: 0;
+  gap: 5px;
 }
 
 .recommandation__list li div div button {
   float: right;
+}
+
+.reco-title {
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .wrap-star {
@@ -164,15 +185,15 @@
 .star {
   width: 127px;
   height: 24px;
-  background: url("star.png") no-repeat;
+  background: url("../images/star.png") no-repeat;
 }
 
 .rating {
-  width: 100% !important;
+  width: 100%;
   height: 23px;
   overflow: hidden !important;
 
-  background: url("star-filled2.png") no-repeat;
+  background: url("../images/star-filled2.png") no-repeat;
   z-index: 100;
 }
 
@@ -246,7 +267,6 @@
 }
 
 .more-btn {
-  float: right;
   background-color: rgba(0, 0, 0, 0) !important;
   border: none;
   margin-top: 5px;
@@ -255,15 +275,23 @@
 }
 
 .more-btn:hover {
-  color: red;
+  color: rgb(110, 110, 110);
 }
 
 #map {
-  background-color: brown;
   width: 37%;
   height: 65%;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
+}
+
+#save {
+  font-size: 1.3rem;
+  border: none;
+  width: 8rem;
+  height: 3rem;
+  border-radius: 5px;
+  background-color: rgb(191, 255, 247);
 }
 
 input[type="text"]:focus {
@@ -283,6 +311,6 @@ textarea:focus {
 .kanban__item-name,
 .kanban__item-road_adr,
 .kanban__item button,
-.region-select {
+#regionbtn {
   background-color: rgb(29, 90, 32);
 }

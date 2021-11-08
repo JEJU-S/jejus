@@ -2,94 +2,80 @@
     <html lang="en">
         <head>
         <meta charset="UTF-8">
-
-        <link rel="stylesheet" href="/public/css/kanban.css">
-        <link rel="stylesheet" href="/public/css/main-content.css">
-        <link rel="stylesheet" href="/public/css/chatting.css">
-        <link rel="stylesheet" href="/public/css/frame.css">
-        <link rel="stylesheet" href="/public/css/icon.css">
-        <link rel="stylesheet" href="/public/css/region-select.css">
-
+        <link rel="stylesheet" href="../../src/public/css/kanban.css">
+        <link rel="stylesheet" href="../../src/public/css/main-content.css">
+        <link rel="stylesheet" href="../../src/public/css/chatting.css">
+        <link rel="stylesheet" href="../../src/public/css/frame.css">
+        <link rel="stylesheet" href="../../src/public/css/icon.css">
+        <link rel="stylesheet" href="../../src/public/css/region-select.css">
         <!--구글 웹폰트-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=7a8olp7fvf"></script>
+        
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
-
-        <div id="plan-id" hidden><%=totPlan._id%></div>
-        <div id="user-name" hidden><%=user.name%></div>
-        <div id="user-image" hidden><%=user.image_url%></div>
-
-        <title> Edit <%=totPlan.title%> | Sample </title>
+        <title> Edit | Sample </title>
     </head>
 <body class="container">
     <div class="region-place" id="regionplace">
             <div class="jejumap">
-                <img src="/public/images/jejumap.png">
+                <img src="../../src/public/images/jejumap.png">
                 <div>
-                    <img src="/public/images/jeju-south.png" class="jeju-region south">
-                    <img src="/public/images/jeju-west.png" class="jeju-region west">
-                    <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover">
-                    <img src="/public/images/jeju-whole.png" class="jeju-region jj-whole">
-                    <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd">
-                    <img src="/public/images/north-east.png" class="jeju-region ne">
-                    <img src="/public/images/jeju.png" class="jeju-region jj">
+                    <img src="../../src/public/images/ahndeok.png" class="jeju-region ad">
+                    <img src="../../src/public/images/daejeong.png" class="jeju-region dj">
+                    <img src="../../src/public/images/hankyoung.png" class="jeju-region hk">
+                    <img src="../../src/public/images/joongmoon.png" class="jeju-region jm">
+                    <img src="../../src/public/images/seokeepoo.png" class="jeju-region skp">
+                    <img src="../../src/public/images/koojwa.png" class="jeju-region kj">
+                    <img src="../../src/public/images/jocheon.png" class="jeju-region jc">
+                    <img src="../../src/public/images/jeju.png" class="jeju-region jj">
+                    <img src="../../src/public/images/aewol.png" class="jeju-region aw">
+                    <img src="../../src/public/images/hanlim.png" class="jeju-region hl">
+                    <img src="../../src/public/images/sungsan.png" class="jeju-region ss">
+                    <img src="../../src/public/images/pyoseon.png" class="jeju-region ps">
+                    <img src="../../src/public/images/namwon.png" class="jeju-region nw">
+                    <img src="../../src/public/images/woodo.png" class="jeju-region wd">
                 </div>
             </div>
         </div>
     <header>
         <div class="plan-title">
-            <%=totPlan.title%>
+            여행 이름
         </div>
-        <div class="participant"> <!--notattend-->
-        <%totPlan.participants.forEach(function(participant){%>
-            <div><img src="<%=participant.image_url%>"></div>
-        <%})%>
+        <div class="participant">
+            참여자:
+            <div><img src="../public/images/userimg.jpg"></div>
+            <div><img src="../public/images/userimg.jpg"></div>
+            <div><img src=""></div>
+            <div><img src="../public/images/userimg.jpg" class="notattend"></div>
         </div>
-
         <div class="plan-date">
-            출발일 : <span><%="2021-11-23"%></span>
-            도착일 : <span><%="2021-11-25"%></span>
+            출발일 : <span>2021-11-23</span>
+            도착일 : <span>2021-11-25</span>
         </div>
         <button id="save">저장</button>
     </header>
-
     <main class="main-content">
         <div class="recommandation">
             <button type="button" id="regionbtn"><span class="material-icons md-2">map</span>
                 권역 선택</button>
             <div class="recommandation__categories">
-                <div class="category" data-category ="전체">
-                    <span class="material-icons">view_module</span>
-                    <span class="category-name">전체</span>
-                </div>
-                <div class="category" data-category ="관광">
-                    <span class="material-icons">landscape</span>
-                    <span class="category-name">관광</span>
-                </div>
-                <div class="category" data-category ="식당">
-                    <span class="material-icons">flatware</span>
-                    <span class="category-name">식당</span>
-                </div>
-                <div class="category" data-category ="카페">
-                    <span class="material-icons">local_cafe</span>
-                    <span class="category-name">카페</span>
-                </div>
+                <div class="category"><span class="material-icons">view_module</span><span class="category-name">전체</span></div>
+                <div class="category"><span class="material-icons">landscape</span><span class="category-name">관광</span></div>
+                <div class="category"><span class="material-icons">flatware</span><span class="category-name">식당</span></div>
+                <div class="category"><span class="material-icons">local_cafe</span><span class="category-name">카페</span></div>
             </div>
 
             <ul class="recommandation__list">
-                <!--
                 <li>
-                    <img src="", alt="추천 장소">
+                    <img src="../public/images/userimg.jpg", alt="추천 장소">
                     <div>
                         <div>
                             <span class="reco-title">관광지명</span>
-                            <button class="more-btn"><span class="material-icons">open_in_new</span>더보기</button>
+                            <button class="more-btn"><span class="material-icons">open_in_new</span></button>
                         </div>
                         <div class="star-rating">
                             <span>별점: </span>
@@ -100,12 +86,11 @@
                         </div>
                     </div>
                 </li>
-                -->
             </ul>
         </div>
-
+        
         <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
-
+    
         <div class="search-list">
             <form id="search-form">
                 <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
@@ -124,8 +109,7 @@
                 -->
             </ul>
         </div>
-        <div id="map"></div>
-
+            <div id="map"></div>
         <div class="kanban">
             <!--
             <div class="kanban__column">
@@ -136,23 +120,21 @@
                             <div class="kanban__item-road_adr">도로명주소 1</div></div>
                             <button>삭제</button>
                             <div class="kanban__dropzone"></div>
-                        </div>
+                        </div>                    
                 </div>
             </div>
-            -->
+            -->  
         </div>
-
-        <button id="popup"><span class="material-icons-outlined">
-            mode_comment
-            </span>채팅</button>
-
+        
+                
+        <button id="popup"><span class="material-icons-outlined">mode_comment</span>채팅</button>
         <!--chatting으로 모든 챗박스 묶고, 추가 클래스로 개별 스타일 부여-->
         <div class="chatting" id="chatArea">
+
             <div id="chatAreaheader">
                 <button>➖</button>
             </div>
             <div class="chat-box">
-            <!--
                 <div class="chat system">
                     <div class="chat-message">
                         오정환님이 입장하셨습니다.
@@ -160,7 +142,7 @@
                 </div>
                 <div class="chat incoming">
                     <div class="chat-image">
-                        <img src="userimg.jpg">
+                        <img src="../../src/public/images/userimg.jpg">
                     </div>
                     <div class="chat-message">gdgd
                     </div>
@@ -174,7 +156,6 @@
                         오정환님이 퇴장하셨습니다.
                     </div>
                 </div>
-                -->
             </div>
             <div class="send-box">
                 <form name="formname">
@@ -183,18 +164,16 @@
                 </form>
             </div>
         </div>
-
+        
 
         </main>
     </body>
-    <script type="module" src="/public/js/edit-plan/Map.js"></script>
-
-    <script type="module" src="/public/js/edit-plan/Message.js"></script>
-    <script type="module" src="/public/js/edit-plan/Kanban.js"></script>
-    <script type="module" src="/public/js/edit-plan/chat.js"></script>
-    <script type="module" src="/public/js/edit-plan/textarea.js"></script>
-    <script type="module" src="/public/js/edit-plan/RecList.js"></script>
-    <script type="module" src="/public/js/edit-plan/communicate.js"></script>
-    <script type="module" src="/public/js/regionSelect.js"></script>
-
+    <script type="module" src="../../src/public/js/edit-plan/SearchList.js"></script>
+    <script type="module" src="../../src/public/js/edit-plan/Message.js"></script> 
+    <script type="module" src="../../src/public/js/edit-plan/Kanban.js"></script>
+    <script type="module" src="../../src/public/js/edit-plan/chat.js"></script>
+    <script type="module" src="../../src/public/js/edit-plan/textarea.js"></script>
+    <script type="module" src="../../src/public/js/edit-plan/Map.js"></script>
+    <script type="module" src="../../src/public/js/edit-plan/RecList.js"></script>
+    <script type="module" src="../../src/public/js/regionSelect.js"></script>
 </html>

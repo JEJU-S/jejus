@@ -21,7 +21,7 @@ main {
   display: flex;
   flex-direction: column;
   padding: 1% 4% 2% 4%;
-  width: 90%;
+  width: 60%;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
@@ -34,15 +34,16 @@ main {
 .main-profile {
   display: flex;
   flex-direction: row;
-  column-gap: 100px;
+  justify-content: space-around;
   color: rgb(0, 0, 0);
 }
 
 .profile-box {
   align-self: center;
-  margin-left: 5%;
-  width: 180px;
-  height: 180px;
+  width: 10rem;
+  height: 10rem;
+  min-width: 10rem;
+  min-height: 10rem;
   border-radius: 50%;
   overflow: hidden;
   background-color: #dfdfdf;
@@ -99,19 +100,14 @@ input[type="text"]:focus {
   text-overflow: clip;
 }
 .edit-button {
+  align-self: flex-end;
   background-color: #68a9e9;
-  padding: 7.5px 1px;
+  padding: 10px 20px;
   color: #fff;
   text-align: center;
-  text-decoration: none;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  align-self: center;
-  width: 13%;
-  margin-top: 13%;
-  margin-left: auto;
-  margin-right: 50px;
 }
 
 .edit-button:hover {
@@ -125,18 +121,18 @@ input[type="text"]:focus {
   flex-direction: column;
   padding: 2% 4%;
   height: 100%;
-  width: 90%;
-  color: rgb(0, 0, 0);
+  width: 60%;
+  color: black;
   margin-bottom: 1px;
-  background-color: white;
+  background: white;
+  background-size: cover;
+  overflow: hidden;
   border-radius: 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   justify-content: flex-start;
 }
 
 .inv-items {
-  display: flex;
-  flex-direction: column;
   min-height: 120px;
   height: 34vh;
   overflow: scroll;
@@ -146,13 +142,30 @@ input[type="text"]:focus {
   display: none;
 }
 
+.inv-items ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.inv-items li {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+
 .inv-item {
+  width: 80%;
   color: #474747;
   background-color: #ffffff;
   border-radius: 4px;
   padding: 1%;
   line-height: 2;
   border-bottom: 1px solid #8d8d8d2e;
+  box-shadow: 0 0 black;
 }
 
 .inv-item:hover {
@@ -161,21 +174,17 @@ input[type="text"]:focus {
 }
 
 .inv-title {
-  margin-left: 30px;
   font-size: 20px;
   font-weight: bold;
-}
-
-.inv-host {
-  padding-left: 12%;
+  color: black;
 }
 
 .inv-btn {
+  position: absolute;
+  right: 10px;
   display: block;
-  float: right;
   border-radius: 4px;
   border: none;
-  margin-right: 40px;
   line-height: 2.5;
 }
 

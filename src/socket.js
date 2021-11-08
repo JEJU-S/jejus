@@ -6,6 +6,102 @@ import http from "http";
 import dotdev from "dotenv";
 dotdev.config();
 
+
+/* 추후 삭제 해야 함*****************************/
+const fakePlaceList = [
+    {
+    _id : "507f191e810c19729de860e1",
+    date : new Date("2021-05-04"),
+    place : [
+        {   
+            _id : "5bf142459b72e12b2b1b2c11",
+            name : "place 1",
+            road_adr : "도로명 주소1",
+            x : "126.52001020252465",
+            y : "33.48137202695348",
+            map_link : ""
+        },
+        {   
+            _id : "5bf142459b72e12b2b1b2c12",
+            name : "place 2",
+            road_adr : "도로명 주소2",
+            x : "126.53001020252465",
+            y : "33.48437202695348",
+            map_link : ""
+        }
+    ]},
+    {
+        _id : "507f191e810c19729de860e2",
+        date : new Date("2021-05-05"),
+        place : [
+            {   
+                _id : "5bf142459b72e12b2b1b2c13",
+                name : "place 3",
+                road_adr : "도로명 주소3",
+                x : "126.54001020252465",
+                y : "33.48137205695348",
+                map_link : ""
+            },
+            {   
+                _id : "5bf142459b72e12b2b1b2c14",
+                name : "place 4",
+                road_adr : "도로명 주소4",
+                x : "126.55001020252465",
+                y : "33.48137202695348",
+                map_link : ""
+            }
+        ]},
+        {
+            _id : "507f191e810c19729de860e3",
+            date : new Date("2021-05-06"),
+            place : [
+                {   
+                    _id : "5bf142459b72e12b2b1b2c15",
+                    name : "place 5",
+                    road_adr : "도로명 주소5",
+                    x : "126.56001020252465",
+                    y : "33.48337202695348",
+                    map_link : ""
+                },
+                {   
+                    _id : "5bf142459b72e12b2b1b2c16",
+                    name : "place 6",
+                    road_adr : "도로명 주소6",
+                    x : "126.57001020252465",
+                    y : "33.42337202695348",
+                    map_link : ""
+                }
+        ]}
+]
+
+const fakeRecPlaceList = [
+    {
+        id: "61888956e021ad2845181dea",
+        name: "식빵가게1",
+        road_adr: "제주특별자치도 제주시 월성로10길 1 1층",
+        x : 126.5053189,
+        y : 33.5011685,
+        img_url: "",
+        score: 4.3,
+        map_link: "https://place.map.kakao.com/615988591",
+        model_grade : 9.0
+    },
+
+    {
+        id: "61888956e021ad2845181deb",
+        name: "식빵가게2",
+        road_adr: "제주특별자치도 제주시 월성로10길 2 2층",
+        x : 126.6053189,
+        y : 33.6011685,
+        img_url: "",
+        score: 4,
+        map_link: "https://place.map.kakao.com/615988591",
+        model_grade : 6.7
+    }
+];
+
+/******************************/
+
 const server = http.createServer(app);
 const io = SocketIO(server);
 
@@ -33,21 +129,12 @@ async function searchPlace(keyword){
     result["documents"].forEach((document) => { 
             searchResults.push(document);
     });
-    //console.log(searchResults);
     return searchResults;
 }
 
 async function sendSearchResults(keyword, socket){
     const searchResults = await(searchPlace(keyword));
     socket.emit("search_result", searchResults);
-}
-
-function addPlaceToDataBase(){
-    // DATABASE 작업
-}
-
-function delPlaceFromDataBase(){
-    // DATABASE 작업
 }
 
 io.on("connection", (socket) => {
@@ -63,23 +150,33 @@ io.on("connection", (socket) => {
         console.log(socket.rooms);
 
         console.log("*****************************");
-        
+        //DB** 처음 칸반 장소 리스트 불러오기
+        const placeList = fakePlaceList;
         socket.to(planId).emit("server_msg", userName, true);
-        init();
+        init(placeList);
     });
-
+    /*****채팅 메시지***/
 
     socket.on("send_chatting_msg", (image_url, message, planId) => {
         socket.to(planId).emit("incomming_chatting_msg", image_url, message);
         //socket.nsp.to(room).emit(event) => nsp 문서 확인 후 적용
     })
-
+    /*****검색 리스트*/
     //search_keyword로 찾기
     socket.on("search_keyword", (keyword) => {
         sendSearchResults(keyword, socket);
     });
 
-    /*
+    socket.on("rec_keyword", (region, category) => {
+
+        //****DB 추천 리스트 반환*/
+        console.log(region, category);
+
+        const recList = fakeRecPlaceList;
+        socket.emit("rec_result", recList);
+    });
+
+    /* option
     socket.on("change_date", (start, end, planId) => {
         //DB****** 날짜 바꾸기
         console.log(planId);
@@ -91,22 +188,28 @@ io.on("connection", (socket) => {
     })
     */
 
-    socket.on("add_to_placelist", (placeObj, planId) => {
-        //database 작업 필요
-        //해당 plan
-        socket.to(planId).emit("place_add_map", placeObj);
-        socket.emit("place_add_map", placeObj);
+    /*****칸반리스트***/
+    socket.on("add_to_placelist", (newPlace, columnId, droppedIndex, planId) => {
+        //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
+        console.log(newPlace);
+        const newId = "507f191e810c19729de860ab"; 
+
+        socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
+        socket.emit("add_to_placelist" ,  newId, newPlace, columnId, droppedIndex);
     });
     
-    /*
-    socket.on("del_from_placelist", (coordinates, planId) => {
-        //database 작업 필요
-        // list에서 해당 좌표를 가진 place 삭제
-        socket.to(planId).emit("place_delete_map", coordinates);
-        socket.emit("place_delete_map", coordinates);
+    socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
+
+        socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
+        socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
     })
-    */
-    // 다시 짜야 할 수 있음 testing 중
+    
+    socket.on("delete_from_list", (itemId, planId) => {
+        console.log(itemId);
+        //**DB 작업 필요 */
+        //list에서 해당 id를 가진 place 삭제
+        socket.to(planId).emit("delete_from_list", itemId);
+    })
 });
 
 export default server;
