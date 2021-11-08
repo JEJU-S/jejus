@@ -136,6 +136,18 @@ function checkcall(call, check) {
     }
   });
   return x;
+}
+
+function checkac(call, check) {
+  var x = false;
+  call.forEach(function (i) {
+    if (i['title'] == check) {
+      x = true;
+    } else {
+      return false;
+    }
+  });
+  return x;
 } //사용자 마다 완성된 plan 보여주기 위한 것
 
 
@@ -157,6 +169,7 @@ var seePlan = /*#__PURE__*/function () {
             console.log("접근 권한 테스트");
 
             if (checkath(parti, req.session.user._id)) {
+              console.log("권한허용");
               res.render("see-plan", {
                 user: req.session.user,
                 totPlanTitles: req.session.user.totPlan_list,
@@ -185,7 +198,7 @@ exports.seePlan = seePlan;
 
 var sendInvitation = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, par_id, par_name, hostarr;
+    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, par_id, hostarr, checkarr, check1;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -210,21 +223,23 @@ var sendInvitation = /*#__PURE__*/function () {
               plan_title: totplan_title,
               plan_id: totplan_id
             };
-            parti = usertotplan.participants; // 초대장을 받음
+            parti = usertotplan.participants;
+            console.log(parti); // 초대장을 받음
 
-            _context2.next = 13;
+            _context2.next = 14;
             return finduser(gmail);
 
-          case 13:
+          case 14:
             par_userinfo = _context2.sent;
             console.log("초대한 유저", par_userinfo);
             par_id = par_userinfo._id;
-            par_name = par_userinfo.name; //  user(참가자)의 totplan_list추가(totplan_id, totplan.name)
-            //  user(참가자)의 calllist 추가(host, plantitle)
-
             hostarr = par_userinfo.call_list;
+            checkarr = par_userinfo.totPlan_list;
+            check1 = checkac(checkarr, totplan_title);
+            console.log("@*@", check1);
 
             if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id || checkath(parti, par_id)) {
+              // checkath 수정필요
               console.log("이미 초대됨");
             } else {
               _User.User.findOne({
@@ -240,7 +255,7 @@ var sendInvitation = /*#__PURE__*/function () {
 
             res.redirect("/plans/".concat(id));
 
-          case 20:
+          case 23:
           case "end":
             return _context2.stop();
         }
@@ -274,6 +289,7 @@ var editPlan = /*#__PURE__*/function () {
             console.log("접근 권한 테스트");
 
             if (checkath(parti, req.session.user._id)) {
+              console.log("권한허용");
               res.render("edit-plan", {
                 user: req.session.user,
                 totPlan: usertotplan,
@@ -310,7 +326,7 @@ exports.getCreatePlan = getCreatePlan;
 
 var postCreatePlan = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, tempDate, dayArray, totplanidcall, totplanid, totplan;
+    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_image_url, tempDate, dayArray, totplanidcall, totplanid, totplan;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -323,9 +339,10 @@ var postCreatePlan = /*#__PURE__*/function () {
             console.log("startDate : ", startDate, "endDate : ", endDate);
             pC_id = req.session.user._id;
             pC_user = req.session.user.name;
+            pC_image_url = req.session.user.image_url;
             tempDate = new Date(startDate);
             dayArray = [];
-            _context4.next = 10;
+            _context4.next = 11;
             return new _TotPlan.TotPlan({
               title: title,
               admin: {
@@ -334,7 +351,8 @@ var postCreatePlan = /*#__PURE__*/function () {
               },
               participants: [{
                 _id: pC_id,
-                name: pC_user
+                name: pC_user,
+                image_url: pC_image_url
               }] // day_plan: [{
               //     date: dayArray,
               //     place: [{
@@ -352,11 +370,11 @@ var postCreatePlan = /*#__PURE__*/function () {
               console.error(err);
             });
 
-          case 10:
-            _context4.next = 12;
+          case 11:
+            _context4.next = 13;
             return findtitle(title);
 
-          case 12:
+          case 13:
             totplanidcall = _context4.sent;
             totplanid = totplanidcall._id;
             console.log(totplanid);
@@ -374,10 +392,10 @@ var postCreatePlan = /*#__PURE__*/function () {
               }).exec();
             }
 
-            _context4.next = 18;
+            _context4.next = 19;
             return findtitle(title);
 
-          case 18:
+          case 19:
             totplan = _context4.sent;
 
             _User.User.findByIdAndUpdate(pC_id, {
@@ -395,7 +413,7 @@ var postCreatePlan = /*#__PURE__*/function () {
             });
             res.redirect("/users/".concat(pC_id));
 
-          case 22:
+          case 23:
           case "end":
             return _context4.stop();
         }

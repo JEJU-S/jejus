@@ -257,14 +257,15 @@ var seeProfile = /*#__PURE__*/function () {
 
           case 2:
             user_data = _context2.sent;
-            req.session.user.call_list = user_data.call_list;
-            req.session.user.totPlan_list = user_data.totPlan_list;
+            req.session.user = user_data; // req.session.user.call_list = user_data.call_list;
+            // req.session.user.totPlan_list = user_data.totPlan_list;
+
             return _context2.abrupt("return", res.render("see-profile", {
               user: req.session.user,
               totPlanTitles: req.session.user.totPlan_list
             }));
 
-          case 6:
+          case 5:
           case "end":
             return _context2.stop();
         }

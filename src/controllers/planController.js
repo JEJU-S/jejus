@@ -47,6 +47,19 @@ function checkcall(call,check){
     return x;
 }
 
+function checktitle(tot,check){
+    let x = false;
+    tot.forEach(function(i){
+        if(i['title']==check){
+            x=true;
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
+}
+
 //사용자 마다 완성된 plan 보여주기 위한 것
 export const seePlan = async (req, res) => 
 {
@@ -56,8 +69,9 @@ export const seePlan = async (req, res) =>
     let parti = usertotplan.participants;
     
     console.log("접근 권한 테스트")
-
+    
     if(checkath(parti,req.session.user._id)){
+        console.log("권한허용")
         res.render(`see-plan`, {
             user : req.session.user,
             totPlanTitles : req.session.user.totPlan_list,
@@ -86,15 +100,15 @@ export const sendInvitation = async (req, res) => {
     const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
     let parti = usertotplan.participants;
+    console.log(parti)
     
-
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
     console.log("초대한 유저",par_userinfo);
     const par_id = par_userinfo._id;
-    
     let hostarr = par_userinfo.call_list;
-    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checkath(parti,par_id) ){
+
+    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checkac(checkarr , totplan_title) ){ // checkath 수정필요
         console.log("이미 초대됨")
     }
     else{
@@ -125,6 +139,7 @@ export const editPlan = async (req, res) =>
     console.log("접근 권한 테스트")
 
     if(checkath(parti,req.session.user._id)){
+        console.log("권한허용")
         res.render("edit-plan", {
             user : req.session.user,
             totPlan : usertotplan,
@@ -158,7 +173,7 @@ export const postCreatePlan = async (req, res) => {
 
     const pC_id = req.session.user._id;
     const pC_user = req.session.user.name;
-  
+    const pC_image_url = req.session.user.image_url;
 
     let tempDate = new Date(startDate);
     const dayArray = [];
@@ -166,7 +181,7 @@ export const postCreatePlan = async (req, res) => {
     await new TotPlan({
         title:title , 
         admin : {_id: pC_id, name: pC_user},
-        participants : [{_id: pC_id, name: pC_user}],
+        participants : [{_id: pC_id, name: pC_user, image_url : pC_image_url}],
         // day_plan: [{
         //     date: dayArray,
         //     place: [{
