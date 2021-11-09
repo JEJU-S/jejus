@@ -101,7 +101,7 @@ input[type="text"]:focus {
 }
 .edit-button {
   align-self: flex-end;
-  background-color: #68a9e9;
+  background-color: #231816;
   padding: 10px 20px;
   color: #fff;
   text-align: center;
@@ -111,7 +111,7 @@ input[type="text"]:focus {
 }
 
 .edit-button:hover {
-  background-color: rgb(39, 95, 141);
+  background-color: #231816;
   color: rgb(255, 255, 255);
   transition: 0.1s;
 }
@@ -162,7 +162,7 @@ input[type="text"]:focus {
   color: #474747;
   background-color: #ffffff;
   border-radius: 4px;
-  padding: 1%;
+  padding: 1% 8%;
   line-height: 2;
   border-bottom: 1px solid #8d8d8d2e;
   box-shadow: 0 0 black;
@@ -181,7 +181,7 @@ input[type="text"]:focus {
 
 .inv-btn {
   position: absolute;
-  right: 10px;
+  right: 60px;
   display: block;
   border-radius: 4px;
   border: none;
@@ -190,7 +190,7 @@ input[type="text"]:focus {
 
 .accept {
   color: white;
-  background-color: #5ac760;
+  background-color: #00a074;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -199,14 +199,15 @@ input[type="text"]:focus {
   margin-right: 0.5px;
   cursor: pointer;
 }
+
 .accept:hover {
-  background-color: #2a58ff;
+  background-color: #00a074;
   transition: 0.1s;
 }
 
 .refuse {
   color: white;
-  background-color: #aaaaaa;
+  background-color: #f18101;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -215,7 +216,7 @@ input[type="text"]:focus {
   cursor: pointer;
 }
 .refuse:hover {
-  background-color: #2a58ff;
+  background-color: #f18102;
   transition: 0.1s;
 }
 
@@ -229,7 +230,7 @@ input[type="text"]:focus {
 .box {
   width: 10px;
   height: 30px;
-  background-color: #6662f5;
+  background-color: #0173bc;
 }
 
 /*

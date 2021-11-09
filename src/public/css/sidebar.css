@@ -38,7 +38,7 @@
 }
 
 .user-info {
-  color: black;
+  color: #231816;
   padding-left: 5px;
   text-overflow: ellipsis;
 }
@@ -51,7 +51,7 @@
 .menu {
   display: flex;
   flex-direction: column;
-  margin: 10px 0px;
+  margin: 10px 5px;
   text-align: center;
   height: 64%;
   width: 100%;
@@ -64,12 +64,14 @@
   gap: 15px;
   font-weight: 600;
   font-size: 1.1rem;
-  padding: 10px 0 10px 40px;
-  color: #343434;
+  padding: 10px 0 10px 30px;
+  color: #231816;
+  margin: 0px 10px;
+  border-radius: 30px;
 }
 
 .menu-name:hover {
-  background-color: #68a9e9;
+  background-color: #00a074;
   color: white;
   transition: 0.3s;
   cursor: pointer;
@@ -78,7 +80,7 @@
 }
 
 .selected {
-  background-color: #68a9e9;
+  background-color: #00a074;
   color: white;
   z-index: 1000;
 }
