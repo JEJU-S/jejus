@@ -216,7 +216,7 @@ input[type="text"]:focus {
   cursor: pointer;
 }
 .refuse:hover {
-  background-color: #f18101;
+  background-color: #f18102;
   transition: 0.1s;
 }
 

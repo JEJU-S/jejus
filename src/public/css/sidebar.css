@@ -51,7 +51,7 @@
 .menu {
   display: flex;
   flex-direction: column;
-  margin: 10px 0px;
+  margin: 10px 5px;
   text-align: center;
   height: 64%;
   width: 100%;
