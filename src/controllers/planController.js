@@ -34,6 +34,7 @@ function checkath(parti,check){
     })
     return x;
 }
+
 function checkcall(call,check){
     let x = false;
     call.forEach(function(i){
@@ -114,10 +115,10 @@ export const sendInvitation = async (req, res) => {
         console.log("이미 초대됨")
     }
     else{
-        User.findOne({gmail: gmail}).exec(function(err, res){
-            if(res){
-                res.call_list.push(insert_host);
-                res.save();
+        User.findOne({gmail: gmail}).exec(function(err, usr){
+            if(usr){
+                usr.call_list.push(insert_host);
+                usr.save();
             }
         });
     }
@@ -227,7 +228,6 @@ export const postCreatePlan = async (req, res) => {
 
 export const accept = async (req, res) => {
 
-    
     const {id, tid} = req.params;
 
     console.log(id)
@@ -248,27 +248,24 @@ export const accept = async (req, res) => {
 
     const insert_host = { host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid };
 
-    console.log("insert host --- ")
     const par_info = {_id: par_userinfo._id, name: par_userinfo.name, image_url: par_userinfo.image_url};
-    console.log("par in fo  --- ")
     
-    TotPlan.findOne({_id:id}).exec(function(err, res){
-        if(res){
-            res.participants.push(par_info);
-            res.save();
+    TotPlan.findOne({_id:id}).exec(function(err, usr){
+        if(usr){
+            usr.participants.push(par_info);
+            usr.save();
         }
     });
-    console.log("////_@_ 3-- ")
 
-    User.findOne({_id: accept_id}).exec(function(err, res){
-        if(res){
-            res.totPlan_list.push(insert_plan);
-            res.call_list.pull(insert_host);
-            res.save();
+   
+
+    User.findOne({_id: accept_id}).exec(function(err, usr){
+        if(usr){
+            usr.totPlan_list.push(insert_plan);
+            usr.call_list.pull(insert_host);
+            usr.save();
         }
     });
-    console.log("////_@_ --- ")
-    
     // // 초대 수락시
     // tot_plan participant추가
     
@@ -296,13 +293,14 @@ export const refuse = async (req, res) => {
     const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid};
 
     
-    User.findOne({_id: refuse_id}).exec(function(err, res){
-        if(res){
-            res.call_list.pull(insert_host);
-            res.save();
+    
+    User.findOne({_id: refuse_id}).exec(function(err, usr){
+        if(usr){
+            usr.call_list.pull(insert_host);
+            usr.save();        
         }
     });
-
+     
     res.redirect(`/users/${req.session.user._id}`);
 }
 

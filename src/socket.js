@@ -6,22 +6,46 @@ import http from "http";
 import dotdev from "dotenv";
 dotdev.config();
 
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 import {RecPlace} from './models/RecPlace'
+import {TotPlan} from './models/TotPlan'
 
 
+//권역분류만 했을 때
 async function sections(region){
     const sections = await RecPlace.find({ section : region}).lean();
     return sections;
 }
+
+//카테고리분류만 했을 때
 async function categories(cate){
     const categories = await RecPlace.find({category : cate}).lean();
     return categories;
 }
+//권역, 카테고리 분류 모두 했을때
 async function categorize(region,cate){
     const category = await RecPlace.find({section : region, category : cate}).lean();
     return category;
+}
+
+//편집중인 plan 찾기
+async function finduserPlan(id){
+    const usertotplan = await TotPlan.findOne({ _id : id}).lean();
+    return usertotplan;
+}
+
+function checkid(tot,check){
+    let x = false;
+    tot.forEach(function(i){
+        if(i['_id']==check){
+            x=i;
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
 }
 
 const fakePlaceList = [
@@ -133,16 +157,18 @@ io.on("connection", (socket) => {
     });  
 
     // plan id 로 만든 room에 join    
-    socket.on("join_room", (planId, userName, init) => {
+    socket.on("join_room", async (planId, userName, init) => {
         socket.join(planId);
         socket["userName"] = userName;
         console.log(socket.rooms);
 
         console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
-        const placeList = fakePlaceList;
-        socket.to(planId).emit("server_msg", userName, true);
-        init(placeList);
+        const placeList = await finduserPlan(planId);
+        let PL = placeList.day_plan;
+        console.log(PL)
+        socket.to(PL).emit("server_msg", userName, true);
+        init(PL);
     });
     /*****채팅 메시지***/
 
@@ -229,10 +255,50 @@ io.on("connection", (socket) => {
     */
 
     /*****칸반리스트***/
-    socket.on("add_to_placelist", (newPlace, columnId, droppedIndex, planId) => {
+    //columId = date Id
+    //dropIndex = insert index location
+
+    socket.on("add_to_placelist", async (newPlace, columnId, droppedIndex, planId) => {
         //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
+        console.log(";;;;;;;;;;;;;")
         console.log(newPlace);
         const newId = "507f191e810c19729de860ab"; 
+        console.log("오브젝트아이디입니다 컬",columnId);
+        console.log("오브젝트아이디입니다 플",planId);
+        // const placeList = await userplan(planId);
+        // let PL = placeList.day_plan;
+        // let test1=checkid(PL,columnId);
+        // console.log(test1)
+
+        // let xx =TotPlan.findOne({day_plan:[{_id:columnId}]});
+        // console.log(xx);
+
+        // TotPlan.findOneAndUpdate({ _id:planId , day_plan:[{_id:columnId}] }, {$push : {day_plan:[{ place : newPlace }] } } ).exec();
+        
+            
+        // find and update or push? 
+        // await TotPlan({
+        //     _id:planId,
+        //     day_plan: [{
+        //         _id:columnId,
+        //         place: [newPlace]}]
+        // }).save().then(()=>{
+        //     console.log("totplan saved",title);
+        // }).catch((err) => {
+        //     console.error(err)
+        // });
+        var day_objectId = mongoose.Types.ObjectId(columnId);
+        var plan_objectId = mongoose.Types.ObjectId(planId);
+        let xd = [{_id:day_objectId , place:[newPlace]}];
+        
+        TotPlan.findOne({_id: plan_objectId }).exec(function(err, res){
+            console.log(";;;;")
+            console.log(res)
+            console.log(res.day_plan)
+            console.log(res.day_plan.place)
+            res.day_plan.push(xd);
+            res.save();            
+        });
 
         socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
         socket.emit("add_to_placelist" ,  newId, newPlace, columnId, droppedIndex);

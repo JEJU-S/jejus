@@ -242,10 +242,10 @@ var sendInvitation = /*#__PURE__*/function () {
             } else {
               _User.User.findOne({
                 gmail: gmail
-              }).exec(function (err, res) {
-                if (res) {
-                  res.call_list.push(insert_host);
-                  res.save();
+              }).exec(function (err, usr) {
+                if (usr) {
+                  usr.call_list.push(insert_host);
+                  usr.save();
                 }
               });
             } // DB 수락 거절 판별
@@ -475,41 +475,36 @@ var accept = /*#__PURE__*/function () {
               plan_id: totplan_id,
               _id: tid
             };
-            console.log("insert host --- ");
             par_info = {
               _id: par_userinfo._id,
               name: par_userinfo.name,
               image_url: par_userinfo.image_url
             };
-            console.log("par in fo  --- ");
 
             _TotPlan.TotPlan.findOne({
               _id: id
-            }).exec(function (err, res) {
-              if (res) {
-                res.participants.push(par_info);
-                res.save();
+            }).exec(function (err, usr) {
+              if (usr) {
+                usr.participants.push(par_info);
+                usr.save();
               }
             });
-
-            console.log("////_@_ 3-- ");
 
             _User.User.findOne({
               _id: accept_id
-            }).exec(function (err, res) {
-              if (res) {
-                res.totPlan_list.push(insert_plan);
-                res.call_list.pull(insert_host);
-                res.save();
+            }).exec(function (err, usr) {
+              if (usr) {
+                usr.totPlan_list.push(insert_plan);
+                usr.call_list.pull(insert_host);
+                usr.save();
               }
-            });
-
-            console.log("////_@_ --- "); // // 초대 수락시
+            }); // // 초대 수락시
             // tot_plan participant추가
+
 
             res.redirect("/users/".concat(req.session.user._id));
 
-          case 24:
+          case 20:
           case "end":
             return _context5.stop();
         }
@@ -560,10 +555,10 @@ var refuse = /*#__PURE__*/function () {
 
             _User.User.findOne({
               _id: refuse_id
-            }).exec(function (err, res) {
-              if (res) {
-                res.call_list.pull(insert_host);
-                res.save();
+            }).exec(function (err, usr) {
+              if (usr) {
+                usr.call_list.pull(insert_host);
+                usr.save();
               }
             });
 
