@@ -96,9 +96,7 @@ export default class SearchList {
     }
 }
 /*
-document.querySelector("body").click(){
+document.querySelector("body").addEventListner("click", "");
 
-
-}
 */
 

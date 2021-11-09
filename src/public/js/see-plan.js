@@ -34,7 +34,6 @@ function wholePlanClick(){
 }
 
 
-
 // 초대장 전송
 
 const emailForm = document.querySelector(".inv-area");
@@ -82,4 +81,26 @@ planBtns.forEach(function(button, day) {
 
 
 wholePlanClick();
+/***MAP********************************************/
 
+const totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
+//const dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
+//console.log(dayPlan);
+/*
+
+for(let i =0; i < dayPlan.length; i++){
+    for(let j = 0; j < dayPlan[i].place.length; j++){
+        new naver.maps.Marker({
+            position : new naver.maps.LatLng(
+                dayPlan[i].place[j].y,
+                dayPlan[i].place[j].x),
+                map : totMap
+        })
+    }
+}
+
+
+
+
+
+*/

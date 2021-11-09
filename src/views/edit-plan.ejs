@@ -22,10 +22,67 @@
 
         <title> 새 계획 생성하기 | Sample </title>
     </head>
-    <body class="container">
-        <header>
-            <div class="logo-box">
-                <a href="/users/<%=user._id%>"><img src="/public/images/logo-wt.png" alt="logo" class="logo"></a>
+<body class="container">
+    <div class="region-place" id="regionplace">
+            <div class="jejumap">
+                <img src="/public/images/jejumap.png">
+                <div>
+                    <img src="/public/images/jeju-south.png" class="jeju-region south" alt="남부">
+                    <img src="/public/images/jeju-west.png" class="jeju-region west" alt="서부">
+                    <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover" alt="전체">
+                    <img src="/public/images/jeju-whole.png" class="jeju-region jj-whole">
+                    <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd" alt="성산우도">
+                    <img src="/public/images/north-east.png" class="jeju-region ne" alt="북동부">
+                    <img src="/public/images/jeju.png" class="jeju-region jj" alt="제주">
+                </div>
+            </div>
+        </div>
+    <header>
+        <div class="plan-title">
+            <%=totPlan.title%>
+        </div>
+        <div class="participant"> <!--notattend-->
+        <%totPlan.participants.forEach(function(participant){%>
+            <div><img src="<%=participant.image_url%>"></div>
+        <%})%>
+        </div>
+
+        <div class="plan-date">
+            출발일 : <span>
+                <%=totPlan.day_plan[0].date.getFullYear()%>년 
+                <%=totPlan.day_plan[0].date.getMonth() + 1%>월 
+                <%=totPlan.day_plan[0].date.getDate()%>일 
+            </span>
+            도착일 : <span>
+                <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getFullYear()%>년 
+                <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getMonth() + 1%>월 
+                <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getDate()%>일 
+            </span>
+        </div>
+        <button id="save">저장</button>
+    </header>
+
+    <main class="main-content">
+        <div class="recommandation">
+            <button type="button" id="regionbtn"><span class="material-icons md-2">map</span>
+                권역 선택</button>
+            <div class="recommandation__categories">
+                <div class="category" data-category ="전체">
+                    <span class="material-icons">view_module</span>
+                    <span class="category-name">전체</span>
+                </div>
+                <div class="category" data-category ="관광">
+                    <span class="material-icons">landscape</span>
+                    <span class="category-name">관광</span>
+                </div>
+                <div class="category" data-category ="식당">
+                    <span class="material-icons">flatware</span>
+                    <span class="category-name">식당</span>
+                </div>
+                <div class="category" data-category ="카페">
+                    <span class="material-icons">local_cafe</span>
+                    <span class="category-name">카페</span>
+                </div>
             </div>
             </header>
             <div class="sidebar"> <!--사이드 바-->

@@ -13,7 +13,7 @@ const totplanSchema = new mongoose.Schema({
         image_url: String
     }],
     day_plan: [{
-       date: {type :Date, requried:true}, 
+       date: {type :Date, required:true}, 
        place: [{
            name: String,
            road_adr: String,
