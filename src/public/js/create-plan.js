@@ -17,11 +17,6 @@ startDate.value = toDay;
 endDate.min = toDay;
 
 startDateChange();
-/*
-function check(event){
-    event.preventDefualt();
-    
-}*/
 
 endDate.value = toDay;
 
@@ -45,7 +40,6 @@ function startDateChange(){
     endDate.value="";
 }
 
-dateForm.addEventListener("submit", check);
 startDate.addEventListener("change", startDateChange);
 
 
