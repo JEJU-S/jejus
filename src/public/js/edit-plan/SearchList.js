@@ -25,7 +25,10 @@ class PlaceItem {
             event.stopPropagation();
         });
         // 마우스가 올라갈 시 맵에 띄워줌 mouseenter
-        this.elements.root.addEventListener("mouseenter", () => {
+        this.elements.root.addEventListener("click", () => {
+            if(this.elements.marker != undefined){
+                removeMapMarker(this.elements.marker);
+            }
             this.elements.marker = createMapMarker(x, y , "marker-search");
             mapPanToBound(x, y);
         });
