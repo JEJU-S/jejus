@@ -100,7 +100,7 @@
         <main>
             <!--자바스크립트로 날짜별 div 생성 후 버튼에 해당되는 날짜의 div 보여줘야 함 / db 바꾸면 달라질 수 있음-->
             <!--데이버튼 클릭마다 다른 내용을 보여주어야 함. 전체 페이지인 whole-plan과 day-plan으로 전체페이지와 세부내용 페이지를 분리해서 작성했음. 각 css의 display를 버튼 클릭에 따라 none <->grid 로 변경하는 작업 필요.-->
-            <div class="whole-plan">
+            <div class="whole-plan" data-planid="<%=totPlan._id%>">
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <div class="plan-info">
                     <div class="date">
@@ -113,7 +113,7 @@
                         <%=totPlan.day_plan[day-1].date.getDate()%>일 
                     </div>
                 <!--total-map(전체 경로 마커) 처리 부분-->
-                    <div id="total-map" data-dayplan="<%=JSON.stringify(totPlan).day_plan%>"></div>
+                    <div id="total-map" data-dayplan="<%=JSON.stringify(totPlan.day_plan)%>"></div>
 
                 <script>
                     const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
@@ -122,38 +122,24 @@
                         center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
                         zoom : 10
                     };
-                    /*
-                        // 마커 여러개 찍기
-                        for(let i =0; i < totPlan.day_plan.length; i++){
-                            for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
-                                new naver.maps.Marker({
-                                    position : new naver.maps.LatLng(
-                                        totPlan.day_plan[i]['place'].y,
-                                        totPlan.day_plan[i]['place'][j].x,
-                                    ),
-                                    map : totMap
-                                })
-                            }
-                        }
-                    */
                     const dayMapList = [];
-                    </script>
+
+                </script>
 
                     <div class="participants">
+                        <%totPlan.participants.forEach(function(participant){%>
                         <div class="user">
-                            <%totPlan.participants.forEach(function(participant){%>
                             <div class="userimg">
                                 <img class="profile-img" src="<%=participant.image_url%>" alt="user photo"/>
-                            </div>
                                 <%=participant.name%>
-                            <% })%>
+                            </div>
                         </div>
                     </div>
                     <div class="btns">
                         <div class="plan-buttons">
-                            <button type="button" class="edit-btn" onclick= "location.href ='/plans/<%=totPlan._id%>/edit'">편집하기</button>
+                            <button type="button" class="edit-btn">편집하기</button>
                             <%if(user._id == totPlan.admin["_id"]){%>
-                                <button type="button" class="del-btn" onclick= "location.href ='/plans/<%=totPlan._id%>/delete'">삭제</button>
+                                <button type="button" class="del-btn">삭제</button>
                             <%}%>
                             <button class="inv-btn">초대</button>
                         </div>
@@ -168,6 +154,8 @@
                 <span class="plan-day">day <%=day + 1%></span>
                 <!--네이버 지도, 좌표 표시해줘야함-->
                 <div id="day-map<%=day + 1%>" class="day-map"></div>
+
+
                 <script>
                     dayMapList.push(new naver.maps.Map("day-map<%=day + 1%>", mapOptions));
 
@@ -186,8 +174,7 @@
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
                             <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>
-                            <p class="obj-adress"><%=totPlan.day_plan[day]['place'][placeIndex]['adr']%></p>
-                            <p class="obj-memo"><%=totPlan.day_plan[day]['place'][placeIndex]['memo']%></p>
+                            <p class="obj-adress"><%=totPlan.day_plan[day]['place'][placeIndex]['road_adr']%></p>
                         </div>
                     <%}%>
                 </div>
