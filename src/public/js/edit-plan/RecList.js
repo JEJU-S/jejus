@@ -1,22 +1,68 @@
 
-import {socket, planId} from "./communicate.js";
+import {socket} from "./communicate.js";
+import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
+
+/******************************** */
+
+const regionBackground = document.getElementById('regionplace');
+const selectBtn = document.getElementById('regionbtn');
+const jejuRegion = document.getElementsByClassName("jeju-region");
+
+selectBtn.addEventListener('click', regionSelect);
+function regionSelect() {
+    regionBackground.style.display='block';
+    regionBackground.style.opacity='1';
+}
+
+function closeRegionSelect(){
+    regionBackground.style.display='none';
+    regionBackground.style.opacity='0';   
+}
+
+
+for (let i = 0; i < jejuRegion.length; i++) {
+    let eachjejuRegion = jejuRegion[i];
+    eachjejuRegion.addEventListener('click', getRegionSelect);
+    eachjejuRegion.addEventListener('click', closeRegionSelect);
+}
+
 
 /***********************/
-
-let fakeRegion = "전체";
 
 const categoryBtns = document.querySelectorAll(".recommandation__categories");
 categoryBtns.forEach((btn) => {
     btn.addEventListener("click", selectCategory);
 })
 
+let selectedRegion = "전체";
+// 지역 고르기
+function getRegionSelect(event){
+    selectedRegion = event.target.alt;
+    //서버 전송💨
+    console.log("결과 : ", selectedRegion, "전체");
+    socket.emit("rec_keyword", selectedRegion, "전체");
+}
+
+// 카테고리 고르기
 function selectCategory(event){
     const category = event.target.closest('div').dataset.category;
     console.log(category);
-
-    socket.emit("rec_keyword", fakeRegion, category);
+    console.log("결과 : ", selectedRegion, category);
+    socket.emit("rec_keyword", selectedRegion, category);
 }
 
+/*
+function matchCategoryMarkerImg(category){
+    switch(category){
+        case "관광" :
+            const image = "";
+        case "식당" :
+        
+        
+        case "카페" : 
+    }
+}
+*/
 //******************** */
 class RecItem {
     constructor(id, place_name, road_address_name, place_url, x, y, image_url, score, model_grade){

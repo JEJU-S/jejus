@@ -15,8 +15,8 @@ export function createMapMarker(lon, lat, image){
             position : new naver.maps.LatLng(lat, lon),
             map : map,
             icon : {
-                url : `/public/images/${image}`,
-                size : new naver.maps.Size(30, 30)
+                url : `/public/images/${image}.png`,
+                scaledSize : new naver.maps.Size(35, 50),
             }
         })
     return marker;

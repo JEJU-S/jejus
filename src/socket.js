@@ -129,6 +129,7 @@ async function searchPlace(keyword){
     result["documents"].forEach((document) => { 
             searchResults.push(document);
     });
+    console.log(searchResults);
     return searchResults;
 }
 
@@ -170,7 +171,7 @@ io.on("connection", (socket) => {
     socket.on("rec_keyword", (region, category) => {
 
         //****DB 추천 리스트 반환*/
-        console.log(region, category);
+        console.log("결과 : ", region, category);
 
         const recList = fakeRecPlaceList;
         socket.emit("rec_result", recList);
