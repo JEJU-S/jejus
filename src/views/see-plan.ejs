@@ -103,11 +103,6 @@
             <div class="whole-plan">
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <div class="plan-info">
-                    <span class="date">
-                        <%=totPlan.day_plan[0]['date']%>
-                            ~
-                        <%=totPlan.day_plan[day-1]['date']%>
-                    </span>
                 <!--total-map(전체 경로 마커) 처리 부분-->
                 <div id="total-map"></div>
                 <script>
@@ -149,31 +144,19 @@
 
                     const dayMapList = [];
                     </script>
-
-
-                    <div class="participants">
-                        <div class="user">
-                            <div class="user">
-                                <img class="profile-img" src="<%=user.image_url%>" alt="user photo"/>
-                            </div>
-                        </div>
-                        <div class="user">
-                            <%totPlan.participants.forEach(function(participant){%>
-                                <%=participant['name']%>
-                            <% })%>
-                        </div>
-                        <div class="user">
-                            <%totPlan.participants.forEach(function(participant){%>
-                                <%=participant['name']%>
-                            <% })%>
-                        </div>
-                        <div class="user invite">
-                            user : im invite
-                        </div>
-                    </div>
                     <div class="date">
                             <%=totPlan.day_plan[0]['date']%>                                    ~
                             <%=totPlan.day_plan[day-1]['date']%>
+                    </div>
+                    <div class="participants">
+                        <div class="user">
+                            <div class="userimg">
+                                <img class="profile-img" src="<%=user.image_url%>" alt="user photo"/>
+                            </div>
+                            <%totPlan.participants.forEach(function(participant){%>
+                                <%=participant['name']%>
+                            <% })%>
+                        </div>
                     </div>
                     <div class="btns">
                         <div class="plan-buttons">
