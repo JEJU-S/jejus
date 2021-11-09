@@ -235,6 +235,7 @@ io.on("connection", (socket) => {
         //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
+        //socket.emit("delete_from_list", itemId);
     })
 });
 

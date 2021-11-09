@@ -1,5 +1,7 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
 import SearchList from "/public/js/edit-plan/SearchList.js";
+import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
+
 import {Kanban, mapMarkerList, Item} from "/public/js/edit-plan/Kanban.js";
 
 /******************socket 생성************************/
@@ -10,13 +12,15 @@ const userName = document.querySelector("#user-name").innerHTML;
 const image_url = document.querySelector("#user-image").innerHTML;
 /**************************************/
 
+let kanbanList;
+
 //들어올 때 서버로 보내기💨
 socket.emit("join_room", planId, userName, init);
 function init(placeList){
   console.log(placeList);
 
   // 칸반리스트 만들기
-  new Kanban(document.querySelector(".kanban"), placeList);
+  kanbanList = new Kanban(document.querySelector(".kanban"), placeList);
 }
 /***************************************/
 
