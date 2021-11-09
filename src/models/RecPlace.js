@@ -1,19 +1,19 @@
 const mongoose = require('mongoose');
 // 데이터셋에 맞춰 바뀔예정
 const recplaceSchema = new mongoose.Schema({
-    id: Number,
+    idx : Number,
     category : String,
     section : String, 
-    name: String,
-    road_adr: String,
-    x : Number,
+    name : String,
+    map_link: String,
+    road_adr : String,
     y : Number,
-    img_url: String,
+    x : Number,
+    image_url: String,
     score: Number,
     model_score : Number,
-    map_link: String,
-    img_link: String, 
-
+    rank_index : Number,
+    model_rank : String, // ABCD
 })
 
 const RecPlace = mongoose.model('RecPlace', recplaceSchema);
