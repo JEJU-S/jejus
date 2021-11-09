@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset = "UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!--<link rel="stylesheet" href="https://unpkg.com/mvp.css">-->
-		<link rel="stylesheet" href="/public/css/base.css">
-		<link rel="stylesheet" href="/public/css/sidebar.css">
-		<link rel="stylesheet" href="/public/css/header.css">
-		<link rel="stylesheet" href="/public/css/footer.css">
-        <link rel="stylesheet" href="/public/css/create-plan.css">
+    <html lang="en">
+        <head>
+        <meta charset="UTF-8">
 
-        <!--구글 아이콘-->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link rel="stylesheet" href="/public/css/icon.css">
-        <!--JQuery-->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="/public/css/kanban.css">
+        <link rel="stylesheet" href="/public/css/main-content.css">
+        <link rel="stylesheet" href="/public/css/chatting.css">
+        <link rel="stylesheet" href="/public/css/frame.css">
+        <link rel="stylesheet" href="/public/css/icon.css">
+        <link rel="stylesheet" href="/public/css/region-select.css">
+
         <!--구글 웹폰트-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title> 새 계획 생성하기 | Sample </title>
+        <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=<%=map_cl%>"></script>
+
+        <div id="plan-id" hidden><%=totPlan._id%></div>
+        <div id="user-name" hidden><%=user.name%></div>
+        <div id="user-image" hidden><%=user.image_url%></div>
+
+        <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
 <body class="container">
     <div class="region-place" id="regionplace">
@@ -84,87 +89,119 @@
                     <span class="category-name">카페</span>
                 </div>
             </div>
-            </header>
-            <div class="sidebar"> <!--사이드 바-->
-                <div class="side-profile"> <!--프로필 사진 크기 맞춤을 위해 "photo-box" div 추가-->
-                    <div class="photo-box"> <!--프로필 사진 크기 맞춤을 위해 사진에 "profile-img" class 추가-->
-                        <img class="profile-img" src="<%=user.image_url%>" alt="user photo"/>
-                    </div>
-                    <!--프로필 내 정보들을 box로 묶기 위해 "user-info" div 추가-->
-                    <div class="user-info">
-                        <p class="side-user-name"><%=user.name%></p>
-                        <p><%=user.gmail%></p>
-                    </div>
-                </div>
-                <!--사이드바 메뉴구성 시작-->
-                <div class="menu">
-                    <!--메뉴마다 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-name 클래스 부여-->
-                    <div class="menu-name">
-                        <span class="material-icons md-36">
-                            account_circle
-                            </span>
-                            <span><a href="/users/<%=user._id%>">마이페이지</a></span>
-                    </div>
 
-                    <div class="menu-name selected">
-                        <span class="material-icons md-36">
-                            create_new_folder</span>
-
-                        <span><a href="/plans/create">새 계획 만들기</a></span>
-                    </div>
-                    <div class="menu-name group">
-                        <div class="mygroup" id="group">
-                            <span class="material-icons md-36 grid">
-                                folder
-                            </span>
-                            <span >내 그룹</span>
+            <ul class="recommandation__list">
+                <!--
+                <li>
+                    <img src="", alt="추천 장소">
+                    <div>
+                        <div>
+                            <span class="reco-title">관광지명</span>
+                            <button class="more-btn"><span class="material-icons">open_in_new</span></button>
                         </div>
-                        <!--세부메뉴의 영역을 지정하고, 색깔 등 효과를 일괄적으로 입히기 위해 menu-detail 클래스 부여-->
-                        <div class="menu-detail" id="mygroup">
-                            <ul>
-                                <%totPlanTitles.forEach(function(title){ %>
-                                <li><a href="/plans/<%=title['_id']%>" class="side-plan-title"><%=title['title']%></a></li>
-                                <% })%>
-                                <!--
-                                    <%totPlanTitles.forEach(function(title){ %>
-                                <li><a href="/plans/<%=title['_id']%>" class="plan-title"><%=title['title']%></a></li>
-                                <% })%>
-
-                                -->
-                            </ul>
+                        <div class="star-rating">
+                            <span>별점: </span>
+                            <span class="star"><span class="rating"></span></span>
+                        </div>
+                        <div>
+                            <span>'프로젝트'의 평가: </span><span>A</span>
                         </div>
                     </div>
-                    <div class="menu-name logout">
-                        <span class="material-icons md-36">
-                            logout
-                            </span><a href="/users/logout">로그아웃</a>
-                    </div>
+                </li>
+                -->
+            </ul>
+        </div>
+
+        <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
+
+        <div class="search-list">
+            <form id="search-form">
+                <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
+                <button class="search-btn"><span class="material-icons">
+                    search
+                    </span>
+                    </button>
+            </form>
+            <ul>
+                <!--
+                <li draggable ="true">
+                    <span>봄날</span>
+                    <button class="more-btn"></button>
+                    <p>제주특별자치도 제주시 애월읍 애월로 27-1</p>
+                </li>
+                -->
+            </ul>
+        </div>
+        <div id="map"></div>
+
+        <div class="kanban">
+            <!--
+            <div class="kanban__column">
+                <div class="kanban__column-title">Not started</div>
+                    <div class="kanban__items">
+                        <div class="kanban__item" draggable="true">
+                            <div class="kanban__item-name">place 1</div>
+                            <div class="kanban__item-road_adr">도로명주소 1</div></div>
+                            <button>삭제</button>
+                            <div class="kanban__dropzone"></div>
+                        </div>
                 </div>
             </div>
-        <main>
-            <form method="POST" class="creator" id = "date-form">
-                <h1>
-                    새 계획 만들기
-                </h1>
-                <div class="title-box">
-                    <h2>여행 제목</h2>
-                    <input type="text" name="title", placeholder="제목", required>
-                </div>
-                <div class="date-box">
-                    <h2>여행 일정</h2>
+            -->
+        </div>
 
-                        <h3>출발일</h3><input type="date" name="start" required>
-                        <h3>도착일</h3><input type="date" name="end" required>
-                    <!--<input type="text" name="dates", id="dates", required>-->
+        <button id="popup"><span class="material-icons-outlined">
+            mode_comment
+            </span>채팅</button>
+
+        <!--chatting으로 모든 챗박스 묶고, 추가 클래스로 개별 스타일 부여-->
+        <div class="chatting" id="chatArea">
+            <div id="chatAreaheader">
+                <button>➖</button>
+            </div>
+            <div class="chat-box">
+            <!--
+                <div class="chat system">
+                    <div class="chat-message">
+                        오정환님이 입장하셨습니다.
+                    </div>
                 </div>
-                <input type="submit" value="생성하기" class="creat-btn">
-            </form>
+                <div class="chat incoming">
+                    <div class="chat-image">
+                        <img src="userimg.jpg">
+                    </div>
+                    <div class="chat-message">gdgd
+                    </div>
+                </div>
+                <div class="chat outgoing">
+                    <div class="chat-message">gdgd
+                    </div>
+                </div>
+                <div class="chat system">
+                    <div class="chat-message">
+                        오정환님이 퇴장하셨습니다.
+                    </div>
+                </div>
+                -->
+            </div>
+            <div class="send-box">
+                <form name="formname">
+                    <textarea type="text" name="chatting-input", class="chatting-input" id ="form"placeholder="메시지 전송하기", required></textarea>
+                    <input type="submit", value="전송" class="send-message">
+                </form>
+            </div>
+        </div>
+
+
         </main>
-        <footer>
-            &copy; <%=new Date().getFullYear()%> Sample Project
-        </footer>
-
-        <script type="text/javascript" src="/public/js/create-plan.js"></script>
-        <script type="text/javascript" src="/public/js/menu-opener.js"></script>
     </body>
+    <script type="module" src="/public/js/edit-plan/Map.js"></script>
+
+    <script type="module" src="/public/js/edit-plan/Message.js"></script>
+    <script type="module" src="/public/js/edit-plan/Kanban.js"></script>
+    <script type="module" src="/public/js/edit-plan/chat.js"></script>
+    <script type="module" src="/public/js/edit-plan/textarea.js"></script>
+    <script type="module" src="/public/js/edit-plan/RecList.js"></script>
+    <script type="module" src="/public/js/edit-plan/communicate.js"></script>
+
 </html>
