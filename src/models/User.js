@@ -1,4 +1,5 @@
 import {TotPlan} from '../models/TotPlan'
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({

@@ -15,9 +15,9 @@ var _nodeFetch = _interopRequireDefault(require("node-fetch"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _os = _interopRequireDefault(require("os"));
-
 var _User = require("../models/User");
+
+var _RecPlace = require("../models/RecPlace");
 
 var _mongoose = require("mongoose");
 
@@ -30,10 +30,7 @@ _dotenv["default"].config();
 var mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
-
-//
-var hostname = _os["default"].networkInterfaces();
-
+// new RecPlace({});
 var PORT = process.env.PORT || 8080;
 
 function finduser(_x) {

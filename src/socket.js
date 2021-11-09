@@ -6,8 +6,24 @@ import http from "http";
 import dotdev from "dotenv";
 dotdev.config();
 
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+import {RecPlace} from './models/RecPlace'
 
-/* 추후 삭제 해야 함*****************************/
+
+async function sections(region){
+    const sections = await RecPlace.find({ section : region}).lean();
+    return sections;
+}
+async function categories(cate){
+    const categories = await RecPlace.find({category : cate}).lean();
+    return categories;
+}
+async function categorize(region,cate){
+    const category = await RecPlace.find({section : region, category : cate}).lean();
+    return category;
+}
+
 const fakePlaceList = [
     {
     _id : "507f191e810c19729de860e1",
@@ -74,33 +90,6 @@ const fakePlaceList = [
         ]}
 ]
 
-const fakeRecPlaceList = [
-    {
-        id: "61888956e021ad2845181dea",
-        name: "식빵가게1",
-        road_adr: "제주특별자치도 제주시 월성로10길 1 1층",
-        x : 126.5053189,
-        y : 33.5011685,
-        img_url: "",
-        score: 4.3,
-        map_link: "https://place.map.kakao.com/615988591",
-        model_grade : 9.0
-    },
-
-    {
-        id: "61888956e021ad2845181deb",
-        name: "식빵가게2",
-        road_adr: "제주특별자치도 제주시 월성로10길 2 2층",
-        x : 126.6053189,
-        y : 33.6011685,
-        img_url: "",
-        score: 4,
-        map_link: "https://place.map.kakao.com/615988591",
-        model_grade : 6.7
-    }
-];
-
-/******************************/
 
 const server = http.createServer(app);
 const io = SocketIO(server);
@@ -129,7 +118,6 @@ async function searchPlace(keyword){
     result["documents"].forEach((document) => { 
             searchResults.push(document);
     });
-    console.log(searchResults);
     return searchResults;
 }
 
@@ -168,13 +156,64 @@ io.on("connection", (socket) => {
         sendSearchResults(keyword, socket);
     });
 
-    socket.on("rec_keyword", (region, category) => {
+    socket.on("rec_keyword", async (region, category) => {
 
         //****DB 추천 리스트 반환*/
-        console.log("결과 : ", region, category);
 
-        const recList = fakeRecPlaceList;
-        socket.emit("rec_result", recList);
+        // region ( section ) => 전체 , 제주(A) , 남부(B) , 서부(C) , 북동부(D), 성산우도(E)
+        // category => 식당(FOOD) , 카페(CAFE), 관광지(TOUR)
+        let section='전체';
+        let cate='전체';
+
+        console.log(region, category);  
+        if(region == '제주'){
+            section = 'A';
+        }
+        else if(region == '남부'){
+            section = 'B';
+        }
+        else if(region == '서부'){
+            section = 'C';
+        }
+        else if(region == '북동부'){
+            section = 'D';
+        }
+        else if(region =='성산우도'){
+            section = 'E';
+        }
+
+        if(category == '식당'){
+            cate = 'FOOD';
+        }
+        else if(category == '카페'){
+            cate = 'CAFE';
+        }
+        else if(category=='관광'){
+            cate = 'TOUR';
+        }
+
+        if(category!='전체' && region!='전체'){
+            let Rec = await categorize(section,cate);
+            console.log(section,cate)
+            console.log(Rec);
+            const rec1 = Rec;
+            socket.emit("rec_result", rec1);
+        }
+        else if(category=='전체'){
+            let Rec_sect = await sections(section);
+            console.log(section,cate)
+            console.log(Rec_sect)
+            const rec2 = Rec_sect;
+            socket.emit("rec_result", rec2);
+        }
+        else if(region=='전체'){
+            let Rec_cate = await categories(cate);
+            console.log(section,cate)
+            console.log(Rec_cate)
+            const rec3 = Rec_cate;
+            socket.emit("rec_result", rec3);
+        }
+       
     });
 
     /* option

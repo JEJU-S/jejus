@@ -141,15 +141,15 @@ class RecList {
 
     renderItem(place){
         const recItem = new RecItem(
-            place.id,
+            place.category,
             place.name, 
             place.road_adr, 
             place.map_link,
             place.x, 
             place.y,
-            place.img_url,
+            place.image_url,
             place.score,
-            place.model_grade
+            place.model_rank
             );
             //뒤에 2개 더 들어감
         this.root.appendChild(recItem.elements.root);

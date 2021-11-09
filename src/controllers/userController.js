@@ -3,16 +3,14 @@ import dotdev from "dotenv";
 dotdev.config();
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-import os from "os";
 import {User} from '../models/User'
+import {RecPlace} from '../models/RecPlace'
+
 // 추후 진짜 db로 바꿔야 함
 import { Mongoose } from "mongoose";
 import { app } from "cli";
 import { Db } from "mongoose/node_modules/mongodb";
-
-
-//
-const hostname = os.networkInterfaces();
+// new RecPlace({});
 const PORT = process.env.PORT || 8080;
 
 async function finduser(user_gmail){
