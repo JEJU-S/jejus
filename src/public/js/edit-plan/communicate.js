@@ -1,29 +1,29 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
 import SearchList from "/public/js/edit-plan/SearchList.js";
-//import Kanban from "/public/js/edit-plan/Kanban.js";
-
+import {Kanban, mapMarkerList, Item} from "/public/js/edit-plan/Kanban.js";
 
 /******************socket 생성************************/
-const socket = io(); 
+export const socket = io(); 
 
-const planId = document.querySelector("#plan-id").innerHTML;
+export const planId = document.querySelector("#plan-id").innerHTML;
 const userName = document.querySelector("#user-name").innerHTML;
 const image_url = document.querySelector("#user-image").innerHTML;
 /**************************************/
 
+//들어올 때 서버로 보내기💨
 socket.emit("join_room", planId, userName, init);
+function init(placeList){
+  console.log(placeList);
 
-function init(){
-  //new Kanban(document.querySelector(".kanban"), fakeItems2);
+  // 칸반리스트 만들기
+  new Kanban(document.querySelector(".kanban"), placeList);
 }
-// 서버에서 받아 와야 함
-
 /***************************************/
 
 const chatForm = document.querySelector(".chatting form");
 const chatBox = document.querySelector(".chat-box");
 
-// 채팅 생성
+// 채팅 메시지 전송
 const chattingList = new ChattingList(document.querySelector(".chat-box"));
 
 chatForm.addEventListener("submit", sendChattingMessage);
@@ -51,7 +51,7 @@ function receiveSystemMessage(name, enter){
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-/********************************/
+/*****************검색창***************************/
 const searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", submitSearchKeyword);
 
@@ -64,10 +64,72 @@ function submitSearchKeyword(event){
 }
 
 socket.on("search_result", printSearchList);
-
 function printSearchList(resultList){
-  console.log(resultList);
   new SearchList(document.querySelector(".search-list ul"), resultList);
 }
 
+/*******************Kanban*******************************/
+
+socket.on("delete_from_list", deleteFromList);
+socket.on("add_to_placelist", addFromList);
+socket.on("move_in_placelist", moveInList);
+
+function deleteFromList(itemId){
+    console.log("***********삭제 시작");
+    console.log(kanbanList.root);
+    //item 삭제
+    const deletedItem = kanbanList.root.querySelector(`.kanban div[data-id="${itemId}"]`);
+
+    //map 삭제
+    let mapIndex;
+    mapMarkerList.forEach((mapMarker, index) => {
+        if(mapMarker.id == itemId){
+            removeMapMarker(mapMarker.marker);   
+            mapIndex = index;
+        } 
+    })
+    if(mapIndex != undefined){
+        console.log(mapMarkerList);
+        mapMarkerList.splice(mapIndex, 1);
+    }
+    deletedItem.parentElement.removeChild(deletedItem);
+    console.log("삭제 완료");
+}
+
+function addFromList(newId, newPlace, columnId, droppedIndex){
+
+    const newItem = new Item(newId, newPlace.name, newPlace.road_adr, newPlace.x, newPlace.y, newPlace.map_link);
+    const droppedItemElement = newItem.elements.root;
+    const columnElement = document.querySelector(`.kanban div[data-id="${columnId}"]`);
+    const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
+
+    const dropZone = dropZonesInColumn[droppedIndex];
+    console.log("dropZoneIndex : ", droppedIndex);
+    const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
+
+    if(droppedItemElement.contains(dropZone)){
+        return;
+    }
+    insertAfter.after(droppedItemElement);
+}
+
+function moveInList(itemId, columnId, droppedIndex){
+    const droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
+    console.log(droppedItemElement);
+
+    const columnElement = document.querySelector(`.kanban div[data-id="${columnId}"]`);
+    console.log(columnElement);
+
+    const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
+    const dropZone = dropZonesInColumn[droppedIndex];
+
+    console.log("dropZoneIndex : ", droppedIndex);
+    const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
+
+    if(droppedItemElement.contains(dropZone)){
+        return;
+    }
+    
+    insertAfter.after(droppedItemElement);
+}
 

@@ -29,27 +29,27 @@ function findtitle(_x) {
 }
 
 function _findtitle() {
-  _findtitle = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(title) {
+  _findtitle = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(title) {
     var totplans;
-    return _regenerator["default"].wrap(function _callee5$(_context5) {
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
-            _context5.next = 2;
+            _context8.next = 2;
             return _TotPlan.TotPlan.findOne({
               title: title
             }).lean();
 
           case 2:
-            totplans = _context5.sent;
-            return _context5.abrupt("return", totplans);
+            totplans = _context8.sent;
+            return _context8.abrupt("return", totplans);
 
           case 4:
           case "end":
-            return _context5.stop();
+            return _context8.stop();
         }
       }
-    }, _callee5);
+    }, _callee8);
   }));
   return _findtitle.apply(this, arguments);
 }
@@ -59,27 +59,27 @@ function finduserPlan(_x2) {
 }
 
 function _finduserPlan() {
-  _finduserPlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(id) {
+  _finduserPlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(id) {
     var usertotplan;
-    return _regenerator["default"].wrap(function _callee6$(_context6) {
+    return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
-            _context6.next = 2;
+            _context9.next = 2;
             return _TotPlan.TotPlan.findOne({
               _id: id
             }).lean();
 
           case 2:
-            usertotplan = _context6.sent;
-            return _context6.abrupt("return", usertotplan);
+            usertotplan = _context9.sent;
+            return _context9.abrupt("return", usertotplan);
 
           case 4:
           case "end":
-            return _context6.stop();
+            return _context9.stop();
         }
       }
-    }, _callee6);
+    }, _callee9);
   }));
   return _finduserPlan.apply(this, arguments);
 }
@@ -89,27 +89,27 @@ function finduser(_x3) {
 }
 
 function _finduser() {
-  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(gmail) {
+  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(gmail) {
     var usertotplan;
-    return _regenerator["default"].wrap(function _callee7$(_context7) {
+    return _regenerator["default"].wrap(function _callee10$(_context10) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context10.prev = _context10.next) {
           case 0:
-            _context7.next = 2;
+            _context10.next = 2;
             return _User.User.findOne({
               gmail: gmail
             }).lean();
 
           case 2:
-            usertotplan = _context7.sent;
-            return _context7.abrupt("return", usertotplan);
+            usertotplan = _context10.sent;
+            return _context10.abrupt("return", usertotplan);
 
           case 4:
           case "end":
-            return _context7.stop();
+            return _context10.stop();
         }
       }
-    }, _callee7);
+    }, _callee10);
   }));
   return _finduser.apply(this, arguments);
 }
@@ -136,7 +136,23 @@ function checkcall(call, check) {
     }
   });
   return x;
-} //사용자 마다 완성된 plan 보여주기 위한 것
+}
+
+function checktitle(tot, check) {
+  var x = false;
+  tot.forEach(function (i) {
+    if (i['title'] == check) {
+      x = true;
+    } else {
+      return false;
+    }
+  });
+  return x;
+} // async function deletePlan(adminUser){
+//     const user_DelPlan = await TotPlan.deleteOne({admin : adminUser}).lean();
+//     return user_DelPlan;
+// }
+//사용자 마다 완성된 plan 보여주기 위한 것
 
 
 var seePlan = /*#__PURE__*/function () {
@@ -157,6 +173,7 @@ var seePlan = /*#__PURE__*/function () {
             console.log("접근 권한 테스트");
 
             if (checkath(parti, req.session.user._id)) {
+              console.log("권한허용");
               res.render("see-plan", {
                 user: req.session.user,
                 totPlanTitles: req.session.user.totPlan_list,
@@ -185,7 +202,7 @@ exports.seePlan = seePlan;
 
 var sendInvitation = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_plan, insert_host, par_userinfo, par_id, par_name, par_info, hostarr;
+    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, par_id, hostarr, par_tot;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -205,51 +222,32 @@ var sendInvitation = /*#__PURE__*/function () {
             totplan_title = usertotplan.title;
             totplan_id = usertotplan._id;
             hostname = usertotplan.admin.name;
-            insert_plan = {
-              _id: totplan_id,
-              title: totplan_title
-            };
             insert_host = {
               host: hostname,
-              plan_title: totplan_title
-            }; // 초대장을 받음
+              plan_title: totplan_title,
+              plan_id: totplan_id
+            };
+            parti = usertotplan.participants;
+            console.log(parti); // 초대장을 받음
 
-            _context2.next = 13;
+            _context2.next = 14;
             return finduser(gmail);
 
-          case 13:
+          case 14:
             par_userinfo = _context2.sent;
             console.log("초대한 유저", par_userinfo);
             par_id = par_userinfo._id;
-            par_name = par_userinfo.name;
-            par_info = {
-              _id: par_id,
-              name: par_name
-            }; //  user(참가자)의 totplan_list추가(totplan_id, totplan.name)
-            //  user(참가자)의 calllist 추가(host, plantitle)
-
             hostarr = par_userinfo.call_list;
+            par_tot = par_userinfo.totPlan_list;
 
-            if (checkcall(hostarr, totplan_title)) {
+            if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id || checktitle(par_tot, totplan_title)) {
               console.log("이미 초대됨");
             } else {
               _User.User.findOne({
                 gmail: gmail
               }).exec(function (err, res) {
                 if (res) {
-                  res.totPlan_list.push(insert_plan);
                   res.call_list.push(insert_host);
-                  res.save();
-                }
-              }); // 초대 수락시
-              // tot_plan participant추가
-
-
-              _TotPlan.TotPlan.findOne({
-                _id: totplan_id
-              }).exec(function (err, res) {
-                if (res) {
-                  res.participants.push(par_info);
                   res.save();
                 }
               });
@@ -290,8 +288,10 @@ var editPlan = /*#__PURE__*/function () {
             console.log(usertotplan);
             parti = usertotplan.participants;
             console.log("접근 권한 테스트");
+            console.log(req.session.user);
 
             if (checkath(parti, req.session.user._id)) {
+              console.log("권한허용");
               res.render("edit-plan", {
                 user: req.session.user,
                 totPlan: usertotplan,
@@ -302,7 +302,7 @@ var editPlan = /*#__PURE__*/function () {
             } // 진행중
 
 
-          case 9:
+          case 10:
           case "end":
             return _context3.stop();
         }
@@ -328,7 +328,7 @@ exports.getCreatePlan = getCreatePlan;
 
 var postCreatePlan = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, tempDate, dayArray, totplanidcall, totplanid, totplan;
+    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_image_url, tempDate, dayArray, totplanidcall, totplanid, totplan;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -341,9 +341,10 @@ var postCreatePlan = /*#__PURE__*/function () {
             console.log("startDate : ", startDate, "endDate : ", endDate);
             pC_id = req.session.user._id;
             pC_user = req.session.user.name;
+            pC_image_url = req.session.user.image_url;
             tempDate = new Date(startDate);
             dayArray = [];
-            _context4.next = 10;
+            _context4.next = 11;
             return new _TotPlan.TotPlan({
               title: title,
               admin: {
@@ -352,7 +353,8 @@ var postCreatePlan = /*#__PURE__*/function () {
               },
               participants: [{
                 _id: pC_id,
-                name: pC_user
+                name: pC_user,
+                image_url: pC_image_url
               }] // day_plan: [{
               //     date: dayArray,
               //     place: [{
@@ -370,11 +372,11 @@ var postCreatePlan = /*#__PURE__*/function () {
               console.error(err);
             });
 
-          case 10:
-            _context4.next = 12;
+          case 11:
+            _context4.next = 13;
             return findtitle(title);
 
-          case 12:
+          case 13:
             totplanidcall = _context4.sent;
             totplanid = totplanidcall._id;
             console.log(totplanid);
@@ -392,10 +394,10 @@ var postCreatePlan = /*#__PURE__*/function () {
               }).exec();
             }
 
-            _context4.next = 18;
+            _context4.next = 19;
             return findtitle(title);
 
-          case 18:
+          case 19:
             totplan = _context4.sent;
 
             _User.User.findByIdAndUpdate(pC_id, {
@@ -413,7 +415,7 @@ var postCreatePlan = /*#__PURE__*/function () {
             });
             res.redirect("/users/".concat(pC_id));
 
-          case 22:
+          case 23:
           case "end":
             return _context4.stop();
         }
@@ -428,23 +430,227 @@ var postCreatePlan = /*#__PURE__*/function () {
 
 exports.postCreatePlan = postCreatePlan;
 
-var accept = function accept(req, res) {
-  //***DB
-  res.redirect("/users/".concat(req.session.user._id));
-};
+var accept = /*#__PURE__*/function () {
+  var _ref5 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee5(req, res) {
+    var _req$params, id, tid, accept_id, par_userinfo, usertotplan, totplan_title, totplan_id, insert_plan, hostname, insert_host, par_info;
+
+    return _regenerator["default"].wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _req$params = req.params, id = _req$params.id, tid = _req$params.tid;
+            console.log(id);
+            console.log(tid);
+            accept_id = req.session.user._id;
+            _context5.next = 6;
+            return finduser(req.session.user.gmail);
+
+          case 6:
+            par_userinfo = _context5.sent;
+            _context5.next = 9;
+            return finduserPlan(id);
+
+          case 9:
+            usertotplan = _context5.sent;
+            console.log("초대받은 계획", usertotplan);
+            totplan_title = usertotplan.title;
+            totplan_id = usertotplan._id;
+            insert_plan = {
+              _id: totplan_id,
+              title: totplan_title
+            };
+            hostname = usertotplan.admin.name;
+            insert_host = {
+              host: hostname,
+              plan_title: totplan_title,
+              plan_id: totplan_id,
+              _id: tid
+            };
+            console.log("insert host --- ");
+            par_info = {
+              _id: par_userinfo._id,
+              name: par_userinfo.name,
+              image_url: par_userinfo.image_url
+            };
+            console.log("par in fo  --- ");
+
+            _TotPlan.TotPlan.findOne({
+              _id: id
+            }).exec(function (err, res) {
+              if (res) {
+                res.participants.push(par_info);
+                res.save();
+              }
+            });
+
+            console.log("////_@_ 3-- ");
+
+            _User.User.findOne({
+              _id: accept_id
+            }).exec(function (err, res) {
+              if (res) {
+                res.totPlan_list.push(insert_plan);
+                res.call_list.pull(insert_host);
+                res.save();
+              }
+            });
+
+            console.log("////_@_ --- "); // // 초대 수락시
+            // tot_plan participant추가
+
+            res.redirect("/users/".concat(req.session.user._id));
+
+          case 24:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+
+  return function accept(_x12, _x13) {
+    return _ref5.apply(this, arguments);
+  };
+}();
 
 exports.accept = accept;
 
-var refuse = function refuse(req, res) {
-  //***DB
-  res.redirect("/users/".concat(req.session.user._id));
-}; // admin만 삭제 가능하게 만들어야 함 아직 작업 x
+var refuse = /*#__PURE__*/function () {
+  var _ref6 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee6(req, res) {
+    var _req$params2, id, tid, refuse_id, par_userinfo, usertotplan, totplan_title, totplan_id, hostname, insert_host;
 
+    return _regenerator["default"].wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            //***DB
+            _req$params2 = req.params, id = _req$params2.id, tid = _req$params2.tid;
+            console.log(id);
+            console.log(tid);
+            refuse_id = req.session.user._id;
+            _context6.next = 6;
+            return finduser(req.session.user.gmail);
+
+          case 6:
+            par_userinfo = _context6.sent;
+            _context6.next = 9;
+            return finduserPlan(id);
+
+          case 9:
+            usertotplan = _context6.sent;
+            console.log("초대받은 계획", usertotplan);
+            totplan_title = usertotplan.title;
+            totplan_id = usertotplan._id;
+            hostname = usertotplan.admin.name;
+            insert_host = {
+              host: hostname,
+              plan_title: totplan_title,
+              plan_id: totplan_id,
+              _id: tid
+            };
+
+            _User.User.findOne({
+              _id: refuse_id
+            }).exec(function (err, res) {
+              if (res) {
+                res.call_list.pull(insert_host);
+                res.save();
+              }
+            });
+
+            res.redirect("/users/".concat(req.session.user._id));
+
+          case 17:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function refuse(_x14, _x15) {
+    return _ref6.apply(this, arguments);
+  };
+}();
 
 exports.refuse = refuse;
 
-var del = function del(req, res) {
-  return res.send("delete plans");
-};
+var del = /*#__PURE__*/function () {
+  var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res) {
+    var id, usertotplan, hostid, hostname, totplan_id, totplan_title, adminUser, delete_callList, delete_planList, delete_plan;
+    return _regenerator["default"].wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            //삭제할 totPlan id
+            id = req.params.id;
+            _context7.next = 3;
+            return finduserPlan(id);
+
+          case 3:
+            usertotplan = _context7.sent;
+            hostid = usertotplan.admin._id;
+            hostname = usertotplan.admin.name;
+            totplan_id = usertotplan._id;
+            totplan_title = usertotplan.title;
+            adminUser = {
+              _id: hostid,
+              name: hostname
+            };
+            delete_callList = {
+              host: hostname,
+              plan_title: totplan_title,
+              plan_id: totplan_id
+            };
+            delete_planList = {
+              _id: totplan_id,
+              title: totplan_title
+            };
+
+            if (!(hostid = req.session.user._id)) {
+              _context7.next = 21;
+              break;
+            }
+
+            console.log('delete Test');
+            _context7.next = 15;
+            return deletePlan(adminUser);
+
+          case 15:
+            delete_plan = _context7.sent;
+            console.log(delete_plan);
+            console.log('delete Test');
+
+            _User.User.findOne({
+              _id: req.session.user._id
+            }).exec(function (err, res) {
+              if (res) {
+                res.call_list.pull(delete_callList);
+                res.totPlan_list.pull(delete_planList);
+                res.save();
+              }
+            });
+
+            _context7.next = 22;
+            break;
+
+          case 21:
+            console.log(' You are not host :( ');
+
+          case 22:
+            res.redirect("/users/".concat(req.session.user._id));
+
+          case 23:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+
+  return function del(_x16, _x17) {
+    return _ref7.apply(this, arguments);
+  };
+}();
 
 exports.del = del;

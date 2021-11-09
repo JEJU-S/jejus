@@ -17,7 +17,8 @@ planRouter.get("/:id([0-9a-f]{24})/delete",protectMiddleware, del);
 planRouter.route("/create", protectMiddleware).get(getCreatePlan).post(postCreatePlan);
 
 //초대장 수락 / 거절
-planRouter.get("/:id([0-9a-f]{24})/accept", accept);
-planRouter.get("/:id([0-9a-f]{24})/refuse", refuse);
-
+// planRouter.get("/:id([0-9a-f]{24})/accept", accept);
+// planRouter.get("/:id([0-9a-f]{24})/refuse", refuse);
+planRouter.get("/:id([0-9a-f]{24})/:tid/accept", accept);
+planRouter.get("/:id([0-9a-f]{24})/:tid/refuse", refuse);
 export default planRouter
