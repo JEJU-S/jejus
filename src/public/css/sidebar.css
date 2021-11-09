@@ -55,6 +55,7 @@
   text-align: center;
   height: 64%;
   width: 100%;
+  gap: 5px;
 }
 
 .menu-name {
