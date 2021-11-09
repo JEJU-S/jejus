@@ -83,7 +83,7 @@
                 <div class="deco">
                     <div class="box"></div>
                     <h2 class="pf-title">
-                        Profile
+                        Edit
                     </h2>
                 </div>
                 <form method="POST" id="edit-form">
@@ -93,11 +93,11 @@
                         </div>
                         <div class="info-box">
                             <h3>닉네임</h3>
-                            <input type="text", name="name", placeholder="이름", value="<%=user.name%>" class="nickname-edit">
+                            <input type="text", name="name", placeholder="이름", value="<%=user.name%>">
                         </div>
                         <div class="info-box">
                             <h3>이메일</h3>
-                            <span class="email-edit"><%=user.gmail%></span>
+                            <span><%=user.gmail%></span>
                         </div>
                             <input type="submit" value="수정하기" class="edit-button">
                     </div>
