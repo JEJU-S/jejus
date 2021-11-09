@@ -15,13 +15,15 @@ startDate.min = toDay;
 startDate.value = toDay;
 
 endDate.min = toDay;
-endDate.value = toDay;
 
 startDateChange();
-
+/*
 function check(event){
     event.preventDefualt();
-}
+    
+}*/
+
+endDate.value = toDay;
 
 function startDateChange(){
     endDate.max = "";

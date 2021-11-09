@@ -51,21 +51,38 @@ function selectCategory(event){
     socket.emit("rec_keyword", selectedRegion, category);
 }
 
-/*
+
 function matchCategoryMarkerImg(category){
+    let image = "";
     switch(category){
-        case "관광" :
-            const image = "";
-        case "식당" :
-        
-        
-        case "카페" : 
+        case "TOUR" :
+            image = "marker-rec-tour";
+            break;
+        case "FOOD" :
+            image = "marker-rec-resturant";  
+            break;       
+        case "CAFE" : 
+            image = "marker-rec-cafe";
+            break;
     }
+    return image;
 }
-*/
+
 //******************** */
+    /*
+    place.category, 
+    place.name,
+    place.map_link,
+    place.road_adr,
+    place.x,
+    place.y,
+    place.image_url,
+    place.score,
+    place.model_rank
+*/
+
 class RecItem {
-    constructor(id, place_name, road_address_name, place_url, x, y, image_url, score, model_grade){
+    constructor(category, place_name, place_url, road_address_name, x, y, image_url, score, model_rank){
         this.elements = {};
         this.elements.root = RecItem.createRoot();
         this.elements.img = this.elements.root.querySelector("img");
@@ -81,11 +98,10 @@ class RecItem {
         this.elements.root.dataset.x = x;
         this.elements.root.dataset.y = y;
         this.elements.root.dataset.road_adr = road_address_name;
-        this.elements.root.dataset.id = id;
         
         //별점 비율
         this.elements.rating.style.width = `${score/5 * 100}%`;
-        this.elements.grade.textContent = model_grade;
+        this.elements.grade.textContent = model_rank;
 
         this.elements.moreBtn.addEventListener("click", (event) => {
             window.open(place_url);
@@ -101,6 +117,13 @@ class RecItem {
                 y : y, 
                 map_link : place_url,
             }));
+        });
+
+        matchCategoryMarkerImg(category);
+        this.elements.marker = createMapMarker(x, y, matchCategoryMarkerImg(category));
+        
+        this.elements.root.addEventListener("click", () => {
+            mapPanToBound(x, y);
         });
     }
 
@@ -141,15 +164,15 @@ class RecList {
 
     renderItem(place){
         const recItem = new RecItem(
-            place.id,
-            place.name, 
-            place.road_adr, 
+            place.category, 
+            place.name,
             place.map_link,
-            place.x, 
+            place.road_adr,
+            place.x,
             place.y,
-            place.img_url,
+            place.image_url,
             place.score,
-            place.model_grade
+            place.model_rank
             );
             //뒤에 2개 더 들어감
         this.root.appendChild(recItem.elements.root);

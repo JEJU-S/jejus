@@ -76,27 +76,51 @@ const fakePlaceList = [
 
 const fakeRecPlaceList = [
     {
-        id: "61888956e021ad2845181dea",
-        name: "식빵가게1",
-        road_adr: "제주특별자치도 제주시 월성로10길 1 1층",
-        x : 126.5053189,
-        y : 33.5011685,
-        img_url: "",
-        score: 4.3,
+        idx : 1,
+        category : "CAFE",
+        section : "", 
+        name : "식빵가게",
         map_link: "https://place.map.kakao.com/615988591",
-        model_grade : 9.0
+        road_adr : "제주특별자치도 제주시 월성로10길 2 2층",
+        y : 33.417778216064875,
+        x : 126.53305646875006,
+        image_url: "",
+        score: 4.5,
+        model_score : 6.7,
+        rank_index : 1,
+        model_rank : "A"
     },
 
     {
-        id: "61888956e021ad2845181deb",
-        name: "식빵가게2",
-        road_adr: "제주특별자치도 제주시 월성로10길 2 2층",
-        x : 126.6053189,
-        y : 33.6011685,
-        img_url: "",
-        score: 4,
+        idx : 2,
+        category : "FOOD",
+        section : "", 
+        name : "식빵가게1",
         map_link: "https://place.map.kakao.com/615988591",
-        model_grade : 6.7
+        road_adr : "제주특별자치도 제주시 월성로10길 2 1층",
+        y : 33.354711344326816,
+        x : 126.75690290070189,
+        image_url: "",
+        score: 3,
+        model_score : 8,
+        rank_index : 2,
+        model_rank : "A"
+    },
+
+    {
+        idx : 3,
+        category : "TOUR",
+        section : "", 
+        name : "식빵가게3",
+        map_link: "https://place.map.kakao.com/615988591",
+        road_adr : "제주특별자치도 제주시 월성로10길 2 3층",
+        y : 33.33126374144996, 
+        x : 126.32827061149187,
+        image_url: "",
+        score: 1,
+        model_score : 1,
+        rank_index : 3,
+        model_rank : "D"
     }
 ];
 
@@ -152,6 +176,7 @@ io.on("connection", (socket) => {
 
         console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
+
         const placeList = fakePlaceList;
         socket.to(planId).emit("server_msg", userName, true);
         init(placeList);
