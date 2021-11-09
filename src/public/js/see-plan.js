@@ -32,8 +32,6 @@ function wholePlanClick(){
         dayPlans[i].style.display = "none";
     }
 }
-
-
 // 초대장 전송
 
 const emailForm = document.querySelector(".inv-area");
@@ -84,9 +82,9 @@ wholePlanClick();
 /***MAP********************************************/
 
 const totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
-//const dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
-//console.log(dayPlan);
-/*
+const dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
+console.log(dayPlan);
+
 
 for(let i =0; i < dayPlan.length; i++){
     for(let j = 0; j < dayPlan[i].place.length; j++){
@@ -94,13 +92,26 @@ for(let i =0; i < dayPlan.length; i++){
             position : new naver.maps.LatLng(
                 dayPlan[i].place[j].y,
                 dayPlan[i].place[j].x),
-                map : totMap
+            map : totMap
         })
-    }
+    }   
 }
 
+/******버튼************/
+const planId = document.querySelector(".whole-plan").dataset.planid;
+console.log(planId);
+document.querySelector(".edit-btn").addEventListener("click", () => {
+    window.location.href = `/plans/${planId}/edit`;
+});
+
+if(document.querySelector(".del-btn") !== null){
+    document.querySelector(".del-btn").addEventListener("click", () => {
+        window.location.href = `/plans/${planId}/delete`;
+    });
+}
+
+/*********************/
 
 
 
 
-*/
