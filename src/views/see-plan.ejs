@@ -103,78 +103,57 @@
             <div class="whole-plan">
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <div class="plan-info">
-                    <span class="date">
-                        <%=totPlan.day_plan[0]['date']%>
+                    <div class="date">
+                        <%=totPlan.day_plan[0].date.getFullYear()%>년 
+                        <%=totPlan.day_plan[0].date.getMonth() + 1%>월 
+                        <%=totPlan.day_plan[0].date.getDate()%>일 
                             ~
-                        <%=totPlan.day_plan[day-1]['date']%>
-                    </span>
+                        <%=totPlan.day_plan[day-1].date.getFullYear()%>년
+                        <%=totPlan.day_plan[day-1].date.getMonth() + 1%>년
+                        <%=totPlan.day_plan[day-1].date.getDate()%>일 
+                    </div>
                 <!--total-map(전체 경로 마커) 처리 부분-->
-                <div id="total-map"></div>
+                    <div id="total-map" data-dayplan="<%=JSON.stringify(totPlan).day_plan%>"></div>
+
                 <script>
                     const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
-
+                    
                     const mapOptions = {
                         center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
                         zoom : 10
                     };
-                    const totMap = new naver.maps.Map('total-map', mapOptions);
-
-                    // 마커 여러개 찍기
-
-                    for(let i =0; i < totPlan.day_plan.length; i++){
-                        for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
-                            new naver.maps.Marker({
-                                position : new naver.maps.LatLng(
-                                    totPlan.day_plan[i]['place'][j]['adr'][0],
-                                    totPlan.day_plan[i]['place'][j]['adr'][1],
-                                ),
-                                map : totMap
-                            })
-                        }
-                    }
-
+                    /*
                         // 마커 여러개 찍기
-
                         for(let i =0; i < totPlan.day_plan.length; i++){
                             for(let j=0; j < totPlan.day_plan[i]['place'].length; j++){
                                 new naver.maps.Marker({
                                     position : new naver.maps.LatLng(
-                                        totPlan.day_plan[i]['place'][j]['adr'][0],
-                                        totPlan.day_plan[i]['place'][j]['adr'][1],
+                                        totPlan.day_plan[i]['place'].y,
+                                        totPlan.day_plan[i]['place'][j].x,
                                     ),
                                     map : totMap
                                 })
                             }
                         }
-
+                    */
                     const dayMapList = [];
                     </script>
 
-
                     <div class="participants">
                         <div class="user">
-                            <div class="user">
-                                <img class="profile-img" src="<%=user.image_url%>" alt="user photo"/>
+                            <%totPlan.participants.forEach(function(participant){%>
+                            <div class="userimg">
+                                <img class="profile-img" src="<%=participant.image_url%>" alt="user photo"/>
                             </div>
-                        </div>
-                        <div class="user">
-                            <%totPlan.participants.forEach(function(participant){%>
-                                <%=participant['name']%>
+                                <%=participant.name%>
                             <% })%>
                         </div>
-                        <div class="user">
-                            <%totPlan.participants.forEach(function(participant){%>
-                                <%=participant['name']%>
-                            <% })%>
-                        </div>
+
                         <div class="user invite">
                             user : im invite
                         </div>
                     </div>
-                    <div class="date">
-                            <%=totPlan.day_plan[0]['date']%>                                    ~
-                            <%=totPlan.day_plan[day-1]['date']%>
-                    </div>
+
                     <div class="btns">
                         <div class="plan-buttons">
                             <button type="button" class="edit-btn" onclick= "location.href ='/plans/<%=totPlan._id%>/edit'">편집하기</button>
@@ -186,6 +165,7 @@
                     </div>
                 </div>
             </div>
+
             <!--day plan-->
             <%for(day=0; day < totPlan.day_plan.length; day++){%>
             <div class="day-plan">
@@ -199,8 +179,8 @@
                         for(let i = 0; i < totPlan.day_plan["<%=day%>"]['place'].length; i++){
                             new naver.maps.Marker({
                                 position : new naver.maps.LatLng(
-                                    totPlan.day_plan["<%=day%>"]['place'][i]['adr'][0],
-                                    totPlan.day_plan["<%=day%>"]['place'][i]['adr'][1],
+                                    totPlan.day_plan["<%=day%>"]['place'][i].y,
+                                    totPlan.day_plan["<%=day%>"]['place'][i].x,
                                 ),
                                 map : dayMapList["<%=day%>"]
                             })

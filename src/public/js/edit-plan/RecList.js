@@ -136,7 +136,7 @@ class RecItem {
                     <div>
                         <div>
                             <span class="reco-title"></span>
-                            <button class="more-btn"><span class="material-icons">open_in_new</span>더보기</button>
+                            <button class="more-btn"><span class="material-icons">open_in_new</span></button>
                         </div>
                         <div class="star-rating">
                             <span>별점 : </span>

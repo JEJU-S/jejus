@@ -16,7 +16,7 @@ export function createMapMarker(lon, lat, image){
             map : map,
             icon : {
                 url : `/public/images/${image}.png`,
-                scaledSize : new naver.maps.Size(35, 50),
+                scaledSize : new naver.maps.Size(40, 60),
             }
         })
     return marker;
@@ -35,5 +35,7 @@ export function mapPanToBound(lon, lat){
 export function removeMapMarker(marker){
     marker.setMap(null);
 }
+
+
 
 
