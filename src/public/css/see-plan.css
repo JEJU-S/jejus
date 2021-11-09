@@ -1,10 +1,3 @@
-.inv-btn {
-  border: none;
-  background-color: red;
-  z-index: 2000;
-  cursor: pointer;
-}
-
 .inv-area {
   display: none;
   position: absolute;
@@ -130,11 +123,11 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 .plan-info {
   display: grid;
   grid-template-areas:
-    "map par"
     "map date"
+    "map par"
     "map btns";
   grid-template-columns: 60% 30%;
-  grid-template-rows: 50% 35% 15%;
+  grid-template-rows: 35% 50% 15%;
   width: 100%;
   height: 100%;
   align-items: center;
@@ -146,54 +139,37 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   grid-area: map;
   width: 80%;
   height: 60vh;
-  background-color: red;
+  background-color: rgb(211, 211, 211);
   border-radius: 10px;
 }
 
 .participants {
   position: relative;
   grid-area: par;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
   width: 85%;
-  height: 85%;
-  background-color: blueviolet;
+  background-color: rgb(240, 240, 240);
   border-radius: 5px;
-  display: grid;
-  grid-template-areas:
-    "user1 user2"
-    "user3 user4";
-  align-items: center;
-  justify-items: center;
-  overflow: visible;
+  align-self: baseline;
 }
 
 .user {
+  display: flex;
+  padding: 20px;
+  align-items: center;
+  gap: 20px;
+  font-size: 1rem;
+}
+
+.userimg {
   display: inline-block;
-  width: 12vh;
-  height: 12vh;
-  border-radius: 100%;
+  width: 5vh;
+  height: 5vh;
+  border-radius: 50%;
   object-fit: cover;
   overflow: hidden;
   background-color: cornsilk;
-}
-
-.userinfo {
-  visibility: hidden;
-  background-color: rgba(0, 0, 0, 0.719);
-  color: #fff;
-  border-radius: 6px;
-  padding: 22px 32px;
-  z-index: 5;
-  position: absolute;
-}
-
-.user:hover .userinfo {
-  visibility: visible;
-}
-
-.invite {
-  background-image: url("../images/jeju-img2.jpg");
-  display: block;
 }
 
 .date {
@@ -222,6 +198,18 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   background-color: rgb(255, 0, 0);
   margin: 15px;
   border: none;
+  cursor: pointer;
+}
+
+.inv-btn {
+  border: none;
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  margin: 15px;
+  color: white;
+  background-color: rgb(255, 102, 0);
+  z-index: 2000;
   cursor: pointer;
 }
 
