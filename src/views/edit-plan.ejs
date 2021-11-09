@@ -53,8 +53,16 @@
         </div>
 
         <div class="plan-date">
-            출발일 : <span><%="2021-11-23"%></span>
-            도착일 : <span><%="2021-11-25"%></span>
+            출발일 : <span>
+                <%=totPlan.day_plan[0].date.getFullYear()%>년 
+                <%=totPlan.day_plan[0].date.getMonth() + 1%>월 
+                <%=totPlan.day_plan[0].date.getDate()%>일 
+            </span>
+            도착일 : <span>
+                <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getFullYear()%>년 
+                <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getMonth() + 1%>월 
+                <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getDate()%>일 
+            </span>
         </div>
         <button id="save">저장</button>
     </header>
