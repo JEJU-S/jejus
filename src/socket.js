@@ -220,11 +220,15 @@ io.on("connection", (socket) => {
         console.log(newPlace);
         const newId = "507f191e810c19729de860ab"; 
 
+
+
         socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
-        socket.emit("add_to_placelist" ,  newId, newPlace, columnId, droppedIndex);
+        socket.emit("add_to_placelist", newId, newPlace, columnId, droppedIndex);
     });
     
     socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
+
+
 
         socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
         socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
