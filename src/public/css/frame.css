@@ -19,10 +19,22 @@ body {
 
 header {
   grid-area: header;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 0.7fr 1.1fr 1fr 0.3fr;
   align-items: center;
-  justify-content: space-around;
+}
+
+.logo-box {
+  height: 40px;
+  margin-left: 60px;
+}
+.logo {
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo:hover {
+  cursor: pointer;
 }
 
 main {

@@ -117,15 +117,15 @@
                     </div>
                 <!--total-map(전체 경로 마커) 처리 부분-->
                     <div id="total-map" data-dayplan="<%=JSON.stringify(totPlan.day_plan)%>"></div>
-
                     <div class="participants">
+                        <h2>참여자</h2>
                         <%totPlan.participants.forEach(function(participant){%>
-                        <div class="user">
-                            <div class="userimg">
-                                <img class="profile-img" src="<%=participant.image_url%>" alt="user photo"/>
+                            <div class="user">
+                                <div class="userimg">
+                                    <img class="profile-img" src="<%=participant.image_url%>" alt="user photo"/>
+                                </div>
+                                    <%=participant.name%>
                             </div>
-                                <%=participant.name%>
-                        </div>
                         <%})%>
                     </div>
                     <div class="btns">

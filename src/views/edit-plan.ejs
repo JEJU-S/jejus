@@ -43,6 +43,9 @@
             </div>
         </div>
     <header>
+        <div class="logo-box">
+            <a href="/users/<%=user._id%>"><img src="/public/images/logo.png" alt="logo" class="logo"></a>
+        </div>
         <div class="plan-title">
             <%=totPlan.title%>
         </div>
@@ -51,7 +54,7 @@
             <div><img src="<%=participant.image_url%>"></div>
         <%})%>
         </div>
-
+    <!--
         <div class="plan-date">
             출발일 : <span>
                 <%=totPlan.day_plan[0].date.getFullYear()%>년 
@@ -64,6 +67,7 @@
                 <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getDate()%>일 
             </span>
         </div>
+    -->
         <button id="save">저장</button>
     </header>
 
