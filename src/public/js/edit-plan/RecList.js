@@ -6,10 +6,10 @@ const recMarkerList = [];
 /******************************** */
 
 const regionBackground = document.getElementById('regionplace');
-const selectBtn = document.getElementById('regionbtn');
+const regionSelectBtn = document.getElementById('regionbtn');
 const jejuRegion = document.getElementsByClassName("jeju-region");
 
-selectBtn.addEventListener('click', regionSelect);
+regionSelectBtn.addEventListener('click', regionSelect);
 function regionSelect() {
     regionBackground.style.display='block';
     regionBackground.style.opacity='1';
@@ -36,9 +36,17 @@ categoryBtns.forEach((btn) => {
 let selectedRegion = "전체";
 // 지역 고르기
 function getRegionSelect(event){
+    document.querySelector(".md-2").style.display = "none";
     selectedRegion = event.target.alt;
-    //서버 전송💨
-    document.querySelector("#regionbtn").textContent = selectedRegion;
+
+    const imgIcon = regionSelectBtn.querySelector("img");
+    imgIcon.style.display = "flex";
+    imgIcon.src = `/public/images/${event.target.dataset.icon}.png`;
+    imgIcon.alt = event.target.alt;
+
+    document.querySelector("#region").textContent = selectedRegion;
+
+
     
     document.querySelectorAll(".category").forEach((btn) => {
         btn.style.backgroundColor = "#20253b";
@@ -48,7 +56,7 @@ function getRegionSelect(event){
     document.querySelector(".category[data-category='전체']").style.backgroundColor = "#ffffff";
     document.querySelector(".category[data-category='전체']").style.color = "#20253b";
 
-
+    //서버 전송💨
     socket.emit("rec_keyword", selectedRegion, "전체");
     
 }

@@ -32,13 +32,13 @@
             <div class="jejumap">
                 <img src="/public/images/jejumap.png">
                 <div>
-                    <img src="/public/images/jeju-south.png" class="jeju-region south" alt="남부">
-                    <img src="/public/images/jeju-west.png" class="jeju-region west" alt="서부">
-                    <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover" alt="전체">
+                    <img src="/public/images/jeju-south.png" class="jeju-region south" alt="남부" data-icon="icon-south">
+                    <img src="/public/images/jeju-west.png" class="jeju-region west" alt="서부" data-icon="icon-west">
+                    <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover" alt="전체" data-icon="icon-jeju-whole">
                     <img src="/public/images/jeju-whole.png" class="jeju-region jj-whole">
-                    <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd" alt="성산우도">
-                    <img src="/public/images/north-east.png" class="jeju-region ne" alt="북동부">
-                    <img src="/public/images/jeju.png" class="jeju-region jj" alt="제주">
+                    <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd" alt="성산우도" data-icon="icon-sswd">
+                    <img src="/public/images/north-east.png" class="jeju-region ne" alt="북동부" data-icon="icon-ne">
+                    <img src="/public/images/jeju.png" class="jeju-region jj" alt="제주" data-icon="icon-jeju">
                 </div>
             </div>
         </div>
@@ -69,8 +69,11 @@
 
     <main class="main-content">
         <div class="recommandation">
-            <button type="button" id="regionbtn"><span class="material-icons md-2">map</span>
-                권역 선택</button>
+            <button type="button" id="regionbtn">
+                <span class="material-icons md-2">map</span>
+                <img style="display : none">
+                <span id="region">권역 선택</span>
+            </button>
             <div class="recommandation__categories">
                 <div class="category" data-category ="전체">
                     <span class="material-icons">view_module</span>
