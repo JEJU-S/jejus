@@ -234,7 +234,7 @@ io.on("connection", (socket) => {
         console.log(PL)
 
         console.log(mongoose.Types.ObjectId.isValid(columnId)) // obj id 유효한지 확인
-        TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: PL } }).exec();
+        TotPlan.findByIdAndUpdate({ _id:planId } , {$set : {day_plan: PL } }).exec();
         // TotPlan.findByIdAndUpdate(planId, {$push : {day_plan: { test1 } } }).exec();
 
         socket.to(planId).emit("add_to_placelist" ,dplace.place._id, newPlace, columnId, droppedIndex);
@@ -253,17 +253,15 @@ io.on("connection", (socket) => {
         const placeList = await finduserPlan(planId);
         let dPL = placeList.day_plan;
         console.log(dPL)
-        let del_place=await checkid(dPL,columnId);
+        let del_place = await checkid(dPL,columnId);
         let date_check = del_place.date;
         let id_check = del_place._id;
-        console.log("제발",del_place)
-        console.log("제발",date_check)
         let del_index = await checkidx(dPL,columnId);
         
         let del_place_list = del_place.place;
         let del_item = await checkidx(del_place_list,itemId);
 
-        console.log("확인부분",del_item);
+        console.log("확인",del_item);
 
         console.log(del_place_list);
         del_place_list.splice(del_item,1);
@@ -275,7 +273,6 @@ io.on("connection", (socket) => {
         dPL.splice(del_index, 1,update_array );
         // dPL.splice(del_index, 0, update_array);
         console.log(dPL)
-
 
         TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: dPL } }).exec();
 

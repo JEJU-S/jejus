@@ -18,8 +18,13 @@ async function finduserPlan(id){
 }
 
 async function finduser(gmail){
-    const usertotplan = await User.findOne({ gmail : gmail}).lean();
-    return usertotplan;
+    const userinfo = await User.findOne({gmail : gmail}).lean();
+    return userinfo;
+}
+
+async function findCallList(delete_CallList){
+    const CallList_par = await User.find({}).where('call_list').in(delete_CallList).lean();
+    return CallList_par;
 }
 
 function checkath(parti,check){
@@ -34,7 +39,6 @@ function checkath(parti,check){
     })
     return x;
 }
-
 function checkcall(call,check){
     let x = false;
     call.forEach(function(i){
@@ -61,6 +65,10 @@ function checktitle(tot,check){
     return x;
 }
 
+async function deletePlan(adminUser){
+    const user_DelPlan = await TotPlan.deleteOne({admin : adminUser}).lean();
+    return user_DelPlan;
+}
 
 //사용자 마다 완성된 plan 보여주기 위한 것
 export const seePlan = async (req, res) => 
@@ -115,10 +123,10 @@ export const sendInvitation = async (req, res) => {
         console.log("이미 초대됨")
     }
     else{
-        User.findOne({gmail: gmail}).exec(function(err, usr){
-            if(usr){
-                usr.call_list.push(insert_host);
-                usr.save();
+        User.findOne({gmail: gmail}).exec(function(err, res){
+            if(res){
+                res.call_list.push(insert_host);
+                res.save();
             }
         });
     }
@@ -203,35 +211,29 @@ export const postCreatePlan = async (req, res) => {
     let totplanidcall = await findtitle(title);
     let totplanid = totplanidcall._id;
     console.log(totplanid)
-    
-    if(totplanidcall.admin._id==pC_id)
-    {
-        for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
-            console.log("temp date : ", tempDate);
-            dayArray.push(new Date(tempDate));
-            TotPlan.findByIdAndUpdate(totplanid, {$push : { 
-                day_plan: [{date : tempDate }] } } ).exec();
-        }
-        const totplan = await findtitle(title);
+    for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
+        console.log("temp date : ", tempDate);
+        dayArray.push(new Date(tempDate));
+        TotPlan.findByIdAndUpdate(totplanid, {$push : { 
+            day_plan: [{date : tempDate }] } } ).exec();
+
+    }
+   
+    const totplan = await findtitle(title);
 
 
-        User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } ).exec()
-        req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
-    }
-    else{
-        console.log("동일한 제목의 여행이 존재합니다.")
-    }
-    
+    User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } ).exec()
+    req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
     
     res.redirect(`/users/${pC_id}`); 
 }
 
 export const accept = async (req, res) => {
 
-    const {id, tid} = req.params;
+    
+    const {id} = req.params;
 
     console.log(id)
-    console.log(tid)
 
     const accept_id = req.session.user._id;
 
@@ -246,26 +248,29 @@ export const accept = async (req, res) => {
     const insert_plan = {_id : totplan_id, title: totplan_title};
     const hostname = usertotplan.admin.name;
 
-    const insert_host = { host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid };
+    const insert_host = { host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
+    console.log("insert host --- ")
     const par_info = {_id: par_userinfo._id, name: par_userinfo.name, image_url: par_userinfo.image_url};
+    console.log("par in fo  --- ")
     
-    TotPlan.findOne({_id:id}).exec(function(err, usr){
-        if(usr){
-            usr.participants.push(par_info);
-            usr.save();
+    TotPlan.findOne({_id:id}).exec(function(err, res){
+        if(res){
+            res.participants.push(par_info);
+            res.save();
         }
     });
+    console.log("////_@_ 3-- ")
 
-   
-
-    User.findOne({_id: accept_id}).exec(function(err, usr){
-        if(usr){
-            usr.totPlan_list.push(insert_plan);
-            usr.call_list.pull(insert_host);
-            usr.save();
+    User.findOne({_id: accept_id}).exec(function(err, res){
+        if(res){
+            res.totPlan_list.push(insert_plan);
+            res.call_list.pull(insert_host);
+            res.save();
         }
     });
+    console.log("////_@_ --- ")
+    
     // // 초대 수락시
     // tot_plan participant추가
     
@@ -275,10 +280,9 @@ export const accept = async (req, res) => {
 
 export const refuse = async (req, res) => {
     //***DB
-    const {id,tid} = req.params;
+    const {id} = req.params;
 
     console.log(id)
-    console.log(tid)
 
     const refuse_id = req.session.user._id
     const par_userinfo = await finduser(req.session.user.gmail);
@@ -290,23 +294,89 @@ export const refuse = async (req, res) => {
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
-    const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id, _id: tid};
+    const insert_host = {host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
     
-    
-    User.findOne({_id: refuse_id}).exec(function(err, usr){
-        if(usr){
-            usr.call_list.pull(insert_host);
-            usr.save();        
+    User.findOne({_id: refuse_id}).exec(function(err, res){
+        if(res){
+            res.call_list.pull(insert_host);
+            res.save();
         }
     });
-     
+
     res.redirect(`/users/${req.session.user._id}`);
 }
 
+// admin만 삭제 가능하게 만들어야 함 아직 작업 x
 export const del = async(req, res) => {
     //삭제할 totPlan id
     const {id} = req.params;
+
+    const usertotplan = await finduserPlan(id);
+    let hostid = usertotplan.admin._id;
+    let hostname = usertotplan.admin.name;
+    let totplan_title = usertotplan.title;
+    let gmail = req.session.user.gmail;
+    
+    let userinfo = await finduser(gmail);
+    let usertotList = userinfo.totPlan_list;
+  
+
+    // participants call_list 찾기
+    let adminUser = {_id: hostid, name: hostname}
+
+    //삭제할 planList
+    const delete_planList = usertotList.find(element => element._id == id);
+
+    //삭제할 CallList
+    let delete_CallList = {host: hostname, plan_title: totplan_title, plan_id: id};
+
+    //전체 유저 중 삭제할 CallList를 가진 사람 전체 조회
+    const par_CallList = await findCallList(delete_CallList);
+ 
+
+    console.log('----------test---------------')
+
+    console.log('adminUser')
+    console.log(adminUser)
+
+    console.log('delete_planList');
+    console.log(delete_planList);
+
+    console.log('delete_CallList');
+    console.log(delete_CallList);
+
+
+    // 참가자의 planlist와, Call List 삭제
+    if(par_CallList){
+        for(let i=0; i < par_CallList.length; i++)
+        {
+            let parArr_IDList = par_CallList[i]._id;
+            console.log(parArr_IDList);
+            User.findOne({_id: parArr_IDList}).exec(function(err, res){
+                if(res){
+                    res.call_list.pull(delete_CallList);
+                    res.save();
+                }
+            });
+        }
+
+    }
+    
+    // 현재 접속한 유저의 CallList와 PlanList 삭제
+    User.findOne({_id: req.session.user._id}).exec(function(err, res){
+        if(res){
+            res.totPlan_list.pull(delete_planList);
+            res.save();
+        }
+    });
+
+    // Total Plan 삭제
+    console.log('delete Test');
+    let delete_plan = await deletePlan(adminUser)
+    console.log(delete_plan);
+    console.log('delete Test');
+
 
     res.redirect(`/users/${req.session.user._id}`);
 }
