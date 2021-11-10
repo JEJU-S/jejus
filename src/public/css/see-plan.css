@@ -83,6 +83,7 @@ input[type="submit"]:hover {
 }
 
 main {
+  position: relative;
   background-color: rgb(255, 255, 255);
   grid-area: main;
   margin: 10px 15px;
@@ -127,7 +128,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
     "map par"
     "map btns";
   grid-template-columns: 60% 30%;
-  grid-template-rows: 35% 50% 15%;
+  grid-template-rows: 10% 75% 15%;
   width: 100%;
   height: 100%;
   align-items: center;
@@ -174,11 +175,15 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 .date {
   grid-area: date;
+  padding-bottom: 10px;
+  border-bottom: 2px solid black;
+  font-size: 1.3rem;
 }
 
 .btns {
   grid-area: btns;
 }
+
 .edit-btn {
   width: 100px;
   height: 40px;
@@ -191,6 +196,10 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 }
 
 .del-btn {
+  position: absolute;
+  top: 4%;
+  left: 92%;
+  transform: translate(-50%, -50%);
   width: 100px;
   height: 40px;
   border-radius: 5px;
@@ -231,8 +240,8 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 .day-map {
   grid-area: map;
-  width: 630px;
-  height: 440px;
+  width: 80%;
+  height: 60vh;
   margin: 10px auto;
   border-radius: 10px;
 }
