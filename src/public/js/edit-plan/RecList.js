@@ -2,6 +2,7 @@
 import {socket} from "./communicate.js";
 import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
 
+const recMarkerList = [];
 /******************************** */
 
 const regionBackground = document.getElementById('regionplace');
@@ -19,13 +20,11 @@ function closeRegionSelect(){
     regionBackground.style.opacity='0';   
 }
 
-
 for (let i = 0; i < jejuRegion.length; i++) {
     let eachjejuRegion = jejuRegion[i];
     eachjejuRegion.addEventListener('click', getRegionSelect);
     eachjejuRegion.addEventListener('click', closeRegionSelect);
 }
-
 
 /***********************/
 
@@ -39,15 +38,47 @@ let selectedRegion = "전체";
 function getRegionSelect(event){
     selectedRegion = event.target.alt;
     //서버 전송💨
-    console.log("결과 : ", selectedRegion, "전체");
+    document.querySelector("#regionbtn").textContent = selectedRegion;
+    
+    document.querySelectorAll(".category").forEach((btn) => {
+        btn.style.backgroundColor = "#20253b";
+        btn.style.color = "#ffffff";
+    })
+
+    document.querySelector(".category[data-category='전체']").style.backgroundColor = "#ffffff";
+    document.querySelector(".category[data-category='전체']").style.color = "#20253b";
+
+
     socket.emit("rec_keyword", selectedRegion, "전체");
+    
 }
 
 // 카테고리 고르기
 function selectCategory(event){
     const category = event.target.closest('div').dataset.category;
     console.log(category);
-    console.log("결과 : ", selectedRegion, category);
+    const selectedCategory = document.querySelector(`.category[data-category=${category}]`);
+    
+    document.querySelector(".recommandation__list").textContent = "";
+    for (const marker of recMarkerList) {
+        marker.setMap(null);
+    }
+    recMarkerList.splice(0, recMarkerList.length);   
+
+    if(selectedCategory.style.backgroundColor === "rgb(255, 255, 255)"){
+        selectedCategory.style.backgroundColor = "#20253b";
+        selectedCategory.style.color = "#ffffff";
+        return;
+    }
+
+    document.querySelectorAll(".category").forEach((btn) => {
+        btn.style.backgroundColor = "#20253b";
+        btn.style.color = "#ffffff";
+    })
+
+    selectedCategory.style.backgroundColor = "#ffffff";
+    selectedCategory.style.color = "#20253b";
+
     socket.emit("rec_keyword", selectedRegion, category);
 }
 
@@ -80,6 +111,8 @@ function matchCategoryMarkerImg(category){
     place.score,
     place.model_rank
 */
+
+
 
 class RecItem {
     constructor(category, place_name, place_url, road_address_name, x, y, image_url, score, model_rank){
@@ -121,7 +154,9 @@ class RecItem {
 
         matchCategoryMarkerImg(category);
         this.elements.marker = createMapMarker(x, y, matchCategoryMarkerImg(category));
-        
+        //markerlist 
+        recMarkerList.push(this.elements.marker);
+
         this.elements.root.addEventListener("click", () => {
             mapPanToBound(x, y);
         });
@@ -180,13 +215,14 @@ class RecList {
 
     deleteItems(){
         this.root.textContent = "";
+
     }
 }
 
 // 지역, 카테고리
 
 socket.on("rec_result", showRecResult);
-function showRecResult(placeList){
 
+function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
 }

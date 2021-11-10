@@ -88,7 +88,6 @@ class DropZone {
                 
                 //****************/
                 if (droppedItemElement === null){
-                    event.dataTransfer.clear();
                     return;
                 }
 
