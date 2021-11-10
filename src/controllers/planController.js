@@ -131,7 +131,6 @@ export const sendInvitation = async (req, res) => {
         });
     }
     
-    // DB 수락 거절 판별
     
     res.redirect(`/plans/${id}`);
 }
@@ -163,7 +162,6 @@ export const editPlan = async (req, res) =>
         res.redirect(`/users/${res.session.user._id}`);
     }
 
-    // 진행중
 }
 
 export const getCreatePlan = (req, res) => {
@@ -172,7 +170,6 @@ export const getCreatePlan = (req, res) => {
 
 export const postCreatePlan = async (req, res) => {
 
-    // database => 새 plan 생성 뒤 user에 추가
     const {title, start, end} = req.body;
 
     const startDate = new Date(start);
@@ -192,16 +189,6 @@ export const postCreatePlan = async (req, res) => {
         title:title , 
         admin : {_id: pC_id, name: pC_user},
         participants : [{_id: pC_id, name: pC_user, image_url : pC_image_url}],
-        // day_plan: [{
-        //     date: dayArray,
-        //     place: [{
-        //         name: '아직1',
-        //         road_adr: '안정함1',
-        //         // img 추가할건지 판단
-        //         x : 33.4724, 
-        //         y : 126.3095,
-        //         map_link: '이것도'
-        // }]}]
     }).save().then(()=>{
         console.log("totplan saved",title);
     }).catch((err) => {
@@ -250,9 +237,7 @@ export const accept = async (req, res) => {
 
     const insert_host = { host: hostname, plan_title: totplan_title , plan_id : totplan_id};
 
-    console.log("insert host --- ")
     const par_info = {_id: par_userinfo._id, name: par_userinfo.name, image_url: par_userinfo.image_url};
-    console.log("par in fo  --- ")
     
     TotPlan.findOne({_id:id}).exec(function(err, res){
         if(res){
@@ -260,7 +245,6 @@ export const accept = async (req, res) => {
             res.save();
         }
     });
-    console.log("////_@_ 3-- ")
 
     User.findOne({_id: accept_id}).exec(function(err, res){
         if(res){
@@ -269,13 +253,8 @@ export const accept = async (req, res) => {
             res.save();
         }
     });
-    console.log("////_@_ --- ")
     
-    // // 초대 수락시
-    // tot_plan participant추가
-    
-
-    res.redirect(`/users/${req.session.user._id}`);
+    res.redirect(`/plans/${id}`);
 }
 
 export const refuse = async (req, res) => {
@@ -285,7 +264,6 @@ export const refuse = async (req, res) => {
     console.log(id)
 
     const refuse_id = req.session.user._id
-    const par_userinfo = await finduser(req.session.user.gmail);
 
     const usertotplan = await finduserPlan(id);
 
@@ -304,7 +282,7 @@ export const refuse = async (req, res) => {
         }
     });
 
-    res.redirect(`/users/${req.session.user._id}`);
+    res.redirect(`/plans/${id}`);
 }
 
 // admin만 삭제 가능하게 만들어야 함 아직 작업 x
@@ -320,8 +298,6 @@ export const del = async(req, res) => {
     
     let userinfo = await finduser(gmail);
     let usertotList = userinfo.totPlan_list;
-  
-
     // participants call_list 찾기
     let adminUser = {_id: hostid, name: hostname}
 
@@ -331,23 +307,8 @@ export const del = async(req, res) => {
     //삭제할 CallList
     let delete_CallList = {host: hostname, plan_title: totplan_title, plan_id: id};
 
-    //전체 유저 중 삭제할 CallList를 가진 사람 전체 조회
     const par_CallList = await findCallList(delete_CallList);
- 
 
-    console.log('----------test---------------')
-
-    console.log('adminUser')
-    console.log(adminUser)
-
-    console.log('delete_planList');
-    console.log(delete_planList);
-
-    console.log('delete_CallList');
-    console.log(delete_CallList);
-
-
-    // 참가자의 planlist와, Call List 삭제
     if(par_CallList){
         for(let i=0; i < par_CallList.length; i++)
         {
@@ -374,7 +335,6 @@ export const del = async(req, res) => {
         });
     }
     
-    // 현재 접속한 유저의 CallList와 PlanList 삭제
     User.findOne({_id: req.session.user._id}).exec(function(err, res){
         if(res){
             res.totPlan_list.pull(delete_planList);
@@ -383,10 +343,8 @@ export const del = async(req, res) => {
     });
 
     // Total Plan 삭제
-    console.log('delete Test');
     let delete_plan = await deletePlan(adminUser)
     console.log(delete_plan);
-    console.log('delete Test');
 
 
     res.redirect(`/users/${req.session.user._id}`);
