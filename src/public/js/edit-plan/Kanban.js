@@ -85,7 +85,13 @@ class DropZone {
                 const itemId = event.dataTransfer.getData("text/plain");
                 droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
                 console.log(droppedItemElement);
-            
+                
+                //****************/
+                if (droppedItemElement === null){
+                    event.dataTransfer.clear();
+                    return;
+                }
+
                 /************************* */
                 const columnElement = dropZone.closest(".kanban__column");
                 const columnId = columnElement.dataset.id;

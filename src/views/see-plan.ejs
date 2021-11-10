@@ -104,27 +104,19 @@
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <div class="plan-info">
                     <div class="date">
+                        <span>
                         <%=totPlan.day_plan[0].date.getFullYear()%>년 
                         <%=totPlan.day_plan[0].date.getMonth() + 1%>월 
                         <%=totPlan.day_plan[0].date.getDate()%>일 
-                            ~
+                        </span>
+                        <span>
                         <%=totPlan.day_plan[day-1].date.getFullYear()%>년
                         <%=totPlan.day_plan[day-1].date.getMonth() + 1%>년
-                        <%=totPlan.day_plan[day-1].date.getDate()%>일 
+                        <%=totPlan.day_plan[day-1].date.getDate()%>일
+                        </span>
                     </div>
                 <!--total-map(전체 경로 마커) 처리 부분-->
                     <div id="total-map" data-dayplan="<%=JSON.stringify(totPlan.day_plan)%>"></div>
-
-                <script>
-                    const totPlan = JSON.parse('<%-JSON.stringify(totPlan)%>');
-                    
-                    const mapOptions = {
-                        center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
-                        zoom : 10
-                    };
-                    const dayMapList = [];
-
-                </script>
 
                     <div class="participants">
                         <%totPlan.participants.forEach(function(participant){%>
@@ -153,23 +145,8 @@
             <div class="day-plan">
                 <h1 class="plan-title"><%=totPlan.title%></h1>
                 <span class="plan-day">day <%=day + 1%></span>
-                <!--네이버 지도, 좌표 표시해줘야함-->
-                <div id="day-map<%=day + 1%>" class="day-map"></div>
-
-
-                <script>
-                    dayMapList.push(new naver.maps.Map("day-map<%=day + 1%>", mapOptions));
-
-                        for(let i = 0; i < totPlan.day_plan["<%=day%>"]['place'].length; i++){
-                            new naver.maps.Marker({
-                                position : new naver.maps.LatLng(
-                                    totPlan.day_plan["<%=day%>"]['place'][i].y,
-                                    totPlan.day_plan["<%=day%>"]['place'][i].x,
-                                ),
-                                map : dayMapList["<%=day%>"]
-                            })
-                        }
-                </script>
+                
+                <div id="day-map<%=day + 1%>" data-dayindex="<%=day%>", class="day-map"></div>
 
                 <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>

@@ -81,6 +81,11 @@ planBtns.forEach(function(button, day) {
 wholePlanClick();
 /***MAP********************************************/
 
+const mapOptions = {
+    center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+    zoom : 10
+};
+
 const totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
 const dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
 console.log(dayPlan);
@@ -91,7 +96,8 @@ for(let i =0; i < dayPlan.length; i++){
         new naver.maps.Marker({
             position : new naver.maps.LatLng(
                 dayPlan[i].place[j].y,
-                dayPlan[i].place[j].x),
+                dayPlan[i].place[j].x
+                ),
             map : totMap
         })
     }   
@@ -99,7 +105,6 @@ for(let i =0; i < dayPlan.length; i++){
 
 /******버튼************/
 const planId = document.querySelector(".whole-plan").dataset.planid;
-console.log(planId);
 document.querySelector(".edit-btn").addEventListener("click", () => {
     window.location.href = `/plans/${planId}/edit`;
 });
@@ -111,6 +116,25 @@ if(document.querySelector(".del-btn") !== null){
 }
 
 /*********************/
+
+document.querySelectorAll(".day-map").forEach((dayMap) => {    
+    const day = Number(dayMap.dataset.dayindex);
+    const map = new naver.maps.Map(document.getElementById(`day-map${day + 1}`), mapOptions);
+    console.log(map);
+    console.log(`day-map${day + 1}`);
+
+    for(let i =0; i < dayPlan[day].place.length; i++){
+         new naver.maps.Marker({
+            position : new naver.maps.LatLng(
+                33.50088510909299, 
+                126.52906251498592
+                //dayPlan[day].place[i].y,
+            //dayPlan[day].place[i].x
+            ),
+            map : map
+         })
+    }
+})
 
 
 

@@ -220,11 +220,15 @@ io.on("connection", (socket) => {
         console.log(newPlace);
         const newId = "507f191e810c19729de860ab"; 
 
+
+
         socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
-        socket.emit("add_to_placelist" ,  newId, newPlace, columnId, droppedIndex);
+        socket.emit("add_to_placelist", newId, newPlace, columnId, droppedIndex);
     });
     
     socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
+
+
 
         socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
         socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
@@ -235,6 +239,7 @@ io.on("connection", (socket) => {
         //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
+        //socket.emit("delete_from_list", itemId);
     })
 });
 
