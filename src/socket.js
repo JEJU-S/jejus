@@ -12,6 +12,7 @@ import {RecPlace} from './models/RecPlace'
 import {TotPlan} from './models/TotPlan'
 
 
+
 //권역분류만 했을 때
 async function sections(region){
     const sections = await RecPlace.find({ section : region}).lean();
@@ -35,7 +36,7 @@ async function finduserPlan(id){
     return usertotplan;
 }
 
-function checkid(tot,check){
+async function checkid(tot,check){
     let x = false;
     tot.forEach(function(i,j){
         if(i['_id']==check){
@@ -48,7 +49,7 @@ function checkid(tot,check){
     })
     return x;
 }
-function checkidx(tot,check){
+async function checkidx(tot,check){
     let x = false;
     tot.forEach(function(i,j){
         if(i['_id']==check){
@@ -61,73 +62,6 @@ function checkidx(tot,check){
     })
     return x;
 }
-
-const fakePlaceList = [
-    {
-    _id : "507f191e810c19729de860e1",
-    date : new Date("2021-05-04"),
-    place : [
-        {   
-            _id : "5bf142459b72e12b2b1b2c11",
-            name : "place 1",
-            road_adr : "도로명 주소1",
-            x : "126.52001020252465",
-            y : "33.48137202695348",
-            map_link : ""
-        },
-        {   
-            _id : "5bf142459b72e12b2b1b2c12",
-            name : "place 2",
-            road_adr : "도로명 주소2",
-            x : "126.53001020252465",
-            y : "33.48437202695348",
-            map_link : ""
-        }
-    ]},
-    {
-        _id : "507f191e810c19729de860e2",
-        date : new Date("2021-05-05"),
-        place : [
-            {   
-                _id : "5bf142459b72e12b2b1b2c13",
-                name : "place 3",
-                road_adr : "도로명 주소3",
-                x : "126.54001020252465",
-                y : "33.48137205695348",
-                map_link : ""
-            },
-            {   
-                _id : "5bf142459b72e12b2b1b2c14",
-                name : "place 4",
-                road_adr : "도로명 주소4",
-                x : "126.55001020252465",
-                y : "33.48137202695348",
-                map_link : ""
-            }
-        ]},
-        {
-            _id : "507f191e810c19729de860e3",
-            date : new Date("2021-05-06"),
-            place : [
-                {   
-                    _id : "5bf142459b72e12b2b1b2c15",
-                    name : "place 5",
-                    road_adr : "도로명 주소5",
-                    x : "126.56001020252465",
-                    y : "33.48337202695348",
-                    map_link : ""
-                },
-                {   
-                    _id : "5bf142459b72e12b2b1b2c16",
-                    name : "place 6",
-                    road_adr : "도로명 주소6",
-                    x : "126.57001020252465",
-                    y : "33.42337202695348",
-                    map_link : ""
-                }
-        ]}
-]
-
 
 const server = http.createServer(app);
 const io = SocketIO(server);
@@ -253,6 +187,8 @@ io.on("connection", (socket) => {
             const rec3 = Rec_cate;
             socket.emit("rec_result", rec3);
         }
+        // 전체, 전체 일때 상위 50 개 항목만 출력되도록 추가
+
        
     });
 
@@ -269,63 +205,80 @@ io.on("connection", (socket) => {
     */
 
     /*****칸반리스트***/
-    //columId = date Id
-    //dropIndex = insert index location
 
     socket.on("add_to_placelist", async (newPlace, columnId, droppedIndex, planId) => {
         //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
-        console.log(";;;;;;;;;;;;;")
+        console.log("ADD TO PLACELIST")
         console.log(newPlace);
-        // const newId = "507f191e810c19729de860ab"; 
-        // dayplan 의 index 값의 id 에 접근해야함
-        console.log("오브젝트아이디입니다 컬",columnId);
-        console.log("오브젝트아이디입니다 플",planId);
+        
+        console.log("OBJ ID 입니다 Day",columnId);
+        console.log("OBJ ID 입니다 Plan",planId);
         const placeList = await finduserPlan(planId);
         let PL = placeList.day_plan;
-        let test1=checkid(PL,columnId);
-        let test2=checkidx(PL,columnId);
-        console.log(test1)
-        test1.place.push(newPlace);
-        PL.push(test1);
-        PL.pop();
-        console.log(test1)
-        console.log(PL)
-        // let xx =TotPlan.findOne({day_plan:[{_id:columnId}]});
-        // console.log(xx);
+        let dplace = await checkid(PL,columnId);
+        console.log(dplace)
 
-        // TotPlan.findOneAndUpdate({ _id:planId , day_plan:[{_id:columnId}] }, {$push : {day_plan:[{ place : newPlace }] } } ).exec();
-        
+        Array.prototype.insert = function ( index, item ) {
+            this.splice( index, 0, item );
+        };
+        if(dplace.place.length){
+            dplace.place.insert(droppedIndex,newPlace);
+        }
+        else{
+            dplace.place.push(newPlace);
+        }
             
-        // find and update or push? 
-        // await TotPlan({
-        //     _id:planId,
-        //     day_plan: [{
-        //         _id:columnId,
-        //         place: [newPlace]}]
-        // }).save().then(()=>{
-        //     console.log("totplan saved",title);
-        // }).catch((err) => {
-        //     console.error(err)
-        // });
-        // var day_objectId = mongoose.Types.ObjectId(columnId);
-        // var plan_objectId = mongoose.Types.ObjectId(planId);
-        // let xd = [{_id:day_objectId , place:[newPlace]}];
+        PL.push(dplace);
+        PL.pop();
+        console.log(dplace)
+        console.log(PL)
+
         console.log(mongoose.Types.ObjectId.isValid(columnId)) // obj id 유효한지 확인
         TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: PL } }).exec();
         // TotPlan.findByIdAndUpdate(planId, {$push : {day_plan: { test1 } } }).exec();
-        
-        socket.to(planId).emit("add_to_placelist" ,test1.place._id, newPlace, columnId, droppedIndex);
-        socket.emit("add_to_placelist" , test1.place._id, newPlace, columnId, droppedIndex);
+
+        socket.to(planId).emit("add_to_placelist" ,dplace.place._id, newPlace, columnId, droppedIndex);
+        socket.emit("add_to_placelist" , dplace.place._id, newPlace, columnId, droppedIndex);
     });
     
     socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
-
+        // 옮기는것도 결국 delete and insert ,, 해당 인덱스만 찾아서
         socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
         socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
     })
     
-    socket.on("delete_from_list", (itemId, planId) => {
+    socket.on("delete_from_list", async (itemId, columnId, planId) => {
+        console.log("DELETE FROM LIST")
         console.log(itemId);
+        const placeList = await finduserPlan(planId);
+        let dPL = placeList.day_plan;
+        console.log(dPL)
+        let del_place=await checkid(dPL,columnId);
+        let date_check = del_place.date;
+        let id_check = del_place._id;
+        console.log("제발",del_place)
+        console.log("제발",date_check)
+        let del_index = await checkidx(dPL,columnId);
+        
+        let del_place_list = del_place.place;
+        let del_item = await checkidx(del_place_list,itemId);
+
+        console.log("확인부분",del_item);
+
+        console.log(del_place_list);
+        del_place_list.splice(del_item,1);
+        console.log("삭제확인",del_place_list);
+        
+        let update_array = { date: date_check , place : del_place_list , _id : id_check }
+
+
+        dPL.splice(del_index, 1,update_array );
+        // dPL.splice(del_index, 0, update_array);
+        console.log(dPL)
+
+
+        TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: dPL } }).exec();
+
         //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
