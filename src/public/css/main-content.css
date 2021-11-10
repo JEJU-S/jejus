@@ -95,8 +95,9 @@
 }
 
 .category:hover {
-  background-color: white;
-  color: #20253b;
+ 
+  background-color: white !important;
+  color: #20253b !important;;
   transition: 0.2s;
 }
 
