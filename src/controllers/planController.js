@@ -362,6 +362,17 @@ export const del = async(req, res) => {
         }
 
     }
+
+    for(let k=0; k < usertotplan.participants.length; k++){
+        let parID = usertotplan.participants[k]._id;
+        console.log(parID);
+        User.findOne({_id: parID}).exec(function(err, res){
+            if(res){
+                res.totPlan_list.pull(delete_planList);
+                res.save();
+            }
+        });
+    }
     
     // 현재 접속한 유저의 CallList와 PlanList 삭제
     User.findOne({_id: req.session.user._id}).exec(function(err, res){

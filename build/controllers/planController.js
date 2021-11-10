@@ -627,7 +627,7 @@ exports.refuse = refuse;
 
 var del = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req, res) {
-    var id, usertotplan, hostid, hostname, totplan_title, gmail, userinfo, usertotList, adminUser, delete_planList, delete_CallList, par_CallList, i, parArr_IDList, delete_plan;
+    var id, usertotplan, hostid, hostname, totplan_title, gmail, userinfo, usertotList, adminUser, delete_planList, delete_CallList, par_CallList, i, parArr_IDList, k, parID, delete_plan;
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
         switch (_context7.prev = _context7.next) {
@@ -692,6 +692,20 @@ var del = /*#__PURE__*/function () {
                   }
                 });
               }
+            }
+
+            for (k = 0; k < usertotplan.participants.length; k++) {
+              parID = usertotplan.participants[k]._id;
+              console.log(parID);
+
+              _User.User.findOne({
+                _id: parID
+              }).exec(function (err, res) {
+                if (res) {
+                  res.totPlan_list.pull(delete_planList);
+                  res.save();
+                }
+              });
             } // 현재 접속한 유저의 CallList와 PlanList 삭제
 
 
@@ -706,16 +720,16 @@ var del = /*#__PURE__*/function () {
 
 
             console.log('delete Test');
-            _context7.next = 30;
+            _context7.next = 31;
             return deletePlan(adminUser);
 
-          case 30:
+          case 31:
             delete_plan = _context7.sent;
             console.log(delete_plan);
             console.log('delete Test');
             res.redirect("/users/".concat(req.session.user._id));
 
-          case 34:
+          case 35:
           case "end":
             return _context7.stop();
         }
