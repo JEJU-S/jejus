@@ -320,6 +320,7 @@ export const del = async(req, res) => {
     
     let userinfo = await finduser(gmail);
     let usertotList = userinfo.totPlan_list;
+
   
 
     // participants call_list 찾기
@@ -359,6 +360,18 @@ export const del = async(req, res) => {
         User.findOne({_id: parArr_IDList}).exec(function(err, res){
             if(res){
                 res.call_list.pull(delete_CallList);
+                res.totPlan_list.pull(delete_planList);
+                res.save();
+            }
+        });
+    }
+
+
+    for(let k=0; k < usertotplan.participants.length; k++){
+        let parID = usertotplan.participants[i]._id;
+        console.log(parID);
+        User.findOne({_id: parID}).exec(function(err, res){
+            if(res){
                 res.totPlan_list.pull(delete_planList);
                 res.save();
             }
