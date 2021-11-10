@@ -37,9 +37,23 @@ async function finduserPlan(id){
 
 function checkid(tot,check){
     let x = false;
-    tot.forEach(function(i){
+    tot.forEach(function(i,j){
         if(i['_id']==check){
             x=i;
+            console.log(j,"번째 인덱스")
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
+}
+function checkidx(tot,check){
+    let x = false;
+    tot.forEach(function(i,j){
+        if(i['_id']==check){
+            x=j;
+            console.log(j,"번째 인덱스")
         }
         else{
             return false;
@@ -262,14 +276,20 @@ io.on("connection", (socket) => {
         //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
         console.log(";;;;;;;;;;;;;")
         console.log(newPlace);
-        const newId = "507f191e810c19729de860ab"; 
+        // const newId = "507f191e810c19729de860ab"; 
+        // dayplan 의 index 값의 id 에 접근해야함
         console.log("오브젝트아이디입니다 컬",columnId);
         console.log("오브젝트아이디입니다 플",planId);
-        // const placeList = await userplan(planId);
-        // let PL = placeList.day_plan;
-        // let test1=checkid(PL,columnId);
-        // console.log(test1)
-
+        const placeList = await finduserPlan(planId);
+        let PL = placeList.day_plan;
+        let test1=checkid(PL,columnId);
+        let test2=checkidx(PL,columnId);
+        console.log(test1)
+        test1.place.push(newPlace);
+        PL.push(test1);
+        PL.pop();
+        console.log(test1)
+        console.log(PL)
         // let xx =TotPlan.findOne({day_plan:[{_id:columnId}]});
         // console.log(xx);
 
@@ -287,21 +307,15 @@ io.on("connection", (socket) => {
         // }).catch((err) => {
         //     console.error(err)
         // });
-        var day_objectId = mongoose.Types.ObjectId(columnId);
-        var plan_objectId = mongoose.Types.ObjectId(planId);
-        let xd = [{_id:day_objectId , place:[newPlace]}];
+        // var day_objectId = mongoose.Types.ObjectId(columnId);
+        // var plan_objectId = mongoose.Types.ObjectId(planId);
+        // let xd = [{_id:day_objectId , place:[newPlace]}];
+        console.log(mongoose.Types.ObjectId.isValid(columnId)) // obj id 유효한지 확인
+        TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: PL } }).exec();
+        // TotPlan.findByIdAndUpdate(planId, {$push : {day_plan: { test1 } } }).exec();
         
-        TotPlan.findOne({_id: plan_objectId }).exec(function(err, res){
-            console.log(";;;;")
-            console.log(res)
-            console.log(res.day_plan)
-            console.log(res.day_plan.place)
-            res.day_plan.push(xd);
-            res.save();            
-        });
-
-        socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
-        socket.emit("add_to_placelist" ,  newId, newPlace, columnId, droppedIndex);
+        socket.to(planId).emit("add_to_placelist" ,test1.place._id, newPlace, columnId, droppedIndex);
+        socket.emit("add_to_placelist" , test1.place._id, newPlace, columnId, droppedIndex);
     });
     
     socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
