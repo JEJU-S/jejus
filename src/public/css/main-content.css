@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: column;
   background-color: white;
-  width: 20%;
+  width: 21%;
   height: 95%;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
@@ -67,7 +67,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.2rem;
+  gap: 1.2rem;
   text-align: center;
   border: none;
   height: 8vh;
@@ -162,7 +162,7 @@
 }
 
 .reco-title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: bold;
 }
 
@@ -201,7 +201,7 @@
   display: flex;
   flex-direction: column;
   background-color: white;
-  width: 20%;
+  width: 19%;
   height: 95%;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
@@ -238,7 +238,7 @@
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  max-height: 77vh;
+  max-height: 76vh;
   margin: 10px 0;
   padding: 10px 0px;
 }
