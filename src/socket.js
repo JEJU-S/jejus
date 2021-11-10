@@ -169,14 +169,14 @@ io.on("connection", (socket) => {
     });  
 
     // plan id 로 만든 room에 join    
-    socket.on("join_room", (planId, userName, init) => {
+    socket.on("join_room", (planId, userName, userId, init) => {
         socket.join(planId);
         socket["userName"] = userName;
+        socket["userId"] =userId;
+        
         console.log(socket.rooms);
-
         console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
-
         const placeList = fakePlaceList;
         socket.to(planId).emit("server_msg", userName, true);
         init(placeList);
@@ -220,8 +220,6 @@ io.on("connection", (socket) => {
         console.log(newPlace);
         const newId = "507f191e810c19729de860ab"; 
 
-
-
         socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
         socket.emit("add_to_placelist", newId, newPlace, columnId, droppedIndex);
     });
@@ -234,7 +232,7 @@ io.on("connection", (socket) => {
         socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
     })
     
-    socket.on("delete_from_list", (itemId, planId) => {
+    socket.on("delete_from_list", (itemId, columnId, planId) => {
         console.log(itemId);
         //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제

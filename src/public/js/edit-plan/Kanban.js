@@ -160,8 +160,9 @@ export class Item {
             const check = confirm("삭제하시겠습니까?");
             if (check){
                 
+                const parentColumnId = this.elements.root.parentNode.parentNode.dataset.id;
                //소켓서버에 보냄 💨
-               socket.emit("delete_from_list", this.elements.root.dataset.id, planId);
+               socket.emit("delete_from_list", this.elements.root.dataset.id, parentColumnId, planId);
 
                // map 삭제 find index 왜 안되는지 찾아보기💦
                 let mapIndex;

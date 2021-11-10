@@ -1,6 +1,6 @@
 
 import {socket} from "./communicate.js";
-import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
+import {createMapMarker, recMarkerClick, recListClick, removeMapMarker, mapPanToBound, showOverall} from "/public/js/edit-plan/Map.js";
 
 const recMarkerList = [];
 /******************************** */
@@ -107,21 +107,6 @@ function matchCategoryMarkerImg(category){
     return image;
 }
 
-//******************** */
-    /*
-    place.category, 
-    place.name,
-    place.map_link,
-    place.road_adr,
-    place.x,
-    place.y,
-    place.image_url,
-    place.score,
-    place.model_rank
-*/
-
-
-
 class RecItem {
     constructor(category, place_name, place_url, road_address_name, x, y, image_url, score, model_rank){
         this.elements = {};
@@ -165,9 +150,24 @@ class RecItem {
         //markerlist 
         recMarkerList.push(this.elements.marker);
 
+        
         this.elements.root.addEventListener("click", () => {
-            mapPanToBound(x, y);
-        });
+            this.elements.marker.setAnimation(1);
+            recListClick(x, y);
+            
+        });     
+        this.elements.root.addEventListener("mouseleave", () => {
+            if(this.elements.marker.getAnimation() !== null)
+                {
+                    this.elements.marker.setAnimation(null);
+                }
+        }); 
+        
+        naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
+            recMarkerClick(x, y);
+        })
+        
+
     }
 
     static createRoot(){
@@ -233,4 +233,6 @@ socket.on("rec_result", showRecResult);
 
 function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
+    showOverall();
+
 }

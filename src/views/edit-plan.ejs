@@ -24,6 +24,7 @@
         <div id="plan-id" hidden><%=totPlan._id%></div>
         <div id="user-name" hidden><%=user.name%></div>
         <div id="user-image" hidden><%=user.image_url%></div>
+        <div id="user-id" hidden><%=user._id%></div>
 
         <title> Edit <%=totPlan.title%> | Sample </title>
     </head>
@@ -48,7 +49,7 @@
         </div>
         <div class="participant"> <!--notattend-->
         <%totPlan.participants.forEach(function(participant){%>
-            <div><img src="<%=participant.image_url%>"></div>
+            <div><img src="<%=participant.image_url%>" alt="user-image" data-id="<%=participant._id%>" class="notattend"></div>
         <%})%>
         </div>
 

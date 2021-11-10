@@ -10,15 +10,14 @@ export const socket = io();
 export const planId = document.querySelector("#plan-id").innerHTML;
 const userName = document.querySelector("#user-name").innerHTML;
 const image_url = document.querySelector("#user-image").innerHTML;
+const userId = document.querySelector("#user-id").innerHTML;
 /**************************************/
 
 let kanbanList;
 
 //들어올 때 서버로 보내기💨
-socket.emit("join_room", planId, userName, init);
+socket.emit("join_room", planId, userName, userId, init);
 function init(placeList){
-  console.log(placeList);
-
   // 칸반리스트 만들기
   kanbanList = new Kanban(document.querySelector(".kanban"), placeList);
 }
