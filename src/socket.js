@@ -49,6 +49,19 @@ async function checkid(tot,check){
     })
     return x;
 }
+async function checkitem(tot,check){
+    let x;
+    await tot.forEach(function(i,j){
+        if(i['_id']==check){
+            x=i;
+            console.log(j,"번째 인덱스")
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
+}
 async function checkidx(tot,check){
     let x = false;
     tot.forEach(function(i,j){
@@ -257,7 +270,7 @@ io.on("connection", (socket) => {
         let check_PL = check_placeList.day_plan;
         let check_place = await checkid(check_PL,columnId);
         let newitemId = await checkobj(check_place.place , newPlace);
-        console.log("추가된 아이템 확인1",dplace.place)
+        console.log("추가된 아이템 확인1",check_place.place)
         console.log("추가된 아이템 확인2",newitemId);
 
         socket.to(planId).emit("add_to_placelist" ,newitemId, newPlace, columnId, droppedIndex);
@@ -269,17 +282,24 @@ io.on("connection", (socket) => {
 
         //고른 아이템 삭제 
         console.log("MOVE IN PLACELIST")
+        console.log("item:",itemId)
+        console.log("origin",originColumnId)
+        console.log("dropped",columnId,droppedIndex)
+
         const placeList = await finduserPlan(planId);
         let mPL = placeList.day_plan;
         console.log(mPL)
+
         let del_place = await checkid(mPL,originColumnId);
         let date_check = del_place.date;
         let id_check = del_place._id;
         let del_index = await checkidx(mPL,originColumnId);
         let del_place_list = await del_place.place;
-        let del_item = await checkidx(del_place_list,itemId);
 
-        console.log("삭제할 아이템 확인",del_item);
+        let del_item = await checkidx(del_place_list,itemId);
+        let insert_item = await checkitem(del_place_list,itemId); 
+
+        console.log("삭제할 아이템 확인",del_item , insert_item);
 
         console.log(del_place_list);
         del_place_list.splice(del_item,1);
@@ -287,29 +307,31 @@ io.on("connection", (socket) => {
         
         let update_array = { date: date_check , place : del_place_list , _id : id_check }
 
-        mPL.splice(del_index, 1,update_array );
+        await mPL.splice(del_index, 1,update_array );
 
         console.log("옮기기 전 아이템 삭제",mPL);
         
-        TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
+        await TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
 
-        let insert_place = await checkid(mPL,columnId)    
+        let insert_place = await checkid(mPL,columnId) 
+          
         //고른 아이템 추가
         Array.prototype.insert = function ( index, item ) {
             this.splice( index, 0, item );
         };
 
         if(insert_place.place.length){
-            insert_place.insert(droppedIndex,del_item);
+            await insert_place.place.insert(droppedIndex,insert_item);
         }
         else{
-            insert_place.push(del_item);
+            await insert_place.place.push(insert_item);
         }
 
         mPL.push(insert_place);
         mPL.pop();
 
-        TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
+        await TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
+
 
         socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
         socket.emit("move_in_placelist" , itemId, columnId, droppedIndex)
