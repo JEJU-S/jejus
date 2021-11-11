@@ -11,12 +11,14 @@ mongoose.Promise = global.Promise;
 import {RecPlace} from './models/RecPlace'
 import {TotPlan} from './models/TotPlan'
 
-
-
+async function Arank(){
+    const rec = await RecPlace.find().where('model_rank').equals('A').lean()
+    return rec;
+}
 //권역분류만 했을 때
 async function sections(region){
     const sections = await RecPlace.find({ section : region}).lean();
-    return sections;
+    return sections; 
 }
 
 //카테고리분류만 했을 때
@@ -201,36 +203,29 @@ io.on("connection", (socket) => {
             const rec1 = Rec;
             socket.emit("rec_result", rec1);
         }
-        else if(category=='전체'){
+        else if(category=='전체' && region!='전체'){
             let Rec_sect = await sections(section);
             console.log(section,cate)
             console.log(Rec_sect)
             const rec2 = Rec_sect;
             socket.emit("rec_result", rec2);
         }
-        else if(region=='전체'){
+        else if(region=='전체' && category!='전체'){
             let Rec_cate = await categories(cate);
             console.log(section,cate)
             console.log(Rec_cate)
             const rec3 = Rec_cate;
             socket.emit("rec_result", rec3);
         }
+        else if(category=='전체' && region=='전체'){
+            let Rec_rank = await Arank();
+            socket.emit("rec_result",Rec_rank);
+        }
+
         // 전체, 전체 일때 상위 50 개 항목만 출력되도록 추가
 
        
     });
-
-    /* option
-    socket.on("change_date", (start, end, planId) => {
-        //DB****** 날짜 바꾸기
-        console.log(planId);
-        console.log(start);
-        console.log(end);
-
-        socket.to(planId).emit("create_date_div", start, end);
-        socket.emit("create_date_div", start , end);
-    })
-    */
 
     /*****칸반리스트***/
 
