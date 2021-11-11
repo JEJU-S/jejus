@@ -162,6 +162,7 @@
                 <div id="day-map<%=day + 1%>" data-dayindex="<%=day%>", class="day-map"></div>
 
                 <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
+                    <span>아직 세부 계획이 없어요.. 새 계획을 추가해보세요!</span>
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
                             <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>

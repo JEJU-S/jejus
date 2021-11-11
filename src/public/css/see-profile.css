@@ -69,18 +69,20 @@ main {
 
 .edit-button {
   align-self: flex-end;
-  background-color: #231816;
+  background-color: #23181600;
   padding: 10px 20px;
-  color: #fff;
+  color: #458bc6;
   text-align: center;
-  border: none;
-  border-radius: 4px;
+  border: 2px solid #458bc6;
+  border-radius: 30px;
   cursor: pointer;
 }
 
 .edit-button:hover {
-  background-color: #231816;
-  color: rgb(255, 255, 255);
+  background-color: #458bc6;
+  color: white;
+  border: 2px solid #458bc6;
+  border-radius: 30px;
   transition: 0.1s;
 }
 
@@ -88,7 +90,7 @@ main {
   display: flex;
   flex-direction: column;
   padding: 2% 4%;
-  height: 100%;
+  height: auto;
   width: 60%;
   color: black;
   margin-bottom: 1px;
@@ -104,7 +106,7 @@ main {
 
 .inv-items {
   min-height: 120px;
-  height: 34vh;
+  max-height: 34vh;
   overflow: scroll;
 }
 
@@ -130,7 +132,7 @@ main {
 .inv-item {
   width: 80%;
   color: #474747;
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 4px;
   padding: 1% 8%;
   line-height: 2;
