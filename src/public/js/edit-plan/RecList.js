@@ -117,7 +117,7 @@ class RecItem {
         this.elements.rating = this.elements.root.querySelector(".rating");
         this.elements.grade = this.elements.root.querySelector(".grade");
 
-        this.elements.img.src = (image_url !== 0)? image_url : "";
+        this.elements.img.src = (image_url != 0)? image_url : "/public/images/default-image.png";
     
         this.elements.img.alt= "추천 장소";
         this.elements.name.textContent = place_name;
