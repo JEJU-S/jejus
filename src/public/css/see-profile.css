@@ -25,6 +25,7 @@ main {
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
+  min-width: 600px;
 }
 
 .pf-title {
@@ -39,19 +40,15 @@ main {
 }
 
 .profile-box {
+  margin-left: 5%;
   align-self: center;
   width: 10rem;
   height: 10rem;
-  min-width: 10rem;
-  min-height: 10rem;
+  max-width: 10rem;
+  max-height: 10rem;
   border-radius: 50%;
   overflow: hidden;
   background-color: #dfdfdf;
-}
-
-.edit-profile-box {
-  width: 100%;
-  background-color: white;
 }
 
 .profile-photo {
@@ -63,45 +60,16 @@ main {
 .info-box {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
 }
 
 .nickname,
 .email {
   text-align: center;
-  padding: 20px;
 }
 
-.nickname-edit {
-  width: 20%;
-  margin: 3px 35px;
-}
-
-input[type="text"] {
-  width: 100%;
-  border: 2px solid #aaa;
-  border-radius: 4px;
-  margin: -8px 25px;
-  outline: none;
-  padding: 8px;
-  box-sizing: border-box;
-  font-size: 16px;
-}
-
-input[type="text"]:focus {
-  border-color: rgb(29, 142, 255);
-  background-color: rgb(241, 248, 255);
-  box-shadow: 0 0 8px 0 dodgetBlue;
-}
-
-.email-edit {
-  width: 30%;
-  margin: 16px 35px;
-  text-overflow: clip;
-}
 .edit-button {
   align-self: flex-end;
-  background-color: #68a9e9;
+  background-color: #231816;
   padding: 10px 20px;
   color: #fff;
   text-align: center;
@@ -111,7 +79,7 @@ input[type="text"]:focus {
 }
 
 .edit-button:hover {
-  background-color: rgb(39, 95, 141);
+  background-color: #231816;
   color: rgb(255, 255, 255);
   transition: 0.1s;
 }
@@ -130,6 +98,8 @@ input[type="text"]:focus {
   border-radius: 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   justify-content: flex-start;
+  min-width: 600px;
+  z-index: 1001;
 }
 
 .inv-items {
@@ -162,7 +132,7 @@ input[type="text"]:focus {
   color: #474747;
   background-color: #ffffff;
   border-radius: 4px;
-  padding: 1%;
+  padding: 1% 8%;
   line-height: 2;
   border-bottom: 1px solid #8d8d8d2e;
   box-shadow: 0 0 black;
@@ -181,7 +151,7 @@ input[type="text"]:focus {
 
 .inv-btn {
   position: absolute;
-  right: 10px;
+  right: 60px;
   display: block;
   border-radius: 4px;
   border: none;
@@ -190,7 +160,7 @@ input[type="text"]:focus {
 
 .accept {
   color: white;
-  background-color: #5ac760;
+  background-color: #00a074;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -199,14 +169,15 @@ input[type="text"]:focus {
   margin-right: 0.5px;
   cursor: pointer;
 }
+
 .accept:hover {
-  background-color: #2a58ff;
+  background-color: #00a074;
   transition: 0.1s;
 }
 
 .refuse {
   color: white;
-  background-color: #aaaaaa;
+  background-color: #f18101;
   padding: 6px 22px;
   text-decoration: none;
   border: none;
@@ -215,7 +186,7 @@ input[type="text"]:focus {
   cursor: pointer;
 }
 .refuse:hover {
-  background-color: #2a58ff;
+  background-color: #f18102;
   transition: 0.1s;
 }
 
@@ -229,7 +200,7 @@ input[type="text"]:focus {
 .box {
   width: 10px;
   height: 30px;
-  background-color: #6662f5;
+  background-color: #0173bc;
 }
 
 /*

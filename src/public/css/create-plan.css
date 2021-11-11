@@ -8,30 +8,41 @@
   grid-template-rows: 50px auto 20px;
 }
 
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .creator {
   display: flex;
   flex-direction: column;
-  width: 500px;
-  height: 400px;
+  width: 25vw;
+  height: auto;
   background-color: white;
-  margin: auto;
-  margin-top: 100px;
   border-radius: 16px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
 h1 {
-  margin: 20px auto;
+  font-size: 2rem;
+  margin: 2rem auto 0rem auto;
 }
 
 h2 {
-  margin: 15px 50px;
+  font-size: 1.5rem;
+  margin: 1rem 50px;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 0.5rem 50px;
 }
 
 input[type="text"] {
   width: 80%;
-  border: 2px solid #aaa;
-  border-radius: 4px;
+  border: none;
+  border-bottom: 2px solid rgb(0, 0, 0);
   margin: auto;
   outline: none;
   padding: 8px;
@@ -62,7 +73,6 @@ input[type="date"]:focus {
   box-shadow: 0 0 8px 0 dodgetBlue;
 }
 
-
 .title-box {
   display: flex;
   flex-direction: column;
@@ -76,6 +86,7 @@ input[type="date"]:focus {
 .creat-btn {
   margin: auto;
   margin-top: 3vh;
+  margin-bottom: 3vh;
   color: white;
   background-color: #48adff;
   padding: 6px 22px;

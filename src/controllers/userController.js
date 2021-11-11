@@ -10,7 +10,9 @@ import {RecPlace} from '../models/RecPlace'
 import { Mongoose } from "mongoose";
 import { app } from "cli";
 import { Db } from "mongoose/node_modules/mongodb";
+
 // new RecPlace({});
+
 const PORT = process.env.PORT || 8080;
 
 async function finduser(user_gmail){
@@ -21,6 +23,7 @@ async function finduser(user_gmail){
 
 // Main Page 
 export const main = (req, res) => {
+
         return res.render("main");
 };
 

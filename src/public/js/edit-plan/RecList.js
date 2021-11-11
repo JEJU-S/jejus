@@ -1,14 +1,15 @@
 
 import {socket} from "./communicate.js";
-import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
+import {createMapMarker, recMarkerClick, recListClick, removeMapMarker, mapPanToBound, showOverall} from "/public/js/edit-plan/Map.js";
 
+const recMarkerList = [];
 /******************************** */
 
 const regionBackground = document.getElementById('regionplace');
-const selectBtn = document.getElementById('regionbtn');
+const regionSelectBtn = document.getElementById('regionbtn');
 const jejuRegion = document.getElementsByClassName("jeju-region");
 
-selectBtn.addEventListener('click', regionSelect);
+regionSelectBtn.addEventListener('click', regionSelect);
 function regionSelect() {
     regionBackground.style.display='block';
     regionBackground.style.opacity='1';
@@ -19,13 +20,11 @@ function closeRegionSelect(){
     regionBackground.style.opacity='0';   
 }
 
-
 for (let i = 0; i < jejuRegion.length; i++) {
     let eachjejuRegion = jejuRegion[i];
     eachjejuRegion.addEventListener('click', getRegionSelect);
     eachjejuRegion.addEventListener('click', closeRegionSelect);
 }
-
 
 /***********************/
 
@@ -37,35 +36,79 @@ categoryBtns.forEach((btn) => {
 let selectedRegion = "전체";
 // 지역 고르기
 function getRegionSelect(event){
+    document.querySelector(".md-2").style.display = "none";
     selectedRegion = event.target.alt;
+
+    const imgIcon = regionSelectBtn.querySelector("img");
+    imgIcon.style.display = "flex";
+    imgIcon.src = `/public/images/${event.target.dataset.icon}.png`;
+    imgIcon.alt = event.target.alt;
+
+    document.querySelector("#region").textContent = selectedRegion;
+
+
+    
+    document.querySelectorAll(".category").forEach((btn) => {
+        btn.style.backgroundColor = "#20253b";
+        btn.style.color = "#ffffff";
+    })
+
+    document.querySelector(".category[data-category='전체']").style.backgroundColor = "#ffffff";
+    document.querySelector(".category[data-category='전체']").style.color = "#20253b";
+
     //서버 전송💨
-    console.log("결과 : ", selectedRegion, "전체");
     socket.emit("rec_keyword", selectedRegion, "전체");
+    
 }
 
 // 카테고리 고르기
 function selectCategory(event){
     const category = event.target.closest('div').dataset.category;
     console.log(category);
-    console.log("결과 : ", selectedRegion, category);
+    const selectedCategory = document.querySelector(`.category[data-category=${category}]`);
+    
+    document.querySelector(".recommandation__list").textContent = "";
+    for (const marker of recMarkerList) {
+        marker.setMap(null);
+    }
+    recMarkerList.splice(0, recMarkerList.length);   
+
+    if(selectedCategory.style.backgroundColor === "rgb(255, 255, 255)"){
+        selectedCategory.style.backgroundColor = "#20253b";
+        selectedCategory.style.color = "#ffffff";
+        return;
+    }
+
+    document.querySelectorAll(".category").forEach((btn) => {
+        btn.style.backgroundColor = "#20253b";
+        btn.style.color = "#ffffff";
+    })
+
+    selectedCategory.style.backgroundColor = "#ffffff";
+    selectedCategory.style.color = "#20253b";
+
     socket.emit("rec_keyword", selectedRegion, category);
 }
 
-/*
+
 function matchCategoryMarkerImg(category){
+    let image = "";
     switch(category){
-        case "관광" :
-            const image = "";
-        case "식당" :
-        
-        
-        case "카페" : 
+        case "TOUR" :
+            image = "marker-rec-tour";
+            break;
+        case "FOOD" :
+            image = "marker-rec-resturant";  
+            break;       
+        case "CAFE" : 
+            image = "marker-rec-cafe";
+            break;
     }
+    return image;
 }
-*/
-//******************** */
+
 class RecItem {
-    constructor(id, place_name, road_address_name, place_url, x, y, image_url, score, model_grade){
+    constructor(category, place_name, place_url, road_address_name, x, y, image_url, score, model_rank){
         this.elements = {};
         this.elements.root = RecItem.createRoot();
         this.elements.img = this.elements.root.querySelector("img");
@@ -81,11 +124,10 @@ class RecItem {
         this.elements.root.dataset.x = x;
         this.elements.root.dataset.y = y;
         this.elements.root.dataset.road_adr = road_address_name;
-        this.elements.root.dataset.id = id;
         
         //별점 비율
         this.elements.rating.style.width = `${score/5 * 100}%`;
-        this.elements.grade.textContent = model_grade;
+        this.elements.grade.textContent = model_rank;
 
         this.elements.moreBtn.addEventListener("click", (event) => {
             window.open(place_url);
@@ -102,6 +144,30 @@ class RecItem {
                 map_link : place_url,
             }));
         });
+
+        matchCategoryMarkerImg(category);
+        this.elements.marker = createMapMarker(x, y, matchCategoryMarkerImg(category));
+        //markerlist 
+        recMarkerList.push(this.elements.marker);
+
+        
+        this.elements.root.addEventListener("click", () => {
+            this.elements.marker.setAnimation(1);
+            recListClick(x, y);
+            
+        });     
+        this.elements.root.addEventListener("mouseleave", () => {
+            if(this.elements.marker.getAnimation() !== null)
+                {
+                    this.elements.marker.setAnimation(null);
+                }
+        }); 
+        
+        naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
+            recMarkerClick(x, y);
+        })
+        
+
     }
 
     static createRoot(){
@@ -113,7 +179,7 @@ class RecItem {
                     <div>
                         <div>
                             <span class="reco-title"></span>
-                            <button class="more-btn"><span class="material-icons">open_in_new</span>더보기</button>
+                            <button class="more-btn"><span class="material-icons">open_in_new</span></button>
                         </div>
                         <div class="star-rating">
                             <span>별점 : </span>
@@ -141,11 +207,11 @@ class RecList {
 
     renderItem(place){
         const recItem = new RecItem(
-            place.category,
-            place.name, 
-            place.road_adr, 
+            place.category, 
+            place.name,
             place.map_link,
-            place.x, 
+            place.road_adr,
+            place.x,
             place.y,
             place.image_url,
             place.score,
@@ -157,13 +223,16 @@ class RecList {
 
     deleteItems(){
         this.root.textContent = "";
+
     }
 }
 
 // 지역, 카테고리
 
 socket.on("rec_result", showRecResult);
-function showRecResult(placeList){
 
+function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
+    showOverall();
+
 }

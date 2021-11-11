@@ -52,7 +52,7 @@
                         create_new_folder</span>
                     <span><a href="/plans/create">새 계획 만들기</a></span>
                 </div>
-                <div class="menu-name group">
+                <div class="menu-name group" id="sidebar-group">
                     <div class="mygroup"  id="group">
                         <span class="material-icons md-36 grid">
                             folder
@@ -83,7 +83,7 @@
                 <div class="deco">
                     <div class="box"></div>
                     <h2 class="pf-title">
-                        Profile
+                        Edit
                     </h2>
                 </div>
                 <form method="POST" id="edit-form">
@@ -93,11 +93,11 @@
                         </div>
                         <div class="info-box">
                             <h3>닉네임</h3>
-                            <input type="text", name="name", placeholder="이름", value="<%=user.name%>" class="nickname-edit">
+                            <input type="text", name="name", placeholder="이름", value="<%=user.name%>">
                         </div>
                         <div class="info-box">
                             <h3>이메일</h3>
-                            <span class="email-edit"><%=user.gmail%></span>
+                            <span><%=user.gmail%></span>
                         </div>
                             <input type="submit" value="수정하기" class="edit-button">
                     </div>
@@ -110,5 +110,6 @@
                 &copy; <%=new Date().getFullYear()%> Sample Project
             </footer>
         <script type="text/javascript" src="/public/js/menu-opener.js"></script>
+        <script type="module" src="/public/js/sidebar.js"></script>
     </body>
 </html>

@@ -55,7 +55,7 @@
 
                         <span><a href="/plans/create">새 계획 만들기</a></span>
                     </div>
-                    <div class="menu-name group">
+                    <div class="menu-name group" id="sidebar-group">
                         <div class="mygroup" id="group">
                             <span class="material-icons md-36 grid">
                                 folder
@@ -96,8 +96,8 @@
                 <div class="date-box">
                     <h2>여행 일정</h2>
 
-                        출발일 : <input type="date" name="start">
-                        도착일 : <input type="date" name="end">
+                        <h3>출발일</h3><input type="date" name="start" required>
+                        <h3>도착일</h3><input type="date" name="end" required>
                     <!--<input type="text" name="dates", id="dates", required>-->
                 </div>
                 <input type="submit" value="생성하기" class="creat-btn">
@@ -109,5 +109,6 @@
 
         <script type="text/javascript" src="/public/js/create-plan.js"></script>
         <script type="text/javascript" src="/public/js/menu-opener.js"></script>
+        <script type="module" src="/public/js/sidebar.js"></script>
     </body>
 </html>

@@ -13,15 +13,17 @@ const totplanSchema = new mongoose.Schema({
         image_url: String
     }],
     day_plan: [{
-        date: {type :Date, requried:true}, 
-        place: [{
-            name: String,
-            road_adr: String,
-            // img 추가할건지 판단
-            x : Number,
-            y : Number,
-            map_link: String
-        }]
+
+       date: {type :Date, required:true}, 
+       place: [{
+           name: String,
+           road_adr: String,
+           // img 추가할건지 판단
+           x : Number,
+           y : Number,
+           map_link: String
+       }]
+
     }
     ]
 })

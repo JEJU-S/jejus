@@ -85,7 +85,12 @@ class DropZone {
                 const itemId = event.dataTransfer.getData("text/plain");
                 droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
                 console.log(droppedItemElement);
-            
+                
+                //****************/
+                if (droppedItemElement === null){
+                    return;
+                }
+
                 /************************* */
                 const columnElement = dropZone.closest(".kanban__column");
                 const columnId = columnElement.dataset.id;
@@ -157,8 +162,10 @@ export class Item {
             if (check){
                 
                 const parentColumnId = this.elements.root.parentNode.parentNode.dataset.id;
+
                 //소켓서버에 보냄 💨
                 socket.emit("delete_from_list", this.elements.root.dataset.id, parentColumnId, planId);
+
 
                // map 삭제 find index 왜 안되는지 찾아보기💦
                 let mapIndex;

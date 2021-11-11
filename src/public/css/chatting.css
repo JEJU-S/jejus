@@ -1,5 +1,8 @@
 #popup {
   position: absolute;
+  top: 91%;
+  left: 94%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,10 +12,9 @@
   width: 8rem;
   height: 3rem;
   border-radius: 5px;
-  top: 90%;
-  right: 2%;
   margin-top: 10px;
   background-color: rgb(191, 255, 247);
+  z-index: 9998;
 }
 
 #popup:hover {

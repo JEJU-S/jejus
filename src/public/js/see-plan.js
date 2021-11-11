@@ -32,9 +32,6 @@ function wholePlanClick(){
         dayPlans[i].style.display = "none";
     }
 }
-
-
-
 // 초대장 전송
 
 const emailForm = document.querySelector(".inv-area");
@@ -82,4 +79,63 @@ planBtns.forEach(function(button, day) {
 
 
 wholePlanClick();
+/***MAP********************************************/
+
+const mapOptions = {
+    center : new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+    zoom : 10
+};
+
+const totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
+const dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
+console.log(dayPlan);
+
+
+for(let i =0; i < dayPlan.length; i++){
+    for(let j = 0; j < dayPlan[i].place.length; j++){
+        new naver.maps.Marker({
+            position : new naver.maps.LatLng(
+                dayPlan[i].place[j].y,
+                dayPlan[i].place[j].x
+                ),
+            map : totMap
+        })
+    }   
+}
+
+/******버튼************/
+const planId = document.querySelector(".whole-plan").dataset.planid;
+document.querySelector(".edit-btn").addEventListener("click", () => {
+    window.location.href = `/plans/${planId}/edit`;
+});
+
+if(document.querySelector(".del-btn") !== null){
+    document.querySelector(".del-btn").addEventListener("click", () => {
+        window.location.href = `/plans/${planId}/delete`;
+    });
+}
+
+/*********************/
+
+document.querySelectorAll(".day-map").forEach((dayMap) => {    
+    const day = Number(dayMap.dataset.dayindex);
+    const map = new naver.maps.Map(document.getElementById(`day-map${day + 1}`), mapOptions);
+    console.log(map);
+    console.log(`day-map${day + 1}`);
+
+    for(let i =0; i < dayPlan[day].place.length; i++){
+         new naver.maps.Marker({
+            position : new naver.maps.LatLng(
+                33.50088510909299, 
+                126.52906251498592
+                //dayPlan[day].place[i].y,
+            //dayPlan[day].place[i].x
+            ),
+            map : map
+         })
+    }
+})
+
+
+
 

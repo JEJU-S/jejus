@@ -9,6 +9,7 @@
 }
 
 main {
+  position: relative;
   grid-area: main;
   display: flex;
   flex-direction: column;
@@ -19,16 +20,23 @@ main {
 
 .main-content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   column-gap: 100px;
   color: rgb(0, 0, 0);
+  justify-content: space-around;
 }
 
 .edit-profile-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  padding: 1% 4% 2% 4%;
-  width: 90%;
+  padding: 1% 2% 2% 2%;
+  width: 20%;
+  min-width: 250px;
+  height: auto;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
@@ -39,7 +47,6 @@ main {
 }
 
 .profile-box {
-  margin-left: 5%;
   align-self: center;
   width: 10rem;
   height: 10rem;
@@ -57,10 +64,8 @@ main {
 }
 
 .info-box {
-  max-width: 83.5px;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
 }
 
 .nickname,
@@ -69,16 +74,10 @@ main {
   padding: 20px;
 }
 
-.nickname-edit {
-  padding: 20px;
-  text-align: center;
-}
-
 input[type="text"] {
-  width: 200%;
-  border: 2px solid #aaa;
-  border-radius: 4px;
-  margin: 10px 4px;
+  width: auto;
+  border: none;
+  border-bottom: 2px solid rgb(0, 0, 0);
   outline: none;
   padding: 8px;
   box-sizing: border-box;
@@ -91,25 +90,17 @@ input[type="text"]:focus {
   box-shadow: 0 0 8px 0 dodgetBlue;
 }
 
-.email-edit {
-  padding: 20px;
-  text-align: center;
-}
-
 .edit-button {
+  width: 60%;
+  align-self: center;
+  margin-top: 30px;
   background-color: #68a9e9;
-  padding: 7.5px 1px;
+  padding: 10px 20px;
   color: #fff;
   text-align: center;
-  text-decoration: none;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  align-self: center;
-  width: 13%;
-  margin-top: 13%;
-  margin-left: auto;
-  margin-right: 50px;
 }
 
 .edit-button:hover {

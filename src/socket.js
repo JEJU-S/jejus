@@ -93,6 +93,7 @@ async function checkobj(tot,check){
 }
 
 
+
 const server = http.createServer(app);
 const io = SocketIO(server);
 
@@ -128,6 +129,21 @@ async function sendSearchResults(keyword, socket){
     socket.emit("search_result", searchResults);
 }
 
+async function sendCurrentParticipant(planId, socket){
+    const clientsInRoom = await io.in(planId).fetchSockets();
+    const currentParticipant = [];
+    
+    clientsInRoom.forEach((user) => {
+        console.log(user.userId); 
+        currentParticipant.push(user.userId);
+    })
+    //socket.nsp.to(planId).emit("current_participant", currentParticipant);
+    socket.to(planId).emit("current_participant", currentParticipant);
+    socket.emit("current_participant", currentParticipant);
+}
+
+
+
 io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
@@ -135,11 +151,14 @@ io.on("connection", (socket) => {
     });  
 
     // plan id 로 만든 room에 join    
-    socket.on("join_room", async (planId, userName, init) => {
+    socket.on("join_room", async (planId, userName, userId, init) => {
         socket.join(planId);
+        socket.join(userId);
         socket["userName"] = userName;
-        console.log(socket.rooms);
-
+        socket["userId"] = userId;
+        console.log(socket.rooms); 
+        
+        sendCurrentParticipant(planId, socket);
         console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
@@ -335,6 +354,7 @@ io.on("connection", (socket) => {
     
     socket.on("delete_from_list", async (itemId, columnId, planId) => {
         console.log("DELETE FROM LIST")
+
         console.log(itemId);
         const placeList = await finduserPlan(planId);
         let dPL = placeList.day_plan;
@@ -365,6 +385,7 @@ io.on("connection", (socket) => {
         //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
+        //socket.emit("delete_from_list", itemId);
     })
 });
 
