@@ -283,11 +283,19 @@
 
 #save {
   font-size: 1.3rem;
-  border: none;
-  width: 8rem;
+  color: #458bc6;
+  border: 2px solid #458bc6;
+  background-color: #458cc600;
+  width: 6rem;
   height: 3rem;
-  border-radius: 5px;
-  background-color: rgb(191, 255, 247);
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+#save:hover {
+  background-color: #458bc6;
+  color: white;
+  transition: 0.1s;
 }
 
 input[type="text"]:focus {

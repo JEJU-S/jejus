@@ -43,8 +43,19 @@ html::-webkit-scrollbar {
   transition: background 0.15s, height 0.15s;
 }
 
+.empty {
+  grid-area: dr;
+  height: 89px;
+  background-color: white;
+  transition: background 0.15s height 0.15s;
+}
+
+.empty:hover {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
 .kanban__dropzone--active {
-  height: 30px;
+  height: 40px;
   background: rgba(0, 0, 0, 0.25);
 }
 
@@ -96,5 +107,5 @@ html::-webkit-scrollbar {
 }
 
 .kanban__item button:hover {
-  color: red;
+  color: rgb(167, 167, 167);
 }
