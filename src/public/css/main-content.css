@@ -1,12 +1,12 @@
 .plan-title {
   font-weight: bold;
-  font-size: 2.5rem;
+  font-size: 1.8rem;
 }
 
 .participant {
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 
@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: column;
   background-color: white;
-  width: 21%;
+  width: 18%;
   height: 95%;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
@@ -67,13 +67,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.2rem;
+  gap: 0.5rem;
   text-align: center;
   border: none;
   height: 8vh;
   cursor: pointer;
-  font-size: 1.52rem;
+  font-size: 1.2rem;
   font-weight: bold;
+  border-radius: 5px 5px 0 0;
 }
 
 .recommandation__categories {
@@ -95,19 +96,14 @@
 }
 
 .category:hover {
- 
   background-color: white !important;
-  color: #20253b !important;;
+  color: #20253b !important;
   transition: 0.2s;
 }
 
 .category-name {
   width: 0;
   overflow: hidden;
-}
-
-.hovered {
-  width: auto;
 }
 
 .recommandation__list {
@@ -174,7 +170,6 @@
 .star-rating {
   display: flex;
   flex-direction: row !important;
-  padding: 10px 0 !important;
   width: 100%;
   position: relative;
 }
@@ -184,8 +179,8 @@
 }
 
 .star {
-  width: 127px;
-  height: 24px;
+  width: 90px;
+  height: 15px;
   background: url("../images/star.png") no-repeat;
 }
 
@@ -193,7 +188,6 @@
   width: 100%;
   height: 23px;
   overflow: hidden !important;
-
   background: url("../images/star-filled2.png") no-repeat;
   z-index: 100;
 }
@@ -212,6 +206,7 @@
   display: flex;
   flex-direction: row;
   background-color: whitesmoke;
+  border-radius: 5px 5px 0 0;
 }
 
 #search-form input {
@@ -227,7 +222,7 @@
 }
 
 .search-btn {
-  width: 20% !important;
+  width: 16% !important;
   margin: 0 1rem 0 0;
   cursor: pointer;
   border: none;
@@ -259,7 +254,7 @@
 }
 
 .search-list ul li span {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 
@@ -280,7 +275,7 @@
 }
 
 #map {
-  width: 37%;
+  width: 45%;
   height: 65%;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;

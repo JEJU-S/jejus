@@ -101,7 +101,15 @@
             <!--자바스크립트로 날짜별 div 생성 후 버튼에 해당되는 날짜의 div 보여줘야 함 / db 바꾸면 달라질 수 있음-->
             <!--데이버튼 클릭마다 다른 내용을 보여주어야 함. 전체 페이지인 whole-plan과 day-plan으로 전체페이지와 세부내용 페이지를 분리해서 작성했음. 각 css의 display를 버튼 클릭에 따라 none <->grid 로 변경하는 작업 필요.-->
             <div class="whole-plan" data-planid="<%=totPlan._id%>">
-                <h1 class="plan-title"><%=totPlan.title%></h1>
+                <div class="plan-title">
+                    <h1><%=totPlan.title%></h1>
+                    <%if(user._id == totPlan.admin["_id"]){%>
+                        <button type="button" class="del-btn"><span class="material-icons md-2">
+                            delete
+                            </span><span>삭제</span>
+                            </button>
+                    <%}%>
+                </div>
                 <div class="plan-info">
                     <div class="date">
                         <span>
@@ -117,24 +125,29 @@
                     </div>
                 <!--total-map(전체 경로 마커) 처리 부분-->
                     <div id="total-map" data-dayplan="<%=JSON.stringify(totPlan.day_plan)%>"></div>
-
+                    <h2>참여자</h2>
                     <div class="participants">
                         <%totPlan.participants.forEach(function(participant){%>
-                        <div class="user">
-                            <div class="userimg">
-                                <img class="profile-img" src="<%=participant.image_url%>" alt="user photo"/>
+                            <%if(user._id == totPlan.admin["_id"]){%>
+                            <%}%>
+                            <div class="user">
+                                <div class="userimg">
+                                    <img class="profile-img" src="<%=participant.image_url%>" alt="user photo"/>
+                                </div>
+                                    <%=participant.name%><%if(user._id == totPlan.admin["_id"]){%>👑<%}%>
                             </div>
-                                <%=participant.name%>
-                        </div>
                         <%})%>
                     </div>
                     <div class="btns">
                         <div class="plan-buttons">
-                            <button type="button" class="edit-btn">편집하기</button>
-                            <%if(user._id == totPlan.admin["_id"]){%>
-                                <button type="button" class="del-btn">삭제</button>
-                            <%}%>
-                            <button class="inv-btn">초대</button>
+                            <button type="button" class="edit-btn"><span class="material-icons">
+                                edit
+                                </span>
+                                편집</button>
+                            <button class="inv-btn"><span class="material-icons">
+                                send
+                                </span>
+                                초대</button>
                         </div>
                     </div>
                 </div>

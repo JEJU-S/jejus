@@ -86,7 +86,7 @@ main {
   position: relative;
   background-color: rgb(255, 255, 255);
   grid-area: main;
-  margin: 10px 15px;
+  margin: 40px 60px;
   border-radius: 0 5px 5px 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 19%);
   height: auto;
@@ -98,7 +98,7 @@ main {
   display: flex;
   flex-direction: row;
   text-align: center;
-  margin: 15px 0 0 15px;
+  margin: 45px 0 0 60px;
 }
 
 .btn {
@@ -125,10 +125,11 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   display: grid;
   grid-template-areas:
     "map date"
+    "map title"
     "map par"
     "map btns";
   grid-template-columns: 60% 30%;
-  grid-template-rows: 10% 75% 15%;
+  grid-template-rows: 8% 50px auto 25%;
   width: 100%;
   height: 100%;
   align-items: center;
@@ -138,8 +139,9 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 #total-map {
   grid-area: map;
-  width: 80%;
-  height: 60vh;
+  width: 90%;
+  height: 55vh;
+  margin-bottom: 55px;
   background-color: rgb(211, 211, 211);
   border-radius: 10px;
 }
@@ -147,20 +149,36 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 .participants {
   position: relative;
   grid-area: par;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  justify-items: center;
   width: 85%;
-  background-color: rgb(240, 240, 240);
-  border-radius: 5px;
+  height: 100%;
+  padding: 0 10px;
+  border-radius: 15px;
   align-self: baseline;
+  border-radius: 10px;
+  background-color: aliceblue;
+  overflow: scroll;
+}
+
+.participants::-webkit-scrollbar {
+  display: none;
+}
+
+.plan-info h2 {
+  grid-area: title;
+  margin: 15px 0;
 }
 
 .user {
   display: flex;
-  padding: 20px;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
   font-size: 1rem;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  width: 4.5rem;
 }
 
 .userimg {
@@ -185,44 +203,53 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 }
 
 .edit-btn {
-  width: 100px;
+  display: flex;
+  align-items: center;
+  width: 80px;
   height: 40px;
-  border-radius: 5px;
-  color: white;
-  background-color: green;
-  margin: 15px;
+  color: green;
+  font-size: 1.2rem;
   border: none;
+  border-bottom: 3px solid green;
+  background-color: rgba(0, 128, 0, 0);
+  margin: 15px;
   cursor: pointer;
 }
 
 .del-btn {
+  display: flex;
+  align-items: center;
   position: absolute;
-  top: 4%;
-  left: 92%;
-  transform: translate(-50%, -50%);
+  right: 1%;
   width: 100px;
   height: 40px;
   border-radius: 5px;
-  color: white;
-  background-color: rgb(255, 0, 0);
-  margin: 15px;
+  color: rgb(131, 131, 131);
+  background-color: rgba(255, 0, 0, 0);
   border: none;
   cursor: pointer;
 }
 
 .inv-btn {
-  border: none;
-  width: 100px;
+  display: flex;
+  align-items: center;
+  width: 80px;
   height: 40px;
-  border-radius: 5px;
+  color: rgb(255, 177, 32);
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 3px solid rgb(255, 177, 32);
+  background-color: rgba(0, 128, 0, 0);
   margin: 15px;
-  color: white;
-  background-color: rgb(255, 102, 0);
-  z-index: 2000;
   cursor: pointer;
 }
 
+.inv-btn span {
+  transform: rotate(-40deg);
+}
+
 .plan-buttons {
+  display: flex;
   margin-top: auto;
 }
 
@@ -235,7 +262,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
     "map object";
   justify-items: center;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 16% 8% 76%;
+  grid-template-rows: 8% 8% 84%;
 }
 
 .day-map {
@@ -244,10 +271,16 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   height: 60vh;
   margin: 10px auto;
   border-radius: 10px;
+  background-color: aliceblue;
 }
 
 .plan-title {
   grid-area: title;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 .plan-day {
@@ -259,12 +292,12 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   grid-area: object;
   display: flex;
   flex-direction: column;
+  align-items: center;
   height: auto;
   gap: 15px;
   max-height: 445px;
   padding: 1px;
   overflow: scroll;
-  /*스크롤 바*/
 }
 
 .place-object::-webkit-scrollbar {
@@ -273,19 +306,20 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 .p-obj {
   width: 400px;
-  border-radius: 10px;
   text-align: left;
-  background-color: #f9fbff;
   color: #272727;
-  box-shadow: 1px 1px 1px 0px rgb(0 0 0 / 23%);
+  border-bottom: 2px solid black;
 }
 
 .obj-name {
-  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 0 10px;
 }
 
 .obj-adress {
-  margin: -18px 1px 1px 19px;
+  margin: 0px 0px 15px 10px;
   color: #939393;
 }
 

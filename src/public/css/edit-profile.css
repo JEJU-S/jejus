@@ -68,6 +68,10 @@ main {
   flex-direction: column;
 }
 
+.info-box h3 {
+  margin-bottom: 10px;
+}
+
 .nickname,
 .email {
   text-align: center;

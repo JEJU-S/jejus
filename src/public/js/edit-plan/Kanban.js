@@ -209,7 +209,7 @@ export class Item {
             <div class="kanban__item" draggable="true">
                 <div class="kanban__item-name"></div>
                 <div class="kanban__item-road_adr"></div>
-                <button><span class="material-icons">backspace</span></button>
+                <button><span class="material-icons md-16">backspace</span></button>
             </div>
         `).children[0];
     }
