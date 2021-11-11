@@ -128,13 +128,14 @@
                     <h2>참여자</h2>
                     <div class="participants">
                         <%totPlan.participants.forEach(function(participant){%>
-                            <%if(user._id == totPlan.admin["_id"]){%>
-                            <%}%>
                             <div class="user">
                                 <div class="userimg">
                                     <img class="profile-img" src="<%=participant.image_url%>" alt="user photo"/>
                                 </div>
-                                    <%=participant.name%><%if(user._id == totPlan.admin["_id"]){%>👑<%}%>
+                                    <%=participant.name%>
+                                    <%if(participant._id.toString() === totPlan.admin["_id"].toString()){%>
+                                        👑
+                                    <%}%>
                             </div>
                         <%})%>
                     </div>
@@ -156,7 +157,6 @@
             <!--day plan-->
             <%for(day=0; day < totPlan.day_plan.length; day++){%>
             <div class="day-plan">
-                <h1 class="plan-title"><%=totPlan.title%></h1>
                 <span class="plan-day">day <%=day + 1%></span>
                 
                 <div id="day-map<%=day + 1%>" data-dayindex="<%=day%>", class="day-map"></div>
