@@ -6,7 +6,7 @@ const dayPlans = document.getElementsByClassName("day-plan");
 
 function dayButtonClick(day){
     
-    planBtns[0].style.backgroundColor = "#cccccc";
+    planBtns[0].style.backgroundColor = "#e3e3e3";
     wholePlan[0].style.display = "none";
     for(let i = 0; i < dayPlans.length; i++){
         if(day == i + 1){
@@ -16,7 +16,7 @@ function dayButtonClick(day){
             
         }
         else{
-            planBtns[i+1].style.backgroundColor = "#cccccc";
+            planBtns[i+1].style.backgroundColor = "#e3e3e3";
             dayPlans[i].style.display = "none";
         }
     }
@@ -28,7 +28,7 @@ function wholePlanClick(){
     planBtns[0].style.zIndex = 1;
     wholePlan[0].style.display = "flex";
     for(let i =0; i < dayPlans.length; i++){
-        planBtns[i+1].style.backgroundColor = "#cccccc";
+        planBtns[i+1].style.backgroundColor = "#e3e3e3";
         dayPlans[i].style.display = "none";
     }
 }

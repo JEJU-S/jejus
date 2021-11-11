@@ -141,7 +141,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   grid-area: map;
   width: 90%;
   height: 55vh;
-  margin-bottom: 55px;
+  margin-bottom: 49px;
   background-color: rgb(211, 211, 211);
   border-radius: 10px;
 }
@@ -257,11 +257,12 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   height: 100%;
   display: grid;
   grid-template-areas:
-    "day day"
+    "day object"
     "map object";
   justify-items: center;
+  align-items: center;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 89.28px auto;
 }
 
 .day-map {
@@ -295,7 +296,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   justify-content: center;
   height: auto;
   gap: 15px;
-  max-height: 445px;
+  max-height: 67vh;
   padding: 1px;
   overflow: scroll;
 }
