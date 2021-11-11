@@ -257,18 +257,17 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   height: 100%;
   display: grid;
   grid-template-areas:
-    "title title"
     "day day"
     "map object";
   justify-items: center;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 8% 8% 84%;
+  grid-template-rows: 10% 90%;
 }
 
 .day-map {
   grid-area: map;
-  width: 80%;
-  height: 60vh;
+  width: 37vw;
+  height: 52vh;
   margin: 10px auto;
   border-radius: 10px;
   background-color: aliceblue;
@@ -293,6 +292,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: auto;
   gap: 15px;
   max-height: 445px;
