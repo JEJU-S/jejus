@@ -381,7 +381,7 @@ exports.getCreatePlan = getCreatePlan;
 
 var postCreatePlan = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_image_url, tempDate, dayArray, totplanidcall, totplanid, count, totplan;
+    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_gmail, pC_image_url, tempDate, dayArray, check_plan, totplanidcall, totplanid, count, totplan;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -393,10 +393,22 @@ var postCreatePlan = /*#__PURE__*/function () {
             console.log("startDate : ", startDate, "endDate : ", endDate);
             pC_id = req.session.user._id;
             pC_user = req.session.user.name;
+            pC_gmail = req.session.user.gmail;
             pC_image_url = req.session.user.image_url;
             tempDate = new Date(startDate);
             dayArray = [];
-            _context4.next = 11;
+            _context4.next = 12;
+            return findtitle(title);
+
+          case 12:
+            check_plan = _context4.sent;
+
+            if (!(check_plan == null)) {
+              _context4.next = 43;
+              break;
+            }
+
+            _context4.next = 16;
             return new _TotPlan.TotPlan({
               title: title,
               admin: {
@@ -411,69 +423,83 @@ var postCreatePlan = /*#__PURE__*/function () {
             }).save().then(function () {
               console.log("totplan saved", title);
             })["catch"](function (err) {
-              console.error(err);
+              console.error(err); // if ( err && err.code === 11000 ) {
+              //     res.redirect(`/users/${req.session.user._id}`);
+              //     return;
+              // }
             });
 
-          case 11:
-            _context4.next = 13;
+          case 16:
+            _context4.next = 18;
             return findtitle(title);
 
-          case 13:
+          case 18:
             totplanidcall = _context4.sent;
             totplanid = totplanidcall._id;
             console.log(totplanid);
             count = 0;
             tempDate;
 
-          case 18:
+          case 23:
             if (!(tempDate <= endDate)) {
-              _context4.next = 27;
+              _context4.next = 32;
               break;
             }
 
             console.log("temp date : ", tempDate);
             dayArray.push(new Date(tempDate));
-            _context4.next = 23;
+            _context4.next = 28;
             return _TotPlan.TotPlan.findByIdAndUpdate(totplanid, {
               $push: {
                 day_plan: [{
                   date: dayArray[count]
                 }]
               }
+            }, {
+              upsert: true
             }).exec();
 
-          case 23:
+          case 28:
             count = count + 1;
 
-          case 24:
+          case 29:
             tempDate.setDate(tempDate.getDate() + 1);
-            _context4.next = 18;
+            _context4.next = 23;
             break;
 
-          case 27:
-            _context4.next = 29;
+          case 32:
+            _context4.next = 34;
             return findtitle(title);
 
-          case 29:
+          case 34:
             totplan = _context4.sent;
-
-            _User.User.findByIdAndUpdate(pC_id, {
+            _context4.next = 37;
+            return _User.User.findByIdAndUpdate(pC_id, {
               $push: {
                 totPlan_list: {
                   _id: totplan._id,
                   title: totplan.title
                 }
               }
+            }, {
+              upsert: true
             }).exec();
 
-            req.session.user.totPlan_list.push({
-              _id: totplan._id,
-              title: totplan.title
-            }); // res.redirect(`/users/${pC_id}`);
+          case 37:
+            _context4.next = 39;
+            return finduser(pC_gmail);
 
+          case 39:
+            req.session.user = _context4.sent;
+            // res.redirect(`/users/${pC_id}`);
             res.redirect("/plans/".concat(totplan._id));
+            _context4.next = 44;
+            break;
 
-          case 33:
+          case 43:
+            res.redirect("/users/".concat(pC_id));
+
+          case 44:
           case "end":
             return _context4.stop();
         }

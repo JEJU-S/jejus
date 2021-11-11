@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const totplanSchema = new mongoose.Schema({
-    title: {type: String, unique: true},
+    title: {type:String, unique:true},
     admin: {
         _id: mongoose.Schema.Types.ObjectId,
         name: String
