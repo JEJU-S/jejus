@@ -8,6 +8,8 @@ function dayButtonClick(day){
     
     planBtns[0].style.backgroundColor = "#e3e3e3";
     wholePlan[0].style.display = "none";
+    planBtns[0].style.zIndex = 1;
+
     for(let i = 0; i < dayPlans.length; i++){
         if(day == i + 1){
             planBtns[i+1].style.backgroundColor = "white";
@@ -18,18 +20,21 @@ function dayButtonClick(day){
         else{
             planBtns[i+1].style.backgroundColor = "#e3e3e3";
             dayPlans[i].style.display = "none";
+            planBtns[i+1].style.zIndex = 1;
         }
     }
 }
 
 function wholePlanClick(){
-
+    console.log(planBtns[0]);
     planBtns[0].style.backgroundColor = "white";
-    planBtns[0].style.zIndex = 1;
+    planBtns[0].style.zIndex = 10;
     wholePlan[0].style.display = "flex";
+
     for(let i =0; i < dayPlans.length; i++){
         planBtns[i+1].style.backgroundColor = "#e3e3e3";
         dayPlans[i].style.display = "none";
+        planBtns[i + 1].style.zIndex = 1;
     }
 }
 // 초대장 전송
@@ -126,10 +131,8 @@ document.querySelectorAll(".day-map").forEach((dayMap) => {
     for(let i =0; i < dayPlan[day].place.length; i++){
          new naver.maps.Marker({
             position : new naver.maps.LatLng(
-                33.50088510909299, 
-                126.52906251498592
-                //dayPlan[day].place[i].y,
-            //dayPlan[day].place[i].x
+                dayPlan[day].place[i].y,
+                dayPlan[day].place[i].x
             ),
             map : map
          })

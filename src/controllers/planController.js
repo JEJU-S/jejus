@@ -177,43 +177,55 @@ export const postCreatePlan = async (req, res) => {
 
     console.log("startDate : ", startDate, "endDate : ",endDate);
 
-
     const pC_id = req.session.user._id;
     const pC_user = req.session.user.name;
+    const pC_gmail = req.session.user.gmail;
     const pC_image_url = req.session.user.image_url;
-
     let tempDate = new Date(startDate);
     const dayArray = [];
-    
-    await new TotPlan({
-        title:title , 
-        admin : {_id: pC_id, name: pC_user},
-        participants : [{_id: pC_id, name: pC_user, image_url : pC_image_url}],
-    }).save().then(()=>{
-        console.log("totplan saved",title);
-    }).catch((err) => {
-        console.error(err)
-    });
 
-    let totplanidcall = await findtitle(title);
-    let totplanid = totplanidcall._id;
-    console.log(totplanid)
-    let count=0
-    for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
-        console.log("temp date : ", tempDate);
-        dayArray.push(new Date(tempDate));
-        await TotPlan.findByIdAndUpdate(totplanid, {$push : { 
-            day_plan: [{date : dayArray[count]}] } } ).exec(); 
-        count=count+1   
+    let check_plan = await findtitle(title);
+
+    if(check_plan==null){
+        await new TotPlan({
+            title:title , 
+            admin : {_id: pC_id, name: pC_user},
+            participants : [{_id: pC_id, name: pC_user, image_url : pC_image_url}],
+        }).save().then(()=>{
+            console.log("totplan saved",title);
+        }).catch((err) => {
+            console.error(err);
+            // if ( err && err.code === 11000 ) {
+            //     res.redirect(`/users/${req.session.user._id}`);
+            //     return;
+            // }
+        });
+
+        let totplanidcall = await findtitle(title);
+        let totplanid = totplanidcall._id;
+        console.log(totplanid)
+        let count=0
+        for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
+            console.log("temp date : ", tempDate);
+            dayArray.push(new Date(tempDate));
+            await TotPlan.findByIdAndUpdate(totplanid, {$push : { 
+                day_plan: [{date : dayArray[count]}] }  } , {upsert : true}).exec(); 
+            count=count+1   
+        }
+        
+        const totplan = await findtitle(title);
+        
+        await User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } , { upsert:true } ).exec()
+        // req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
+        req.session.user = await finduser(pC_gmail);
+        
+        // res.redirect(`/users/${pC_id}`);
+        res.redirect(`/plans/${totplan._id}`); 
+    }
+    else{
+        res.redirect(`/users/${pC_id}`);
     }
     
-    const totplan = await findtitle(title);
-    
-    User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } ).exec()
-    req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
-    
-    // res.redirect(`/users/${pC_id}`);
-    res.redirect(`/plans/${totplan._id}`); 
 }
 
 export const accept = async (req, res) => {

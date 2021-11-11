@@ -12,20 +12,21 @@ import {RecPlace} from './models/RecPlace'
 import {TotPlan} from './models/TotPlan'
 
 async function Arank(){
-    const rec = await RecPlace.find().where('model_rank').equals('A').lean()
+    const rec = await RecPlace.find({}).limit(50).lean();
     return rec;
 }
 //권역분류만 했을 때
 async function sections(region){
-    const sections = await RecPlace.find({ section : region}).lean();
+    const sections = await RecPlace.find({ section : region}).limit(50).lean();
     return sections; 
 }
 
 //카테고리분류만 했을 때
 async function categories(cate){
-    const categories = await RecPlace.find({category : cate}).lean();
+    const categories = await RecPlace.find({category : cate}).limit(50).lean();
     return categories;
 }
+
 //권역, 카테고리 분류 모두 했을때
 async function categorize(region,cate){
     const category = await RecPlace.find({section : region, category : cate}).lean();
@@ -238,10 +239,9 @@ io.on("connection", (socket) => {
         }
         else if(category=='전체' && region=='전체'){
             let Rec_rank = await Arank();
-            socket.emit("rec_result",Rec_rank);
+            const rec = Rec_rank;
+            socket.emit("rec_result",rec);
         }
-
-        // 전체, 전체 일때 상위 50 개 항목만 출력되도록 추가
 
        
     });

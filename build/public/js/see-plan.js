@@ -73,3 +73,52 @@ planBtns.forEach(function (button, day) {
   }
 });
 wholePlanClick();
+/***MAP********************************************/
+
+var mapOptions = {
+  center: new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
+  zoom: 10
+};
+var totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
+var dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
+console.log(dayPlan);
+
+for (var i = 0; i < dayPlan.length; i++) {
+  for (var j = 0; j < dayPlan[i].place.length; j++) {
+    new naver.maps.Marker({
+      position: new naver.maps.LatLng(dayPlan[i].place[j].y, dayPlan[i].place[j].x),
+      map: totMap
+    });
+  }
+}
+/******버튼************/
+
+
+var planId = document.querySelector(".whole-plan").dataset.planid;
+document.querySelector(".edit-btn").addEventListener("click", function () {
+  window.location.href = "/plans/".concat(planId, "/edit");
+});
+
+if (document.querySelector(".del-btn") !== null) {
+  document.querySelector(".del-btn").addEventListener("click", function () {
+    window.location.href = "/plans/".concat(planId, "/delete");
+  });
+}
+/*********************/
+
+
+document.querySelectorAll(".day-map").forEach(function (dayMap) {
+  var day = Number(dayMap.dataset.dayindex);
+  var map = new naver.maps.Map(document.getElementById("day-map".concat(day + 1)), mapOptions);
+  console.log(map);
+  console.log("day-map".concat(day + 1));
+
+  for (var _i = 0; _i < dayPlan[day].place.length; _i++) {
+    new naver.maps.Marker({
+      position: new naver.maps.LatLng(33.50088510909299, 126.52906251498592 //dayPlan[day].place[i].y,
+      //dayPlan[day].place[i].x
+      ),
+      map: map
+    });
+  }
+});
