@@ -90,7 +90,7 @@
         <!--메인 페이지-->
                     <!--데이 버튼이 메인에 넣을 시 메인컨텐츠와 겹치게 표시되어 따로 daybutton으로 분리하였고, 요소별 영역 부여를 위해 day-button 클래스를 입힘-->
         <div class="day-button"><!--id 로 해야 하나?-->
-            <div class="btn"><a>info</a></div>
+            <div class="btn" id="info-btn"><a>info</a></div>
             <%let day%>
             <% for(day = 0; day < totPlan.day_plan.length; day++){ %>
             <!--day button 이름 바꾸기-->
@@ -162,7 +162,9 @@
                 <div id="day-map<%=day + 1%>" data-dayindex="<%=day%>", class="day-map"></div>
 
                 <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
+                    <%if(totPlan.day_plan[day]['place'].length === 0){%>
                     <span>아직 세부 계획이 없어요.. 새 계획을 추가해보세요!</span>
+                    <%}%>
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
                             <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>

@@ -115,12 +115,14 @@
                     </div>
                     <div class="inv-items">
                         <ul>
+                            <%if(user.call_list.length === 0){%>
                             <li>
                                 <span>아직 초대장이 없어요. 새 여행을 계획해보세요 !</span>
                             </li>
+                            <%}%>
                             <%user.call_list.forEach((list) => {%>
                                 <li class="inv-item">
-                                    <span hrep="#" class="inv-title"><%=list.plan_title%></span>
+                                    <span class="inv-title"><%=list.plan_title%></span>
                                     <span class="inv-host">호스트:
                                     </span>
                                     <span calss="host-nickname">

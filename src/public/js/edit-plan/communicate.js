@@ -150,6 +150,11 @@ function checkCurrentParticipant(currentParticipant){
     })
 }
 
+document.querySelector("#save").addEventListener("click", () => {
+    
+    window.location.href = `/plans/${planId}`;
+})
+
 
 
 
