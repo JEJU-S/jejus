@@ -1,4 +1,5 @@
 import {TotPlan} from '../models/TotPlan'
+
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -7,6 +8,7 @@ const userSchema = new mongoose.Schema({
     image_url: String,
     totPlan_list:[{_id: mongoose.Schema.Types.ObjectId , title: String}],
     call_list : [{
+        _id : false,
         host : String,
         plan_title : String,
         plan_id : mongoose.Schema.Types.ObjectId
