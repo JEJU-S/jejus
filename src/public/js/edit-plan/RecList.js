@@ -1,15 +1,15 @@
 
 import {socket} from "./communicate.js";
-import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
+import {createMapMarker, recMarkerClick, recListClick, removeMapMarker, mapPanToBound, showOverall} from "/public/js/edit-plan/Map.js";
 
 const recMarkerList = [];
 /******************************** */
 
 const regionBackground = document.getElementById('regionplace');
-const selectBtn = document.getElementById('regionbtn');
+const regionSelectBtn = document.getElementById('regionbtn');
 const jejuRegion = document.getElementsByClassName("jeju-region");
 
-selectBtn.addEventListener('click', regionSelect);
+regionSelectBtn.addEventListener('click', regionSelect);
 function regionSelect() {
     regionBackground.style.display='block';
     regionBackground.style.opacity='1';
@@ -36,9 +36,17 @@ categoryBtns.forEach((btn) => {
 let selectedRegion = "전체";
 // 지역 고르기
 function getRegionSelect(event){
+    document.querySelector(".md-2").style.display = "none";
     selectedRegion = event.target.alt;
-    //서버 전송💨
-    document.querySelector("#regionbtn").textContent = selectedRegion;
+
+    const imgIcon = regionSelectBtn.querySelector("img");
+    imgIcon.style.display = "flex";
+    imgIcon.src = `/public/images/${event.target.dataset.icon}.png`;
+    imgIcon.alt = event.target.alt;
+
+    document.querySelector("#region").textContent = selectedRegion;
+
+
     
     document.querySelectorAll(".category").forEach((btn) => {
         btn.style.backgroundColor = "#20253b";
@@ -48,7 +56,7 @@ function getRegionSelect(event){
     document.querySelector(".category[data-category='전체']").style.backgroundColor = "#ffffff";
     document.querySelector(".category[data-category='전체']").style.color = "#20253b";
 
-
+    //서버 전송💨
     socket.emit("rec_keyword", selectedRegion, "전체");
     
 }
@@ -99,21 +107,6 @@ function matchCategoryMarkerImg(category){
     return image;
 }
 
-//******************** */
-    /*
-    place.category, 
-    place.name,
-    place.map_link,
-    place.road_adr,
-    place.x,
-    place.y,
-    place.image_url,
-    place.score,
-    place.model_rank
-*/
-
-
-
 class RecItem {
     constructor(category, place_name, place_url, road_address_name, x, y, image_url, score, model_rank){
         this.elements = {};
@@ -124,7 +117,8 @@ class RecItem {
         this.elements.rating = this.elements.root.querySelector(".rating");
         this.elements.grade = this.elements.root.querySelector(".grade");
 
-        this.elements.img.src = image_url;
+        this.elements.img.src = (image_url !== 0)? image_url : "";
+    
         this.elements.img.alt= "추천 장소";
         this.elements.name.textContent = place_name;
 
@@ -157,9 +151,24 @@ class RecItem {
         //markerlist 
         recMarkerList.push(this.elements.marker);
 
+        
         this.elements.root.addEventListener("click", () => {
-            mapPanToBound(x, y);
-        });
+            this.elements.marker.setAnimation(1);
+            recListClick(x, y);
+            
+        });     
+        this.elements.root.addEventListener("mouseleave", () => {
+            if(this.elements.marker.getAnimation() !== null)
+                {
+                    this.elements.marker.setAnimation(null);
+                }
+        }); 
+        
+        naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
+            recMarkerClick(x, y);
+        })
+        
+
     }
 
     static createRoot(){
@@ -225,4 +234,6 @@ socket.on("rec_result", showRecResult);
 
 function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
+    showOverall();
+
 }

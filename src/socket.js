@@ -6,125 +6,93 @@ import http from "http";
 import dotdev from "dotenv";
 dotdev.config();
 
+var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+import {RecPlace} from './models/RecPlace'
+import {TotPlan} from './models/TotPlan'
 
-/* 추후 삭제 해야 함*****************************/
-const fakePlaceList = [
-    {
-    _id : "507f191e810c19729de860e1",
-    date : new Date("2021-05-04"),
-    place : [
-        {   
-            _id : "5bf142459b72e12b2b1b2c11",
-            name : "place 1",
-            road_adr : "도로명 주소1",
-            x : "126.52001020252465",
-            y : "33.48137202695348",
-            map_link : ""
-        },
-        {   
-            _id : "5bf142459b72e12b2b1b2c12",
-            name : "place 2",
-            road_adr : "도로명 주소2",
-            x : "126.53001020252465",
-            y : "33.48437202695348",
-            map_link : ""
+async function Arank(){
+    const rec = await RecPlace.find().where('model_rank').equals('A').lean()
+    return rec;
+}
+//권역분류만 했을 때
+async function sections(region){
+    const sections = await RecPlace.find({ section : region}).lean();
+    return sections; 
+}
+
+//카테고리분류만 했을 때
+async function categories(cate){
+    const categories = await RecPlace.find({category : cate}).lean();
+    return categories;
+}
+//권역, 카테고리 분류 모두 했을때
+async function categorize(region,cate){
+    const category = await RecPlace.find({section : region, category : cate}).lean();
+    return category;
+}
+
+//편집중인 plan 찾기
+async function finduserPlan(id){
+    const usertotplan = await TotPlan.findOne({ _id : id}).lean();
+    return usertotplan;
+}
+
+async function checkid(tot,check){
+    let x = false;
+    await tot.forEach(function(i,j){
+        if(i['_id']==check){
+            x=i;
+            console.log(j,"번째 인덱스")
         }
-    ]},
-    {
-        _id : "507f191e810c19729de860e2",
-        date : new Date("2021-05-05"),
-        place : [
-            {   
-                _id : "5bf142459b72e12b2b1b2c13",
-                name : "place 3",
-                road_adr : "도로명 주소3",
-                x : "126.54001020252465",
-                y : "33.48137205695348",
-                map_link : ""
-            },
-            {   
-                _id : "5bf142459b72e12b2b1b2c14",
-                name : "place 4",
-                road_adr : "도로명 주소4",
-                x : "126.55001020252465",
-                y : "33.48137202695348",
-                map_link : ""
-            }
-        ]},
-        {
-            _id : "507f191e810c19729de860e3",
-            date : new Date("2021-05-06"),
-            place : [
-                {   
-                    _id : "5bf142459b72e12b2b1b2c15",
-                    name : "place 5",
-                    road_adr : "도로명 주소5",
-                    x : "126.56001020252465",
-                    y : "33.48337202695348",
-                    map_link : ""
-                },
-                {   
-                    _id : "5bf142459b72e12b2b1b2c16",
-                    name : "place 6",
-                    road_adr : "도로명 주소6",
-                    x : "126.57001020252465",
-                    y : "33.42337202695348",
-                    map_link : ""
-                }
-        ]}
-]
+        else{
+            return false;
+        }
+    })
+    return x;
+}
+async function checkitem(tot,check){
+    let x;
+    await tot.forEach(function(i,j){
+        if(i['_id']==check){
+            x=i;
+            console.log(j,"번째 인덱스")
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
+}
+async function checkidx(tot,check){
+    let x = false;
+    tot.forEach(function(i,j){
+        if(i['_id']==check){
+            x=j;
+            console.log(j,"번째 인덱스")
+            console.log(i)
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
+}
+async function checkobj(tot,check){
+    let x;
+    tot.forEach(function(i,j){
+        if(i['x']==check.x && i['y'] == check.y){
+            console.log(i);
+            x=i['_id'];
+        }
+        else{
+            return false;
+        }
+    })
+    return x;
+}
 
-const fakeRecPlaceList = [
-    {
-        idx : 1,
-        category : "CAFE",
-        section : "", 
-        name : "식빵가게",
-        map_link: "https://place.map.kakao.com/615988591",
-        road_adr : "제주특별자치도 제주시 월성로10길 2 2층",
-        y : 33.417778216064875,
-        x : 126.53305646875006,
-        image_url: "",
-        score: 4.5,
-        model_score : 6.7,
-        rank_index : 1,
-        model_rank : "A"
-    },
 
-    {
-        idx : 2,
-        category : "FOOD",
-        section : "", 
-        name : "식빵가게1",
-        map_link: "https://place.map.kakao.com/615988591",
-        road_adr : "제주특별자치도 제주시 월성로10길 2 1층",
-        y : 33.354711344326816,
-        x : 126.75690290070189,
-        image_url: "",
-        score: 3,
-        model_score : 8,
-        rank_index : 2,
-        model_rank : "A"
-    },
-
-    {
-        idx : 3,
-        category : "TOUR",
-        section : "", 
-        name : "식빵가게3",
-        map_link: "https://place.map.kakao.com/615988591",
-        road_adr : "제주특별자치도 제주시 월성로10길 2 3층",
-        y : 33.33126374144996, 
-        x : 126.32827061149187,
-        image_url: "",
-        score: 1,
-        model_score : 1,
-        rank_index : 3,
-        model_rank : "D"
-    }
-];
-
-/******************************/
 
 const server = http.createServer(app);
 const io = SocketIO(server);
@@ -153,7 +121,6 @@ async function searchPlace(keyword){
     result["documents"].forEach((document) => { 
             searchResults.push(document);
     });
-    console.log(searchResults);
     return searchResults;
 }
 
@@ -162,6 +129,21 @@ async function sendSearchResults(keyword, socket){
     socket.emit("search_result", searchResults);
 }
 
+async function sendCurrentParticipant(planId, socket){
+    const clientsInRoom = await io.in(planId).fetchSockets();
+    const currentParticipant = [];
+    
+    clientsInRoom.forEach((user) => {
+        console.log(user.userId); 
+        currentParticipant.push(user.userId);
+    })
+    //socket.nsp.to(planId).emit("current_participant", currentParticipant);
+    socket.to(planId).emit("current_participant", currentParticipant);
+    socket.emit("current_participant", currentParticipant);
+}
+
+
+
 io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
@@ -169,17 +151,21 @@ io.on("connection", (socket) => {
     });  
 
     // plan id 로 만든 room에 join    
-    socket.on("join_room", (planId, userName, init) => {
+    socket.on("join_room", async (planId, userName, userId, init) => {
         socket.join(planId);
+        socket.join(userId);
         socket["userName"] = userName;
-        console.log(socket.rooms);
-
+        socket["userId"] = userId;
+        console.log(socket.rooms); 
+        
+        sendCurrentParticipant(planId, socket);
         console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
-
-        const placeList = fakePlaceList;
-        socket.to(planId).emit("server_msg", userName, true);
-        init(placeList);
+        const placeList = await finduserPlan(planId);
+        let PL = placeList.day_plan;
+        console.log(PL)
+        socket.to(PL).emit("server_msg", userName, true);
+        init(PL);
     });
     /*****채팅 메시지***/
 
@@ -193,49 +179,209 @@ io.on("connection", (socket) => {
         sendSearchResults(keyword, socket);
     });
 
-    socket.on("rec_keyword", (region, category) => {
+    socket.on("rec_keyword", async (region, category) => {
 
         //****DB 추천 리스트 반환*/
-        console.log("결과 : ", region, category);
 
-        const recList = fakeRecPlaceList;
-        socket.emit("rec_result", recList);
+        // region ( section ) => 전체 , 제주(A) , 남부(B) , 서부(C) , 북동부(D), 성산우도(E)
+        // category => 식당(FOOD) , 카페(CAFE), 관광지(TOUR)
+        let section='전체';
+        let cate='전체';
+
+        console.log(region, category);  
+        if(region == '제주'){
+            section = 'A';
+        }
+        else if(region == '남부'){
+            section = 'B';
+        }
+        else if(region == '서부'){
+            section = 'C';
+        }
+        else if(region == '북동부'){
+            section = 'D';
+        }
+        else if(region =='성산우도'){
+            section = 'E';
+        }
+
+        if(category == '식당'){
+            cate = 'FOOD';
+        }
+        else if(category == '카페'){
+            cate = 'CAFE';
+        }
+        else if(category=='관광'){
+            cate = 'TOUR';
+        }
+
+        if(category!='전체' && region!='전체'){
+            let Rec = await categorize(section,cate);
+            console.log(section,cate)
+            console.log(Rec);
+            const rec1 = Rec;
+            socket.emit("rec_result", rec1);
+        }
+        else if(category=='전체' && region!='전체'){
+            let Rec_sect = await sections(section);
+            console.log(section,cate)
+            console.log(Rec_sect)
+            const rec2 = Rec_sect;
+            socket.emit("rec_result", rec2);
+        }
+        else if(region=='전체' && category!='전체'){
+            let Rec_cate = await categories(cate);
+            console.log(section,cate)
+            console.log(Rec_cate)
+            const rec3 = Rec_cate;
+            socket.emit("rec_result", rec3);
+        }
+        else if(category=='전체' && region=='전체'){
+            let Rec_rank = await Arank();
+            socket.emit("rec_result",Rec_rank);
+        }
+
+        // 전체, 전체 일때 상위 50 개 항목만 출력되도록 추가
+
+       
     });
-
-    /* option
-    socket.on("change_date", (start, end, planId) => {
-        //DB****** 날짜 바꾸기
-        console.log(planId);
-        console.log(start);
-        console.log(end);
-
-        socket.to(planId).emit("create_date_div", start, end);
-        socket.emit("create_date_div", start , end);
-    })
-    */
 
     /*****칸반리스트***/
-    socket.on("add_to_placelist", (newPlace, columnId, droppedIndex, planId) => {
+
+    socket.on("add_to_placelist", async (newPlace, columnId, droppedIndex, planId) => {
         //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
+        console.log("ADD TO PLACELIST")
         console.log(newPlace);
-        const newId = "507f191e810c19729de860ab"; 
+        
+        console.log("OBJ ID 입니다 Day",columnId);
+        console.log("OBJ ID 입니다 Plan",planId);
+        const placeList = await finduserPlan(planId);
+        let PL = placeList.day_plan;
+        let dplace = await checkid(PL,columnId);
+        console.log(dplace)
+
+        Array.prototype.insert = function ( index, item ) {
+            this.splice( index, 0, item );
+        };
+        if(dplace.place.length){
+            await dplace.place.insert(droppedIndex,newPlace);
+        }
+        else{
+            await dplace.place.push(newPlace);
+        }
+            
+        PL.push(dplace);
+        PL.pop();
+        console.log(dplace)
+        console.log(PL)
+
+        console.log(mongoose.Types.ObjectId.isValid(columnId)) // obj id 유효한지 확인
+        await TotPlan.findByIdAndUpdate({ _id:planId } , {$set : {day_plan: PL } }).exec();
+        // TotPlan.findByIdAndUpdate(planId, {$push : {day_plan: { test1 } } }).exec();
 
 
+        const check_placeList = await finduserPlan(planId);
+        let check_PL = check_placeList.day_plan;
+        let check_place = await checkid(check_PL,columnId);
+        let newitemId = await checkobj(check_place.place , newPlace);
+        console.log("추가된 아이템 확인1",check_place.place)
+        console.log("추가된 아이템 확인2",newitemId);
 
-        socket.to(planId).emit("add_to_placelist" , newId, newPlace, columnId, droppedIndex);
-        socket.emit("add_to_placelist", newId, newPlace, columnId, droppedIndex);
+        socket.to(planId).emit("add_to_placelist" ,newitemId, newPlace, columnId, droppedIndex);
+        socket.emit("add_to_placelist" , newitemId, newPlace, columnId, droppedIndex);
     });
     
-    socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
+    socket.on("move_in_placelist", async ( itemId, originColumnId, columnId, droppedIndex, planId) => {
+        // 옮기는것도 결국 delete and insert ,, 해당 인덱스만 찾아서
 
+        //고른 아이템 삭제 
+        console.log("MOVE IN PLACELIST")
+        console.log("item:",itemId)
+        console.log("origin",originColumnId)
+        console.log("dropped",columnId,droppedIndex)
+
+        const placeList = await finduserPlan(planId);
+        let mPL = placeList.day_plan;
+        console.log(mPL)
+
+        let del_place = await checkid(mPL,originColumnId);
+        let date_check = del_place.date;
+        let id_check = del_place._id;
+        let del_index = await checkidx(mPL,originColumnId);
+        let del_place_list = await del_place.place;
+
+        let del_item = await checkidx(del_place_list,itemId);
+        let insert_item = await checkitem(del_place_list,itemId); 
+
+        console.log("삭제할 아이템 확인",del_item , insert_item);
+
+        console.log(del_place_list);
+        del_place_list.splice(del_item,1);
+        console.log("삭제확인",del_place_list);
+        
+        let update_array = { date: date_check , place : del_place_list , _id : id_check }
+
+        await mPL.splice(del_index, 1,update_array );
+
+        console.log("옮기기 전 아이템 삭제",mPL);
+        
+        await TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
+
+        let insert_place = await checkid(mPL,columnId) 
+          
+        //고른 아이템 추가
+        Array.prototype.insert = function ( index, item ) {
+            this.splice( index, 0, item );
+        };
+
+        if(insert_place.place.length){
+            await insert_place.place.insert(droppedIndex,insert_item);
+        }
+        else{
+            await insert_place.place.push(insert_item);
+        }
+
+        mPL.push(insert_place);
+        mPL.pop();
+
+        await TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
 
 
         socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
-        socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
+        socket.emit("move_in_placelist" , itemId, columnId, droppedIndex)
+
     })
     
-    socket.on("delete_from_list", (itemId, planId) => {
+    socket.on("delete_from_list", async (itemId, columnId, planId) => {
+        console.log("DELETE FROM LIST")
+
         console.log(itemId);
+        const placeList = await finduserPlan(planId);
+        let dPL = placeList.day_plan;
+        console.log(dPL)
+        let del_place = await checkid(dPL,columnId);
+        let date_check = del_place.date;
+        let id_check = del_place._id;
+        let del_index = await checkidx(dPL,columnId);
+        
+        let del_place_list = del_place.place;
+        let del_item = await checkidx(del_place_list,itemId);
+
+        console.log("확인",del_item);
+
+        console.log(del_place_list);
+        del_place_list.splice(del_item,1);
+        console.log("삭제확인",del_place_list);
+        
+        let update_array = { date: date_check , place : del_place_list , _id : id_check }
+
+
+        dPL.splice(del_index, 1,update_array );
+        // dPL.splice(del_index, 0, update_array);
+        console.log(dPL)
+
+        TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: dPL } }).exec();
+
         //**DB 작업 필요 */
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);

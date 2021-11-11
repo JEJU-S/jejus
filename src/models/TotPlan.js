@@ -13,6 +13,7 @@ const totplanSchema = new mongoose.Schema({
         image_url: String
     }],
     day_plan: [{
+
        date: {type :Date, required:true}, 
        place: [{
            name: String,
@@ -22,6 +23,7 @@ const totplanSchema = new mongoose.Schema({
            y : Number,
            map_link: String
        }]
+
     }
     ]
 })
