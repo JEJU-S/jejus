@@ -381,7 +381,7 @@ exports.getCreatePlan = getCreatePlan;
 
 var postCreatePlan = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_image_url, tempDate, dayArray, totplanidcall, totplanid, totplan;
+    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_image_url, tempDate, dayArray, totplanidcall, totplanid, count, totplan;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -422,24 +422,39 @@ var postCreatePlan = /*#__PURE__*/function () {
             totplanidcall = _context4.sent;
             totplanid = totplanidcall._id;
             console.log(totplanid);
+            count = 0;
+            tempDate;
 
-            for (tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)) {
-              console.log("temp date : ", tempDate);
-              dayArray.push(new Date(tempDate));
-
-              _TotPlan.TotPlan.findByIdAndUpdate(totplanid, {
-                $push: {
-                  day_plan: [{
-                    date: tempDate
-                  }]
-                }
-              }).exec();
+          case 18:
+            if (!(tempDate <= endDate)) {
+              _context4.next = 27;
+              break;
             }
 
-            _context4.next = 19;
+            console.log("temp date : ", tempDate);
+            dayArray.push(new Date(tempDate));
+            _context4.next = 23;
+            return _TotPlan.TotPlan.findByIdAndUpdate(totplanid, {
+              $push: {
+                day_plan: [{
+                  date: dayArray[count]
+                }]
+              }
+            }).exec();
+
+          case 23:
+            count = count + 1;
+
+          case 24:
+            tempDate.setDate(tempDate.getDate() + 1);
+            _context4.next = 18;
+            break;
+
+          case 27:
+            _context4.next = 29;
             return findtitle(title);
 
-          case 19:
+          case 29:
             totplan = _context4.sent;
 
             _User.User.findByIdAndUpdate(pC_id, {
@@ -454,10 +469,11 @@ var postCreatePlan = /*#__PURE__*/function () {
             req.session.user.totPlan_list.push({
               _id: totplan._id,
               title: totplan.title
-            });
-            res.redirect("/users/".concat(pC_id));
+            }); // res.redirect(`/users/${pC_id}`);
 
-          case 23:
+            res.redirect("/plans/".concat(totplan._id));
+
+          case 33:
           case "end":
             return _context4.stop();
         }

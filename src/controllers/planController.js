@@ -198,21 +198,22 @@ export const postCreatePlan = async (req, res) => {
     let totplanidcall = await findtitle(title);
     let totplanid = totplanidcall._id;
     console.log(totplanid)
+    let count=0
     for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
         console.log("temp date : ", tempDate);
         dayArray.push(new Date(tempDate));
-        TotPlan.findByIdAndUpdate(totplanid, {$push : { 
-            day_plan: [{date : tempDate }] } } ).exec();
-
+        await TotPlan.findByIdAndUpdate(totplanid, {$push : { 
+            day_plan: [{date : dayArray[count]}] } } ).exec(); 
+        count=count+1   
     }
-   
+    
     const totplan = await findtitle(title);
-
-
+    
     User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } ).exec()
     req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
     
-    res.redirect(`/users/${pC_id}`); 
+    // res.redirect(`/users/${pC_id}`);
+    res.redirect(`/plans/${totplan._id}`); 
 }
 
 export const accept = async (req, res) => {
