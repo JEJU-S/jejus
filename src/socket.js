@@ -162,6 +162,21 @@ async function sendSearchResults(keyword, socket){
     socket.emit("search_result", searchResults);
 }
 
+async function sendCurrentParticipant(planId, socket){
+    const clientsInRoom = await io.in(planId).fetchSockets();
+    const currentParticipant = [];
+    
+    clientsInRoom.forEach((user) => {
+        console.log(user.userId); 
+        currentParticipant.push(user.userId);
+    })
+    //socket.nsp.to(planId).emit("current_participant", currentParticipant);
+    socket.to(planId).emit("current_participant", currentParticipant);
+    socket.emit("current_participant", currentParticipant);
+}
+
+
+
 io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
@@ -171,10 +186,12 @@ io.on("connection", (socket) => {
     // plan id 로 만든 room에 join    
     socket.on("join_room", (planId, userName, userId, init) => {
         socket.join(planId);
+        socket.join(userId);
         socket["userName"] = userName;
-        socket["userId"] =userId;
+        socket["userId"] = userId;
+        console.log(socket.rooms); 
         
-        console.log(socket.rooms);
+        sendCurrentParticipant(planId, socket);
         console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = fakePlaceList;
@@ -224,7 +241,7 @@ io.on("connection", (socket) => {
         socket.emit("add_to_placelist", newId, newPlace, columnId, droppedIndex);
     });
     
-    socket.on("move_in_placelist", ( itemId, columnId, droppedIndex, planId) => {
+    socket.on("move_in_placelist", ( itemId, originColumnId, columnId, droppedIndex, planId) => {
 
 
 

@@ -18,6 +18,7 @@ let kanbanList;
 //들어올 때 서버로 보내기💨
 socket.emit("join_room", planId, userName, userId, init);
 function init(placeList){
+
   // 칸반리스트 만들기
   kanbanList = new Kanban(document.querySelector(".kanban"), placeList);
 }
@@ -48,7 +49,8 @@ function receiveChattingMessage(image_url, message){
 }
 
 socket.on("server_msg", receiveSystemMessage);
-function receiveSystemMessage(name, enter){
+function receiveSystemMessage( name, enter){
+
     const message = (enter == true)? `${name}님이 입장하셨습니다` : `${name}님이 퇴장하셨습니다`;
     chattingList.addMessage(name, message, "system");
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -135,4 +137,19 @@ function moveInList(itemId, columnId, droppedIndex){
     
     insertAfter.after(droppedItemElement);
 }
+
+socket.on("current_participant", checkCurrentParticipant);
+
+
+function checkCurrentParticipant(currentParticipant){
+    currentParticipant.forEach((participantId) => {
+        console.log(participantId);
+        if(document.querySelector(`.participant [data-id="${participantId}"]`) != null){
+            document.querySelector(`.participant [data-id="${participantId}"]`).classList.remove("notattend");
+        }
+    })
+}
+
+
+
 

@@ -101,7 +101,9 @@ class DropZone {
                 const droppedIndex = dropZonesInColumn.indexOf(dropZone);
                 console.log(droppedIndex);
 
-                socket.emit("move_in_placelist", itemId, columnId, droppedIndex, planId);
+                const originColumnId = droppedItemElement.closest(".kanban__column").dataset.id;
+
+                socket.emit("move_in_placelist", itemId, originColumnId, columnId, droppedIndex, planId);
 
                 /*
                 const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
