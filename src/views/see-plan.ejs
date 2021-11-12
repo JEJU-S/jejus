@@ -172,7 +172,7 @@
                     <%}%>
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
-                            <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>
+                            <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%><button class="more-btn"><span class="material-icons">open_in_new</span></button></h3>
                             <p class="obj-adress"><%=totPlan.day_plan[day]['place'][placeIndex]['road_adr']%></p>
                         </div>
                     <%}%>

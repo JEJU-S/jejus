@@ -35,10 +35,14 @@ export function showOverall(){
     map.morph(new naver.maps.LatLng(33.400273684416305, 126.5418323465492), 10)
 }
 
+
 export function recMarkerClick(marker){
     const infoWindow = new naver.maps.InfoWindow({
-        content : `<div>info window</div>`
-
+        content : [
+        `<div class='map-info'>info window</div>`,
+        `   <h3>상호명</h3>`,
+        `   <img src='사진'>`
+        ].join('')
 
 
         

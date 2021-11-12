@@ -194,6 +194,7 @@
 
 .search-list {
   display: flex;
+  position: relative;
   flex-direction: column;
   background-color: white;
   width: 19%;
@@ -223,7 +224,7 @@
 
 .search-btn {
   width: 16% !important;
-  margin: 0 1rem 0 0;
+  margin: 0 0 0 0;
   cursor: pointer;
   border: none;
   line-height: 10%;
@@ -234,7 +235,7 @@
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  max-height: 76vh;
+  max-height: 75vh;
   margin: 10px 0;
   padding: 10px 0px;
 }
@@ -260,6 +261,18 @@
 
 .search-list ul li p {
   font-size: 0.8rem;
+}
+
+.search-list ul div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+  color: #8a8a8a;
+  width: 100%;
 }
 
 .more-btn {
@@ -317,4 +330,15 @@ textarea:focus {
 .kanban__item button,
 #regionbtn {
   background-color: rgb(29, 90, 32);
+}
+
+.clear {
+  color: #458bc6;
+  border: 1px solid #458bc6;
+  border-radius: 30px;
+  padding: 5px 2.5px;
+  width: 50px;
+  text-align: center;
+  margin: 5px 5px 5px 0;
+  font-size: 16px;
 }
