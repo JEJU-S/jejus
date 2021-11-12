@@ -5,8 +5,9 @@ var wholePlan = document.getElementsByClassName("whole-plan");
 var dayPlans = document.getElementsByClassName("day-plan"); //1 ~ n day
 
 function dayButtonClick(day) {
-  planBtns[0].style.backgroundColor = "#cccccc";
+  planBtns[0].style.backgroundColor = "#e3e3e3";
   wholePlan[0].style.display = "none";
+  planBtns[0].style.zIndex = 1;
 
   for (var i = 0; i < dayPlans.length; i++) {
     if (day == i + 1) {
@@ -14,20 +15,23 @@ function dayButtonClick(day) {
       planBtns[i + 1].style.zIndex = 10;
       dayPlans[i].style.display = "grid";
     } else {
-      planBtns[i + 1].style.backgroundColor = "#cccccc";
+      planBtns[i + 1].style.backgroundColor = "#e3e3e3";
       dayPlans[i].style.display = "none";
+      planBtns[i + 1].style.zIndex = 1;
     }
   }
 }
 
 function wholePlanClick() {
+  console.log(planBtns[0]);
   planBtns[0].style.backgroundColor = "white";
-  planBtns[0].style.zIndex = 1;
+  planBtns[0].style.zIndex = 10;
   wholePlan[0].style.display = "flex";
 
   for (var i = 0; i < dayPlans.length; i++) {
-    planBtns[i + 1].style.backgroundColor = "#cccccc";
+    planBtns[i + 1].style.backgroundColor = "#e3e3e3";
     dayPlans[i].style.display = "none";
+    planBtns[i + 1].style.zIndex = 1;
   }
 } // 초대장 전송
 
@@ -98,6 +102,9 @@ var planId = document.querySelector(".whole-plan").dataset.planid;
 document.querySelector(".edit-btn").addEventListener("click", function () {
   window.location.href = "/plans/".concat(planId, "/edit");
 });
+document.querySelector(".edit-link").addEventListener("click", function () {
+  window.location.href = "/plans/".concat(planId, "/edit");
+});
 
 if (document.querySelector(".del-btn") !== null) {
   document.querySelector(".del-btn").addEventListener("click", function () {
@@ -115,9 +122,7 @@ document.querySelectorAll(".day-map").forEach(function (dayMap) {
 
   for (var _i = 0; _i < dayPlan[day].place.length; _i++) {
     new naver.maps.Marker({
-      position: new naver.maps.LatLng(33.50088510909299, 126.52906251498592 //dayPlan[day].place[i].y,
-      //dayPlan[day].place[i].x
-      ),
+      position: new naver.maps.LatLng(dayPlan[day].place[_i].y, dayPlan[day].place[_i].x),
       map: map
     });
   }

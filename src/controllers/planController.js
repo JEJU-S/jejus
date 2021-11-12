@@ -65,8 +65,8 @@ function checktitle(tot,check){
     return x;
 }
 
-async function deletePlan(adminUser){
-    const user_DelPlan = await TotPlan.deleteOne({admin : adminUser}).lean();
+async function deletePlan(id){
+    const user_DelPlan = await TotPlan.deleteOne({_id : id}).lean();
     return user_DelPlan;
 }
 
@@ -371,7 +371,7 @@ export const del = async(req, res) => {
     });
 
     // Total Plan 삭제
-    let delete_plan = await deletePlan(adminUser)
+    let delete_plan = await deletePlan(id);
     console.log(delete_plan);
 
 
