@@ -243,7 +243,6 @@ io.on("connection", (socket) => {
             socket.emit("rec_result",rec);
         }
 
-       
     });
 
     /*****칸반리스트***/
