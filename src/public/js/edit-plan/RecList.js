@@ -8,6 +8,7 @@ const recMarkerList = [];
 const regionBackground = document.getElementById('regionplace');
 const regionSelectBtn = document.getElementById('regionbtn');
 const jejuRegion = document.getElementsByClassName("jeju-region");
+const closeBtn = document.querySelector(".region-close");
 
 regionSelectBtn.addEventListener('click', regionSelect);
 function regionSelect() {
@@ -26,6 +27,7 @@ for (let i = 0; i < jejuRegion.length; i++) {
     eachjejuRegion.addEventListener('click', closeRegionSelect);
 }
 
+closeBtn.addEventListener('click',closeRegionSelect);
 /***********************/
 
 const categoryBtns = document.querySelectorAll(".recommandation__categories");

@@ -84,6 +84,7 @@ input[type="date"]:focus {
 }
 
 .creat-btn {
+  width: 30%;
   border-radius: 30px;
   margin: auto;
   margin-top: 3vh;
@@ -92,7 +93,7 @@ input[type="date"]:focus {
   border: 2px solid #458bc6;
   background-color: #458cc600;
   border-radius: 30px;
-  padding: 6px 22px;
+  padding: 10px 22px;
   text-decoration: none;
   cursor: pointer;
 }

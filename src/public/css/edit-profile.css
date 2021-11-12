@@ -95,20 +95,20 @@ input[type="text"]:focus {
 }
 
 .edit-button {
-  width: 60%;
+  width: 40%;
   align-self: center;
   margin-top: 30px;
-  background-color: #68a9e9;
+  background-color: #68a9e900;
   padding: 10px 20px;
-  color: #fff;
+  color: #458bc6;
   text-align: center;
-  border: none;
-  border-radius: 4px;
+  border: 2px solid #458bc6;
+  border-radius: 30px;
   cursor: pointer;
 }
 
 .edit-button:hover {
-  background-color: rgb(39, 95, 141);
+  background-color: #458bc6;
   color: rgb(255, 255, 255);
   transition: 0.1s;
 }

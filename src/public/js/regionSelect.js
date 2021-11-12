@@ -1,6 +1,7 @@
 const regionBackground = document.getElementById('regionplace');
 const selectBtn = document.getElementById('regionbtn');
 const jejuRegion = document.getElementsByClassName("jeju-region");
+const closeBtn = document.getElementsByClassName("region-close");
 
 
 function regionSelect() {
@@ -18,5 +19,5 @@ for (var i = 0; i < jejuRegion.length; i++) {
     eachjejuRegion.addEventListener('click', closeRegionSelect);
 }
 
-
+closeBtn.addEventListener('click',closeRegionSelect);
 selectBtn.addEventListener('click',regionSelect);
