@@ -56,6 +56,11 @@ function getRegionSelect(event){
     document.querySelector(".category[data-category='전체']").style.backgroundColor = "#ffffff";
     document.querySelector(".category[data-category='전체']").style.color = "#20253b";
 
+    for (const marker of recMarkerList) {
+        marker.setMap(null);
+    }
+    recMarkerList.splice(0, recMarkerList.length);  
+
     //서버 전송💨
     socket.emit("rec_keyword", selectedRegion, "전체");
     
