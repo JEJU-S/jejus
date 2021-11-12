@@ -311,12 +311,27 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 }
 
 .p-obj {
+  position: relative;
   width: 400px;
   text-align: left;
   color: #272727;
   border-bottom: 2px solid black;
 }
-
+/*
+p-obj:before {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background: rgb(255, 0, 0);
+  border: 1px solid #4e5ed3;
+  box-shadow: 3px 3px 0px #bab5f8;
+  box-shadow: 3px 3px 0px #bab5f8;
+  border-radius: 50%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+*/
 .obj-name {
   display: flex;
   align-items: center;
