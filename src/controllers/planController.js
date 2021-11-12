@@ -76,22 +76,29 @@ export const seePlan = async (req, res) =>
     const {id} = req.params;
     // 접근한 여행계획 데이터 조회
     const usertotplan = await finduserPlan(id);
-    let parti = usertotplan.participants;
-    
-    console.log("접근 권한 테스트")
-    
-    if(checkath(parti,req.session.user._id)){
-        console.log("권한허용")
-        res.render(`see-plan`, {
-            user : req.session.user,
-            totPlanTitles : req.session.user.totPlan_list,
-            totPlan : usertotplan,
-            map_cl : process.env.MAP_CLIENT
-        });
+    if(usertotplan!=null)
+    {
+        let parti = usertotplan.participants;
+        console.log("접근 권한 테스트")
+        if(checkath(parti,req.session.user._id)){
+            console.log("권한허용")
+            res.render(`see-plan`, {
+                user : req.session.user,
+                totPlanTitles : req.session.user.totPlan_list,
+                totPlan : usertotplan,
+                map_cl : process.env.MAP_CLIENT
+            });
+        }
+        else{
+            console.log("접근 권한이 없습니다")
+            res.redirect(`/users/${req.session.user._id}`);
+        }
     }
     else{
+        console.log("계획이 존재하지 않습니다")
         res.redirect(`/users/${req.session.user._id}`);
     }
+    
     //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
     
 }
@@ -115,24 +122,33 @@ export const sendInvitation = async (req, res) => {
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
     console.log("초대한 유저",par_userinfo);
-    const par_id = par_userinfo._id;
-    let hostarr = par_userinfo.call_list;
-    let par_tot = par_userinfo.totPlan_list;
-    
-    if(checkcall(hostarr,totplan_title) || req.session.user._id == par_id || checktitle(par_tot , totplan_title) ){ // checkath 수정필요
-        console.log("이미 초대됨")
+    if(par_userinfo!=null)
+    {
+        const par_id = par_userinfo._id;
+        let hostarr = par_userinfo.call_list;
+        let par_tot = par_userinfo.totPlan_list;
+        
+        if(checkcall(hostarr,totplan_title) || checktitle(par_tot , totplan_title) ){ // checkath 수정필요
+            console.log("이미 초대된 회원입니다")
+        }
+        else if(req.session.user._id == par_id){
+            console.log(" 다시 입력하세요 ")
+        }
+        else{
+            User.findOne({gmail: gmail}).exec(function(err, res){
+                if(res){
+                    res.call_list.push(insert_host);
+                    res.save();
+                }
+            });
+        }
+        res.redirect(`/plans/${id}`);
     }
     else{
-        User.findOne({gmail: gmail}).exec(function(err, res){
-            if(res){
-                res.call_list.push(insert_host);
-                res.save();
-            }
-        });
+        console.log(" 다시 입력하세요 ");
+        res.redirect(`/plans/${id}`);
     }
     
-    
-    res.redirect(`/plans/${id}`);
 }
 
 export const editPlan = async (req, res) => 
@@ -298,7 +314,6 @@ export const refuse = async (req, res) => {
     res.redirect(`/plans/${id}`);
 }
 
-// admin만 삭제 가능하게 만들어야 함 아직 작업 x
 export const del = async(req, res) => {
     //삭제할 totPlan id
     const {id} = req.params;

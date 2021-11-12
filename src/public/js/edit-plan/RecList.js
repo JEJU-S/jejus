@@ -155,12 +155,13 @@ class RecItem {
 
         matchCategoryMarkerImg(category);
         this.elements.marker = createMapMarker(x, y, matchCategoryMarkerImg(category));
-        //markerlist 
         recMarkerList.push(this.elements.marker);
 
         
         this.elements.root.addEventListener("click", () => {
             this.elements.marker.setAnimation(1);
+            console.log(this.elements.marker.getZIndex());
+            this.elements.marker.setZIndex(10);
             recListClick(x, y);
             
         });     
@@ -169,10 +170,11 @@ class RecItem {
                 {
                     this.elements.marker.setAnimation(null);
                 }
+                this.elements.marker.setZIndex(null);
         }); 
         
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
-            recMarkerClick(x, y);
+            recMarkerClick(this.elements.marker);
         })
         
 

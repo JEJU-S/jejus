@@ -223,23 +223,30 @@ var seePlan = /*#__PURE__*/function () {
 
           case 3:
             usertotplan = _context.sent;
-            parti = usertotplan.participants;
-            console.log("접근 권한 테스트");
 
-            if (checkath(parti, req.session.user._id)) {
-              console.log("권한허용");
-              res.render("see-plan", {
-                user: req.session.user,
-                totPlanTitles: req.session.user.totPlan_list,
-                totPlan: usertotplan,
-                map_cl: process.env.MAP_CLIENT
-              });
+            if (usertotplan != null) {
+              parti = usertotplan.participants;
+              console.log("접근 권한 테스트");
+
+              if (checkath(parti, req.session.user._id)) {
+                console.log("권한허용");
+                res.render("see-plan", {
+                  user: req.session.user,
+                  totPlanTitles: req.session.user.totPlan_list,
+                  totPlan: usertotplan,
+                  map_cl: process.env.MAP_CLIENT
+                });
+              } else {
+                console.log("접근 권한이 없습니다");
+                res.redirect("/users/".concat(req.session.user._id));
+              }
             } else {
+              console.log("계획이 존재하지 않습니다");
               res.redirect("/users/".concat(req.session.user._id));
             } //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
 
 
-          case 7:
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -290,27 +297,35 @@ var sendInvitation = /*#__PURE__*/function () {
           case 14:
             par_userinfo = _context2.sent;
             console.log("초대한 유저", par_userinfo);
-            par_id = par_userinfo._id;
-            hostarr = par_userinfo.call_list;
-            par_tot = par_userinfo.totPlan_list;
 
-            if (checkcall(hostarr, totplan_title) || req.session.user._id == par_id || checktitle(par_tot, totplan_title)) {
-              // checkath 수정필요
-              console.log("이미 초대됨");
+            if (par_userinfo != null) {
+              par_id = par_userinfo._id;
+              hostarr = par_userinfo.call_list;
+              par_tot = par_userinfo.totPlan_list;
+
+              if (checkcall(hostarr, totplan_title) || checktitle(par_tot, totplan_title)) {
+                // checkath 수정필요
+                console.log("이미 초대된 회원입니다");
+              } else if (req.session.user._id == par_id) {
+                console.log(" 다시 입력하세요 ");
+              } else {
+                _User.User.findOne({
+                  gmail: gmail
+                }).exec(function (err, res) {
+                  if (res) {
+                    res.call_list.push(insert_host);
+                    res.save();
+                  }
+                });
+              }
+
+              res.redirect("/plans/".concat(id));
             } else {
-              _User.User.findOne({
-                gmail: gmail
-              }).exec(function (err, res) {
-                if (res) {
-                  res.call_list.push(insert_host);
-                  res.save();
-                }
-              });
+              console.log(" 다시 입력하세요 ");
+              res.redirect("/plans/".concat(id));
             }
 
-            res.redirect("/plans/".concat(id));
-
-          case 21:
+          case 17:
           case "end":
             return _context2.stop();
         }
@@ -637,8 +652,7 @@ var refuse = /*#__PURE__*/function () {
   return function refuse(_x16, _x17) {
     return _ref6.apply(this, arguments);
   };
-}(); // admin만 삭제 가능하게 만들어야 함 아직 작업 x
-
+}();
 
 exports.refuse = refuse;
 

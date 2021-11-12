@@ -1,6 +1,9 @@
 import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
 
 /*****************************************************************/
+
+const searchMarkerList = [];
+
 class PlaceItem {
     constructor(place_name, road_address_name, place_url, x, y){
         this.elements = {};
@@ -19,6 +22,9 @@ class PlaceItem {
         this.elements.moreButton.textContent = "더보기"
         this.elements.moreButton.classList = "more-btn";
 
+        this.elements.marker = createMapMarker(x, y , "marker-search");
+        searchMarkerList.push(this.elements.marker);
+
 
         this.elements.moreButton.addEventListener("click", (event) => {
             window.open(place_url);
@@ -26,21 +32,24 @@ class PlaceItem {
         });
         // 마우스가 올라갈 시 맵에 띄워줌 mouseenter
         this.elements.root.addEventListener("click", () => {
+            /*
             if(this.elements.marker != undefined){
                 removeMapMarker(this.elements.marker);
-            }
-            this.elements.marker = createMapMarker(x, y , "marker-search");
+            }*/
             mapPanToBound(x, y);
         });
 
+        /*
         this.elements.root.addEventListener("mouseleave", () => {
           if(this.elements.marker != undefined){
             removeMapMarker(this.elements.marker);
           }
         });
+        */
 
         this.elements.root.addEventListener("dragstart", event => {
             //map 마커 지워준다 => item 마커로 바뀌게
+            
             if(this.elements.marker != undefined){
               removeMapMarker(this.elements.marker);
             }
@@ -75,6 +84,10 @@ export default class SearchList {
         
         this.root = root;
         this.deleteItems();
+        for (const marker of searchMarkerList) {
+            marker.setMap(null);
+        }
+        searchMarkerList.splice(0, searchMarkerList.length);  
 
         placeList.forEach((place) => {
             this.renderItem(place);
