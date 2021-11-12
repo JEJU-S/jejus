@@ -21,15 +21,7 @@ export function createMapMarker(lon, lat, image){
 }
 
 export function mapPanToBound(lon, lat){
-    /*
-    const position = new naver.maps.LatLngBounds(
-        new naver.maps.LatLng(Number(lat) + 0.1, Number(lon) - 0.1),
-        new naver.maps.LatLng(Number(lat) - 0.1, Number(lon) + 0.1)
-    )
-    new naver.maps.LatLng(lat - 0.1, lon + 0.1)
-    
-    map.panToBounds(position);
-    */
+
     map.morph(new naver.maps.LatLng(lat, lon), 12);
 }
 
@@ -39,21 +31,38 @@ export function removeMapMarker(marker){
 }
 
 export function showOverall(){
-    //map.setZoom(10);
-    //map.updateBy(coord, 10);
-    //
+
     map.morph(new naver.maps.LatLng(33.400273684416305, 126.5418323465492), 10)
 }
 
-export function recMarkerClick(lon, lat){
-    map.morph(new naver.maps.LatLng(lat , lon), 14);
+export function recMarkerClick(marker){
+    const infoWindow = new naver.maps.InfoWindow({
+        content : `<div>info window</div>`
 
 
+
+        
+    });
+
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }else{
+        infoWindow.open(map, marker);
+    }
+    map.panTo(marker.getPosition());
+    //map.morph(marker.getPosition(), 14);
 }
 
 export function recListClick(lon, lat){
     map.panTo(new naver.maps.LatLng(lat , lon));
+    //map.morph(new naver.maps.LatLng(lat , lon), 14);
+    
 }
+
+
+
+
+
 
 
 
