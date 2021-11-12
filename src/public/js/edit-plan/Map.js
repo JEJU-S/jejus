@@ -59,6 +59,26 @@ export function recListClick(lon, lat){
     
 }
 
+export function listClick(marker){
+    map.panTo(marker.getPosition());
+}
+
+export function searchMarkerClick(marker){
+    const infoWindow = new naver.maps.InfoWindow({
+        content : `<div>info window</div>`
+
+
+
+        
+    });
+    console.log("**", infoWindow);
+    if(infoWindow.map){
+        infoWindow.close();
+    }else{
+        infoWindow.open(map, marker);
+    }
+    map.panTo(marker.getPosition());
+}
 
 
 

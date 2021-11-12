@@ -1,5 +1,5 @@
 import {socket, planId} from "./communicate.js"
-import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
+import {createMapMarker, removeMapMarker, mapPanToBound, listClick} from "/public/js/edit-plan/Map.js";
 
 export const mapMarkerList = [];
 
@@ -48,13 +48,6 @@ class DropZone {
                 console.log(newPlace); 
                
 
-                // DB에서 place item으로 부여해준다*************
-                //addPlaceToKanbanList(id, name, road_adr, x, y, map_link);
-                //진짜 아이디 넣어 주면 됨
-                //const newItem = this.addPlaceToKanbanList("507f191e810c19729de860ab", newPlace.name, newPlace.road_adr, newPlace.x, newPlace.y, newPlace.map_link);
-                
-                //droppedItemElement = newItem.elements.root;
-
                 const columnElement = dropZone.closest(".kanban__column");
                 const columnId = columnElement.dataset.id;
                 const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
@@ -95,8 +88,6 @@ class DropZone {
                 const columnElement = dropZone.closest(".kanban__column");
                 const columnId = columnElement.dataset.id;
 
-                //console.log("columnElement :", columnElement);
-                //console.log("columnId :", columnId);
                 const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
                 const droppedIndex = dropZonesInColumn.indexOf(dropZone);
                 console.log(droppedIndex);
@@ -146,7 +137,8 @@ export class Item {
         this.elements.root.dataset.map_link = map_link;
         
         //**** */
-        mapMarkerList.push(new MapMarker(this.elements.root.dataset.id, x, y));
+        const mapMarker = new MapMarker(this.elements.root.dataset.id, x, y);
+        mapMarkerList.push(mapMarker);
         console.log(mapMarkerList);
         //this.elements.marker = createMapMarker(x, y);
 
@@ -197,7 +189,7 @@ export class Item {
         })
 
         this.elements.root.addEventListener("click", event => {
-            mapPanToBound(this.elements.root.dataset.x, this.elements.root.dataset.y);
+            listClick(mapMarker.marker);
         })
     }
 

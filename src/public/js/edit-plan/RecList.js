@@ -62,11 +62,11 @@ function getRegionSelect(event){
         marker.setMap(null);
     }
     recMarkerList.splice(0, recMarkerList.length);  
-
     //서버 전송💨
     socket.emit("rec_keyword", selectedRegion, "전체");
-    
 }
+
+
 
 // 카테고리 고르기
 function selectCategory(event){
@@ -175,9 +175,8 @@ class RecItem {
         
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
             recMarkerClick(this.elements.marker);
+            this.elements.root.scrollIntoView({behavior : 'smooth'});
         })
-        
-
     }
 
     static createRoot(){
@@ -244,5 +243,4 @@ socket.on("rec_result", showRecResult);
 function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
     showOverall();
-
 }

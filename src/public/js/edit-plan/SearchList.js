@@ -1,4 +1,4 @@
-import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
+import {createMapMarker, removeMapMarker, mapPanToBound, listClick, searchMarkerClick} from "/public/js/edit-plan/Map.js";
 
 /*****************************************************************/
 
@@ -16,7 +16,6 @@ class PlaceItem {
         this.elements.roadAdr.textContent = road_address_name;
         this.elements.root.dataset.x = x;
         this.elements.root.dataset.y = y;
-
 
 		this.elements.moreButton = this.elements.root.querySelector("button");
         this.elements.moreButton.textContent = "더보기"
@@ -36,7 +35,7 @@ class PlaceItem {
             if(this.elements.marker != undefined){
                 removeMapMarker(this.elements.marker);
             }*/
-            mapPanToBound(x, y);
+            listClick(this.elements.marker);
         });
 
         /*
@@ -46,6 +45,14 @@ class PlaceItem {
           }
         });
         */
+
+        naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
+            
+            searchMarkerClick(this.elements.marker);
+            this.elements.root.scrollIntoView({behavior : 'smooth'});
+            
+        })
+
 
         this.elements.root.addEventListener("dragstart", event => {
             //map 마커 지워준다 => item 마커로 바뀌게
@@ -63,6 +70,8 @@ class PlaceItem {
                 map_link : place_url,
             }));
         });
+
+       
     }   
 
     static createRoot(){
@@ -87,6 +96,7 @@ export default class SearchList {
         for (const marker of searchMarkerList) {
             marker.setMap(null);
         }
+
         searchMarkerList.splice(0, searchMarkerList.length);  
 
         placeList.forEach((place) => {
