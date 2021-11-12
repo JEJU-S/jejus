@@ -112,16 +112,21 @@
                 </div>
                 <div class="plan-info">
                     <div class="date">
-                        <span>
-                        <%=totPlan.day_plan[0].date.getFullYear()%>년 
-                        <%=totPlan.day_plan[0].date.getMonth() + 1%>월 
-                        <%=totPlan.day_plan[0].date.getDate()%>일 
-                        </span>
-                        <span>
-                        <%=totPlan.day_plan[day-1].date.getFullYear()%>년
-                        <%=totPlan.day_plan[day-1].date.getMonth() + 1%>년
-                        <%=totPlan.day_plan[day-1].date.getDate()%>일
-                        </span>
+                        <div>
+                            <span>
+                                <%=totPlan.day_plan[0].date.getFullYear()%>년 
+                                <%=totPlan.day_plan[0].date.getMonth() + 1%>월 
+                                <%=totPlan.day_plan[0].date.getDate()%>일 
+                            </span>
+                        </div>
+                            /
+                        <div>
+                            <span>
+                                <%=totPlan.day_plan[day-1].date.getFullYear()%>년
+                                <%=totPlan.day_plan[day-1].date.getMonth() + 1%>년
+                                <%=totPlan.day_plan[day-1].date.getDate()%>일
+                            </span>
+                        </div>
                     </div>
                 <!--total-map(전체 경로 마커) 처리 부분-->
                     <div id="total-map" data-dayplan="<%=JSON.stringify(totPlan.day_plan)%>"></div>
@@ -163,7 +168,7 @@
 
                 <div class="place-object"><!--class명 다시 바꾸면 좋겠다-->
                     <%if(totPlan.day_plan[day]['place'].length === 0){%>
-                    <span>아직 세부 계획이 없어요.. 새 계획을 추가해보세요!</span>
+                    <span>아직 세부 계획이 없어요.. <a class="edit-link">새 계획</a>을 추가해보세요!</span>
                     <%}%>
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">

@@ -205,6 +205,12 @@ main {
   background-color: #0173bc;
 }
 
+.create-plan-link {
+  background-color: #dfdfdf;
+  border-radius: 5px;
+  padding: 0 4px;
+  color: #0173bc;
+}
 /*
 .accept,
 .refuse,

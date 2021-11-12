@@ -198,6 +198,10 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   font-size: 1.3rem;
 }
 
+.date div {
+  display: inline-block;
+}
+
 .btns {
   grid-area: btns;
 }
@@ -327,4 +331,12 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 .obj-memo {
   margin-left: 13px;
   padding: 17px 0px;
+}
+
+.edit-link {
+  background-color: #dfdfdf;
+  border-radius: 5px;
+  padding: 0 4px;
+  color: #0173bc;
+  cursor: pointer;
 }

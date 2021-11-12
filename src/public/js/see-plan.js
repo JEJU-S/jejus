@@ -115,6 +115,9 @@ const planId = document.querySelector(".whole-plan").dataset.planid;
 document.querySelector(".edit-btn").addEventListener("click", () => {
     window.location.href = `/plans/${planId}/edit`;
 });
+document.querySelector(".edit-link").addEventListener("click", () => {
+    window.location.href = `/plans/${planId}/edit`;
+});
 
 
 

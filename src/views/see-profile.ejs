@@ -117,7 +117,7 @@
                         <ul>
                             <%if(user.call_list.length === 0){%>
                             <li>
-                                <span>아직 초대장이 없어요. 새 여행을 계획해보세요 !</span>
+                                <span>아직 초대장이 없어요. <a href="/plans/create" class="create-plan-link">새 여행</a>을 계획해보세요 !</span>
                             </li>
                             <%}%>
                             <%user.call_list.forEach((list) => {%>
