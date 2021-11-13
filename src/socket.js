@@ -164,8 +164,9 @@ io.on("connection", (socket) => {
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
         let PL = placeList.day_plan;
-        console.log(PL)
-        socket.to(PL).emit("server_msg", userName, true);
+        console.log(PL);
+        
+        socket.to(planId).emit("server_msg", userName, true);
         init(PL);
     });
     /*****채팅 메시지***/

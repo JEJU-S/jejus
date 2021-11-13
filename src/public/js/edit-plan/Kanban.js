@@ -138,6 +138,8 @@ export class Item {
         
         //**** */
         const mapMarker = new MapMarker(this.elements.root.dataset.id, x, y);
+        mapMarker.marker.setZIndex(99);
+
         mapMarkerList.push(mapMarker);
         console.log(mapMarkerList);
         //this.elements.marker = createMapMarker(x, y);
@@ -191,6 +193,10 @@ export class Item {
         this.elements.root.addEventListener("click", event => {
             listClick(mapMarker.marker);
         })
+        
+
+
+
     }
 
     static createRoot(){

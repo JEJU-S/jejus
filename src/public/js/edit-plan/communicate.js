@@ -11,6 +11,7 @@ export const planId = document.querySelector("#plan-id").innerHTML;
 const userName = document.querySelector("#user-name").innerHTML;
 const image_url = document.querySelector("#user-image").innerHTML;
 const userId = document.querySelector("#user-id").innerHTML;
+
 /**************************************/
 
 let kanbanList;
@@ -49,8 +50,8 @@ function receiveChattingMessage(image_url, message){
 }
 
 socket.on("server_msg", receiveSystemMessage);
-function receiveSystemMessage( name, enter){
-
+function receiveSystemMessage(name, enter){
+    console.log("***************");
     const message = (enter == true)? `${name}님이 입장하셨습니다` : `${name}님이 퇴장하셨습니다`;
     chattingList.addMessage(name, message, "system");
     chatBox.scrollTop = chatBox.scrollHeight;
