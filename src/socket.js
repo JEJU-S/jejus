@@ -146,7 +146,7 @@ async function sendCurrentParticipant(planId, socket){
 }
 
 
-
+//******************socket ****/
 io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
@@ -160,9 +160,7 @@ io.on("connection", (socket) => {
         socket["userName"] = userName;
         socket["userId"] = userId;
         console.log(socket.rooms); 
-        
         sendCurrentParticipant(planId, socket);
-        console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
         let PL = placeList.day_plan;
@@ -174,7 +172,8 @@ io.on("connection", (socket) => {
     /*****채팅 메시지***/
 
     socket.on("send_chatting_msg", (image_url, message, planId) => {
-        socket.to(planId).emit("incomming_chatting_msg", image_url, message);
+        socket.to(planId).except(socket.userId).emit("incomming_chatting_msg", image_url, message);
+        socket.to(socket.userId).emit("outgoing_chatting_msg", message);
         //socket.nsp.to(room).emit(event) => nsp 문서 확인 후 적용
     })
     /*****검색 리스트*/
@@ -391,10 +390,13 @@ io.on("connection", (socket) => {
     })
 
     socket.on("disconnecting", (reason) => {
-        socket.rooms.forEach(room => {
-            socket.to(room).emit("server_msg", socket.userName, false);
-            socket.to(room).emit("disconnecting_user", socket.userId);
+        const userCon = io.sockets.adapter.rooms.get(socket.userId);
+        if(userCon.size <= 1){
+            socket.rooms.forEach(room => {  
+                socket.to(room).emit("server_msg", socket.userName, false);
+                socket.to(room).emit("disconnecting_user", socket.userId);
         });
+        }
     });
 });
 

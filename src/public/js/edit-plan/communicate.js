@@ -42,6 +42,13 @@ function sendChattingMessage(event){
     input.value = "";
 }
 
+socket.on("outgoing_chatting_msg", recieveMyOwnMessage);
+
+function recieveMyOwnMessage(message){
+    chattingList.addMessage("", message, "outgoing");
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
 // server side에서 전달 받을 때 사용할 함수
 socket.on("incomming_chatting_msg", receiveChattingMessage);
 function receiveChattingMessage(image_url, message){
