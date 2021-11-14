@@ -152,9 +152,22 @@ function checkCurrentParticipant(currentParticipant){
 }
 
 document.querySelector("#save").addEventListener("click", () => {
-    
+    //socket leave room
+
+
     window.location.href = `/plans/${planId}`;
 })
+
+
+socket.on("disconnecting_user", checkDisconnectingUser);
+
+function checkDisconnectingUser(userId){
+    if(document.querySelector(`.participant [data-id="${userId}"]`) != null){
+        document.querySelector(`.participant [data-id="${userId}"]`).classList.add("notattend");
+    }
+
+} 
+
 
 
 

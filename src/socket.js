@@ -133,9 +133,11 @@ async function sendSearchResults(keyword, socket){
 async function sendCurrentParticipant(planId, socket){
     const clientsInRoom = await io.in(planId).fetchSockets();
     const currentParticipant = [];
-    
+    console.log("****************");
+    console.log("room id : ", planId);
     clientsInRoom.forEach((user) => {
-        console.log(user.userId); 
+        console.log(user.userName, " : ", user.userId);
+        console.log("********"); 
         currentParticipant.push(user.userId);
     })
     //socket.nsp.to(planId).emit("current_participant", currentParticipant);
@@ -382,12 +384,23 @@ io.on("connection", (socket) => {
 
         TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: dPL } }).exec();
 
-        //**DB 작업 필요 */
+        
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
         //socket.emit("delete_from_list", itemId);
     })
+
+    socket.on("disconnecting", (reason) => {
+        socket.rooms.forEach(room => {
+            socket.to(room).emit("server_msg", socket.userName, false);
+            socket.to(room).emit("disconnecting_user", socket.userId);
+        });
+    });
 });
+
+
+
+
 
 export default server;
 
