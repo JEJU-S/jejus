@@ -53,14 +53,7 @@ function getRegionSelect(event){
     })
 
     document.querySelector(".category[data-category='전체']").style.backgroundColor = "#ffffff";
-    document.querySelector(".category[data-category='전체']").style.color = "#20253b";
-
-    for (const marker of recMarkers) {
-        marker.setMap(null);
-    }
-
-    recMarkers.splice(0, recMarkers.length);  
-    console.log(recMarkers);    
+    document.querySelector(".category[data-category='전체']").style.color = "#20253b"; 
     
     //서버 전송💨
     socket.emit("rec_keyword", selectedRegion, "전체");
@@ -80,7 +73,6 @@ async function selectCategory(event)
     
     document.querySelector(".recommandation__list").textContent = "";
     /****** */
-    await removeMarkersFromMap(recMarkers);
 
     if(selectedCategory.style.backgroundColor === "rgb(255, 255, 255)"){
         selectedCategory.style.backgroundColor = "#20253b";
@@ -210,6 +202,12 @@ class RecList {
     constructor(root, placeList){
         this.root = root;
         this.deleteItems();
+
+        for (const marker of recMarkers) {
+            marker.setMap(null);
+        }
+        recMarkers.splice(0, recMarkers.length);  
+        console.log(recMarkers);  
 
         placeList.forEach((place) => {
             this.renderItem(place);

@@ -94,7 +94,6 @@ export async function removeMarkersFromMap(markers){
     console.log(markers); 
 }
 
-
 /*
 naver.maps.Event.addListener(map, 'zoom_changed', () => {
     updateMarkers(recMarkers);
@@ -107,11 +106,12 @@ naver.maps.Event.addListener(map, 'dragend', () => {
 function updateMarkers(markers){
     const mapBound = map.getBounds();
     console.log(mapBound);
+
     let position;
     console.log(markers);
     recMarkers.forEach((marker) => {
         position = marker.getPosition();
-        
+
         if(mapBound.hasLatLing(position)) {
             showMarker(marker);
         }else{
