@@ -1,3 +1,4 @@
+
 //map init
  const mapOptions = {
     center : new naver.maps.LatLng(33.38722505430828, 126.54036671675767),
@@ -40,13 +41,15 @@ export function showOverall(){
 export function recMarkerClick(marker){
     const infoWindow = new naver.maps.InfoWindow({
         content : [
-        `<div class='map-info'>info window</div>`,
-        `   <h3>상호명</h3>`,
-        `   <img src='사진'>`
-        ].join('')
+        `<div class='map-info'>`,
+        `   <img src=''>`,
+        `   <div><h3>상호명</h3>`,
+        `   <p>주소</p></div></div>`
+        ].join(''),
+        backgroundColor: "#00000000",
+        borderWidth: 0,
+        disableAnchor: true
 
-
-        
     });
 
     if(infoWindow.getMap()){
@@ -70,10 +73,15 @@ export function listClick(marker){
 
 export function searchMarkerClick(marker){
     const infoWindow = new naver.maps.InfoWindow({
-        content : `<div>info window</div>`
-
-
-
+        content : [
+        `<div class='map-info'>`,
+        `   <img src='사진'>`,
+        `   <div><h3>상호명</h3>`,
+        `   <p>주소</p></div>`
+        ].join(''),
+        backgroundColor: "#00000000",
+        borderWidth: 0,
+        disableAnchor: true
         
     });
     
