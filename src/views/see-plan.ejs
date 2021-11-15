@@ -35,7 +35,7 @@
         </div>
         <header>
             <div class="logo-box">
-                <a href="/users/<%=user._id%>"><img src="/public/images/logo-wt.png" alt="logo" class="logo"></a>
+                <a href="/users/<%=user._id%>"><img src="/public/images/logo.png" alt="logo" class="logo"></a>
             </div>
         </header>
         <div class="sidebar"> <!--사이드 바-->
@@ -172,7 +172,7 @@
                     <%}%>
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
-                            <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%></h3>
+                            <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%><button class="more-btn"><span class="material-icons">open_in_new</span></button></h3>
                             <p class="obj-adress"><%=totPlan.day_plan[day]['place'][placeIndex]['road_adr']%></p>
                         </div>
                     <%}%>

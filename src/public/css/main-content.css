@@ -63,7 +63,7 @@
 }
 
 #regionbtn {
-  color: white;
+  color: #383838;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -194,6 +194,7 @@
 
 .search-list {
   display: flex;
+  position: relative;
   flex-direction: column;
   background-color: white;
   width: 19%;
@@ -210,20 +211,33 @@
 }
 
 #search-form input {
-  padding: 20px 10px;
+  padding: 20px 15px;
   width: 80%;
   border-top: none;
   border-left: none;
   border-right: none;
   border-bottom: 3px solid black;
   border-radius: 0;
-  margin: 0 0 0 1rem;
-  background-color: whitesmoke;
+  background-color: inherit;
+}
+
+input[type="text"]:focus {
+  border: none;
+  outline: none;
 }
 
 .search-btn {
   width: 16% !important;
-  margin: 0 1rem 0 0;
+  margin: 0 0 0 0;
+  cursor: pointer;
+  border: none;
+  line-height: 10%;
+  background-color: whitesmoke;
+}
+
+.clear-btn {
+  width: 16% !important;
+  margin: 0 0 0 0;
   cursor: pointer;
   border: none;
   line-height: 10%;
@@ -234,7 +248,7 @@
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  max-height: 76vh;
+  max-height: 75vh;
   margin: 10px 0;
   padding: 10px 0px;
 }
@@ -260,6 +274,18 @@
 
 .search-list ul li p {
   font-size: 0.8rem;
+}
+
+.search-list ul div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  align-self: center;
+  justify-self: center;
+  color: #8a8a8a;
+  width: 100%;
 }
 
 .more-btn {
@@ -298,23 +324,18 @@
   transition: 0.1s;
 }
 
-input[type="text"]:focus {
-  border-color: rgb(29, 142, 255);
-  background-color: rgb(241, 248, 255);
-  border: none;
-  outline: none;
-}
-
 textarea:focus {
   border-color: rgb(29, 142, 255);
   background-color: rgb(241, 248, 255);
   border: none;
   outline: none;
+  border-bottom: 1px solid #00000000;
+  border-top: 1px solid #0000001f;
 }
 
 .kanban__item-name,
 .kanban__item-road_adr,
 .kanban__item button,
 #regionbtn {
-  background-color: rgb(29, 90, 32);
+  background-color: #d0efff;
 }

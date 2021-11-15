@@ -86,7 +86,7 @@ main {
   position: relative;
   background-color: rgb(255, 255, 255);
   grid-area: main;
-  margin: 40px 60px;
+  margin: 25px 60px;
   border-radius: 0 5px 5px 5px;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 19%);
   height: auto;
@@ -98,7 +98,7 @@ main {
   display: flex;
   flex-direction: row;
   text-align: center;
-  margin: 45px 0 0 60px;
+  margin: 30px 0 0 60px;
 }
 
 .btn {
@@ -150,7 +150,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   position: relative;
   grid-area: par;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
   width: 85%;
   height: 100%;
@@ -158,7 +158,7 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   border-radius: 15px;
   align-self: baseline;
   border-radius: 10px;
-  background-color: aliceblue;
+  background-color: #f7f7f7;
   overflow: scroll;
 }
 
@@ -183,8 +183,8 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 .userimg {
   display: inline-block;
-  width: 5vh;
-  height: 5vh;
+  width: 7vh;
+  height: 7vh;
   border-radius: 50%;
   object-fit: cover;
   overflow: hidden;
@@ -208,13 +208,14 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 .edit-btn {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 80px;
   height: 40px;
   color: green;
   font-size: 1.2rem;
-  border: none;
-  border-bottom: 3px solid green;
+  border: 1px solid green;
+  border-radius: 30px;
   background-color: rgba(0, 128, 0, 0);
   margin: 15px;
   cursor: pointer;
@@ -237,12 +238,13 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 .inv-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 80px;
   height: 40px;
   color: rgb(255, 177, 32);
   font-size: 1.2rem;
-  border: none;
-  border-bottom: 3px solid rgb(255, 177, 32);
+  border: 1px solid rgb(255, 177, 32);
+  border-radius: 30px;
   background-color: rgba(0, 128, 0, 0);
   margin: 15px;
   cursor: pointer;
@@ -297,7 +299,6 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   height: auto;
   gap: 15px;
   max-height: 67vh;
@@ -310,10 +311,26 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 }
 
 .p-obj {
+  position: relative;
   width: 400px;
   text-align: left;
   color: #272727;
   border-bottom: 2px solid black;
+}
+
+p-obj:before {
+  content: "";
+  position: absolute;
+  left: 0%;
+  top: 30%;
+  width: 0;
+  height: 0;
+  border: 8px solid transparent;
+  border-right-color: rgb(0, 136, 255);
+  border-left: 0;
+  border-top: 0;
+  margin-top: -4px;
+  margin-left: -8px;
 }
 
 .obj-name {
@@ -337,6 +354,19 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   background-color: #dfdfdf;
   border-radius: 5px;
   padding: 0 4px;
-  color: #0173bc;
+  color: #1c7e10;
+  border: 1px solid #1c7e101a;
   cursor: pointer;
+}
+
+.more-btn {
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: none;
+  float: right;
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+.more-btn:hover {
+  color: rgb(110, 110, 110);
 }
