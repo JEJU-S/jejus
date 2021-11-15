@@ -307,6 +307,47 @@ input[type="text"]:focus {
   border-radius: 5px;
 }
 
+.map-info {
+  display: flex;
+  flex-direction: row;
+  width: 200px;
+  height: 50px;
+  background: rgba(0, 0, 0, 0.658);
+  align-items: center;
+  margin-bottom: 15px;
+  border-radius: 5px;
+}
+
+.map-info:after {
+  content: "";
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.658);
+  border-bottom: 0;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
+
+.map-info img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.map-info h3,
+p {
+  color: white;
+  margin: 0 !important;
+  margin-left: 10px !important;
+}
+
 #save {
   font-size: 1.3rem;
   color: #458bc6;
