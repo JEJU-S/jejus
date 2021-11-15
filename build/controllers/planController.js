@@ -184,7 +184,7 @@ function deletePlan(_x5) {
 
 
 function _deletePlan() {
-  _deletePlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(adminUser) {
+  _deletePlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(id) {
     var user_DelPlan;
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
@@ -192,7 +192,7 @@ function _deletePlan() {
           case 0:
             _context12.next = 2;
             return _TotPlan.TotPlan.deleteOne({
-              admin: adminUser
+              _id: id
             }).lean();
 
           case 2:
@@ -742,7 +742,7 @@ var del = /*#__PURE__*/function () {
 
 
             _context7.next = 23;
-            return deletePlan(adminUser);
+            return deletePlan(id);
 
           case 23:
             delete_plan = _context7.sent;
