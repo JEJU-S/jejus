@@ -47,7 +47,7 @@ class PlaceItem {
 
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
             
-            searchMarkerClick(this.elements.marker);
+            searchMarkerClick(this.elements.marker, place_name, road_address_name);
             this.elements.root.scrollIntoView({behavior : 'smooth'});
             
         })

@@ -38,13 +38,13 @@ export function showOverall(){
 }
 
 
-export function recMarkerClick(marker){
+export function recMarkerClick(marker, category, place_name, road_address_name, image_url){
     const infoWindow = new naver.maps.InfoWindow({
         content : [
         `<div class='map-info'>`,
-        `   <img src=''>`,
-        `   <div><h3>상호명</h3>`,
-        `   <p>주소</p></div></div>`
+        `   <img src=${image_url}>`,
+        `   <div><h3>${place_name}</h3>`,
+        `   <p>${road_address_name}</p></div></div>`
         ].join(''),
         backgroundColor: "#00000000",
         borderWidth: 0,
@@ -71,13 +71,12 @@ export function listClick(marker){
     map.panTo(marker.getPosition());
 }
 
-export function searchMarkerClick(marker){
+export function searchMarkerClick(marker, place_name, road_address_name){
     const infoWindow = new naver.maps.InfoWindow({
         content : [
         `<div class='map-info'>`,
-        `   <img src='사진'>`,
-        `   <div><h3>상호명</h3>`,
-        `   <p>주소</p></div>`
+        `   <div><h3>${place_name}</h3>`,
+        `   <p>${road_address_name}</p></p></div>`
         ].join(''),
         backgroundColor: "#00000000",
         borderWidth: 0,

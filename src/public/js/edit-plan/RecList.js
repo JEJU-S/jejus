@@ -172,7 +172,7 @@ class RecItem {
         }); 
         
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
-            recMarkerClick(this.elements.marker);
+            recMarkerClick(this.elements.marker, category, place_name, road_address_name, image_url);
             this.elements.root.scrollIntoView({behavior : 'smooth'});
         })
     }
