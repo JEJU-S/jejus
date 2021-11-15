@@ -1,8 +1,7 @@
 
 import {socket} from "./communicate.js";
-import {createMapMarker, recMarkerClick, recListClick, removeMapMarker, mapPanToBound, showOverall} from "/public/js/edit-plan/Map.js";
-
-const recMarkerList = [];
+import {createMapMarker, recMarkerClick, recListClick, showOverall, removeMarkersFromMap} from "./Map.js";
+import { recMarkers } from "./Map.js";
 /******************************** */
 
 const regionBackground = document.getElementById('regionplace');
@@ -48,8 +47,6 @@ function getRegionSelect(event){
 
     document.querySelector("#region").textContent = selectedRegion;
 
-
-    
     document.querySelectorAll(".category").forEach((btn) => {
         btn.style.backgroundColor = "#20253b";
         btn.style.color = "#ffffff";
@@ -58,27 +55,32 @@ function getRegionSelect(event){
     document.querySelector(".category[data-category='전체']").style.backgroundColor = "#ffffff";
     document.querySelector(".category[data-category='전체']").style.color = "#20253b";
 
-    for (const marker of recMarkerList) {
+    for (const marker of recMarkers) {
         marker.setMap(null);
     }
-    recMarkerList.splice(0, recMarkerList.length);  
 
+    recMarkers.splice(0, recMarkers.length);  
+    console.log(recMarkers);    
+    
     //서버 전송💨
     socket.emit("rec_keyword", selectedRegion, "전체");
-    
 }
 
+
+
 // 카테고리 고르기
-function selectCategory(event){
+async function selectCategory(event)
+{
+    console.log(event.target);
+    if(event.target.closest('div').dataset.category == null){
+        return;
+    }    
     const category = event.target.closest('div').dataset.category;
-    console.log(category);
     const selectedCategory = document.querySelector(`.category[data-category=${category}]`);
     
     document.querySelector(".recommandation__list").textContent = "";
-    for (const marker of recMarkerList) {
-        marker.setMap(null);
-    }
-    recMarkerList.splice(0, recMarkerList.length);   
+    /****** */
+    await removeMarkersFromMap(recMarkers);
 
     if(selectedCategory.style.backgroundColor === "rgb(255, 255, 255)"){
         selectedCategory.style.backgroundColor = "#20253b";
@@ -155,7 +157,7 @@ class RecItem {
 
         matchCategoryMarkerImg(category);
         this.elements.marker = createMapMarker(x, y, matchCategoryMarkerImg(category));
-        recMarkerList.push(this.elements.marker);
+        recMarkers.push(this.elements.marker);
 
         
         this.elements.root.addEventListener("click", () => {
@@ -175,9 +177,8 @@ class RecItem {
         
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
             recMarkerClick(this.elements.marker);
+            this.elements.root.scrollIntoView({behavior : 'smooth'});
         })
-        
-
     }
 
     static createRoot(){
@@ -244,5 +245,4 @@ socket.on("rec_result", showRecResult);
 function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
     showOverall();
-
 }

@@ -133,9 +133,11 @@ async function sendSearchResults(keyword, socket){
 async function sendCurrentParticipant(planId, socket){
     const clientsInRoom = await io.in(planId).fetchSockets();
     const currentParticipant = [];
-    
+    console.log("****************");
+    console.log("room id : ", planId);
     clientsInRoom.forEach((user) => {
-        console.log(user.userId); 
+        console.log(user.userName, " : ", user.userId);
+        console.log("********"); 
         currentParticipant.push(user.userId);
     })
     //socket.nsp.to(planId).emit("current_participant", currentParticipant);
@@ -144,7 +146,7 @@ async function sendCurrentParticipant(planId, socket){
 }
 
 
-
+//******************socket ****/
 io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
@@ -158,20 +160,20 @@ io.on("connection", (socket) => {
         socket["userName"] = userName;
         socket["userId"] = userId;
         console.log(socket.rooms); 
-        
         sendCurrentParticipant(planId, socket);
-        console.log("*****************************");
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
         let PL = placeList.day_plan;
-        console.log(PL)
-        socket.to(PL).emit("server_msg", userName, true);
+        console.log(PL);
+        
+        socket.to(planId).emit("server_msg", userName, true);
         init(PL);
     });
     /*****채팅 메시지***/
 
     socket.on("send_chatting_msg", (image_url, message, planId) => {
-        socket.to(planId).emit("incomming_chatting_msg", image_url, message);
+        socket.to(planId).except(socket.userId).emit("incomming_chatting_msg", image_url, message);
+        socket.to(socket.userId).emit("outgoing_chatting_msg", message);
         //socket.nsp.to(room).emit(event) => nsp 문서 확인 후 적용
     })
     /*****검색 리스트*/
@@ -381,12 +383,26 @@ io.on("connection", (socket) => {
 
         TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: dPL } }).exec();
 
-        //**DB 작업 필요 */
+        
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
         //socket.emit("delete_from_list", itemId);
     })
+
+    socket.on("disconnecting", (reason) => {
+        const userCon = io.sockets.adapter.rooms.get(socket.userId);
+        if(userCon.size <= 1){
+            socket.rooms.forEach(room => {  
+                socket.to(room).emit("server_msg", socket.userName, false);
+                socket.to(room).emit("disconnecting_user", socket.userId);
+        });
+        }
+    });
 });
+
+
+
+
 
 export default server;
 

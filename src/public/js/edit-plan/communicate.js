@@ -11,6 +11,7 @@ export const planId = document.querySelector("#plan-id").innerHTML;
 const userName = document.querySelector("#user-name").innerHTML;
 const image_url = document.querySelector("#user-image").innerHTML;
 const userId = document.querySelector("#user-id").innerHTML;
+
 /**************************************/
 
 let kanbanList;
@@ -41,6 +42,13 @@ function sendChattingMessage(event){
     input.value = "";
 }
 
+socket.on("outgoing_chatting_msg", recieveMyOwnMessage);
+
+function recieveMyOwnMessage(message){
+    chattingList.addMessage("", message, "outgoing");
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+
 // server side에서 전달 받을 때 사용할 함수
 socket.on("incomming_chatting_msg", receiveChattingMessage);
 function receiveChattingMessage(image_url, message){
@@ -49,8 +57,8 @@ function receiveChattingMessage(image_url, message){
 }
 
 socket.on("server_msg", receiveSystemMessage);
-function receiveSystemMessage( name, enter){
-
+function receiveSystemMessage(name, enter){
+    console.log("***************");
     const message = (enter == true)? `${name}님이 입장하셨습니다` : `${name}님이 퇴장하셨습니다`;
     chattingList.addMessage(name, message, "system");
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -151,9 +159,22 @@ function checkCurrentParticipant(currentParticipant){
 }
 
 document.querySelector("#save").addEventListener("click", () => {
-    
+    //socket leave room
+
+
     window.location.href = `/plans/${planId}`;
 })
+
+
+socket.on("disconnecting_user", checkDisconnectingUser);
+
+function checkDisconnectingUser(userId){
+    if(document.querySelector(`.participant [data-id="${userId}"]`) != null){
+        document.querySelector(`.participant [data-id="${userId}"]`).classList.add("notattend");
+    }
+
+} 
+
 
 
 
