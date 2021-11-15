@@ -191,6 +191,10 @@ function checkDisconnectingUser(userId){
 
 } 
 
+socket.on("disconnect", () => {
+    window.location.href = `/plans/${planId}`;
+  });
+
 
 
 

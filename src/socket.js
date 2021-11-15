@@ -389,7 +389,7 @@ io.on("connection", (socket) => {
 
     socket.on("disconnecting", (reason) => {
         const userCon = io.sockets.adapter.rooms.get(socket.userId);
-        if(userCon.size <= 1){
+        if(userCon !== undefined && userCon.size <= 1){
             socket.rooms.forEach(room => {  
                 socket.to(room).emit("server_msg", socket.userName, false);
                 socket.to(room).emit("disconnecting_user", socket.userId);

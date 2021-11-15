@@ -52,7 +52,6 @@ class PlaceItem {
             
         })
 
-
         this.elements.root.addEventListener("dragstart", event => {
             //map 마커 지워준다 => item 마커로 바뀌게
             
@@ -69,8 +68,6 @@ class PlaceItem {
                 map_link : place_url,
             }));
         });
-
-       
     }   
 
     static createRoot(){
