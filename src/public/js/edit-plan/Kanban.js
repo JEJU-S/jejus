@@ -51,6 +51,12 @@ class DropZone {
                 const columnElement = dropZone.closest(".kanban__column");
                 const columnId = columnElement.dataset.id;
                 const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
+                
+                if(dropZonesInColumn.length > 15){
+                    alert("하루 당 최대 15개 까지만 추가 가능합니다");
+                    return;
+                }
+                
                 const droppedIndex = dropZonesInColumn.indexOf(dropZone);
                 console.log(droppedIndex);
 
