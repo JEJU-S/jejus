@@ -54,9 +54,9 @@
             <%=totPlan.title%>
         </div>
         <div class="participant"> <!--notattend-->
-        <%totPlan.participants.forEach(function(participant){%>
-            <div><img src="<%=participant.image_url%>" alt="user-image" data-id="<%=participant._id%>" class="notattend"></div>
-        <%})%>
+            <%totPlan.participants.forEach(function(participant){%>
+                <div><img src="<%=participant.image_url%>" alt="user-image" data-id="<%=participant._id%>" class="notattend"></div>
+            <%})%>
         </div>
     <!--
         <div class="plan-date">

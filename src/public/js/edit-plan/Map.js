@@ -74,7 +74,7 @@ export function listClick(marker){
 export function searchMarkerClick(marker, place_name, road_address_name){
     const infoWindow = new naver.maps.InfoWindow({
         content : [
-        `<div class='map-info'>`,
+        `<div class='map-info search'>`,
         `   <div><h3>${place_name}</h3>`,
         `   <p>${road_address_name}</p></p></div>`
         ].join(''),

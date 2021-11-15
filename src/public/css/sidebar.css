@@ -129,5 +129,6 @@
 }
 
 .side-plan-title:hover {
-  color: burlywood;
+  color: rgb(255, 175, 71);
+  transition: 0.2s;
 }
