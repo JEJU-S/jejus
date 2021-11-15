@@ -314,14 +314,14 @@ input[type="text"]:focus {
   height: 50px;
   background: rgba(0, 0, 0, 0.658);
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border-radius: 5px;
 }
 
 .map-info:after {
   content: "";
   position: absolute;
-  bottom: 15px;
+  bottom: 10px;
   left: 50%;
   width: 0;
   height: 0;
@@ -342,7 +342,7 @@ input[type="text"]:focus {
 }
 
 .map-info h3,
-p {
+.map0info p {
   color: white;
   margin: 0 !important;
   margin-left: 10px !important;
