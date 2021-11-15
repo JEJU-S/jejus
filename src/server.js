@@ -28,15 +28,15 @@ app.use(
     session({
         secret : process.env.COOKIE_SECRET,
         resave : false,
-        saveUninitialized : true, // 추후 false로 바꿔야 함
+        saveUninitialized : false, // 추후 false로 바꿔야 함
         cookie : {
-            //maxAge : 20000,
-        }
-        /*
+            maxAge : 1000 * 60 * 60 * 24,
+        },
         store : MongoStore.create({
             mongoUrl : process.env.DB_URL,
+            dbName: 'jeju_plan'
         })
-        */
+    
     })
 );
 

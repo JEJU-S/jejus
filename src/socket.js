@@ -133,11 +133,9 @@ async function sendSearchResults(keyword, socket){
 async function sendCurrentParticipant(planId, socket){
     const clientsInRoom = await io.in(planId).fetchSockets();
     const currentParticipant = [];
-    console.log("****************");
-    console.log("room id : ", planId);
+
     clientsInRoom.forEach((user) => {
-        console.log(user.userName, " : ", user.userId);
-        console.log("********"); 
+
         currentParticipant.push(user.userId);
     })
     //socket.nsp.to(planId).emit("current_participant", currentParticipant);
@@ -166,7 +164,7 @@ io.on("connection", (socket) => {
         let PL = placeList.day_plan;
         console.log(PL);
         
-        socket.to(planId).emit("server_msg", userName, true);
+        socket.to(planId).except(socket.userId).emit("server_msg", userName, true);
         init(PL);
     });
     /*****채팅 메시지***/

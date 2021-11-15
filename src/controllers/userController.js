@@ -133,7 +133,8 @@ export const callback = async(req, res) => {
             totPlan_list : login_totPlan_list, // user가 가지고 있는 plan 뽑아서 id, title을 저장
             call_list : login_call_list // 초대장 리스트
         };
-        console.log(req.session.user)
+        console.log(req.session.user);
+
         
 
 
@@ -167,6 +168,7 @@ export const postEditProfile = (req, res) => {
 };
 
 export const seeProfile = async (req, res) => {
+
     // session user 가 받은 초대를 
     let user_data = await finduser(req.session.user.gmail);
     req.session.user = user_data;
