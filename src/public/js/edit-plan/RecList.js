@@ -77,6 +77,10 @@ async function selectCategory(event)
     if(selectedCategory.style.backgroundColor === "rgb(255, 255, 255)"){
         selectedCategory.style.backgroundColor = "#20253b";
         selectedCategory.style.color = "#ffffff";
+        for (const marker of recMarkers) {
+            marker.setMap(null);
+        }
+        recMarkers.splice(0, recMarkers.length);  
         return;
     }
 
@@ -207,7 +211,6 @@ class RecList {
             marker.setMap(null);
         }
         recMarkers.splice(0, recMarkers.length);  
-        console.log(recMarkers);  
 
         placeList.forEach((place) => {
             this.renderItem(place);

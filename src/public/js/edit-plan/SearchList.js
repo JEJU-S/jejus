@@ -1,8 +1,7 @@
 import {createMapMarker, removeMapMarker, mapPanToBound, listClick, searchMarkerClick} from "/public/js/edit-plan/Map.js";
-
+import {searchMarkers} from "./Map.js"
 /*****************************************************************/
 
-const searchMarkerList = [];
 
 class PlaceItem {
     constructor(place_name, road_address_name, place_url, x, y){
@@ -22,7 +21,7 @@ class PlaceItem {
         this.elements.moreButton.classList = "more-btn";
 
         this.elements.marker = createMapMarker(x, y , "marker-search");
-        searchMarkerList.push(this.elements.marker);
+        searchMarkers.push(this.elements.marker);
 
 
         this.elements.moreButton.addEventListener("click", (event) => {
@@ -93,11 +92,10 @@ export default class SearchList {
         
         this.root = root;
         this.deleteItems();
-        for (const marker of searchMarkerList) {
+        for (const marker of searchMarkers) {
             marker.setMap(null);
         }
-
-        searchMarkerList.splice(0, searchMarkerList.length);  
+        searchMarkers.splice(0, searchMarkers.length);  
 
         placeList.forEach((place) => {
             this.renderItem(place);

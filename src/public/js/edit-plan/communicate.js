@@ -1,7 +1,6 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
 import SearchList from "/public/js/edit-plan/SearchList.js";
-import {createMapMarker, removeMapMarker, mapPanToBound} from "/public/js/edit-plan/Map.js";
-
+import {createMapMarker, removeMapMarker, mapPanToBound, searchMarkers} from "/public/js/edit-plan/Map.js";
 import {Kanban, mapMarkerList, Item} from "/public/js/edit-plan/Kanban.js";
 
 /******************socket 생성************************/
@@ -78,8 +77,27 @@ function submitSearchKeyword(event){
 
 socket.on("search_result", printSearchList);
 function printSearchList(resultList){
-  new SearchList(document.querySelector(".search-list ul"), resultList);
+
+    if(resultList.length === 0){
+        for(const marker of searchMarkers){
+            marker.setMap(null);
+        }
+        searchMarkers.splice(0, searchMarkers.length);
+
+        document.querySelector(".search-list ul").innerHTML = `<div>검색 결과가 없어요..😥<br> 검색어를 확인해 주세요.</div>`;
+    }else{
+    new SearchList(document.querySelector(".search-list ul"), resultList);
+    }
 }
+
+document.querySelector(".clear-btn").addEventListener("click", (event) => {
+    event.preventDefault();
+    for(const marker of searchMarkers){
+        marker.setMap(null);
+    }
+    searchMarkers.splice(0, searchMarkers.length);
+    new SearchList(document.querySelector(".search-list ul"), []);
+})
 
 /*******************Kanban*******************************/
 
@@ -160,8 +178,6 @@ function checkCurrentParticipant(currentParticipant){
 
 document.querySelector("#save").addEventListener("click", () => {
     //socket leave room
-
-
     window.location.href = `/plans/${planId}`;
 })
 
