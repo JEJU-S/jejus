@@ -209,7 +209,9 @@ main {
   background-color: #dfdfdf;
   border-radius: 5px;
   padding: 0 4px;
-  color: #0173bc;
+  color: #1c7e10;
+  border: 1px solid #1c7e101a;
+  cursor: pointer;
 }
 /*
 .accept,
