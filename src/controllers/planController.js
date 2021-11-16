@@ -266,7 +266,7 @@ export const accept = async (req, res) => {
 
     const usertotplan = await finduserPlan(id);
 
-    console.log("초대받은 계획",usertotplan)
+    console.log("초대받은 계획", usertotplan)
 
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;

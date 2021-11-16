@@ -52,12 +52,13 @@ function sendInvitationToGmail(event){
 
     const gmailInput = emailForm.querySelector("input[type='email']");
     console.log(gmailInput.value);
-    
+    /*
     if(!regex.test(gmailInput.value)){
         alert("email 형식으로 입력해주세요");
         event.preventDefault();
         return;
     }
+    */
     //server로 키워드 전송
     emailForm.style.display = "none";
     
