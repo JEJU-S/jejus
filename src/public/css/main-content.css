@@ -8,11 +8,15 @@
   align-items: center;
   font-size: 1rem;
   font-weight: bold;
+  background: whitesmoke;
+  margin-right: 500px;
+  padding: 8px;
+  border-radius: 5px;
 }
 
 .participant div {
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
 }
 
 .participant div img {
@@ -310,18 +314,19 @@ input[type="text"]:focus {
 .map-info {
   display: flex;
   flex-direction: row;
-  width: 200px;
-  height: 50px;
+  width: 350px;
+  height: 135px;
   background: rgba(0, 0, 0, 0.658);
   align-items: center;
-  margin-bottom: 15px;
+  justify-content: center;
+  margin-bottom: 10px;
   border-radius: 5px;
 }
 
 .map-info:after {
   content: "";
   position: absolute;
-  bottom: 15px;
+  bottom: 10px;
   left: 50%;
   width: 0;
   height: 0;
@@ -333,19 +338,32 @@ input[type="text"]:focus {
 }
 
 .map-info img {
-  width: 40px;
-  height: 40px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   overflow: hidden;
   border-radius: 10px;
   margin-left: 5px;
 }
 
-.map-info h3,
-p {
+.map-info h3 {
   color: white;
+  width: 200px;
   margin: 0 !important;
   margin-left: 10px !important;
+}
+
+.map-info p {
+  color: white;
+  margin: 0 0 0 10px;
+  width: 173px;
+  font-size: 0.8rem;
+}
+
+.search {
+  width: 220px;
+  height: auto;
+  padding: 15px 0;
 }
 
 #save {
