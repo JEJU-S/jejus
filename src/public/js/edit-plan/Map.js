@@ -48,7 +48,7 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
     if(infoWindow.getMap()){
         infoWindow.close();
     }
-   
+    
     infoWindow.setContent(
         [
             `<div class='map-info'>`,
@@ -58,19 +58,23 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
         ].join('')
     );
     
-
     if(infoWindow.getMap()){
         infoWindow.close();
     }else{
         infoWindow.open(map, marker);
     }
     map.panTo(marker.getPosition());
-    //map.morph(marker.getPosition(), 14);
 }
+
+naver.maps.Event.addListener(map, 'click', (event) => {
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+})
+
 
 export function recListClick(lon, lat){
     map.panTo(new naver.maps.LatLng(lat , lon));
-    //map.morph(new naver.maps.LatLng(lat , lon), 14);
     
 }
 
@@ -78,11 +82,9 @@ export function listClick(marker){
     map.panTo(marker.getPosition());
 }
 
+
 export function searchMarkerClick(marker, place_name, road_address_name){
-    if(infoWindow.getMap()){
-        infoWindow.close();
-    }
-    
+
     infoWindow.setContent(
         [
             `<div class='map-info search'>`,
