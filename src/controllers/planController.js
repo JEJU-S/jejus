@@ -238,8 +238,8 @@ export const postCreatePlan = async (req, res) => {
         
         await User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } , { upsert:true } ).exec()
         // req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
-        req.session.user = await finduser(pC_gmail);
-        
+        let user_data = await finduser(pC_gmail);
+        req.session.user = user_data;
         // res.redirect(`/users/${pC_id}`);
         res.redirect(`/plans/${totplan._id}`); 
     }

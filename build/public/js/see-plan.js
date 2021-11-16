@@ -2,7 +2,8 @@
 
 var planBtns = document.querySelectorAll(".btn");
 var wholePlan = document.getElementsByClassName("whole-plan");
-var dayPlans = document.getElementsByClassName("day-plan"); //1 ~ n day
+var dayPlans = document.getElementsByClassName("day-plan");
+var planId = document.querySelector(".whole-plan").dataset.planid; //1 ~ n day
 
 function dayButtonClick(day) {
   planBtns[0].style.backgroundColor = "#e3e3e3";
@@ -47,15 +48,55 @@ function sendInvitationToGmail(event) {
   var regex = new RegExp(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i);
   var gmailInput = emailForm.querySelector("input[type='email']");
   console.log(gmailInput.value);
-
-  if (!regex.test(gmailInput.value)) {
-    alert("email 형식으로 입력해주세요");
-    return;
-  } //server로 키워드 전송
-
+  /*
+  if(!regex.test(gmailInput.value)){
+      alert("email 형식으로 입력해주세요");
+      event.preventDefault();
+      return;
+  }
+  */
+  //server로 키워드 전송
 
   emailForm.style.display = "none";
-  alert("초대장이 전송되었습니다");
+}
+
+var statusCode = Number(document.querySelector(".inv-area").dataset.status);
+alertServerMsg(statusCode);
+
+function alertServerMsg(statusCode) {
+  var message;
+
+  switch (statusCode) {
+    case -1:
+      return;
+
+    case 0:
+      {
+        message = "초대장이 전송되었습니다";
+        break;
+      }
+
+    case 1:
+      {
+        message = "본인에게 초대장을 보낼 수 없습니다";
+        break;
+      }
+
+    case 2:
+      {
+        message = "이미 초대된 회원입니다";
+        break;
+      }
+
+    case 3:
+      {
+        message = "해당 이메일이 회원이 아닙니다.";
+        break;
+      }
+  }
+
+  alert(message);
+  history.replaceState({}, null, location.pathname);
 }
 
 function closeInvitaitonToGmail(event) {
@@ -98,7 +139,6 @@ for (var i = 0; i < dayPlan.length; i++) {
 /******버튼************/
 
 
-var planId = document.querySelector(".whole-plan").dataset.planid;
 document.querySelector(".edit-btn").addEventListener("click", function () {
   window.location.href = "/plans/".concat(planId, "/edit");
 });
@@ -139,7 +179,8 @@ document.querySelectorAll(".day-map").forEach(function (dayMap) {
     strokeWeight: 2,
     strokeOpacity: 0.9,
     strokeColor: '#4169E1',
-    strokeStyle: 'shortdash'
+    strokeStyle: 'shortdash',
+    endIcon: 1
   });
   console.log(dayPolyLine);
 });
