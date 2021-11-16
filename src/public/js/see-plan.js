@@ -1,6 +1,7 @@
 const planBtns = document.querySelectorAll(".btn");
 const wholePlan = document.getElementsByClassName("whole-plan");
 const dayPlans = document.getElementsByClassName("day-plan");
+const planId = document.querySelector(".whole-plan").dataset.planid;
 
 //1 ~ n day
 
@@ -51,16 +52,45 @@ function sendInvitationToGmail(event){
 
     const gmailInput = emailForm.querySelector("input[type='email']");
     console.log(gmailInput.value);
-    
+    /*
     if(!regex.test(gmailInput.value)){
         alert("email 형식으로 입력해주세요");
+        event.preventDefault();
         return;
     }
+    */
     //server로 키워드 전송
     emailForm.style.display = "none";
-    alert("초대장이 전송되었습니다");
     
 }
+const statusCode = Number(document.querySelector(".inv-area").dataset.status);
+alertServerMsg(statusCode);
+function alertServerMsg(statusCode){
+    let message;
+    switch(statusCode){
+        case -1 :
+            return; 
+        case 0 :{
+            message = "초대장이 전송되었습니다";
+            break;
+        }
+        case 1 :{   
+            message = "본인에게 초대장을 보낼 수 없습니다";
+            break;
+        }
+        case 2 :{
+            message = "이미 초대된 회원입니다";
+            break;
+        }
+        case 3 : {
+            message = "해당 이메일이 회원이 아닙니다.";
+            break;
+        }
+    }
+    alert(message);
+    history.replaceState({}, null, location.pathname);
+}
+
 
 function closeInvitaitonToGmail(event){
     event.preventDefault();
@@ -108,7 +138,6 @@ for(let i =0; i < dayPlan.length; i++){
 }
 
 /******버튼************/
-const planId = document.querySelector(".whole-plan").dataset.planid;
 
 
 document.querySelector(".edit-btn").addEventListener("click", () => {
@@ -152,6 +181,7 @@ document.querySelectorAll(".day-map").forEach((dayMap) => {
         ));
     }
     console.log(dayPolyPath);
+
     const dayPolyLine = new naver.maps.Polyline({
         map : map,
         path : dayPolyPath,
@@ -159,6 +189,7 @@ document.querySelectorAll(".day-map").forEach((dayMap) => {
         strokeOpacity : 0.9,
         strokeColor : '#4169E1',
         strokeStyle : 'shortdash',
+        endIcon : 1
     })
     console.log(dayPolyLine);
 })

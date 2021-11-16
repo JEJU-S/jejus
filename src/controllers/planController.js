@@ -8,6 +8,7 @@ import {User} from '../models/User'
 import fetch from "node-fetch";
 
 
+
 async function findtitle(title){
     const totplans = await TotPlan.findOne({title:title}).lean();
     return totplans;    
@@ -71,45 +72,13 @@ async function deletePlan(id){
     return user_DelPlan;
 }
 
-//사용자 마다 완성된 plan 보여주기 위한 것
-
-
-async function calculateDirection15(placeList){
-    console.log(placeList);
-
-    const baseURL = `https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving`;
-    let waypoints;
-    for(let i = 1; i < placeList.length -1; i++){
-        waypoints += (i !== placeList.length -2)?(`${placeList[i].x},${placeList[i].y}|`):(`${placeList[i].x},${placeList[i].y}`);
-    }
-    console.log(waypoints);
-
-
-    const config = {
-        start : `${placeList[0].x},${placeList[0].y}`,
-        goal : `${placeList[placeList.length-1].x},${placeList[placeList.length-1].y}`,
-        waypoints : waypoints
-    }
-    const params = new URLSearchParams(config).toString();
-    const finalURL = `${baseURL}?${params}`;
-
-    const result = await(
-        await fetch(finalURL, {
-            method : "GET",
-            headers : {
-                "X-NCP-APIGW-API-KEY-ID" : process.env.MAP_CLIENT,
-                "X-NCP-APIGW-API-KEY" : process.env.MAP_SECRET
-            }
-        })
-    ).json();
-    console.log(result);
-    console.log(result.route.traoptimal[0].path);
-    return result.route;
-}
-
 export const seePlan = async (req, res) => 
-{
+{   
     const {id} = req.params;
+    let statusCode = -1;
+    if(req.query.status != undefined){
+        statusCode = req.query.status;
+    }
     // 접근한 여행계획 데이터 조회
     const usertotplan = await finduserPlan(id);
     if(usertotplan!=null)
@@ -118,32 +87,21 @@ export const seePlan = async (req, res) =>
         console.log("접근 권한 테스트")
         if(checkath(parti,req.session.user._id)){
             console.log("권한허용")
-
-            /*
-            const paths = [];
-            usertotplan.day_plan.forEach((dayPlan) => {
-                if(dayPlan.place.length > 1){
-                    paths.push(calculateDirection15(dayPlan.place));
-                }
-                //코드 에러 처리
-            })
-           */ 
             
-            
+            // 접속허용
             res.render(`see-plan`, {
                 user : req.session.user,
                 totPlanTitles : req.session.user.totPlan_list,
                 totPlan : usertotplan,
-                map_cl : process.env.MAP_CLIENT
+                map_cl : process.env.MAP_CLIENT,
+                statuscode : statusCode
             });
         }
-        else{
-            console.log("접근 권한이 없습니다")
+        else{            
             res.redirect(`/users/${req.session.user._id}`);
         }
     }
     else{
-        console.log("계획이 존재하지 않습니다")
         res.redirect(`/users/${req.session.user._id}`);
     }
 }
@@ -155,7 +113,7 @@ export const sendInvitation = async (req, res) => {
 
     // 초대장을 전송
     const usertotplan = await finduserPlan(id);
-    console.log("초대한 계획",usertotplan)
+    console.log("초대한 계획", usertotplan)
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
@@ -166,18 +124,22 @@ export const sendInvitation = async (req, res) => {
     
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
-    console.log("초대한 유저",par_userinfo);
+    console.log("초대한 유저", par_userinfo);
+
+    let statusCode;
     if(par_userinfo!=null)
     {
         const par_id = par_userinfo._id;
         let hostarr = par_userinfo.call_list;
         let par_tot = par_userinfo.totPlan_list;
         
-        if(checkcall(hostarr,totplan_title) || checktitle(par_tot , totplan_title) ){ // checkath 수정필요
-            console.log("이미 초대된 회원입니다")
+        if(req.session.user._id == par_id){
+            console.log("본인에게 초대장을 보낼 수 없습니다")
+            statusCode = 1;
         }
-        else if(req.session.user._id == par_id){
-            console.log(" 다시 입력하세요 ")
+        else if(checkcall(hostarr,totplan_title) || checktitle(par_tot , totplan_title) ){ // checkath 수정필요
+            console.log("이미 초대된 회원입니다")
+            statusCode = 2;
         }
         else{
             User.findOne({gmail: gmail}).exec(function(err, res){
@@ -186,14 +148,15 @@ export const sendInvitation = async (req, res) => {
                     res.save();
                 }
             });
+            statusCode = 0;
         }
-        res.redirect(`/plans/${id}`);
+        res.redirect(`/plans/${id}?status=${statusCode}`);
     }
     else{
-        console.log(" 다시 입력하세요 ");
-        res.redirect(`/plans/${id}`);
+        console.log("해당 이메일이 회원이 아닙니다.");
+        statusCode = 3;
+        res.redirect(`/plans/${id}?status=${statusCode}`);
     }
-    
 }
 
 export const editPlan = async (req, res) => 
@@ -256,10 +219,7 @@ export const postCreatePlan = async (req, res) => {
             console.log("totplan saved",title);
         }).catch((err) => {
             console.error(err);
-            // if ( err && err.code === 11000 ) {
-            //     res.redirect(`/users/${req.session.user._id}`);
-            //     return;
-            // }
+
         });
 
         let totplanidcall = await findtitle(title);
@@ -278,13 +238,14 @@ export const postCreatePlan = async (req, res) => {
         
         await User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } , { upsert:true } ).exec()
         // req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
-        req.session.user = await finduser(pC_gmail);
-        
+        let user_data = await finduser(pC_gmail);
+        req.session.user = user_data;
         // res.redirect(`/users/${pC_id}`);
         res.redirect(`/plans/${totplan._id}`); 
     }
     else{
-        res.redirect(`/users/${pC_id}`);
+        res.send(`<script>alert('같은 이름의 여행이 있습니다. 다른 이름을 선택해주세요'); window.location.href="/users/${pC_id}"</script>`);
+        //res.redirect(`/users/${pC_id}`);
     }
     
 }
@@ -302,7 +263,7 @@ export const accept = async (req, res) => {
 
     const usertotplan = await finduserPlan(id);
 
-    console.log("초대받은 계획",usertotplan)
+    console.log("초대받은 계획", usertotplan)
 
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;

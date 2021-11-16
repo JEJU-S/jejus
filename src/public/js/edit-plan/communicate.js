@@ -21,6 +21,7 @@ function init(placeList){
 
   // 칸반리스트 만들기
   kanbanList = new Kanban(document.querySelector(".kanban"), placeList);
+  
 }
 /***************************************/
 
@@ -34,11 +35,11 @@ chatForm.addEventListener("submit", sendChattingMessage);
 function sendChattingMessage(event){
     event.preventDefault();
     const input = chatForm.querySelector("textarea");
-    chatBox.scrollTop = chatBox.scrollHeight;
     //서버로 보내기💨
     socket.emit("send_chatting_msg", image_url, input.value, planId);
     chattingList.addMessage("", input.value, "outgoing");
     input.value = "";
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 socket.on("outgoing_chatting_msg", recieveMyOwnMessage);

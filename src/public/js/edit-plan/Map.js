@@ -45,6 +45,10 @@ const infoWindow = new naver.maps.InfoWindow({
 });
 
 export function recMarkerClick(marker, category, place_name, road_address_name, image_url){
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+   
     infoWindow.setContent(
         [
             `<div class='map-info'>`,
@@ -75,6 +79,10 @@ export function listClick(marker){
 }
 
 export function searchMarkerClick(marker, place_name, road_address_name){
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+    
     infoWindow.setContent(
         [
             `<div class='map-info search'>`,

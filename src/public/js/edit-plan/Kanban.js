@@ -9,7 +9,7 @@ class MapMarker {
         this.marker = createMapMarker(x, y, "marker-user");
     } 
 }
-
+let check = false;
 class DropZone {
     constructor(){
         this.root = createDropZone();
@@ -31,13 +31,19 @@ class DropZone {
         dropZone.addEventListener("dragleave", (event) => {
             dropZone.classList.remove("kanban__dropzone--active");
         });
-        //***********
-
         // 새로운 아이템 추가, 아이템 이동
-        //DB, SOCKET 작업 필요✨
+
         dropZone.addEventListener("drop", (event) => {
-            const idReg = new RegExp("[0-9a-f]{24}");
             event.preventDefault();
+            
+            if(!check && document.querySelector(".notice") != undefined){
+                document.querySelector(".notice").innerHTML = '';
+                document.querySelector(".notice").classList.remove("notice");
+            }
+            console.log(check);
+            check = true;
+
+            const idReg = new RegExp("[0-9a-f]{24}");
             dropZone.classList.remove("kanban__dropzone--active");
             console.log(typeof(event.dataTransfer.getData("text/plain")));
 
@@ -47,7 +53,6 @@ class DropZone {
                 const newPlace = JSON.parse(event.dataTransfer.getData("text/plain"));
                 console.log(newPlace); 
                
-
                 const columnElement = dropZone.closest(".kanban__column");
                 const columnId = columnElement.dataset.id;
                 const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
@@ -58,7 +63,6 @@ class DropZone {
                 }
                 
                 const droppedIndex = dropZonesInColumn.indexOf(dropZone);
-                console.log(droppedIndex);
 
                  //socket server로 전송💨
                 socket.emit("add_to_placelist", newPlace, columnId, droppedIndex, planId);
@@ -219,9 +223,9 @@ export class Item {
     }
 }
 
- class Column {
-	constructor(id, title, placeList) {    
 
+class Column {
+	constructor(id, title, placeList) {    
         const topDropZone = DropZone.createDropZone();
 
         //하위 element
@@ -229,22 +233,25 @@ export class Item {
 		this.elements.root = Column.createRoot();
 		this.elements.title = this.elements.root.querySelector(".kanban__column-title");
 		this.elements.items = this.elements.root.querySelector(".kanban__column-items");
-        
-        this.elements.root.dataset.id = id;
-        this.elements.title.textContent = title;
-        this.elements.items.appendChild(topDropZone);
 
-        // 각 컬럼 id 값으로 아이템 불러옴 서버에서 받아야 함
-        /*
-		KanbanAPI.getItems(id).forEach(item => {
-			this.renderItem(item);
-		});
-        */ 
-
-        //추후 수정(실제 데이터로)
         placeList.find(element => element._id == id).place.forEach((placeItem) => {
             this.renderItem(placeItem);
         });
+        let itemCnt = 0;
+        
+        placeList.forEach((dayPlan) => {
+            itemCnt += dayPlan.place.length;
+        })
+
+        if(placeList[0]._id == id && itemCnt === 0){
+            topDropZone.innerHTML = "여기에 장소를 끌어넣으세요";
+            topDropZone.classList.add("notice");
+        }
+
+        this.elements.root.dataset.id = id;
+        this.elements.title.textContent = title;
+
+        this.elements.items.insertBefore(topDropZone, this.elements.items.firstChild);
     }
 
 	static createRoot() {

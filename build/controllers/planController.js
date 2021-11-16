@@ -17,6 +17,8 @@ var _TotPlan = require("../models/TotPlan");
 
 var _User = require("../models/User");
 
+var _nodeFetch = _interopRequireDefault(require("node-fetch"));
+
 _dotenv["default"].config(); //goes to plan router
 
 
@@ -180,8 +182,7 @@ function checktitle(tot, check) {
 
 function deletePlan(_x5) {
   return _deletePlan.apply(this, arguments);
-} //사용자 마다 완성된 plan 보여주기 위한 것
-
+}
 
 function _deletePlan() {
   _deletePlan = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(id) {
@@ -211,17 +212,23 @@ function _deletePlan() {
 
 var seePlan = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var id, usertotplan, parti;
+    var id, statusCode, usertotplan, parti;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            id = req.params.id; // 접근한 여행계획 데이터 조회
+            id = req.params.id;
+            statusCode = -1;
 
-            _context.next = 3;
+            if (req.query.status != undefined) {
+              statusCode = req.query.status;
+            } // 접근한 여행계획 데이터 조회
+
+
+            _context.next = 5;
             return finduserPlan(id);
 
-          case 3:
+          case 5:
             usertotplan = _context.sent;
 
             if (usertotplan != null) {
@@ -229,24 +236,23 @@ var seePlan = /*#__PURE__*/function () {
               console.log("접근 권한 테스트");
 
               if (checkath(parti, req.session.user._id)) {
-                console.log("권한허용");
+                console.log("권한허용"); // 접속허용
+
                 res.render("see-plan", {
                   user: req.session.user,
                   totPlanTitles: req.session.user.totPlan_list,
                   totPlan: usertotplan,
-                  map_cl: process.env.MAP_CLIENT
+                  map_cl: process.env.MAP_CLIENT,
+                  statuscode: statusCode
                 });
               } else {
-                console.log("접근 권한이 없습니다");
                 res.redirect("/users/".concat(req.session.user._id));
               }
             } else {
-              console.log("계획이 존재하지 않습니다");
               res.redirect("/users/".concat(req.session.user._id));
-            } //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
+            }
 
-
-          case 5:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -263,7 +269,7 @@ exports.seePlan = seePlan;
 
 var sendInvitation = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, par_id, hostarr, par_tot;
+    var id, gmail, usertotplan, totplan_title, totplan_id, hostname, insert_host, parti, par_userinfo, statusCode, par_id, hostarr, par_tot;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -303,11 +309,13 @@ var sendInvitation = /*#__PURE__*/function () {
               hostarr = par_userinfo.call_list;
               par_tot = par_userinfo.totPlan_list;
 
-              if (checkcall(hostarr, totplan_title) || checktitle(par_tot, totplan_title)) {
+              if (req.session.user._id == par_id) {
+                console.log("본인에게 초대장을 보낼 수 없습니다");
+                statusCode = 1;
+              } else if (checkcall(hostarr, totplan_title) || checktitle(par_tot, totplan_title)) {
                 // checkath 수정필요
                 console.log("이미 초대된 회원입니다");
-              } else if (req.session.user._id == par_id) {
-                console.log(" 다시 입력하세요 ");
+                statusCode = 2;
               } else {
                 _User.User.findOne({
                   gmail: gmail
@@ -317,12 +325,15 @@ var sendInvitation = /*#__PURE__*/function () {
                     res.save();
                   }
                 });
+
+                statusCode = 0;
               }
 
-              res.redirect("/plans/".concat(id));
+              res.redirect("/plans/".concat(id, "?status=").concat(statusCode));
             } else {
-              console.log(" 다시 입력하세요 ");
-              res.redirect("/plans/".concat(id));
+              console.log("해당 이메일이 회원이 아닙니다.");
+              statusCode = 3;
+              res.redirect("/plans/".concat(id, "?status=").concat(statusCode));
             }
 
           case 17:
@@ -396,7 +407,7 @@ exports.getCreatePlan = getCreatePlan;
 
 var postCreatePlan = /*#__PURE__*/function () {
   var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
-    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_gmail, pC_image_url, tempDate, dayArray, check_plan, totplanidcall, totplanid, count, totplan;
+    var _req$body, title, start, end, startDate, endDate, pC_id, pC_user, pC_gmail, pC_image_url, tempDate, dayArray, check_plan, totplanidcall, totplanid, count, totplan, user_data;
 
     return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
@@ -419,7 +430,7 @@ var postCreatePlan = /*#__PURE__*/function () {
             check_plan = _context4.sent;
 
             if (!(check_plan == null)) {
-              _context4.next = 43;
+              _context4.next = 44;
               break;
             }
 
@@ -438,10 +449,7 @@ var postCreatePlan = /*#__PURE__*/function () {
             }).save().then(function () {
               console.log("totplan saved", title);
             })["catch"](function (err) {
-              console.error(err); // if ( err && err.code === 11000 ) {
-              //     res.redirect(`/users/${req.session.user._id}`);
-              //     return;
-              // }
+              console.error(err);
             });
 
           case 16:
@@ -505,16 +513,17 @@ var postCreatePlan = /*#__PURE__*/function () {
             return finduser(pC_gmail);
 
           case 39:
-            req.session.user = _context4.sent;
-            // res.redirect(`/users/${pC_id}`);
+            user_data = _context4.sent;
+            req.session.user = user_data; // res.redirect(`/users/${pC_id}`);
+
             res.redirect("/plans/".concat(totplan._id));
-            _context4.next = 44;
+            _context4.next = 45;
             break;
 
-          case 43:
-            res.redirect("/users/".concat(pC_id));
-
           case 44:
+            res.send("<script>alert('\uAC19\uC740 \uC774\uB984\uC758 \uC5EC\uD589\uC774 \uC788\uC2B5\uB2C8\uB2E4. \uB2E4\uB978 \uC774\uB984\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694'); window.location.href=\"/users/".concat(pC_id, "\"</script>")); //res.redirect(`/users/${pC_id}`);
+
+          case 45:
           case "end":
             return _context4.stop();
         }
