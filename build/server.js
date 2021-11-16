@@ -39,24 +39,26 @@ app.use(logger);
 app.use((0, _expressSession["default"])({
   secret: process.env.COOKIE_SECRET,
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   // 추후 false로 바꿔야 함
-  cookie: {//maxAge : 20000,
-  }
-  /*
-  store : MongoStore.create({
-      mongoUrl : process.env.DB_URL,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24
+  },
+  store: _connectMongo["default"].create({
+    mongoUrl: process.env.DB_URL,
+    dbName: 'jeju_plan'
   })
-  */
-
 })); //session 확인용  middleware
 
-app.use(function (req, res, next) {
-  req.sessionStore.all(function (error, sessions) {
-    console.log(sessions);
-    next();
-  });
-}); // public 폴더 접근 가능할 수 있게 해줌(css, js)
+/*
+app.use((req, res, next) => {
+    req.sessionStore.all((error, sessions) => {
+        console.log(sessions);
+        next();
+    });
+});
+*/
+// public 폴더 접근 가능할 수 있게 해줌(css, js)
 //app.use("/public", express.static(path.join(__dirname, "public")));
 
 var srcPath = _path["default"].resolve(__dirname + "/.././src/public");

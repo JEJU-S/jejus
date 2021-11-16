@@ -17,6 +17,8 @@ var _TotPlan = require("../models/TotPlan");
 
 var _User = require("../models/User");
 
+var _nodeFetch = _interopRequireDefault(require("node-fetch"));
+
 _dotenv["default"].config(); //goes to plan router
 
 
@@ -209,6 +211,61 @@ function _deletePlan() {
   return _deletePlan.apply(this, arguments);
 }
 
+function calculateDirection15(_x6) {
+  return _calculateDirection.apply(this, arguments);
+}
+
+function _calculateDirection() {
+  _calculateDirection = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(placeList) {
+    var baseURL, waypoints, i, config, params, finalURL, result;
+    return _regenerator["default"].wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            console.log(placeList);
+            baseURL = "https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving";
+
+            for (i = 1; i < placeList.length - 1; i++) {
+              waypoints += i !== placeList.length - 2 ? "".concat(placeList[i].x, ",").concat(placeList[i].y, "|") : "".concat(placeList[i].x, ",").concat(placeList[i].y);
+            }
+
+            console.log(waypoints);
+            config = {
+              start: "".concat(placeList[0].x, ",").concat(placeList[0].y),
+              goal: "".concat(placeList[placeList.length - 1].x, ",").concat(placeList[placeList.length - 1].y),
+              waypoints: waypoints
+            };
+            params = new URLSearchParams(config).toString();
+            finalURL = "".concat(baseURL, "?").concat(params);
+            _context13.next = 9;
+            return (0, _nodeFetch["default"])(finalURL, {
+              method: "GET",
+              headers: {
+                "X-NCP-APIGW-API-KEY-ID": process.env.MAP_CLIENT,
+                "X-NCP-APIGW-API-KEY": process.env.MAP_SECRET
+              }
+            });
+
+          case 9:
+            _context13.next = 11;
+            return _context13.sent.json();
+
+          case 11:
+            result = _context13.sent;
+            console.log(result);
+            console.log(result.route.traoptimal[0].path);
+            return _context13.abrupt("return", result.route);
+
+          case 15:
+          case "end":
+            return _context13.stop();
+        }
+      }
+    }, _callee13);
+  }));
+  return _calculateDirection.apply(this, arguments);
+}
+
 var seePlan = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
     var id, usertotplan, parti;
@@ -230,6 +287,16 @@ var seePlan = /*#__PURE__*/function () {
 
               if (checkath(parti, req.session.user._id)) {
                 console.log("권한허용");
+                /*
+                const paths = [];
+                usertotplan.day_plan.forEach((dayPlan) => {
+                    if(dayPlan.place.length > 1){
+                        paths.push(calculateDirection15(dayPlan.place));
+                    }
+                    //코드 에러 처리
+                })
+                */
+
                 res.render("see-plan", {
                   user: req.session.user,
                   totPlanTitles: req.session.user.totPlan_list,
@@ -243,8 +310,7 @@ var seePlan = /*#__PURE__*/function () {
             } else {
               console.log("계획이 존재하지 않습니다");
               res.redirect("/users/".concat(req.session.user._id));
-            } //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
-
+            }
 
           case 5:
           case "end":
@@ -254,7 +320,7 @@ var seePlan = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function seePlan(_x6, _x7) {
+  return function seePlan(_x7, _x8) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -333,7 +399,7 @@ var sendInvitation = /*#__PURE__*/function () {
     }, _callee2);
   }));
 
-  return function sendInvitation(_x8, _x9) {
+  return function sendInvitation(_x9, _x10) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -378,7 +444,7 @@ var editPlan = /*#__PURE__*/function () {
     }, _callee3);
   }));
 
-  return function editPlan(_x10, _x11) {
+  return function editPlan(_x11, _x12) {
     return _ref3.apply(this, arguments);
   };
 }();
@@ -522,7 +588,7 @@ var postCreatePlan = /*#__PURE__*/function () {
     }, _callee4);
   }));
 
-  return function postCreatePlan(_x12, _x13) {
+  return function postCreatePlan(_x13, _x14) {
     return _ref4.apply(this, arguments);
   };
 }();
@@ -597,7 +663,7 @@ var accept = /*#__PURE__*/function () {
     }, _callee5);
   }));
 
-  return function accept(_x14, _x15) {
+  return function accept(_x15, _x16) {
     return _ref5.apply(this, arguments);
   };
 }();
@@ -649,7 +715,7 @@ var refuse = /*#__PURE__*/function () {
     }, _callee6);
   }));
 
-  return function refuse(_x16, _x17) {
+  return function refuse(_x17, _x18) {
     return _ref6.apply(this, arguments);
   };
 }();
@@ -757,7 +823,7 @@ var del = /*#__PURE__*/function () {
     }, _callee7);
   }));
 
-  return function del(_x18, _x19) {
+  return function del(_x19, _x20) {
     return _ref7.apply(this, arguments);
   };
 }();

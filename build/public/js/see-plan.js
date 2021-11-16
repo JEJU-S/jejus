@@ -102,28 +102,49 @@ var planId = document.querySelector(".whole-plan").dataset.planid;
 document.querySelector(".edit-btn").addEventListener("click", function () {
   window.location.href = "/plans/".concat(planId, "/edit");
 });
-document.querySelector(".edit-link").addEventListener("click", function () {
-  window.location.href = "/plans/".concat(planId, "/edit");
-});
+
+if (document.querySelector(".edit-link") !== null) {
+  document.querySelectorAll(".edit-link").forEach(function (link) {
+    link.addEventListener("click", function () {
+      window.location.href = "/plans/".concat(planId, "/edit");
+    });
+  });
+}
 
 if (document.querySelector(".del-btn") !== null) {
   document.querySelector(".del-btn").addEventListener("click", function () {
     window.location.href = "/plans/".concat(planId, "/delete");
   });
 }
-/*********************/
+/************DAY********************/
 
 
 document.querySelectorAll(".day-map").forEach(function (dayMap) {
   var day = Number(dayMap.dataset.dayindex);
   var map = new naver.maps.Map(document.getElementById("day-map".concat(day + 1)), mapOptions);
-  console.log(map);
-  console.log("day-map".concat(day + 1));
+  var dayPolyPath = [];
 
   for (var _i = 0; _i < dayPlan[day].place.length; _i++) {
     new naver.maps.Marker({
       position: new naver.maps.LatLng(dayPlan[day].place[_i].y, dayPlan[day].place[_i].x),
       map: map
     });
+    dayPolyPath.push(new naver.maps.LatLng(dayPlan[day].place[_i].y, dayPlan[day].place[_i].x));
   }
+
+  console.log(dayPolyPath);
+  var dayPolyLine = new naver.maps.Polyline({
+    map: map,
+    path: dayPolyPath,
+    strokeWeight: 2,
+    strokeOpacity: 0.9,
+    strokeColor: '#4169E1',
+    strokeStyle: 'shortdash'
+  });
+  console.log(dayPolyLine);
+});
+document.querySelectorAll(".more-btn").forEach(function (moreBtn) {
+  moreBtn.addEventListener("click", function () {
+    window.location.href = moreBtn.dataset.link;
+  });
 });

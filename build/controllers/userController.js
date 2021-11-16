@@ -39,27 +39,27 @@ function finduser(_x) {
 
 
 function _finduser() {
-  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(user_gmail) {
+  _finduser = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(user_gmail) {
     var user_info;
-    return _regenerator["default"].wrap(function _callee3$(_context3) {
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            _context3.next = 2;
+            _context4.next = 2;
             return _User.User.findOne({
               gmail: user_gmail
             }).lean();
 
           case 2:
-            user_info = _context3.sent;
-            return _context3.abrupt("return", user_info);
+            user_info = _context4.sent;
+            return _context4.abrupt("return", user_info);
 
           case 4:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3);
+    }, _callee4);
   }));
   return _finduser.apply(this, arguments);
 }
@@ -231,38 +231,38 @@ var getEditProfile = function getEditProfile(req, res) {
 
 exports.getEditProfile = getEditProfile;
 
-var postEditProfile = function postEditProfile(req, res) {
-  //**DB** : => user 변경사항 다시 저장
-  //session에서 user 다시 저장
-  var id = req.params.id;
-  var name = req.body.name;
-  req.session.user.name = name;
-  res.redirect("/users/".concat(id));
-};
-
-exports.postEditProfile = postEditProfile;
-
-var seeProfile = /*#__PURE__*/function () {
+var postEditProfile = /*#__PURE__*/function () {
   var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
-    var user_data;
+    var id, name, user_data;
     return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
+            //**DB** : => user 변경사항 다시 저장
+            //session에서 user 다시 저장
+            id = req.params.id;
+            name = req.body.name;
+            _context2.next = 4;
+            return _User.User.findOne({
+              _id: id
+            }).exec(function (err, res) {
+              if (res) {
+                res.name = name;
+                res.save();
+                console.log(name, "으로 이름이 변경되었습니다");
+              }
+            });
+
+          case 4:
+            _context2.next = 6;
             return finduser(req.session.user.gmail);
 
-          case 2:
+          case 6:
             user_data = _context2.sent;
-            req.session.user = user_data; // req.session.user.call_list = user_data.call_list;
-            // req.session.user.totPlan_list = user_data.totPlan_list;
+            req.session.user = user_data;
+            res.redirect("/users/".concat(id));
 
-            return _context2.abrupt("return", res.render("see-profile", {
-              user: req.session.user,
-              totPlanTitles: req.session.user.totPlan_list
-            }));
-
-          case 5:
+          case 9:
           case "end":
             return _context2.stop();
         }
@@ -270,8 +270,43 @@ var seeProfile = /*#__PURE__*/function () {
     }, _callee2);
   }));
 
-  return function seeProfile(_x4, _x5) {
+  return function postEditProfile(_x4, _x5) {
     return _ref2.apply(this, arguments);
+  };
+}();
+
+exports.postEditProfile = postEditProfile;
+
+var seeProfile = /*#__PURE__*/function () {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
+    var user_data;
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.next = 2;
+            return finduser(req.session.user.gmail);
+
+          case 2:
+            user_data = _context3.sent;
+            req.session.user = user_data; // req.session.user.call_list = user_data.call_list;
+            // req.session.user.totPlan_list = user_data.totPlan_list;
+
+            return _context3.abrupt("return", res.render("see-profile", {
+              user: req.session.user,
+              totPlanTitles: req.session.user.totPlan_list
+            }));
+
+          case 5:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3);
+  }));
+
+  return function seeProfile(_x6, _x7) {
+    return _ref3.apply(this, arguments);
   };
 }(); //로그아웃 -> main 페이지로 간다
 
