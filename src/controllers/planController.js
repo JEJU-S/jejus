@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 import {TotPlan} from '../models/TotPlan'
 import {User} from '../models/User'
+import fetch from "node-fetch";
 
 
 async function findtitle(title){
@@ -71,6 +72,41 @@ async function deletePlan(id){
 }
 
 //사용자 마다 완성된 plan 보여주기 위한 것
+
+
+async function calculateDirection15(placeList){
+    console.log(placeList);
+
+    const baseURL = `https://naveropenapi.apigw.ntruss.com/map-direction-15/v1/driving`;
+    let waypoints;
+    for(let i = 1; i < placeList.length -1; i++){
+        waypoints += (i !== placeList.length -2)?(`${placeList[i].x},${placeList[i].y}|`):(`${placeList[i].x},${placeList[i].y}`);
+    }
+    console.log(waypoints);
+
+
+    const config = {
+        start : `${placeList[0].x},${placeList[0].y}`,
+        goal : `${placeList[placeList.length-1].x},${placeList[placeList.length-1].y}`,
+        waypoints : waypoints
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalURL = `${baseURL}?${params}`;
+
+    const result = await(
+        await fetch(finalURL, {
+            method : "GET",
+            headers : {
+                "X-NCP-APIGW-API-KEY-ID" : process.env.MAP_CLIENT,
+                "X-NCP-APIGW-API-KEY" : process.env.MAP_SECRET
+            }
+        })
+    ).json();
+    console.log(result);
+    console.log(result.route.traoptimal[0].path);
+    return result.route;
+}
+
 export const seePlan = async (req, res) => 
 {
     const {id} = req.params;
@@ -82,6 +118,18 @@ export const seePlan = async (req, res) =>
         console.log("접근 권한 테스트")
         if(checkath(parti,req.session.user._id)){
             console.log("권한허용")
+
+            /*
+            const paths = [];
+            usertotplan.day_plan.forEach((dayPlan) => {
+                if(dayPlan.place.length > 1){
+                    paths.push(calculateDirection15(dayPlan.place));
+                }
+                //코드 에러 처리
+            })
+           */ 
+            
+            
             res.render(`see-plan`, {
                 user : req.session.user,
                 totPlanTitles : req.session.user.totPlan_list,
@@ -98,9 +146,6 @@ export const seePlan = async (req, res) =>
         console.log("계획이 존재하지 않습니다")
         res.redirect(`/users/${req.session.user._id}`);
     }
-    
-    //**DB** : => // 같은 id 값을 가지고 있는 plan 가지고 오기, user, user가 가지고 있는 plan목록, 페이지에서 보여주고 있는 total plan
-    
 }
 
 export const sendInvitation = async (req, res) => {
@@ -313,6 +358,10 @@ export const refuse = async (req, res) => {
 
     res.redirect(`/plans/${id}`);
 }
+
+
+
+
 
 export const del = async(req, res) => {
     //삭제할 totPlan id

@@ -172,7 +172,7 @@ class RecItem {
         }); 
         
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
-            recMarkerClick(this.elements.marker, category, place_name, road_address_name, image_url);
+            recMarkerClick(this.elements.marker, category, place_name, road_address_name, this.elements.img.src);
             this.elements.root.scrollIntoView({behavior : 'smooth'});
         })
     }
@@ -238,6 +238,7 @@ class RecList {
 
     }
 }
+
 
 // 지역, 카테고리
 

@@ -37,9 +37,24 @@ export function showOverall(){
     map.morph(new naver.maps.LatLng(33.400273684416305, 126.5418323465492), 10)
 }
 
-
+const recInfroWindow = new naver.maps.InfoWindow({
+    content : '',
+    backgroundColor: "#00000000",
+    borderWidth: 0,
+    disableAnchor: true
+});
 export function recMarkerClick(marker, category, place_name, road_address_name, image_url){
-    const infoWindow = new naver.maps.InfoWindow({
+    recInfroWindow.setContent(
+        [
+            `<div class='map-info'>`,
+            `   <img src=${image_url}>`,
+            `   <div><h3>${place_name}</h3>`,
+            `   <p>${road_address_name}</p></div></div>`
+        ].join('')
+    );
+    
+    /*
+    recInfroWindow = new naver.maps.InfoWindow({
         content : [
         `<div class='map-info'>`,
         `   <img src=${image_url}>`,
@@ -49,13 +64,13 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
         backgroundColor: "#00000000",
         borderWidth: 0,
         disableAnchor: true
-
     });
+    */
 
-    if(infoWindow.getMap()){
-        infoWindow.close();
+    if(recInfroWindow.getMap()){
+        recInfroWindow.close();
     }else{
-        infoWindow.open(map, marker);
+        recInfroWindow.open(map, marker);
     }
     map.panTo(marker.getPosition());
     //map.morph(marker.getPosition(), 14);
@@ -71,8 +86,24 @@ export function listClick(marker){
     map.panTo(marker.getPosition());
 }
 
+const searchInfoWindow = new naver.maps.InfoWindow({
+    content : ``,
+    backgroundColor: "#00000000",
+    borderWidth: 0,
+    disableAnchor: true 
+});
+
 export function searchMarkerClick(marker, place_name, road_address_name){
-    const infoWindow = new naver.maps.InfoWindow({
+    searchInfoWindow.setContent(
+        [
+            `<div class='map-info'>`,
+            `   <div><h3>${place_name}</h3>`,
+            `   <p>${road_address_name}</p></p></div>`
+        ].join('')
+    );
+    
+    /*
+    searchInfoWindow = new naver.maps.InfoWindow({
         content : [
         `<div class='map-info'>`,
         `   <div><h3>${place_name}</h3>`,
@@ -80,27 +111,23 @@ export function searchMarkerClick(marker, place_name, road_address_name){
         ].join(''),
         backgroundColor: "#00000000",
         borderWidth: 0,
-        disableAnchor: true
-        
+        disableAnchor: true 
     });
-    
-    if(infoWindow.map){
-        infoWindow.close();
+    */
+
+    if(searchInfoWindow.getMap()){
+        searchInfoWindow.close();
     }else{
-        infoWindow.open(map, marker);
+        searchInfoWindow.open(map, marker);
     }
     map.panTo(marker.getPosition());
 }
 
-let temp = 0;
+
 export async function removeMarkersFromMap(markers){
     for (const marker of markers) {
         await marker.setMap(null);
-        temp++;
     }
-    console.log(temp);
-    temp = 0;
-    console.log(markers.length);
     markers.splice(0, markers.length);  
     console.log(markers); 
 }
