@@ -72,6 +72,7 @@
   overflow: scroll;
   align-items: baseline;
   word-break: break-all;
+  margin: 10px 0;
 }
 
 .chat-box::-webkit-scrollbar {
