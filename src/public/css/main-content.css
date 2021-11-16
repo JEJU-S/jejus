@@ -25,6 +25,27 @@
   border-radius: 100%;
   object-fit: cover;
   overflow: hidden;
+  position: relative;
+}
+
+.participant-info {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.575);
+  z-index: 10;
+  position: absolute;
+  color: white;
+  padding: 15px;
+  width: auto !important;
+  height: auto !important;
+  border-radius: 10px;
+}
+
+.participant-info p {
+  margin: 0;
+}
+
+.hover:hover + .participant-info {
+  display: block;
 }
 
 .notattend {
@@ -117,10 +138,7 @@
   gap: 10px;
   overflow: scroll;
   max-height: 65vh;
-}
-
-.recommandation__list::-webkit-scrollbar {
-  display: none;
+  min-width: 269px;
 }
 
 .recommandation__list li {
@@ -146,7 +164,7 @@
   display: flex;
   flex-direction: column;
   width: 60%;
-  padding: 10px 20px;
+  padding: 10px 4px 10px 10px;
 }
 
 .recommandation__list li div div {

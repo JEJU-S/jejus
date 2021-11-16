@@ -129,15 +129,21 @@
                                         <%=list.host%>
                                     </span>
                                     <div class="inv-btn">
-                                        <button class="accept" onclick="location.href='/plans/<%=list.plan_id%>/accept'">수락</button>
-                                        <button class="refuse" onclick="location.href='/plans/<%=list.plan_id%>/refuse'">거절</button>
+                                        <button class="accept" onclick="location.href='/plans/<%=list.plan_id%>/accept'"><span class="material-icons">
+                                            done
+                                            </span>수락</button>
+                                        <button class="refuse" onclick="location.href='/plans/<%=list.plan_id%>/refuse'"><span class="material-icons">
+                                            close
+                                            </span>
+                                            거절</button>
                                     </div>
                                 </li>
                                 <%})%>
+                                
                         </ul>
                 </div>
             </div>
-        </main>    
+        </main>
         <footer>
             &copy; <%=new Date().getFullYear()%> Sample Project
         </footer>

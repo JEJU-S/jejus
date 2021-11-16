@@ -69,11 +69,11 @@ const searchForm = document.querySelector("#search-form");
 searchForm.addEventListener("submit", submitSearchKeyword);
 
 function submitSearchKeyword(event){
-  event.preventDefault();
-  const input = searchForm.querySelector("input");
+    event.preventDefault();
+    const input = searchForm.querySelector("input");
   //server로 키워드 전송💨
-  socket.emit("search_keyword", input.value);
-  input.value = "";
+    socket.emit("search_keyword", input.value);
+    input.value = "";
 }
 
 socket.on("search_result", printSearchList);

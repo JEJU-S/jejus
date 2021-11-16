@@ -9,7 +9,7 @@ html::-webkit-scrollbar {
   display: flex;
   width: 16%;
   height: 95%;
-  background: #d9d9d9;
+  background: #ffffff;
   border-radius: 5px;
   flex-direction: column;
   overflow: scroll;
@@ -27,13 +27,14 @@ html::-webkit-scrollbar {
 }
 
 .kanban__column-title {
-  padding: 0px 0 10px 0;
-  font-size: 1.5rem;
   text-align: center;
+  padding: 5px 0 5px 0;
+  font-size: 1.5rem;
   font-weight: bold;
   color: rgb(0, 0, 0);
   user-select: none;
   background-color: rgb(218, 218, 218);
+  border-radius: 10px;
 }
 
 .kanban__dropzone {
@@ -75,7 +76,6 @@ html::-webkit-scrollbar {
 
 .kanban__item-name {
   grid-area: title;
-  margin-left: 1rem;
   padding: 10px 0px 0px 20px;
   font-size: 1.1rem;
   font-weight: bold;
@@ -86,8 +86,6 @@ html::-webkit-scrollbar {
 .kanban__item-road_adr {
   grid-area: adr;
   font-size: 0.8rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
   padding: 0 10px 10px 20px;
   border-radius: 0px 0px 5px 5px;
   z-index: 1;
@@ -98,7 +96,6 @@ html::-webkit-scrollbar {
   grid-area: del;
   border: none;
   cursor: pointer;
-  margin-right: 1rem;
   background-color: white;
   padding: 15px 20px 0px 0px;
   border-radius: 0 5px 0 0;

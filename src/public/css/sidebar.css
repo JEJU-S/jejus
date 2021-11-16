@@ -19,8 +19,6 @@
   height: 240px;
   text-overflow: ellipsis;
   text-align: center;
-  background-color: #dfdfdf;
-  box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
 }
 
 .photo-box {
