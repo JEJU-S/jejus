@@ -168,7 +168,7 @@ export const postEditProfile = (req, res) => {
 };
 
 export const seeProfile = async (req, res) => {
-
+    
     // session user 가 받은 초대를 
     let user_data = await finduser(req.session.user.gmail);
     req.session.user = user_data;
