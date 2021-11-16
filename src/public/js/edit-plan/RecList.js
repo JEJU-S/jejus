@@ -77,10 +77,7 @@ async function selectCategory(event)
     if(selectedCategory.style.backgroundColor === "rgb(255, 255, 255)"){
         selectedCategory.style.backgroundColor = "#20253b";
         selectedCategory.style.color = "#ffffff";
-        for (const marker of recMarkers) {
-            marker.setMap(null);
-        }
-        recMarkers.splice(0, recMarkers.length);  
+        removeMarkersFromMap(recMarkers);
         return;
     }
 
@@ -206,11 +203,7 @@ class RecList {
     constructor(root, placeList){
         this.root = root;
         this.deleteItems();
-
-        for (const marker of recMarkers) {
-            marker.setMap(null);
-        }
-        recMarkers.splice(0, recMarkers.length);  
+        removeMarkersFromMap(recMarkers);
 
         placeList.forEach((place) => {
             this.renderItem(place);
