@@ -41,13 +41,14 @@ app.use(
 );
 
 //session 확인용  middleware
+/*
 app.use((req, res, next) => {
     req.sessionStore.all((error, sessions) => {
         console.log(sessions);
         next();
     });
 });
-
+*/
 // public 폴더 접근 가능할 수 있게 해줌(css, js)
 //app.use("/public", express.static(path.join(__dirname, "public")));
 let srcPath = path.resolve(__dirname + "/.././src/public");

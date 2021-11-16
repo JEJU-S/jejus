@@ -14,8 +14,7 @@ function dayButtonClick(day){
         if(day == i + 1){
             planBtns[i+1].style.backgroundColor = "white";
             planBtns[i+1].style.zIndex = 10;
-            dayPlans[i].style.display = "grid";
-            
+            dayPlans[i].style.display = "grid"; 
         }
         else{
             planBtns[i+1].style.backgroundColor = "#e3e3e3";
@@ -117,11 +116,13 @@ document.querySelector(".edit-btn").addEventListener("click", () => {
 });
 
 if(document.querySelector(".edit-link") !== null){
-    document.querySelector(".edit-link").addEventListener("click", () => {
-        window.location.href = `/plans/${planId}/edit`;
+
+    document.querySelectorAll(".edit-link").forEach((link) => {
+        link.addEventListener("click", () => {
+            window.location.href = `/plans/${planId}/edit`;
+    });
     });
 }
-
 
 if(document.querySelector(".del-btn") !== null){
     document.querySelector(".del-btn").addEventListener("click", () => {
@@ -129,25 +130,41 @@ if(document.querySelector(".del-btn") !== null){
     });
 }
 
-/*********************/
+/************DAY********************/
 
 document.querySelectorAll(".day-map").forEach((dayMap) => {    
     const day = Number(dayMap.dataset.dayindex);
     const map = new naver.maps.Map(document.getElementById(`day-map${day + 1}`), mapOptions);
-    console.log(map);
-    console.log(`day-map${day + 1}`);
 
+    const dayPolyPath = [];
+    
     for(let i =0; i < dayPlan[day].place.length; i++){
-         new naver.maps.Marker({
+        new naver.maps.Marker({
             position : new naver.maps.LatLng(
                 dayPlan[day].place[i].y,
                 dayPlan[day].place[i].x
             ),
             map : map
-         })
+        })
+        dayPolyPath.push(new naver.maps.LatLng(
+            dayPlan[day].place[i].y,
+            dayPlan[day].place[i].x
+        ));
     }
+    console.log(dayPolyPath);
+    const dayPolyLine = new naver.maps.Polyline({
+        map : map,
+        path : dayPolyPath,
+        strokeWeight : 2,
+        strokeOpacity : 0.9,
+        strokeColor : '#4169E1',
+        strokeStyle : 'shortdash',
+    })
+    console.log(dayPolyLine);
 })
 
-
-
-
+document.querySelectorAll(".more-btn").forEach((moreBtn) => {
+    moreBtn.addEventListener("click", () => {
+        window.location.href =  moreBtn.dataset.link;
+    })
+})

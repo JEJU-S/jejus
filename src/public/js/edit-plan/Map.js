@@ -37,20 +37,23 @@ export function showOverall(){
     map.morph(new naver.maps.LatLng(33.400273684416305, 126.5418323465492), 10)
 }
 
+const infoWindow = new naver.maps.InfoWindow({
+    content : '',
+    backgroundColor: "#00000000",
+    borderWidth: 0,
+    disableAnchor: true
+});
 
 export function recMarkerClick(marker, category, place_name, road_address_name, image_url){
-    const infoWindow = new naver.maps.InfoWindow({
-        content : [
-        `<div class='map-info'>`,
-        `   <img src=${image_url}>`,
-        `   <div><h3>${place_name}</h3>`,
-        `   <p>${road_address_name}</p></div></div>`
-        ].join(''),
-        backgroundColor: "#00000000",
-        borderWidth: 0,
-        disableAnchor: true
-
-    });
+    infoWindow.setContent(
+        [
+            `<div class='map-info'>`,
+            `   <img src=${image_url}>`,
+            `   <div><h3>${place_name}</h3>`,
+            `   <p>${road_address_name}</p></div></div>`
+        ].join('')
+    );
+    
 
     if(infoWindow.getMap()){
         infoWindow.close();
@@ -72,19 +75,15 @@ export function listClick(marker){
 }
 
 export function searchMarkerClick(marker, place_name, road_address_name){
-    const infoWindow = new naver.maps.InfoWindow({
-        content : [
-        `<div class='map-info search'>`,
-        `   <div><h3>${place_name}</h3>`,
-        `   <p>${road_address_name}</p></p></div>`
-        ].join(''),
-        backgroundColor: "#00000000",
-        borderWidth: 0,
-        disableAnchor: true
-        
-    });
+    infoWindow.setContent(
+        [
+            `<div class='map-info search'>`,
+            `   <div><h3>${place_name}</h3>`,
+            `   <p>${road_address_name}</p></p></div>`
+        ].join('')
+    );
     
-    if(infoWindow.map){
+    if(infoWindow.getMap()){
         infoWindow.close();
     }else{
         infoWindow.open(map, marker);
@@ -92,17 +91,16 @@ export function searchMarkerClick(marker, place_name, road_address_name){
     map.panTo(marker.getPosition());
 }
 
-let temp = 0;
-export async function removeMarkersFromMap(markers){
-    for (const marker of markers) {
-        await marker.setMap(null);
-        temp++;
+
+export function removeMarkersFromMap(markers){
+    if(infoWindow.getMap()){
+        infoWindow.close();
     }
-    console.log(temp);
-    temp = 0;
-    console.log(markers.length);
+    
+    for (const marker of markers) {
+       marker.setMap(null);
+    }
     markers.splice(0, markers.length);  
-    console.log(markers); 
 }
 
 /*

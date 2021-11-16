@@ -113,6 +113,7 @@ export default class SearchList {
         this.root.textContent = "";
     }
 }
+
 /*
 document.querySelector("body").addEventListner("click", "");
 

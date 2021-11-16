@@ -77,10 +77,7 @@ async function selectCategory(event)
     if(selectedCategory.style.backgroundColor === "rgb(255, 255, 255)"){
         selectedCategory.style.backgroundColor = "#20253b";
         selectedCategory.style.color = "#ffffff";
-        for (const marker of recMarkers) {
-            marker.setMap(null);
-        }
-        recMarkers.splice(0, recMarkers.length);  
+        removeMarkersFromMap(recMarkers);
         return;
     }
 
@@ -172,7 +169,7 @@ class RecItem {
         }); 
         
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
-            recMarkerClick(this.elements.marker, category, place_name, road_address_name, image_url);
+            recMarkerClick(this.elements.marker, category, place_name, road_address_name, this.elements.img.src);
             this.elements.root.scrollIntoView({behavior : 'smooth'});
         })
     }
@@ -206,11 +203,7 @@ class RecList {
     constructor(root, placeList){
         this.root = root;
         this.deleteItems();
-
-        for (const marker of recMarkers) {
-            marker.setMap(null);
-        }
-        recMarkers.splice(0, recMarkers.length);  
+        removeMarkersFromMap(recMarkers);
 
         placeList.forEach((place) => {
             this.renderItem(place);
@@ -238,6 +231,7 @@ class RecList {
 
     }
 }
+
 
 // 지역, 카테고리
 
