@@ -21,6 +21,7 @@ function init(placeList){
 
   // 칸반리스트 만들기
   kanbanList = new Kanban(document.querySelector(".kanban"), placeList);
+  
 }
 /***************************************/
 

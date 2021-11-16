@@ -98,15 +98,11 @@ export const seePlan = async (req, res) =>
             });
         }
         else{            
-            console.log("접근 권한이 없습니다")
-            res.send(`<script>alert('접근 권한이 없습니다'); window.location.href="/users/${req.session.user._id}"</script>`);
-            //res.redirect(`/users/${req.session.user._id}`);
+            res.redirect(`/users/${req.session.user._id}`);
         }
     }
     else{
-        console.log("계획이 존재하지 않습니다")
-        res.send(`<script>alert('계획이 존재하지 않습니다'); window.location.href="/users/${req.session.user._id}"</script>`);
-        //res.redirect(`/users/${req.session.user._id}`);
+        res.redirect(`/users/${req.session.user._id}`);
     }
 }
 
@@ -248,7 +244,8 @@ export const postCreatePlan = async (req, res) => {
         res.redirect(`/plans/${totplan._id}`); 
     }
     else{
-        res.redirect(`/users/${pC_id}`);
+        res.send(`<script>alert('같은 이름의 여행이 있습니다. 다른 이름을 선택해주세요'); window.location.href="/users/${pC_id}"</script>`);
+        //res.redirect(`/users/${pC_id}`);
     }
     
 }

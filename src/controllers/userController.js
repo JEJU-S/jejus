@@ -134,6 +134,10 @@ export const callback = async(req, res) => {
             call_list : login_call_list // 초대장 리스트
         };
         console.log(req.session.user);
+
+        
+
+
         
         //profile 페이지로 redirect(seeProfile 함수)
         res.redirect(`/users/${req.session.user._id}`);
@@ -153,26 +157,18 @@ export const getEditProfile = (req, res) => {
 };
 
 
-export const postEditProfile = async (req, res) => {
+export const postEditProfile = (req, res) => {
     //**DB** : => user 변경사항 다시 저장
     //session에서 user 다시 저장
     const {id} = req.params;
     const {name} = req.body;
 
-    await User.findOne({_id: id}).exec(function(err, res){
-        if(res){
-            res.name = name
-            res.save();
-            console.log(name,"으로 이름이 변경되었습니다")
-        }
-    });
-    let user_data = await finduser(req.session.user.gmail);
-    req.session.user = user_data;
+    req.session.user.name = name;
     res.redirect(`/users/${id}`);
 };
 
 export const seeProfile = async (req, res) => {
-    
+
     // session user 가 받은 초대를 
     let user_data = await finduser(req.session.user.gmail);
     req.session.user = user_data;
