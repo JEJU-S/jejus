@@ -55,7 +55,16 @@
         </div>
         <div class="participant"> <!--notattend-->
             <%totPlan.participants.forEach(function(participant){%>
-                <div><img src="<%=participant.image_url%>" alt="user-image" data-id="<%=participant._id%>" class="notattend"></div>
+                <div><img src="<%=participant.image_url%>" alt="user-image" data-id="<%=participant._id%>" class="hover notattend">
+                    <div class="participant-info">
+                        <span>
+                        <%=participant.name%>
+                        <%if(participant._id.toString() === totPlan.admin["_id"].toString()){%>
+                            👑
+                        <%}%></span>
+                        <p><%=participant.gmail%></p>
+                    </div>
+                </div>
             <%})%>
         </div>
     <!--

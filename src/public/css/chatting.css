@@ -13,7 +13,7 @@
   height: 3.5rem;
   border-radius: 50%;
   margin-top: 10px;
-  border: 1px solid #3b89ff;
+  border: 3px solid #3b89ff;
   background-color: rgb(255, 255, 255);
   z-index: 9998;
 }
@@ -21,7 +21,7 @@
 #popup:hover {
   background-color: #3b89ff;
   color: white;
-  border: 1px solid #3b89ff;
+  border: 3px solid #3b89ff;
   transition: 0.2s;
   font-weight: bold;
   cursor: pointer;
