@@ -33,19 +33,19 @@
         <span class="material-icons region-close md-4">
             close
             </span>
-            <div class="jejumap">
-                <img src="/public/images/jejumap.png">
-                <div>
-                    <img src="/public/images/jeju-south.png" class="jeju-region south" alt="남부" data-icon="icon-south">
-                    <img src="/public/images/jeju-west.png" class="jeju-region west" alt="서부" data-icon="icon-west">
-                    <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover" alt="전체" data-icon="icon-jeju-whole">
-                    <img src="/public/images/jeju-whole.png" class="jeju-region jj-whole">
-                    <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd" alt="성산우도" data-icon="icon-sswd">
-                    <img src="/public/images/north-east.png" class="jeju-region ne" alt="북동부" data-icon="icon-ne">
-                    <img src="/public/images/jeju.png" class="jeju-region jj" alt="제주" data-icon="icon-jeju">
-                </div>
+        <div class="jejumap">
+            <img src="/public/images/jejumap.png">
+            <div>
+                <img src="/public/images/jeju-south.png" class="jeju-region south" alt="남부" data-icon="icon-south">
+                <img src="/public/images/jeju-west.png" class="jeju-region west" alt="서부" data-icon="icon-west">
+                <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover" alt="전체" data-icon="icon-jeju-whole">
+                <img src="/public/images/jeju-whole.png" class="jeju-region jj-whole">
+                <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd" alt="성산우도" data-icon="icon-sswd">
+                <img src="/public/images/north-east.png" class="jeju-region ne" alt="북동부" data-icon="icon-ne">
+                <img src="/public/images/jeju.png" class="jeju-region jj" alt="제주" data-icon="icon-jeju">
             </div>
         </div>
+    </div>
     <header>
         <div class="logo-box">
             <a href="/users/<%=user._id%>"><img src="/public/images/logo.png" alt="logo" class="logo"></a>
@@ -84,8 +84,12 @@
         <button id="save">저장</button>
     </header>
 
-    <main class="main-content">
-        <div class="recommandation">
+    <main class="main-content">        
+
+        <div class="recommandation">        
+        <div class="dragdrop-info">
+            <span>이곳의 여행지들을</span>
+        </div>
             <button type="button" id="regionbtn">
                 <span class="material-icons md-2">map</span>
                 <img style="display : none">
@@ -135,6 +139,9 @@
         <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
 
         <div class="search-list">
+            <div class="dragdrop-info">
+                <span>이곳의 여행지들을</span>
+            </div>
             <form id="search-form">
                 <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
                 <button class="search-btn">
@@ -163,7 +170,10 @@
         
         <div id="map"></div>
 
-        <div class="kanban">
+        <div class="kanban">        
+        <div class="dragdrop-info">
+            <span>여기로 끌어오세요</span>
+        </div>
             <!--
             <div class="kanban__column">
                 <div class="kanban__column-title">Not started</div>
