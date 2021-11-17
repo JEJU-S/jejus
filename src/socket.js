@@ -159,6 +159,7 @@ io.on("connection", (socket) => {
         socket.join(userId);
         socket["userName"] = userName;
         socket["userId"] = userId;
+        socket["planId"] = planId;
         //console.log(socket.rooms); 
         sendCurrentParticipant(planId, socket);
         //DB** 처음 칸반 장소 리스트 불러오기
@@ -172,8 +173,15 @@ io.on("connection", (socket) => {
     /*****채팅 메시지***/
 
     socket.on("send_chatting_msg", (image_url, message, planId) => {
+
+        const participants = io.sockets.adapter.rooms.get(socket.planId);
+        for(const prt of participants){
+            if(io.sockets.sockets.get(prt).userId === socket.userId)
+                socket.to(prt).emit("outgoing_chatting_msg", message);
+        }
+
         socket.to(planId).except(socket.userId).emit("incomming_chatting_msg", image_url, message);
-        socket.to(socket.userId).emit("outgoing_chatting_msg", message);
+        //socket.to(socket.userId).emit("outgoing_chatting_msg", message);
         //socket.nsp.to(room).emit(event) => nsp 문서 확인 후 적용
     })
     /*****검색 리스트*/
@@ -258,7 +266,9 @@ io.on("connection", (socket) => {
         //console.log("OBJ ID 입니다 Plan",planId);
         const placeList = await finduserPlan(planId);
         if(placeList==null){
-            socket.disconnect();
+            io.in(planId).disconnectSockets(true);
+            //socket.disconnect();
+            return;
         }
         let PL = placeList.day_plan;
         let dplace = await checkid(PL,columnId);
@@ -303,7 +313,9 @@ io.on("connection", (socket) => {
        
         const placeList = await finduserPlan(planId);
         if(placeList==null){
-            socket.disconnect();
+            io.in(planId).disconnectSockets(true);
+            //socket.disconnect();
+            return;
         }
         let mPL = placeList.day_plan;
         //console.log(mPL)
@@ -367,7 +379,9 @@ io.on("connection", (socket) => {
         //console.log(itemId);
         const placeList = await finduserPlan(planId);
         if(placeList==null){
-            socket.disconnect();
+            io.in(planId).disconnectSockets(true);
+            //socket.disconnect();
+            return;
         }
         let dPL = placeList.day_plan;
         //console.log(dPL)
@@ -388,7 +402,7 @@ io.on("connection", (socket) => {
         let update_array = { date: date_check , place : del_place_list , _id : id_check }
 
 
-        dPL.splice(del_index, 1,update_array );
+        dPL.splice(del_index, 1, update_array );
         // dPL.splice(del_index, 0, update_array);
         //console.log(dPL)
 
@@ -400,15 +414,37 @@ io.on("connection", (socket) => {
         //socket.emit("delete_from_list", itemId);
     })
 
-    socket.on("disconnecting", (reason) => {
+    socket.on("disconnecting", async (reason) => {
+        console.log(socket.planId);
+        console.log(socket.userId);
+        const participants = io.sockets.adapter.rooms.get(socket.planId);
+        const users = [];
+        for(const prt of participants){
+            if(io.sockets.sockets.get(prt).userId === socket.userId)
+                users.push(io.sockets.sockets.get(prt).userId);
+        }
+       
+        console.log(users.length);
+        if(users.length <= 1){
+            socket.to(socket.planId).emit("server_msg", socket.userName, false);
+            socket.to(socket.planId).emit("disconnecting_user", socket.userId);
+        }
+        /*
         const userCon = io.sockets.adapter.rooms.get(socket.userId);
         if(userCon !== undefined && userCon.size <= 1){
-            socket.rooms.forEach(room => {  
+            socket.rooms.forEach(room => {
+                console.log(room);  
+                if(room !== sp){
                 socket.to(room).emit("server_msg", socket.userName, false);
                 socket.to(room).emit("disconnecting_user", socket.userId);
+            }
         });
         }
+        */
     });
+    socket.on("disconnect", () => {
+        console.log("dfsfd");
+    })
 });
 
 export default server;

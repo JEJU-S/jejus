@@ -157,17 +157,6 @@ function moveInList(itemId, columnId, droppedIndex){
     insertAfter.after(droppedItemElement);
 }
 
-socket.on("current_participant", checkCurrentParticipant);
-
-
-function checkCurrentParticipant(currentParticipant){
-    currentParticipant.forEach((participantId) => {
-        if(document.querySelector(`.participant [data-id="${participantId}"]`) != null){
-            document.querySelector(`.participant [data-id="${participantId}"]`).classList.remove("notattend");
-        }
-    })
-}
-
 document.querySelector("#save").addEventListener("click", () => {
     //socket leave room
     window.location.href = `/plans/${planId}`;
@@ -185,4 +174,15 @@ function checkDisconnectingUser(userId){
 
 socket.on("disconnect", () => {
     window.location.href = `/plans/${planId}`;
-  });
+});
+
+socket.on("current_participant", checkCurrentParticipant);
+
+function checkCurrentParticipant(currentParticipant){
+    currentParticipant.forEach((participantId) => {
+        if(document.querySelector(`.participant [data-id="${participantId}"]`) != null){
+            document.querySelector(`.participant [data-id="${participantId}"]`).classList.remove("notattend");
+        }
+    })
+}
+

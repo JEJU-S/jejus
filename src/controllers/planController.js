@@ -108,7 +108,7 @@ export const sendInvitation = async (req, res) => {
 
     // 초대장을 전송
     const usertotplan = await finduserPlan(id);
-    console.log("초대한 계획", usertotplan)
+    //console.log("초대한 계획", usertotplan)
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
@@ -119,7 +119,7 @@ export const sendInvitation = async (req, res) => {
     
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
-    console.log("초대한 유저", par_userinfo);
+    //console.log("초대한 유저", par_userinfo);
 
     let statusCode;
     if(par_userinfo!=null)
@@ -160,20 +160,20 @@ export const editPlan = async (req, res) =>
     const {id} = req.params;
     const usertotplan = await finduserPlan(id);
 
-    console.log("!! userplans(editplan) check !!")
-    console.log(usertotplan)
+    //console.log("!! userplans(editplan) check !!")
+    //console.log(usertotplan)
     if(usertotplan==null){
         res.redirect(`/plans/${id}`);
     }
     else{
         let parti = usertotplan.participants;
     
-        console.log("접근 권한 테스트")
-        console.log(req.session.user);
+        //console.log("접근 권한 테스트")
+        //console.log(req.session.user);
 
         
         if(checkath(parti, req.session.user._id)){
-            console.log("권한허용")
+            //console.log("권한허용")
             res.render("edit-plan", {
                 user : req.session.user,
                 totPlan : usertotplan,
