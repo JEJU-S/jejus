@@ -26,7 +26,6 @@ function dayButtonClick(day){
 }
 
 function wholePlanClick(){
-    console.log(planBtns[0]);
     planBtns[0].style.backgroundColor = "white";
     planBtns[0].style.zIndex = 10;
     wholePlan[0].style.display = "flex";
@@ -51,7 +50,6 @@ function sendInvitationToGmail(event){
     const regex = new RegExp(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i);
 
     const gmailInput = emailForm.querySelector("input[type='email']");
-    console.log(gmailInput.value);
     /*
     if(!regex.test(gmailInput.value)){
         alert("email 형식으로 입력해주세요");
@@ -122,8 +120,6 @@ const mapOptions = {
 
 const totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
 const dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
-console.log(dayPlan);
-
 
 for(let i =0; i < dayPlan.length; i++){
     for(let j = 0; j < dayPlan[i].place.length; j++){
@@ -181,17 +177,17 @@ document.querySelectorAll(".day-map").forEach((dayMap) => {
         ));
     }
     console.log(dayPolyPath);
-
-    const dayPolyLine = new naver.maps.Polyline({
-        map : map,
-        path : dayPolyPath,
-        strokeWeight : 2,
-        strokeOpacity : 0.9,
-        strokeColor : '#4169E1',
-        strokeStyle : 'shortdash',
-        endIcon : 1
-    })
-    console.log(dayPolyLine);
+        if(dayPolyPath.length > 1){
+        const dayPolyLine = new naver.maps.Polyline({
+            map : map,
+            path : dayPolyPath,
+            strokeWeight : 2,
+            strokeOpacity : 0.9,
+            strokeColor : '#4169E1',
+            strokeStyle : 'shortdash',
+            endIcon : 1
+        })
+    }
 })
 
 document.querySelectorAll(".more-btn").forEach((moreBtn) => {

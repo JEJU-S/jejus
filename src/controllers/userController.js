@@ -49,7 +49,6 @@ export const login = (req, res) =>
 
 export const callback = async(req, res) => {
 
-    console.log("call back function!");
     const baseURL = "https://oauth2.googleapis.com/token";
 
     const config = {
@@ -113,16 +112,6 @@ export const callback = async(req, res) => {
         let login_totPlan_list =  user_info.totPlan_list;
         let login_call_list =  user_info.call_list;
         
-        console.log('---------------------------')
-        console.log('UserInfo from MongoDB')
-        console.log(login_id);
-        console.log(login_name);
-        console.log(login_gmail);
-        console.log(login_image);
-        console.log(login_totPlan_list);
-        console.log(login_call_list);
-        console.log('---------------------------')
-
         req.session.loggedIn = true;
         // session User 저장(DB에서 user찾아서)
         req.session.user = {
@@ -133,19 +122,12 @@ export const callback = async(req, res) => {
             totPlan_list : login_totPlan_list, // user가 가지고 있는 plan 뽑아서 id, title을 저장
             call_list : login_call_list // 초대장 리스트
         };
-        console.log(req.session.user);
-
-        
-
-
         
         //profile 페이지로 redirect(seeProfile 함수)
         res.redirect(`/users/${req.session.user._id}`);
     }
 
-    else {
-        console.log("error");
-    
+    else {    
         res.redirect("/");
     }
 }
@@ -156,14 +138,20 @@ export const getEditProfile = (req, res) => {
     res.render("edit-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list } );
 };
 
-
-export const postEditProfile = (req, res) => {
+export const postEditProfile = async (req, res) => {
     //**DB** : => user 변경사항 다시 저장
     //session에서 user 다시 저장
     const {id} = req.params;
     const {name} = req.body;
 
-    req.session.user.name = name;
+    await User.findOne({_id: id}).exec(function(err, res){
+        if(res){
+            res.name = name
+            res.save();
+        }
+    });
+    let user_data = await finduser(req.session.user.gmail);
+    req.session.user = user_data;
     res.redirect(`/users/${id}`);
 };
 
@@ -172,8 +160,7 @@ export const seeProfile = async (req, res) => {
     // session user 가 받은 초대를 
     let user_data = await finduser(req.session.user.gmail);
     req.session.user = user_data;
-    // req.session.user.call_list = user_data.call_list;
-    // req.session.user.totPlan_list = user_data.totPlan_list;
+
     return res.render("see-profile", {user : req.session.user, totPlanTitles : req.session.user.totPlan_list});
 };
 

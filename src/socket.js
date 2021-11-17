@@ -44,7 +44,7 @@ async function checkid(tot,check){
     await tot.forEach(function(i,j){
         if(i['_id']==check){
             x=i;
-            console.log(j,"번째 인덱스")
+            //console.log(j,"번째 인덱스")
         }
         else{
             return false;
@@ -57,7 +57,7 @@ async function checkitem(tot,check){
     await tot.forEach(function(i,j){
         if(i['_id']==check){
             x=i;
-            console.log(j,"번째 인덱스")
+            //console.log(j,"번째 인덱스")
         }
         else{
             return false;
@@ -70,8 +70,8 @@ async function checkidx(tot,check){
     tot.forEach(function(i,j){
         if(i['_id']==check){
             x=j;
-            console.log(j,"번째 인덱스")
-            console.log(i)
+            //console.log(j,"번째 인덱스")
+            //console.log(i)
         }
         else{
             return false;
@@ -83,7 +83,7 @@ async function checkobj(tot,check){
     let x;
     tot.forEach(function(i,j){
         if(i['x']==check.x && i['y'] == check.y){
-            console.log(i);
+            //console.log(i);
             x=i['_id'];
         }
         else{
@@ -162,7 +162,7 @@ io.on("connection", (socket) => {
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
         let PL = placeList.day_plan;
-        console.log(PL);
+        //console.log(PL);
         
         socket.to(planId).except(socket.userId).emit("server_msg", userName, true);
         init(PL);
@@ -189,7 +189,7 @@ io.on("connection", (socket) => {
         let section='전체';
         let cate='전체';
 
-        console.log(region, category);  
+        //console.log(region, category);  
         if(region == '제주'){
             section = 'A';
         }
@@ -218,22 +218,22 @@ io.on("connection", (socket) => {
 
         if(category!='전체' && region!='전체'){
             let Rec = await categorize(section,cate);
-            console.log(section,cate)
-            console.log(Rec);
+            //console.log(section,cate)
+            //console.log(Rec);
             const rec1 = Rec;
             socket.emit("rec_result", rec1);
         }
         else if(category=='전체' && region!='전체'){
             let Rec_sect = await sections(section);
-            console.log(section,cate)
-            console.log(Rec_sect)
+            //console.log(section,cate)
+            //console.log(Rec_sect)
             const rec2 = Rec_sect;
             socket.emit("rec_result", rec2);
         }
         else if(region=='전체' && category!='전체'){
             let Rec_cate = await categories(cate);
-            console.log(section,cate)
-            console.log(Rec_cate)
+            //console.log(section,cate)
+            //console.log(Rec_cate)
             const rec3 = Rec_cate;
             socket.emit("rec_result", rec3);
         }
@@ -249,15 +249,15 @@ io.on("connection", (socket) => {
 
     socket.on("add_to_placelist", async (newPlace, columnId, droppedIndex, planId) => {
         //**DB 작업 필요=> 새로운 아이템 만들어서 넣어야 함 */
-        console.log("ADD TO PLACELIST")
-        console.log(newPlace);
+       // console.log("ADD TO PLACELIST")
+        //console.log(newPlace);
         
-        console.log("OBJ ID 입니다 Day",columnId);
-        console.log("OBJ ID 입니다 Plan",planId);
+        //console.log("OBJ ID 입니다 Day",columnId);
+        //console.log("OBJ ID 입니다 Plan",planId);
         const placeList = await finduserPlan(planId);
         let PL = placeList.day_plan;
         let dplace = await checkid(PL,columnId);
-        console.log(dplace)
+        //console.log(dplace)
 
         Array.prototype.insert = function ( index, item ) {
             this.splice( index, 0, item );
@@ -271,10 +271,10 @@ io.on("connection", (socket) => {
             
         PL.push(dplace);
         PL.pop();
-        console.log(dplace)
-        console.log(PL)
+        //console.log(dplace)
+        //console.log(PL)
 
-        console.log(mongoose.Types.ObjectId.isValid(columnId)) // obj id 유효한지 확인
+        //console.log(mongoose.Types.ObjectId.isValid(columnId)) // obj id 유효한지 확인
         await TotPlan.findByIdAndUpdate({ _id:planId } , {$set : {day_plan: PL } }).exec();
         // TotPlan.findByIdAndUpdate(planId, {$push : {day_plan: { test1 } } }).exec();
 
@@ -283,8 +283,8 @@ io.on("connection", (socket) => {
         let check_PL = check_placeList.day_plan;
         let check_place = await checkid(check_PL,columnId);
         let newitemId = await checkobj(check_place.place , newPlace);
-        console.log("추가된 아이템 확인1",check_place.place)
-        console.log("추가된 아이템 확인2",newitemId);
+        //console.log("추가된 아이템 확인1",check_place.place)
+        //console.log("추가된 아이템 확인2",newitemId);
 
         socket.to(planId).emit("add_to_placelist" ,newitemId, newPlace, columnId, droppedIndex);
         socket.emit("add_to_placelist" , newitemId, newPlace, columnId, droppedIndex);
@@ -294,14 +294,14 @@ io.on("connection", (socket) => {
         // 옮기는것도 결국 delete and insert ,, 해당 인덱스만 찾아서
 
         //고른 아이템 삭제 
-        console.log("MOVE IN PLACELIST")
-        console.log("item:",itemId)
-        console.log("origin",originColumnId)
-        console.log("dropped",columnId,droppedIndex)
+        //console.log("MOVE IN PLACELIST")
+        //console.log("item:",itemId)
+        //console.log("origin",originColumnId)
+        //console.log("dropped",columnId,droppedIndex)
 
         const placeList = await finduserPlan(planId);
         let mPL = placeList.day_plan;
-        console.log(mPL)
+        //console.log(mPL)
 
         let del_place = await checkid(mPL,originColumnId);
         let date_check = del_place.date;
@@ -312,26 +312,26 @@ io.on("connection", (socket) => {
         let del_item = await checkidx(del_place_list,itemId);
         let insert_item = await checkitem(del_place_list,itemId); 
 
-        console.log("인덱스확인",del_item,"->",droppedIndex);
+        //console.log("인덱스확인",del_item,"->",droppedIndex);
         //고른 아이템 추가
         Array.prototype.insert = async function ( index, item ) {
             this.splice( index, 0, item );
         };
         if(columnId==originColumnId && ( del_item == droppedIndex || del_item == droppedIndex-1) ){
-            console.log("칸반 인덱스 변동이 없음")
+            //console.log("칸반 인덱스 변동이 없음")
         }
         else
         {
-            console.log("삭제할 아이템 확인",del_item , insert_item);
-            console.log(del_place_list);
+            //console.log("삭제할 아이템 확인",del_item , insert_item);
+            //console.log(del_place_list);
             await del_place_list.splice(del_item,1);
-            console.log("삭제확인",del_place_list);
+            //console.log("삭제확인",del_place_list);
             
             let update_array = { date: date_check , place : del_place_list , _id : id_check }
 
             await mPL.splice(del_index, 1,update_array );
 
-            console.log("옮기기 전 아이템 삭제",mPL);
+            //console.log("옮기기 전 아이템 삭제",mPL);
             
             await TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
 
@@ -357,12 +357,12 @@ io.on("connection", (socket) => {
     })
     
     socket.on("delete_from_list", async (itemId, columnId, planId) => {
-        console.log("DELETE FROM LIST")
+        //console.log("DELETE FROM LIST")
 
-        console.log(itemId);
+        //console.log(itemId);
         const placeList = await finduserPlan(planId);
         let dPL = placeList.day_plan;
-        console.log(dPL)
+        //console.log(dPL)
         let del_place = await checkid(dPL,columnId);
         let date_check = del_place.date;
         let id_check = del_place._id;
@@ -371,18 +371,18 @@ io.on("connection", (socket) => {
         let del_place_list = del_place.place;
         let del_item = await checkidx(del_place_list,itemId);
 
-        console.log("확인",del_item);
+        //console.log("확인",del_item);
 
-        console.log(del_place_list);
+        //console.log(del_place_list);
         del_place_list.splice(del_item,1);
-        console.log("삭제확인",del_place_list);
+        //console.log("삭제확인",del_place_list);
         
         let update_array = { date: date_check , place : del_place_list , _id : id_check }
 
 
         dPL.splice(del_index, 1,update_array );
         // dPL.splice(del_index, 0, update_array);
-        console.log(dPL)
+        //console.log(dPL)
 
         TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: dPL } }).exec();
 
@@ -402,10 +402,6 @@ io.on("connection", (socket) => {
         }
     });
 });
-
-
-
-
 
 export default server;
 
