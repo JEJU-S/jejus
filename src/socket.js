@@ -255,10 +255,12 @@ io.on("connection", (socket) => {
         //console.log("OBJ ID 입니다 Day",columnId);
         //console.log("OBJ ID 입니다 Plan",planId);
         const placeList = await finduserPlan(planId);
+        if(placeList==null){
+            socket.disconnect();
+        }
         let PL = placeList.day_plan;
         let dplace = await checkid(PL,columnId);
-        //console.log(dplace)
-
+        
         Array.prototype.insert = function ( index, item ) {
             this.splice( index, 0, item );
         };
@@ -298,8 +300,12 @@ io.on("connection", (socket) => {
         //console.log("item:",itemId)
         //console.log("origin",originColumnId)
         //console.log("dropped",columnId,droppedIndex)
-
+        
+       
         const placeList = await finduserPlan(planId);
+        if(planList==null){
+            socket.disconnect();
+        }
         let mPL = placeList.day_plan;
         //console.log(mPL)
 
@@ -358,9 +364,12 @@ io.on("connection", (socket) => {
     
     socket.on("delete_from_list", async (itemId, columnId, planId) => {
         //console.log("DELETE FROM LIST")
-
+       
         //console.log(itemId);
         const placeList = await finduserPlan(planId);
+        if(planList==null){
+            socket.disconnect();
+        }
         let dPL = placeList.day_plan;
         //console.log(dPL)
         let del_place = await checkid(dPL,columnId);
