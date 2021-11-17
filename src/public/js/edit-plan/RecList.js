@@ -57,9 +57,8 @@ function getRegionSelect(event){
     
     //서버 전송💨
     socket.emit("rec_keyword", selectedRegion, "전체");
+    showOverall();
 }
-
-
 
 // 카테고리 고르기
 async function selectCategory(event)
@@ -91,7 +90,6 @@ async function selectCategory(event)
 
     socket.emit("rec_keyword", selectedRegion, category);
 }
-
 
 function matchCategoryMarkerImg(category){
     let image = "";
@@ -199,7 +197,7 @@ class RecItem {
 
 }
 
-class RecList {
+export class RecList {
     constructor(root, placeList){
         this.root = root;
         this.deleteItems();
@@ -231,7 +229,7 @@ class RecList {
 
     }
 }
-
+/******************* */
 
 // 지역, 카테고리
 
@@ -239,5 +237,5 @@ socket.on("rec_result", showRecResult);
 
 function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
-    showOverall();
+    //showOverall();
 }

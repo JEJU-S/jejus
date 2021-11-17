@@ -1,6 +1,7 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
 import SearchList from "/public/js/edit-plan/SearchList.js";
 import {createMapMarker, removeMapMarker, searchMarkers, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
+//import {RecList} from "/public/js/edit-plan/RecList.js";
 import {Kanban, Item} from "/public/js/edit-plan/Kanban.js";
 
 /******************socket 생성************************/
@@ -185,8 +186,3 @@ function checkDisconnectingUser(userId){
 socket.on("disconnect", () => {
     window.location.href = `/plans/${planId}`;
   });
-
-
-
-
-
