@@ -5,6 +5,7 @@ html::-webkit-scrollbar {
 /*칸반 css 시작*/
 
 .kanban {
+  position: relative;
   color: #383838;
   display: flex;
   width: 16%;
@@ -42,6 +43,16 @@ html::-webkit-scrollbar {
   height: 20px;
   background-color: #ffffff;
   transition: background 0.15s, height 0.15s;
+}
+
+.notice {
+  display: flex;
+  margin-top: 5px;
+  justify-content: center;
+  align-items: center;
+  height: 40px !important;
+  background-color: rgb(241, 241, 241);
+  border-radius: 10px;
 }
 
 .empty {

@@ -33,19 +33,19 @@
         <span class="material-icons region-close md-4">
             close
             </span>
-            <div class="jejumap">
-                <img src="/public/images/jejumap.png">
-                <div>
-                    <img src="/public/images/jeju-south.png" class="jeju-region south" alt="남부" data-icon="icon-south">
-                    <img src="/public/images/jeju-west.png" class="jeju-region west" alt="서부" data-icon="icon-west">
-                    <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover" alt="전체" data-icon="icon-jeju-whole">
-                    <img src="/public/images/jeju-whole.png" class="jeju-region jj-whole">
-                    <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd" alt="성산우도" data-icon="icon-sswd">
-                    <img src="/public/images/north-east.png" class="jeju-region ne" alt="북동부" data-icon="icon-ne">
-                    <img src="/public/images/jeju.png" class="jeju-region jj" alt="제주" data-icon="icon-jeju">
-                </div>
+        <div class="jejumap">
+            <img src="/public/images/jejumap.png">
+            <div>
+                <img src="/public/images/jeju-south.png" class="jeju-region south" alt="남부" data-icon="icon-south">
+                <img src="/public/images/jeju-west.png" class="jeju-region west" alt="서부" data-icon="icon-west">
+                <img src="/public/images/jeju-whole-hover.png" class="jeju-region jj-whole-hover" alt="전체" data-icon="icon-jeju-whole">
+                <img src="/public/images/jeju-whole.png" class="jeju-region jj-whole">
+                <img src="/public/images/seongsan-wudo.png" class="jeju-region sswd" alt="성산우도" data-icon="icon-sswd">
+                <img src="/public/images/north-east.png" class="jeju-region ne" alt="북동부" data-icon="icon-ne">
+                <img src="/public/images/jeju.png" class="jeju-region jj" alt="제주" data-icon="icon-jeju">
             </div>
         </div>
+    </div>
     <header>
         <div class="logo-box">
             <a href="/users/<%=user._id%>"><img src="/public/images/logo.png" alt="logo" class="logo"></a>
@@ -80,14 +80,24 @@
                 <%=totPlan.day_plan[totPlan.day_plan.length - 1].date.getDate()%>일 
             </span>
         </div>
-    -->
+    --> 
+        <button id="info"><span class="material-icons md-2">
+            help_outline
+        </span>
+        </button>
         <button id="save">저장</button>
     </header>
 
-    <main class="main-content">
-        <div class="recommandation">
+    <main class="main-content">        
+
+        <div class="recommandation">        
+        <div class="dragdrop-info" style="
+  display: none;">
+            <span>이곳은 JEJU'S가 추천하는 관광지입니다. <br>먼저 권역을 선택하고, 관광/식당/카페 중<br> 카테고리를 골라서 추천받을 수 있습니다. <br><br>마음에 드는 관광지를 끌어서<br>맨 오른쪽 공간에 넣어보세요 !
+            </span>
+        </div>
             <button type="button" id="regionbtn">
-                <span class="material-icons md-2">map</span>
+                <span class="material-icons md-2 default">map</span>
                 <img style="display : none">
                 <span id="region">권역 선택</span>
             </button>
@@ -135,6 +145,10 @@
         <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
 
         <div class="search-list">
+            <div class="dragdrop-info" style="
+  display: none;">
+                <span>이곳은 이용자분들이 원하는 곳을<br>검색하는 공간입니다.<br>검색 결과는 15개 까지 나오며,<br>정확한 검색을 위해 검색어를 <br>자세하게 입력해 주세요.<br><br>원하는 관광지를 끌어서<br>맨 오른쪽 공간에 넣어보세요 !</span>
+            </div>
             <form id="search-form">
                 <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
                 <button class="search-btn">
@@ -158,12 +172,14 @@
                 -->
             </ul>
         </div>
-        <div class="select-info">
-        </div>
         
         <div id="map"></div>
 
-        <div class="kanban">
+        <div class="kanban">        
+        <div class="dragdrop-info" style="
+  display: none;">
+            <span>이곳은 이용자분이 만들어가는<br>플래너 공간입니다.<br>각 Day별로 지도 좌측의 여행지들을<br>끌어다 놓을 수 있습니다.<br>플래너 공간 내에서<br>끌어서 순서를 바꿀 수도 있고,<br>Day별 이동도 가능합니다.</span>
+        </div>
             <!--
             <div class="kanban__column">
                 <div class="kanban__column-title">Not started</div>
@@ -234,5 +250,6 @@
     <script type="module" src="/public/js/edit-plan/textarea.js"></script>
     <script type="module" src="/public/js/edit-plan/RecList.js"></script>
     <script type="module" src="/public/js/edit-plan/communicate.js"></script>
+    <script type="module" src="/public/js/edit-plan/info.js"></script>
 
 </html>
