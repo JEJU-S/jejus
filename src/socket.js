@@ -280,8 +280,6 @@ io.on("connection", (socket) => {
 
         //console.log(mongoose.Types.ObjectId.isValid(columnId)) // obj id 유효한지 확인
         await TotPlan.findByIdAndUpdate({ _id:planId } , {$set : {day_plan: PL } }).exec();
-        // TotPlan.findByIdAndUpdate(planId, {$push : {day_plan: { test1 } } }).exec();
-
 
         const check_placeList = await finduserPlan(planId);
         let check_PL = check_placeList.day_plan;
@@ -304,7 +302,7 @@ io.on("connection", (socket) => {
         
        
         const placeList = await finduserPlan(planId);
-        if(planList==null){
+        if(placeList==null){
             socket.disconnect();
         }
         let mPL = placeList.day_plan;
@@ -368,7 +366,7 @@ io.on("connection", (socket) => {
        
         //console.log(itemId);
         const placeList = await finduserPlan(planId);
-        if(planList==null){
+        if(placeList==null){
             socket.disconnect();
         }
         let dPL = placeList.day_plan;
