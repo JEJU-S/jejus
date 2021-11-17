@@ -4,10 +4,6 @@ html {
   scroll-behavior: smooth;
 }
 
-html::-webkit-scrollbar {
-  display: none;
-}
-
 body {
   display: grid;
   grid-template-areas:
@@ -142,7 +138,6 @@ h4 {
 
 .content {
   height: 900px;
-  margin: 0 0 100px 0;
 }
 
 .content-box {
@@ -166,7 +161,6 @@ h4 {
 
 .content1 {
   height: 1600px;
-  margin: 0 0 100px 0;
 }
 
 .content1-box {
@@ -186,7 +180,7 @@ h4 {
 .chats {
   height: 100%;
   position: relative;
-  background: #fafafa;
+  background: #e7e7e7;
   border-radius: 10px;
 }
 
@@ -198,7 +192,7 @@ h4 {
   width: 0;
   height: 0;
   border: 17px solid transparent;
-  border-top-color: #fafafa;
+  border-top-color: #e7e7e7;
   border-bottom: 0;
   margin-left: -17px;
   margin-bottom: -17px;
@@ -481,7 +475,7 @@ h4 {
 }
 
 .chat11 {
-  color: white;
+  color: #6e6e6e;
   position: relative;
   background: #cee5d0;
   border-radius: 0.4em;
@@ -508,7 +502,7 @@ h4 {
 }
 
 .chat12 {
-  color: white;
+  color: #6e6e6e;
   position: relative;
   background: #cee5d0;
   border-radius: 0.4em;
@@ -550,8 +544,7 @@ h4 {
 /*컨텐츠 2 시작*/
 
 .content2 {
-  height: 1200px;
-  margin: 0 0 100px 0;
+  height: 1000px;
   background-color: aliceblue;
 }
 
@@ -559,58 +552,43 @@ h4 {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 1130px;
+  width: auto;
   height: 85%;
 }
 
-.planning {
+.co-working {
   align-self: center;
   padding: 10px;
   text-align: center;
 }
 
-.planning-info {
-  display: grid;
-  grid-template-areas:
-    "plan-info plan-ex"
-    "visual-ex visual-info";
+.co-working-info {
+  display: flex;
+  flex-direction: row;
   width: 100%;
   height: 100%;
-}
-
-.plan-info {
-  grid-area: plan-info;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   text-align: center;
+  gap: 10px;
 }
 
-.plan-ex {
-  grid-area: plan-ex;
-  margin: 20px;
-  background-color: lavender;
+.co-working-ex img {
+  height: auto;
+  width: 100%;
+  object-fit: contain;
 }
 
-.visual-info {
-  grid-area: visual-info;
-  display: flex;
+.co-working-ex {
+  display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  text-align: center;
+  width: 47%;
+  align-items: center;
 }
 
-.visual-ex {
-  grid-area: visual-ex;
-  background-image: url("../images/jejumap.png");
-  background-size: 100%;
-  margin: 20px;
-}
-
-.slide-wrap {
-  position: relative;
-  width: 1130px;
-  margin: auto;
+.co-working-ex p {
+  margin: 0;
+  font-size: 0.8rem;
 }
 
 /*콘텐츠2 끝*/
@@ -624,9 +602,10 @@ h4 {
 
 .recommendation-info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column-reverse;
   height: 100%;
   width: 100%;
+  align-items: center;
   justify-content: space-around;
 }
 
@@ -637,8 +616,18 @@ h4 {
   text-align: center;
 }
 
+.reco-info h3 {
+  margin: 0;
+}
+
 /*콘텐츠3 끝*/
 /*콘텐츠4 시작*/
+
+.slide-wrap {
+  position: relative;
+  width: 1130px;
+  margin: auto;
+}
 
 .slide-box {
   width: 100%;
@@ -664,12 +653,19 @@ h4 {
 }
 
 .content4-info {
-  width: 50%;
+  width: 30%;
 }
 
 .content4-img {
-  width: 50%;
+  width: 70%;
+  height: 100%;
   text-align: center;
+}
+
+.content4-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: none;
 }
 
 .slide-btn-box {
@@ -699,4 +695,8 @@ h4 {
   cursor: pointer;
   background-color: rgb(235, 235, 235);
   transition: 0.3s;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
 }
