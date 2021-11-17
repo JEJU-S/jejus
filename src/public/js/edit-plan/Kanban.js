@@ -1,5 +1,5 @@
 import {socket, planId} from "./communicate.js"
-import {createMapMarker, removeMapMarker, mapPanToBound, listClick, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
+import {createMapMarker, removeMapMarker, listClick, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
 
 class MapMarker {
     constructor(id, x, y){
@@ -38,18 +38,15 @@ class DropZone {
                 document.querySelector(".notice").innerHTML = '';
                 document.querySelector(".notice").classList.remove("notice");
             }
-            console.log(check);
             check = true;
 
             const idReg = new RegExp("[0-9a-f]{24}");
             dropZone.classList.remove("kanban__dropzone--active");
-            console.log(typeof(event.dataTransfer.getData("text/plain")));
 
             let droppedItemElement;
             // 새로운 item 추가됐을 때
             if(!idReg.test(event.dataTransfer.getData("text/plain"))){
                 const newPlace = JSON.parse(event.dataTransfer.getData("text/plain"));
-                console.log(newPlace); 
                
                 const columnElement = dropZone.closest(".kanban__column");
                 const columnId = columnElement.dataset.id;
@@ -85,7 +82,6 @@ class DropZone {
             else{
                 const itemId = event.dataTransfer.getData("text/plain");
                 droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
-                console.log(droppedItemElement);
                 
                 //****************/
                 if (droppedItemElement === null){
@@ -98,7 +94,6 @@ class DropZone {
 
                 const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
                 const droppedIndex = dropZonesInColumn.indexOf(dropZone);
-                console.log(droppedIndex);
 
                 const originColumnId = droppedItemElement.closest(".kanban__column").dataset.id;
 
@@ -149,9 +144,6 @@ export class Item {
         mapMarker.marker.setZIndex(99);
 
         kanbanMapMarkers.push(mapMarker);
-        console.log(kanbanMapMarkers);
-
-
 
         //this.elements.marker = createMapMarker(x, y);
 
@@ -181,7 +173,6 @@ export class Item {
                     } 
                 })
                 if(mapIndex != undefined){
-                    console.log(kanbanMapMarkers);
                     kanbanMapMarkers.splice(mapIndex, 1);
                 }
 
@@ -276,7 +267,6 @@ class Column {
 export class Kanban {
 	constructor(root, placeList) {
 		this.root = root;
-        console.log(this.root);
 
 		Kanban.columns(placeList).forEach(column => {
             const columnView = new Column(column.id, column.title, placeList);
@@ -285,7 +275,6 @@ export class Kanban {
 	}
     // 서버에서 day column 받아와야 함 
 	static columns(placeList) {
-        console.log(placeList);
         const placeListColumns = [];
 
         placeList.forEach((dayPlan, index) => {   

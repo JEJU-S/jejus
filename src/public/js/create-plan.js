@@ -23,10 +23,8 @@ endDate.value = toDay;
 function startDateChange(){
     endDate.max = "";
     endDate.min = startDate.value;
-    console.log(endDate.min);
 
     const minDate = new Date(startDate.value);
-    console.log(minDate);
     const maxDate = new Date(minDate);
     maxDate.setDate(maxDate.getDate() + MAX_DAYS);
     
@@ -34,7 +32,6 @@ function startDateChange(){
     const Month = (maxDate.getMonth() + 1) < 10? `0${maxDate.getMonth() + 1}` : `${maxDate.getMonth() + 1}`;
     const Day = (maxDate.getDate()) < 10? `0${maxDate.getDate()}` : `${maxDate.getDate()}`;
 
-    console.log(`max : ${Year}-${Month}-${Day}`);
     endDate.max = `${Year}-${Month}-${Day}`;
     
     endDate.value="";

@@ -188,7 +188,6 @@ document.querySelectorAll(".day-map").forEach((dayMap) => {
             endIcon : 1
         })
     }
-    console.log(dayPolyLine);
 })
 
 document.querySelectorAll(".more-btn").forEach((moreBtn) => {
