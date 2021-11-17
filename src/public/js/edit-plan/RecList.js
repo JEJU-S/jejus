@@ -37,7 +37,7 @@ categoryBtns.forEach((btn) => {
 let selectedRegion = "전체";
 // 지역 고르기
 function getRegionSelect(event){
-    document.querySelector(".md-2").style.display = "none";
+    document.querySelector(".default").style.display = "none";
     selectedRegion = event.target.alt;
 
     const imgIcon = regionSelectBtn.querySelector("img");
