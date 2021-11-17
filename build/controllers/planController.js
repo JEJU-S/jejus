@@ -210,7 +210,7 @@ function _deletePlan() {
 
 var seePlan = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
-    var id, statusCode, usertotplan, parti;
+    var id, statusCode, usertotplan, parti, user_data;
     return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -229,28 +229,47 @@ var seePlan = /*#__PURE__*/function () {
           case 5:
             usertotplan = _context.sent;
 
-            if (usertotplan != null) {
-              parti = usertotplan.participants;
-
-              if (checkath(parti, req.session.user._id)) {
-                // 접속허용
-                res.render("see-plan", {
-                  user: req.session.user,
-                  totPlanTitles: req.session.user.totPlan_list,
-                  totPlan: usertotplan,
-                  map_cl: process.env.MAP_CLIENT,
-                  statuscode: statusCode
-                });
-              } else {
-                // 상태코드 403       
-                res.redirect("/users/".concat(req.session.user._id));
-              }
-            } else {
-              // 상태코드 404
-              res.redirect("/users/".concat(req.session.user._id));
+            if (!(usertotplan != null)) {
+              _context.next = 19;
+              break;
             }
 
-          case 7:
+            parti = usertotplan.participants;
+
+            if (!checkath(parti, req.session.user._id)) {
+              _context.next = 16;
+              break;
+            }
+
+            _context.next = 11;
+            return finduser(req.session.user.gmail);
+
+          case 11:
+            user_data = _context.sent;
+            req.session.user = user_data;
+            res.render("see-plan", {
+              user: req.session.user,
+              totPlanTitles: req.session.user.totPlan_list,
+              totPlan: usertotplan,
+              map_cl: process.env.MAP_CLIENT,
+              statuscode: statusCode
+            });
+            _context.next = 17;
+            break;
+
+          case 16:
+            // 상태코드 403       
+            res.redirect("/users/".concat(req.session.user._id));
+
+          case 17:
+            _context.next = 20;
+            break;
+
+          case 19:
+            // 상태코드 404
+            res.redirect("/users/".concat(req.session.user._id));
+
+          case 20:
           case "end":
             return _context.stop();
         }
@@ -374,6 +393,8 @@ var editPlan = /*#__PURE__*/function () {
 
               if (checkath(parti, req.session.user._id)) {
                 console.log("권한허용");
+                console.log("여행일정 참여자 목록");
+                console.log(parti);
                 res.render("edit-plan", {
                   user: req.session.user,
                   totPlan: usertotplan,
@@ -585,7 +606,8 @@ var accept = /*#__PURE__*/function () {
               }
             });
 
-            _User.User.findOne({
+            _context5.next = 17;
+            return _User.User.findOne({
               _id: accept_id
             }).exec(function (err, res) {
               if (res) {
@@ -593,11 +615,16 @@ var accept = /*#__PURE__*/function () {
                 res.call_list.pull(insert_host);
                 res.save();
               }
+
+              console.log(res.totPlan_list);
+              req.session.user.totPlan_list = res.totPlan_list;
+              console.log(req.session.user.totPlan_list);
             });
 
+          case 17:
             res.redirect("/plans/".concat(id));
 
-          case 17:
+          case 18:
           case "end":
             return _context5.stop();
         }

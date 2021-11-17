@@ -88,7 +88,7 @@ function alertServerMsg(statusCode) {
 
     case 3:
       {
-        message = "해당 이메일이 회원이 아닙니다.";
+        message = "회원이 아닙니다.";
         break;
       }
   }
