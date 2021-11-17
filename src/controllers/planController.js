@@ -162,25 +162,28 @@ export const editPlan = async (req, res) =>
 
     console.log("!! userplans(editplan) check !!")
     console.log(usertotplan)
-
-    let parti = usertotplan.participants;
+    if(usertotplan==null){
+        res.redirect(`/plans/${id}`);
+    }
+    else{
+        let parti = usertotplan.participants;
     
-    console.log("접근 권한 테스트")
-    console.log(req.session.user);
+        console.log("접근 권한 테스트")
+        console.log(req.session.user);
 
-
-    if(checkath(parti, req.session.user._id)){
-        console.log("권한허용")
-        res.render("edit-plan", {
-            user : req.session.user,
-            totPlan : usertotplan,
-            map_cl : process.env.MAP_CLIENT
-        });
+        
+        if(checkath(parti, req.session.user._id)){
+            console.log("권한허용")
+            res.render("edit-plan", {
+                user : req.session.user,
+                totPlan : usertotplan,
+                map_cl : process.env.MAP_CLIENT
+            });
+        }
+        else{ //403
+            res.redirect(`/users/${res.session.user._id}`);
+        }
     }
-    else{ //403
-        res.redirect(`/users/${res.session.user._id}`);
-    }
-
 }
 
 export const getCreatePlan = (req, res) => {

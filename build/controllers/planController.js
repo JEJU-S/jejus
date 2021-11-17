@@ -17,8 +17,6 @@ var _TotPlan = require("../models/TotPlan");
 
 var _User = require("../models/User");
 
-var _nodeFetch = _interopRequireDefault(require("node-fetch"));
-
 _dotenv["default"].config(); //goes to plan router
 
 
@@ -233,11 +231,9 @@ var seePlan = /*#__PURE__*/function () {
 
             if (usertotplan != null) {
               parti = usertotplan.participants;
-              console.log("접근 권한 테스트");
 
               if (checkath(parti, req.session.user._id)) {
-                console.log("권한허용"); // 접속허용
-
+                // 접속허용
                 res.render("see-plan", {
                   user: req.session.user,
                   totPlanTitles: req.session.user.totPlan_list,
@@ -246,9 +242,11 @@ var seePlan = /*#__PURE__*/function () {
                   statuscode: statusCode
                 });
               } else {
+                // 상태코드 403       
                 res.redirect("/users/".concat(req.session.user._id));
               }
             } else {
+              // 상태코드 404
               res.redirect("/users/".concat(req.session.user._id));
             }
 
@@ -311,7 +309,7 @@ var sendInvitation = /*#__PURE__*/function () {
 
               if (req.session.user._id == par_id) {
                 console.log("본인에게 초대장을 보낼 수 없습니다");
-                statusCode = 1;
+                statusCode = 1; // 임의 상태코드 
               } else if (checkcall(hostarr, totplan_title) || checktitle(par_tot, totplan_title)) {
                 // checkath 수정필요
                 console.log("이미 초대된 회원입니다");
@@ -366,22 +364,28 @@ var editPlan = /*#__PURE__*/function () {
             usertotplan = _context3.sent;
             console.log("!! userplans(editplan) check !!");
             console.log(usertotplan);
-            parti = usertotplan.participants;
-            console.log("접근 권한 테스트");
-            console.log(req.session.user);
 
-            if (checkath(parti, req.session.user._id)) {
-              console.log("권한허용");
-              res.render("edit-plan", {
-                user: req.session.user,
-                totPlan: usertotplan,
-                map_cl: process.env.MAP_CLIENT
-              });
+            if (usertotplan == null) {
+              res.redirect("/plans/".concat(id));
             } else {
-              res.redirect("/users/".concat(res.session.user._id));
+              parti = usertotplan.participants;
+              console.log("접근 권한 테스트");
+              console.log(req.session.user);
+
+              if (checkath(parti, req.session.user._id)) {
+                console.log("권한허용");
+                res.render("edit-plan", {
+                  user: req.session.user,
+                  totPlan: usertotplan,
+                  map_cl: process.env.MAP_CLIENT
+                });
+              } else {
+                //403
+                res.redirect("/users/".concat(res.session.user._id));
+              }
             }
 
-          case 10:
+          case 7:
           case "end":
             return _context3.stop();
         }
@@ -416,25 +420,24 @@ var postCreatePlan = /*#__PURE__*/function () {
             _req$body = req.body, title = _req$body.title, start = _req$body.start, end = _req$body.end;
             startDate = new Date(start);
             endDate = new Date(end);
-            console.log("startDate : ", startDate, "endDate : ", endDate);
             pC_id = req.session.user._id;
             pC_user = req.session.user.name;
             pC_gmail = req.session.user.gmail;
             pC_image_url = req.session.user.image_url;
             tempDate = new Date(startDate);
             dayArray = [];
-            _context4.next = 12;
+            _context4.next = 11;
             return findtitle(title);
 
-          case 12:
+          case 11:
             check_plan = _context4.sent;
 
             if (!(check_plan == null)) {
-              _context4.next = 44;
+              _context4.next = 41;
               break;
             }
 
-            _context4.next = 16;
+            _context4.next = 15;
             return new _TotPlan.TotPlan({
               title: title,
               admin: {
@@ -446,32 +449,30 @@ var postCreatePlan = /*#__PURE__*/function () {
                 name: pC_user,
                 image_url: pC_image_url
               }]
-            }).save().then(function () {
-              console.log("totplan saved", title);
-            })["catch"](function (err) {
+            }).save().then(function () {})["catch"](function (err) {
+              //500
               console.error(err);
+              res.status(500).send("<script>".concat(err, "</script>"));
             });
 
-          case 16:
-            _context4.next = 18;
+          case 15:
+            _context4.next = 17;
             return findtitle(title);
 
-          case 18:
+          case 17:
             totplanidcall = _context4.sent;
             totplanid = totplanidcall._id;
-            console.log(totplanid);
             count = 0;
             tempDate;
 
-          case 23:
+          case 21:
             if (!(tempDate <= endDate)) {
-              _context4.next = 32;
+              _context4.next = 29;
               break;
             }
 
-            console.log("temp date : ", tempDate);
             dayArray.push(new Date(tempDate));
-            _context4.next = 28;
+            _context4.next = 25;
             return _TotPlan.TotPlan.findByIdAndUpdate(totplanid, {
               $push: {
                 day_plan: [{
@@ -482,21 +483,21 @@ var postCreatePlan = /*#__PURE__*/function () {
               upsert: true
             }).exec();
 
-          case 28:
+          case 25:
             count = count + 1;
 
-          case 29:
+          case 26:
             tempDate.setDate(tempDate.getDate() + 1);
-            _context4.next = 23;
+            _context4.next = 21;
             break;
 
-          case 32:
-            _context4.next = 34;
+          case 29:
+            _context4.next = 31;
             return findtitle(title);
 
-          case 34:
+          case 31:
             totplan = _context4.sent;
-            _context4.next = 37;
+            _context4.next = 34;
             return _User.User.findByIdAndUpdate(pC_id, {
               $push: {
                 totPlan_list: {
@@ -508,22 +509,22 @@ var postCreatePlan = /*#__PURE__*/function () {
               upsert: true
             }).exec();
 
-          case 37:
-            _context4.next = 39;
+          case 34:
+            _context4.next = 36;
             return finduser(pC_gmail);
 
-          case 39:
+          case 36:
             user_data = _context4.sent;
-            req.session.user = user_data; // res.redirect(`/users/${pC_id}`);
-
+            req.session.user = user_data;
             res.redirect("/plans/".concat(totplan._id));
-            _context4.next = 45;
+            _context4.next = 42;
             break;
 
-          case 44:
-            res.send("<script>alert('\uAC19\uC740 \uC774\uB984\uC758 \uC5EC\uD589\uC774 \uC788\uC2B5\uB2C8\uB2E4. \uB2E4\uB978 \uC774\uB984\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694'); window.location.href=\"/users/".concat(pC_id, "\"</script>")); //res.redirect(`/users/${pC_id}`);
+          case 41:
+            // 406?
+            res.status(406).send("<script>alert('\uAC19\uC740 \uC774\uB984\uC758 \uC5EC\uD589\uC774 \uC788\uC2B5\uB2C8\uB2E4. \uB2E4\uB978 \uC774\uB984\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694'); window.location.href=\"/users/".concat(pC_id, "\"</script>")); //res.redirect(`/users/${pC_id}`);
 
-          case 45:
+          case 42:
           case "end":
             return _context4.stop();
         }
@@ -546,19 +547,17 @@ var accept = /*#__PURE__*/function () {
         switch (_context5.prev = _context5.next) {
           case 0:
             id = req.params.id;
-            console.log(id);
             accept_id = req.session.user._id;
-            _context5.next = 5;
+            _context5.next = 4;
             return finduser(req.session.user.gmail);
 
-          case 5:
+          case 4:
             par_userinfo = _context5.sent;
-            _context5.next = 8;
+            _context5.next = 7;
             return finduserPlan(id);
 
-          case 8:
+          case 7:
             usertotplan = _context5.sent;
-            console.log("초대받은 계획", usertotplan);
             totplan_title = usertotplan.title;
             totplan_id = usertotplan._id;
             insert_plan = {
@@ -598,7 +597,7 @@ var accept = /*#__PURE__*/function () {
 
             res.redirect("/plans/".concat(id));
 
-          case 19:
+          case 17:
           case "end":
             return _context5.stop();
         }
@@ -622,14 +621,12 @@ var refuse = /*#__PURE__*/function () {
           case 0:
             //***DB
             id = req.params.id;
-            console.log(id);
             refuse_id = req.session.user._id;
-            _context6.next = 5;
+            _context6.next = 4;
             return finduserPlan(id);
 
-          case 5:
+          case 4:
             usertotplan = _context6.sent;
-            console.log("초대받은 계획", usertotplan);
             totplan_title = usertotplan.title;
             totplan_id = usertotplan._id;
             hostname = usertotplan.admin.name;
@@ -650,7 +647,7 @@ var refuse = /*#__PURE__*/function () {
 
             res.redirect("/plans/".concat(id));
 
-          case 13:
+          case 11:
           case "end":
             return _context6.stop();
         }
@@ -713,7 +710,6 @@ var del = /*#__PURE__*/function () {
             if (par_CallList) {
               for (i = 0; i < par_CallList.length; i++) {
                 parArr_IDList = par_CallList[i]._id;
-                console.log(parArr_IDList);
 
                 _User.User.findOne({
                   _id: parArr_IDList
@@ -728,7 +724,6 @@ var del = /*#__PURE__*/function () {
 
             for (k = 0; k < usertotplan.participants.length; k++) {
               parID = usertotplan.participants[k]._id;
-              console.log(parID);
 
               _User.User.findOne({
                 _id: parID
@@ -755,10 +750,9 @@ var del = /*#__PURE__*/function () {
 
           case 23:
             delete_plan = _context7.sent;
-            console.log(delete_plan);
             res.redirect("/users/".concat(req.session.user._id));
 
-          case 26:
+          case 25:
           case "end":
             return _context7.stop();
         }
