@@ -164,7 +164,7 @@ export class Item {
                 socket.emit("delete_from_list", this.elements.root.dataset.id, parentColumnId, planId);
 
 
-               // map 삭제 find index 왜 안되는지 찾아보기💦
+               // map 삭제 find index 왜 안되는지 찾아보기
                 let mapIndex;
                 kanbanMapMarkers.forEach((mapMarker, index) => {
                     if(mapMarker.id == this.elements.root.dataset.id){
@@ -195,10 +195,7 @@ export class Item {
         this.elements.root.addEventListener("click", event => {
             listClick(mapMarker.marker);
         })
-        
-
-
-
+    
     }
 
     static createRoot(){
