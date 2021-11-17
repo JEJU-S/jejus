@@ -149,6 +149,8 @@ io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
         console.log(`Socket Event: ${event}`);
+        
+
     });  
 
     // plan id 로 만든 room에 join    
@@ -157,7 +159,7 @@ io.on("connection", (socket) => {
         socket.join(userId);
         socket["userName"] = userName;
         socket["userId"] = userId;
-        console.log(socket.rooms); 
+        //console.log(socket.rooms); 
         sendCurrentParticipant(planId, socket);
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
@@ -292,7 +294,6 @@ io.on("connection", (socket) => {
     
     socket.on("move_in_placelist", async ( itemId, originColumnId, columnId, droppedIndex, planId) => {
         // 옮기는것도 결국 delete and insert ,, 해당 인덱스만 찾아서
-
         //고른 아이템 삭제 
         //console.log("MOVE IN PLACELIST")
         //console.log("item:",itemId)

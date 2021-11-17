@@ -239,3 +239,4 @@ function showRecResult(placeList){
     new RecList(document.querySelector(".recommandation__list"), placeList);
     //showOverall();
 }
+
