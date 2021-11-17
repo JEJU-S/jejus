@@ -1,7 +1,5 @@
 import {socket, planId} from "./communicate.js"
-import {createMapMarker, removeMapMarker, mapPanToBound, listClick} from "/public/js/edit-plan/Map.js";
-
-export const mapMarkerList = [];
+import {createMapMarker, removeMapMarker, mapPanToBound, listClick, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
 
 class MapMarker {
     constructor(id, x, y){
@@ -150,8 +148,11 @@ export class Item {
         const mapMarker = new MapMarker(this.elements.root.dataset.id, x, y);
         mapMarker.marker.setZIndex(99);
 
-        mapMarkerList.push(mapMarker);
-        console.log(mapMarkerList);
+        kanbanMapMarkers.push(mapMarker);
+        console.log(kanbanMapMarkers);
+
+
+
         //this.elements.marker = createMapMarker(x, y);
 
         
@@ -173,15 +174,15 @@ export class Item {
 
                // map 삭제 find index 왜 안되는지 찾아보기💦
                 let mapIndex;
-                mapMarkerList.forEach((mapMarker, index) => {
+                kanbanMapMarkers.forEach((mapMarker, index) => {
                     if(mapMarker.id == this.elements.root.dataset.id){
                         removeMapMarker(mapMarker.marker);   
                         mapIndex = index;
                     } 
                 })
                 if(mapIndex != undefined){
-                    console.log(mapMarkerList);
-                    mapMarkerList.splice(mapIndex, 1);
+                    console.log(kanbanMapMarkers);
+                    kanbanMapMarkers.splice(mapIndex, 1);
                 }
 
                 this.elements.root.parentElement.removeChild(this.elements.root); // 컬럼에서 삭제

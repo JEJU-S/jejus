@@ -179,7 +179,7 @@ class RecItem {
         range.selectNode(document.body);
         return range.createContextualFragment(`
                 <li draggable = "true">
-                    <img>
+                    <img draggable='false'>
                     <div>
                         <div>
                             <span class="reco-title"></span>

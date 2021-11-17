@@ -1,7 +1,7 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
 import SearchList from "/public/js/edit-plan/SearchList.js";
-import {createMapMarker, removeMapMarker, mapPanToBound, searchMarkers} from "/public/js/edit-plan/Map.js";
-import {Kanban, mapMarkerList, Item} from "/public/js/edit-plan/Kanban.js";
+import {createMapMarker, removeMapMarker, searchMarkers, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
+import {Kanban, Item} from "/public/js/edit-plan/Kanban.js";
 
 /******************socket 생성************************/
 export const socket = io(); 
@@ -58,7 +58,6 @@ function receiveChattingMessage(image_url, message){
 
 socket.on("server_msg", receiveSystemMessage);
 function receiveSystemMessage(name, enter){
-    console.log("***************");
     const message = (enter == true)? `${name}님이 입장하셨습니다` : `${name}님이 퇴장하셨습니다`;
     chattingList.addMessage(name, message, "system");
     chatBox.scrollTop = chatBox.scrollHeight;
@@ -107,25 +106,21 @@ socket.on("add_to_placelist", addFromList);
 socket.on("move_in_placelist", moveInList);
 
 function deleteFromList(itemId){
-    console.log("***********삭제 시작");
-    console.log(kanbanList.root);
     //item 삭제
     const deletedItem = kanbanList.root.querySelector(`.kanban div[data-id="${itemId}"]`);
 
     //map 삭제
     let mapIndex;
-    mapMarkerList.forEach((mapMarker, index) => {
+    kanbanMapMarkers.forEach((mapMarker, index) => {
         if(mapMarker.id == itemId){
             removeMapMarker(mapMarker.marker);   
             mapIndex = index;
         } 
     })
     if(mapIndex != undefined){
-        console.log(mapMarkerList);
-        mapMarkerList.splice(mapIndex, 1);
+        kanbanMapMarkers.splice(mapIndex, 1);
     }
     deletedItem.parentElement.removeChild(deletedItem);
-    console.log("삭제 완료");
 }
 
 function addFromList(newId, newPlace, columnId, droppedIndex){
@@ -136,7 +131,6 @@ function addFromList(newId, newPlace, columnId, droppedIndex){
     const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
 
     const dropZone = dropZonesInColumn[droppedIndex];
-    console.log("dropZoneIndex : ", droppedIndex);
     const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
 
     if(droppedItemElement.contains(dropZone)){
@@ -147,15 +141,12 @@ function addFromList(newId, newPlace, columnId, droppedIndex){
 
 function moveInList(itemId, columnId, droppedIndex){
     const droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
-    console.log(droppedItemElement);
 
     const columnElement = document.querySelector(`.kanban div[data-id="${columnId}"]`);
-    console.log(columnElement);
 
     const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
     const dropZone = dropZonesInColumn[droppedIndex];
 
-    console.log("dropZoneIndex : ", droppedIndex);
     const insertAfter = dropZone.parentElement.classList.contains("kanban__item") ? dropZone.parentElement : dropZone;
 
     if(droppedItemElement.contains(dropZone)){
@@ -170,7 +161,6 @@ socket.on("current_participant", checkCurrentParticipant);
 
 function checkCurrentParticipant(currentParticipant){
     currentParticipant.forEach((participantId) => {
-        console.log(participantId);
         if(document.querySelector(`.participant [data-id="${participantId}"]`) != null){
             document.querySelector(`.participant [data-id="${participantId}"]`).classList.remove("notattend");
         }

@@ -5,9 +5,6 @@ const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 import {TotPlan} from '../models/TotPlan'
 import {User} from '../models/User'
-import fetch from "node-fetch";
-
-
 
 async function findtitle(title){
     const totplans = await TotPlan.findOne({title:title}).lean();
@@ -29,7 +26,7 @@ async function findCallList(delete_CallList){
     return CallList_par;
 }
 
-function checkath(parti,check){
+function checkath(parti, check){
     let x = false;
     parti.forEach(function(part){
         if(part['_id']==check){
@@ -41,7 +38,8 @@ function checkath(parti,check){
     })
     return x;
 }
-function checkcall(call,check){
+
+function checkcall(call, check){
     let x = false;
     call.forEach(function(i){
         if(i['plan_title']==check){
@@ -54,7 +52,7 @@ function checkcall(call,check){
     return x;
 }
 
-function checktitle(tot,check){
+function checktitle(tot, check){
     let x = false;
     tot.forEach(function(i){
         if(i['title']==check){
@@ -84,10 +82,7 @@ export const seePlan = async (req, res) =>
     if(usertotplan!=null)
     {
         let parti = usertotplan.participants;
-        console.log("접근 권한 테스트")
         if(checkath(parti,req.session.user._id)){
-            console.log("권한허용")
-            
             // 접속허용
             res.render(`see-plan`, {
                 user : req.session.user,
@@ -97,11 +92,11 @@ export const seePlan = async (req, res) =>
                 statuscode : statusCode
             });
         }
-        else{            
+        else{ // 상태코드 403       
             res.redirect(`/users/${req.session.user._id}`);
         }
     }
-    else{
+    else{ // 상태코드 404
         res.redirect(`/users/${req.session.user._id}`);
     }
 }
@@ -135,7 +130,7 @@ export const sendInvitation = async (req, res) => {
         
         if(req.session.user._id == par_id){
             console.log("본인에게 초대장을 보낼 수 없습니다")
-            statusCode = 1;
+            statusCode = 1; // 임의 상태코드 
         }
         else if(checkcall(hostarr,totplan_title) || checktitle(par_tot , totplan_title) ){ // checkath 수정필요
             console.log("이미 초대된 회원입니다")
@@ -182,7 +177,7 @@ export const editPlan = async (req, res) =>
             map_cl : process.env.MAP_CLIENT
         });
     }
-    else{
+    else{ //403
         res.redirect(`/users/${res.session.user._id}`);
     }
 
@@ -199,8 +194,6 @@ export const postCreatePlan = async (req, res) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
 
-    console.log("startDate : ", startDate, "endDate : ",endDate);
-
     const pC_id = req.session.user._id;
     const pC_user = req.session.user.name;
     const pC_gmail = req.session.user.gmail;
@@ -216,18 +209,15 @@ export const postCreatePlan = async (req, res) => {
             admin : {_id: pC_id, name: pC_user},
             participants : [{_id: pC_id, name: pC_user, image_url : pC_image_url}],
         }).save().then(()=>{
-            console.log("totplan saved",title);
-        }).catch((err) => {
+        }).catch((err) => { //500
             console.error(err);
-
+            res.status(500).send(`<script>${err}</script>`);
         });
 
         let totplanidcall = await findtitle(title);
         let totplanid = totplanidcall._id;
-        console.log(totplanid)
         let count=0
         for(tempDate; tempDate <= endDate; tempDate.setDate(tempDate.getDate() + 1)){
-            console.log("temp date : ", tempDate);
             dayArray.push(new Date(tempDate));
             await TotPlan.findByIdAndUpdate(totplanid, {$push : { 
                 day_plan: [{date : dayArray[count]}] }  } , {upsert : true}).exec(); 
@@ -237,14 +227,14 @@ export const postCreatePlan = async (req, res) => {
         const totplan = await findtitle(title);
         
         await User.findByIdAndUpdate(pC_id , {$push : { totPlan_list: {_id : totplan._id , title : totplan.title} } } , { upsert:true } ).exec()
-        // req.session.user.totPlan_list.push({_id : totplan._id , title : totplan.title});
+       
         let user_data = await finduser(pC_gmail);
         req.session.user = user_data;
-        // res.redirect(`/users/${pC_id}`);
+
         res.redirect(`/plans/${totplan._id}`); 
     }
-    else{
-        res.send(`<script>alert('같은 이름의 여행이 있습니다. 다른 이름을 선택해주세요'); window.location.href="/users/${pC_id}"</script>`);
+    else{ // 406?
+        res.status(406).send(`<script>alert('같은 이름의 여행이 있습니다. 다른 이름을 선택해주세요'); window.location.href="/users/${pC_id}"</script>`);
         //res.redirect(`/users/${pC_id}`);
     }
     
@@ -255,15 +245,11 @@ export const accept = async (req, res) => {
     
     const {id} = req.params;
 
-    console.log(id)
-
     const accept_id = req.session.user._id;
 
     const par_userinfo = await finduser(req.session.user.gmail);
 
     const usertotplan = await finduserPlan(id);
-
-    console.log("초대받은 계획", usertotplan)
 
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
@@ -295,15 +281,9 @@ export const accept = async (req, res) => {
 export const refuse = async (req, res) => {
     //***DB
     const {id} = req.params;
-
-    console.log(id)
-
     const refuse_id = req.session.user._id
 
     const usertotplan = await finduserPlan(id);
-
-    console.log("초대받은 계획",usertotplan)
-
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
@@ -351,7 +331,6 @@ export const del = async(req, res) => {
         for(let i=0; i < par_CallList.length; i++)
         {
             let parArr_IDList = par_CallList[i]._id;
-            console.log(parArr_IDList);
             User.findOne({_id: parArr_IDList}).exec(function(err, res){
                 if(res){
                     res.call_list.pull(delete_CallList);
@@ -364,7 +343,6 @@ export const del = async(req, res) => {
 
     for(let k=0; k < usertotplan.participants.length; k++){
         let parID = usertotplan.participants[k]._id;
-        console.log(parID);
         User.findOne({_id: parID}).exec(function(err, res){
             if(res){
                 res.totPlan_list.pull(delete_planList);
@@ -382,8 +360,5 @@ export const del = async(req, res) => {
 
     // Total Plan 삭제
     let delete_plan = await deletePlan(id);
-    console.log(delete_plan);
-
-
     res.redirect(`/users/${req.session.user._id}`);
 }

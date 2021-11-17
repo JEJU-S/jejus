@@ -8,7 +8,7 @@
 const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
 export const recMarkers = [];
 export const searchMarkers = [];
-export const kanbanMarkers = [];
+export const kanbanMapMarkers = [];
 
 export function createMapMarker(lon, lat, image){
     const marker = new naver.maps.Marker({  // 위도 경도
@@ -21,6 +21,28 @@ export function createMapMarker(lon, lat, image){
         })
     return marker;
 }
+
+/*
+export function makeNumberMarker(marker){
+    const indexMarker = new naver.maps.Marker({  // 위도 경도
+        position : marker.getPosition(),
+        map : map,
+        icon : {
+            content : ['<div></div>'].join(''),
+            size : new naver.maps.Size(25, 40)
+        }
+    })
+
+return marker;
+}
+
+export function updateNumberMarkers(){
+
+
+}
+*/
+
+
 
 export function mapPanToBound(lon, lat){
 
@@ -48,11 +70,11 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
     if(infoWindow.getMap()){
         infoWindow.close();
     }
-    
+
     infoWindow.setContent(
         [
             `<div class='map-info'>`,
-            `   <img src=${image_url}>`,
+            `   <img src=${image_url} draggable='false'>`,
             `   <div><h3>${place_name}</h3>`,
             `   <p>${road_address_name}</p></div></div>`
         ].join('')
