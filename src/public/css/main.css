@@ -700,3 +700,10 @@ h4 {
 ::-webkit-scrollbar {
   display: none !important;
 }
+
+footer {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
