@@ -71,7 +71,7 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
 
     infoWindow.setContent(
         [
-            `<div class='map-info'>`,
+            `<div class='map-info' ondragstart="return false" onselectstart="return false">`,
             `   <img src=${image_url} draggable='false'>`,
             `   <div><h3>${place_name}</h3>`,
             `   <p>${road_address_name}</p></div></div>`
@@ -93,7 +93,7 @@ export function searchMarkerClick(marker, place_name, road_address_name){
 
     infoWindow.setContent(
         [
-            `<div class='map-info search'>`,
+            `<div class='map-info search' ondragstart="return false" onselectstart="return false">`,
             `   <div><h3>${place_name}</h3>`,
             `   <p>${road_address_name}</p></p></div>`
         ].join('')
