@@ -79,11 +79,14 @@ export const seePlan = async (req, res) =>
     }
     // 접근한 여행계획 데이터 조회
     const usertotplan = await finduserPlan(id);
+    
     if(usertotplan!=null)
     {
         let parti = usertotplan.participants;
         if(checkath(parti,req.session.user._id)){
             // 접속허용
+            let user_data = await finduser(req.session.user.gmail);
+            req.session.user = user_data;
             res.render(`see-plan`, {
                 user : req.session.user,
                 totPlanTitles : req.session.user.totPlan_list,
@@ -108,7 +111,7 @@ export const sendInvitation = async (req, res) => {
 
     // 초대장을 전송
     const usertotplan = await finduserPlan(id);
-    console.log("초대한 계획", usertotplan)
+    //console.log("초대한 계획", usertotplan)
     const totplan_title = usertotplan.title;
     const totplan_id = usertotplan._id;
     const hostname = usertotplan.admin.name;
@@ -119,7 +122,7 @@ export const sendInvitation = async (req, res) => {
     
     // 초대장을 받음
     const par_userinfo = await finduser(gmail);
-    console.log("초대한 유저", par_userinfo);
+    //console.log("초대한 유저", par_userinfo);
 
     let statusCode;
     if(par_userinfo!=null)
@@ -160,27 +163,31 @@ export const editPlan = async (req, res) =>
     const {id} = req.params;
     const usertotplan = await finduserPlan(id);
 
-    console.log("!! userplans(editplan) check !!")
-    console.log(usertotplan)
-
-    let parti = usertotplan.participants;
-    
-    console.log("접근 권한 테스트")
-    console.log(req.session.user);
-
-
-    if(checkath(parti, req.session.user._id)){
-        console.log("권한허용")
-        res.render("edit-plan", {
-            user : req.session.user,
-            totPlan : usertotplan,
-            map_cl : process.env.MAP_CLIENT
-        });
+    //console.log("!! userplans(editplan) check !!")
+    //console.log(usertotplan)
+    if(usertotplan==null){
+        res.redirect(`/plans/${id}`);
     }
-    else{ //403
-        res.redirect(`/users/${res.session.user._id}`);
+    else{
+        let parti = usertotplan.participants;
+        
+        console.log("접근 권한 테스트")
+        console.log(req.session.user);
+        
+        if(checkath(parti, req.session.user._id)){
+            console.log("권한허용")
+            console.log("여행일정 참여자 목록")
+            console.log(parti);
+            res.render("edit-plan", {
+                user : req.session.user,
+                totPlan : usertotplan,
+                map_cl : process.env.MAP_CLIENT
+            });
+        }
+        else{ //403
+            res.redirect(`/users/${res.session.user._id}`);
+        }
     }
-
 }
 
 export const getCreatePlan = (req, res) => {
@@ -267,14 +274,17 @@ export const accept = async (req, res) => {
         }
     });
 
-    User.findOne({_id: accept_id}).exec(function(err, res){
+    await User.findOne({_id: accept_id}).exec(function(err, res){
         if(res){
             res.totPlan_list.push(insert_plan);
             res.call_list.pull(insert_host);
             res.save();
         }
+        console.log(res.totPlan_list);
+        req.session.user.totPlan_list = res.totPlan_list;
+        console.log(req.session.user.totPlan_list);
     });
-    
+
     res.redirect(`/plans/${id}`);
 }
 
@@ -299,9 +309,6 @@ export const refuse = async (req, res) => {
 
     res.redirect(`/plans/${id}`);
 }
-
-
-
 
 
 export const del = async(req, res) => {
