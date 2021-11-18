@@ -42,8 +42,6 @@ export function updateNumberMarkers(){
 }
 */
 
-
-
 export function mapPanToBound(lon, lat){
 
     map.morph(new naver.maps.LatLng(lat, lon), 12);
@@ -58,9 +56,6 @@ export function showOverall(){
 
     map.morph(new naver.maps.LatLng(33.400273684416305, 126.5418323465492), 10)
 }
-
-
-
 
 const infoWindow = new naver.maps.InfoWindow({
     content : '',
@@ -91,24 +86,10 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
     map.panTo(marker.getPosition());
 }
 
-naver.maps.Event.addListener(map, 'click', (event) => {
+export function searchMarkerClick(marker, place_name, road_address_name){
     if(infoWindow.getMap()){
         infoWindow.close();
     }
-})
-
-
-export function recListClick(lon, lat){
-    map.panTo(new naver.maps.LatLng(lat , lon));
-    
-}
-
-export function listClick(marker){
-    map.panTo(marker.getPosition());
-}
-
-
-export function searchMarkerClick(marker, place_name, road_address_name){
 
     infoWindow.setContent(
         [
@@ -126,6 +107,22 @@ export function searchMarkerClick(marker, place_name, road_address_name){
     map.panTo(marker.getPosition());
 }
 
+
+naver.maps.Event.addListener(map, 'click', (event) => {
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+})
+
+
+export function recListClick(lon, lat){
+    map.panTo(new naver.maps.LatLng(lat , lon));
+    
+}
+
+export function listClick(marker){
+    map.panTo(marker.getPosition());
+}
 
 export function removeMarkersFromMap(markers){
     if(infoWindow.getMap()){

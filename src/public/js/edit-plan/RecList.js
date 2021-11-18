@@ -159,10 +159,9 @@ class RecItem {
             
         });     
         this.elements.root.addEventListener("mouseleave", () => {
-            if(this.elements.marker.getAnimation() !== null)
-                {
+            if(this.elements.marker.getAnimation() !== null){
                     this.elements.marker.setAnimation(null);
-                }
+            }
                 this.elements.marker.setZIndex(null);
         }); 
         

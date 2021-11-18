@@ -170,7 +170,6 @@ function checkDisconnectingUser(userId){
     if(document.querySelector(`.participant [data-id="${userId}"]`) != null){
         document.querySelector(`.participant [data-id="${userId}"]`).classList.add("notattend");
     }
-
 } 
 
 socket.on("disconnect", () => {
@@ -196,7 +195,6 @@ function createParticipantHeader(currentParticipant, totParticipants){
 
     checkCurrentParticipant(currentParticipant);
 }
-
 
 function checkCurrentParticipant(currentParticipant){
     currentParticipant.forEach((participantId) => {
