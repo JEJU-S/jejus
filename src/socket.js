@@ -12,24 +12,24 @@ import {RecPlace} from './models/RecPlace'
 import {TotPlan} from './models/TotPlan'
 
 async function Arank(){
-    const rec = await RecPlace.find({}).limit(50).lean();
+    const rec = await RecPlace.find({}).limit(100).lean();
     return rec;
 }
 //권역분류만 했을 때
 async function sections(region){
-    const sections = await RecPlace.find({ section : region}).limit(50).lean();
+    const sections = await RecPlace.find({ section : region}).limit(100).lean();
     return sections; 
 }
 
 //카테고리분류만 했을 때
 async function categories(cate){
-    const categories = await RecPlace.find({category : cate}).limit(50).lean();
+    const categories = await RecPlace.find({category : cate}).limit(100).lean();
     return categories;
 }
 
 //권역, 카테고리 분류 모두 했을때
 async function categorize(region,cate){
-    const category = await RecPlace.find({section : region, category : cate}).lean();
+    const category = await RecPlace.find({section : region, category : cate}).limit(100).lean();
     return category;
 }
 
