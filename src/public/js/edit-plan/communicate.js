@@ -19,6 +19,9 @@ let kanbanList;
 
 //들어올 때 서버로 보내기💨
 socket.emit("join_room", planId, userName, userId, init);
+
+
+
 function init(placeList){
 
   // 칸반리스트 만들기
@@ -204,3 +207,4 @@ function checkCurrentParticipant(currentParticipant){
     })
 }
 
+/****************페이지 이동 시 무조건 새로고침 (크롬만)***/
