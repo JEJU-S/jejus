@@ -158,7 +158,7 @@ io.on("connection", (socket) => {
         socket["userId"] = userId;
         socket["planId"] = planId;
 
-        //console.log(socket.rooms); 
+        console.log(socket.rooms); 
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
         //DB** 사용자 불러오기(참가자 업데이트)

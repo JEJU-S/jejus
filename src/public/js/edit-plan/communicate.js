@@ -18,8 +18,15 @@ const adminId = document.querySelector(".participant").dataset.admin.toString();
 let kanbanList;
 
 //들어올 때 서버로 보내기💨
-socket.emit("join_room", planId, userName, userId, init);
-
+//socket.emit("join_room", planId, userName, userId, init);
+window.addEventListener('pageshow', (event) => {
+    console.log("dfs");
+    socket.emit("join_room", planId, userName, userId, init);
+    console.log(event.persisted);
+    if(event.persisted){
+        history.go(0);
+    }
+});
 
 
 function init(placeList){
@@ -187,7 +194,7 @@ function createParticipantHeader(currentParticipant, totParticipants){
 
     totParticipants.forEach((participant) => {
         participantContent.push(
-        `<div><img src="${participant.image_url}" alt="user-image" data-id="${participant._id}" class="hover notattend">
+        `<div><img src="${participant.image_url}" alt="user-image" data-id="${participant._id}" class="hover notattend" draggable="false">
             <div class="participant-info">`);
 
         const prtName = (participant._id.toString() === adminId) ? `<span>${participant.name}👑</span>` : `<span>${participant.name}</span>`;
@@ -208,3 +215,29 @@ function checkCurrentParticipant(currentParticipant){
 }
 
 /****************페이지 이동 시 무조건 새로고침 (크롬만)***/
+
+
+
+/*
+function checkChrome(event){
+    const agt = navigator.userAgent.toLowerCase();
+    console.log(event.persisted);
+    if (agt.indexOf("edg") != -1){
+        console.log("edg");
+        return;
+    }
+    else if(agt.indexOf("chrome") != -1){
+        console.log("chrome");
+        console.log(event.persisted);
+        const back = event.persisted;
+
+
+        if (event.persisted == true) {
+            console.log("뒤로가기");
+        }
+    }
+    else{};
+}
+
+checkChrome();
+*/
