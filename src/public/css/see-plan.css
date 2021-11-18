@@ -153,7 +153,8 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
   width: 85%;
-  height: 100%;
+  height: auto;
+  max-height: 100%;
   padding: 0 10px;
   border-radius: 15px;
   align-self: baseline;
