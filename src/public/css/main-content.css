@@ -67,7 +67,7 @@
   padding-top: 0.3rem;
 }
 
-.main-content {
+#main-content {
   position: relative;
   display: flex;
   flex-direction: row;
@@ -128,7 +128,7 @@
 }
 
 .category-name {
-  width: 0;
+  width: auto;
   overflow: hidden;
 }
 
@@ -433,6 +433,7 @@ textarea:focus {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -444,6 +445,20 @@ textarea:focus {
   z-index: 2000;
 }
 
+.drop {
+  background-color: #fff146cc;
+  color: black;
+}
+
+.green {
+  background-color: #fff146;
+  color: black;
+}
+
+.black {
+  background-color: rgba(0, 0, 0, 0.678);
+  color: white;
+}
 #info:hover > .dragdrop-info {
   display: flex;
 }
