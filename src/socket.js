@@ -163,7 +163,7 @@ io.on("connection", (socket) => {
         const placeList = await finduserPlan(planId);
         //DB** 사용자 불러오기(참가자 업데이트)
         const totParticipants = placeList.participants;
-        console.log(totParticipants);
+        //console.log(totParticipants);
         let PL = placeList.day_plan;
         //console.log(PL);
         sendCurrentParticipant(planId, totParticipants, socket);

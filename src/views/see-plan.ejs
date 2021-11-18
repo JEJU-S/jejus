@@ -103,7 +103,7 @@
             <div class="whole-plan" data-planid="<%=totPlan._id%>">
                 <div class="plan-title">
                     <h1><%=totPlan.title%></h1>
-                    <%if(user._id == totPlan.admin["_id"]){%>
+                    <%if(user._id.toString() === totPlan.admin["_id"].toString()){%>
                         <button type="button" class="del-btn"><span class="material-icons md-2">
                             delete
                             </span><span>삭제</span>
@@ -171,7 +171,6 @@
                         <span>아직 세부 계획이 없어요.. <a class="edit-link">새 계획</a>을 추가해보세요!</span>
                     <%}%>
 
-                    
                     <% for(let placeIndex = 0; placeIndex < totPlan.day_plan[day]['place'].length; placeIndex++){ %>
                         <div class="p-obj">
                             <h3 class="obj-name"><%=totPlan.day_plan[day]['place'][placeIndex]['name']%><button class="more-btn" data-link="<%=totPlan.day_plan[day]['place'][placeIndex]['map_link']%>"><span class="material-icons">open_in_new</span></button></h3>
