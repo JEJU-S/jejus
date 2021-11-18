@@ -39,6 +39,7 @@ class DropZone {
                 document.querySelector(".notice").classList.remove("notice");
             }
             check = true;
+            
 
             const idReg = new RegExp("[0-9a-f]{24}");
             dropZone.classList.remove("kanban__dropzone--active");
@@ -164,7 +165,7 @@ export class Item {
                 socket.emit("delete_from_list", this.elements.root.dataset.id, parentColumnId, planId);
 
 
-               // map 삭제 find index 왜 안되는지 찾아보기💦
+               // map 삭제 find index 왜 안되는지 찾아보기
                 let mapIndex;
                 kanbanMapMarkers.forEach((mapMarker, index) => {
                     if(mapMarker.id == this.elements.root.dataset.id){
@@ -195,10 +196,7 @@ export class Item {
         this.elements.root.addEventListener("click", event => {
             listClick(mapMarker.marker);
         })
-        
-
-
-
+    
     }
 
     static createRoot(){
@@ -225,7 +223,11 @@ class Column {
 		this.elements.root = Column.createRoot();
 		this.elements.title = this.elements.root.querySelector(".kanban__column-title");
 		this.elements.items = this.elements.root.querySelector(".kanban__column-items");
-
+         /*       
+        this.elements.root.dataset.id = id;
+        this.elements.title.textContent = title;
+        this.elements.items.appendChild(topDropZone);
+*/
         placeList.find(element => element._id == id).place.forEach((placeItem) => {
             this.renderItem(placeItem);
         });
@@ -234,6 +236,7 @@ class Column {
         placeList.forEach((dayPlan) => {
             itemCnt += dayPlan.place.length;
         })
+        
 
         if(placeList[0]._id == id && itemCnt === 0){
             topDropZone.innerHTML = "여기에 장소를 끌어넣으세요";

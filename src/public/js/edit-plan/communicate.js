@@ -1,6 +1,7 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
 import SearchList from "/public/js/edit-plan/SearchList.js";
 import {createMapMarker, removeMapMarker, searchMarkers, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
+//import {RecList} from "/public/js/edit-plan/RecList.js";
 import {Kanban, Item} from "/public/js/edit-plan/Kanban.js";
 
 /******************socket 생성************************/
@@ -10,6 +11,7 @@ export const planId = document.querySelector("#plan-id").innerHTML;
 const userName = document.querySelector("#user-name").innerHTML;
 const image_url = document.querySelector("#user-image").innerHTML;
 const userId = document.querySelector("#user-id").innerHTML;
+const adminId = document.querySelector(".participant").dataset.admin.toString();
 
 /**************************************/
 
@@ -17,6 +19,9 @@ let kanbanList;
 
 //들어올 때 서버로 보내기💨
 socket.emit("join_room", planId, userName, userId, init);
+
+
+
 function init(placeList){
 
   // 칸반리스트 만들기
@@ -156,17 +161,6 @@ function moveInList(itemId, columnId, droppedIndex){
     insertAfter.after(droppedItemElement);
 }
 
-socket.on("current_participant", checkCurrentParticipant);
-
-
-function checkCurrentParticipant(currentParticipant){
-    currentParticipant.forEach((participantId) => {
-        if(document.querySelector(`.participant [data-id="${participantId}"]`) != null){
-            document.querySelector(`.participant [data-id="${participantId}"]`).classList.remove("notattend");
-        }
-    })
-}
-
 document.querySelector("#save").addEventListener("click", () => {
     //socket leave room
     window.location.href = `/plans/${planId}`;
@@ -179,14 +173,38 @@ function checkDisconnectingUser(userId){
     if(document.querySelector(`.participant [data-id="${userId}"]`) != null){
         document.querySelector(`.participant [data-id="${userId}"]`).classList.add("notattend");
     }
-
 } 
 
 socket.on("disconnect", () => {
     window.location.href = `/plans/${planId}`;
-  });
+});
 
+socket.on("current_participant", createParticipantHeader);
 
+function createParticipantHeader(currentParticipant, totParticipants){
+    console.log(totParticipants);
+    const participantContent = [];
 
+    totParticipants.forEach((participant) => {
+        participantContent.push(
+        `<div><img src="${participant.image_url}" alt="user-image" data-id="${participant._id}" class="hover notattend">
+            <div class="participant-info">`);
 
+        const prtName = (participant._id.toString() === adminId) ? `<span>${participant.name}👑</span>` : `<span>${participant.name}</span>`;
+        participantContent.push(prtName + "</div></div>");
+    });
 
+    document.querySelector(".participant").innerHTML =participantContent.join('');
+
+    checkCurrentParticipant(currentParticipant);
+}
+
+function checkCurrentParticipant(currentParticipant){
+    currentParticipant.forEach((participantId) => {
+        if(document.querySelector(`.participant [data-id="${participantId}"]`) != null){
+            document.querySelector(`.participant [data-id="${participantId}"]`).classList.remove("notattend");
+        }
+    })
+}
+
+/****************페이지 이동 시 무조건 새로고침 (크롬만)***/

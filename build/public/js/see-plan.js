@@ -24,7 +24,6 @@ function dayButtonClick(day) {
 }
 
 function wholePlanClick() {
-  console.log(planBtns[0]);
   planBtns[0].style.backgroundColor = "white";
   planBtns[0].style.zIndex = 10;
   wholePlan[0].style.display = "flex";
@@ -47,7 +46,6 @@ function sendInvitationToGmail(event) {
   //변경해야 함
   var regex = new RegExp(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i);
   var gmailInput = emailForm.querySelector("input[type='email']");
-  console.log(gmailInput.value);
   /*
   if(!regex.test(gmailInput.value)){
       alert("email 형식으로 입력해주세요");
@@ -90,7 +88,7 @@ function alertServerMsg(statusCode) {
 
     case 3:
       {
-        message = "해당 이메일이 회원이 아닙니다.";
+        message = "회원이 아닙니다.";
         break;
       }
   }
@@ -126,7 +124,6 @@ var mapOptions = {
 };
 var totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
 var dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
-console.log(dayPlan);
 
 for (var i = 0; i < dayPlan.length; i++) {
   for (var j = 0; j < dayPlan[i].place.length; j++) {
@@ -173,16 +170,18 @@ document.querySelectorAll(".day-map").forEach(function (dayMap) {
   }
 
   console.log(dayPolyPath);
-  var dayPolyLine = new naver.maps.Polyline({
-    map: map,
-    path: dayPolyPath,
-    strokeWeight: 2,
-    strokeOpacity: 0.9,
-    strokeColor: '#4169E1',
-    strokeStyle: 'shortdash',
-    endIcon: 1
-  });
-  console.log(dayPolyLine);
+
+  if (dayPolyPath.length > 1) {
+    var dayPolyLine = new naver.maps.Polyline({
+      map: map,
+      path: dayPolyPath,
+      strokeWeight: 2,
+      strokeOpacity: 0.9,
+      strokeColor: '#4169E1',
+      strokeStyle: 'shortdash',
+      endIcon: 1
+    });
+  }
 });
 document.querySelectorAll(".more-btn").forEach(function (moreBtn) {
   moreBtn.addEventListener("click", function () {

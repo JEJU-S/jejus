@@ -28,36 +28,31 @@ class PlaceItem {
             window.open(place_url);
             event.stopPropagation();
         });
-        // 마우스가 올라갈 시 맵에 띄워줌 mouseenter
+        
         this.elements.root.addEventListener("click", () => {
+            
+            this.elements.marker.setAnimation(1);
+            console.log(this.elements.marker.getZIndex());
             /*
             if(this.elements.marker != undefined){
                 removeMapMarker(this.elements.marker);
             }*/
             listClick(this.elements.marker);
         });
-
-        /*
+        
         this.elements.root.addEventListener("mouseleave", () => {
-          if(this.elements.marker != undefined){
-            removeMapMarker(this.elements.marker);
-          }
+            if(this.elements.marker.getAnimation() !== null){
+                this.elements.marker.setAnimation(null);
+            }
         });
-        */
-
+        
         naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
             
             searchMarkerClick(this.elements.marker, place_name, road_address_name);
-            this.elements.root.scrollIntoView({behavior : 'smooth'});
-            
+            this.elements.root.scrollIntoView({behavior : 'smooth'});    
         })
 
         this.elements.root.addEventListener("dragstart", event => {
-            //map 마커 지워준다 => item 마커로 바뀌게
-            
-            if(this.elements.marker != undefined){
-              removeMapMarker(this.elements.marker);
-            }
 
           // 객체 전달
             event.dataTransfer.setData("text/plain", JSON.stringify({

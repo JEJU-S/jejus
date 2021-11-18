@@ -97,7 +97,6 @@ var callback = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.log("call back function!");
             baseURL = "https://oauth2.googleapis.com/token";
             config = {
               client_id: process.env.GL_CLIENT,
@@ -109,7 +108,7 @@ var callback = /*#__PURE__*/function () {
             params = new URLSearchParams(config).toString();
             finalURL = "".concat(baseURL, "?").concat(params); //token 받기
 
-            _context.next = 7;
+            _context.next = 6;
             return (0, _nodeFetch["default"])(finalURL, {
               method: "POST",
               headers: {
@@ -117,15 +116,15 @@ var callback = /*#__PURE__*/function () {
               }
             });
 
-          case 7:
-            _context.next = 9;
+          case 6:
+            _context.next = 8;
             return _context.sent.json();
 
-          case 9:
+          case 8:
             tokenRequest = _context.sent;
 
             if (!("access_token" in tokenRequest)) {
-              _context.next = 50;
+              _context.next = 39;
               break;
             }
 
@@ -138,21 +137,21 @@ var callback = /*#__PURE__*/function () {
             _params = new URLSearchParams(_config).toString();
             _finalURL = "".concat(_baseURL, "?").concat(_params); // 사용자 정보 받아옴(json 형식)
 
-            _context.next = 18;
+            _context.next = 17;
             return (0, _nodeFetch["default"])(_finalURL, {
               method: "GET"
             });
 
-          case 18:
-            _context.next = 20;
+          case 17:
+            _context.next = 19;
             return _context.sent.json();
 
-          case 20:
+          case 19:
             userRequest = _context.sent;
             user_name = userRequest['names'][0]['displayName'];
             user_gmail = userRequest['emailAddresses'][0]['value'];
             user_image_url = userRequest['photos'][0]['url'];
-            _context.next = 26;
+            _context.next = 25;
             return new _User.User({
               name: user_name,
               gmail: user_gmail,
@@ -163,11 +162,11 @@ var callback = /*#__PURE__*/function () {
               console.log("already exist");
             });
 
-          case 26:
-            _context.next = 28;
+          case 25:
+            _context.next = 27;
             return finduser(user_gmail);
 
-          case 28:
+          case 27:
             user_info = _context.sent;
             login_id = user_info._id;
             login_name = user_info.name;
@@ -175,15 +174,6 @@ var callback = /*#__PURE__*/function () {
             login_image = user_info.image_url;
             login_totPlan_list = user_info.totPlan_list;
             login_call_list = user_info.call_list;
-            console.log('---------------------------');
-            console.log('UserInfo from MongoDB');
-            console.log(login_id);
-            console.log(login_name);
-            console.log(login_gmail);
-            console.log(login_image);
-            console.log(login_totPlan_list);
-            console.log(login_call_list);
-            console.log('---------------------------');
             req.session.loggedIn = true; // session User 저장(DB에서 user찾아서)
 
             req.session.user = {
@@ -195,18 +185,16 @@ var callback = /*#__PURE__*/function () {
               // user가 가지고 있는 plan 뽑아서 id, title을 저장
               call_list: login_call_list // 초대장 리스트
 
-            };
-            console.log(req.session.user); //profile 페이지로 redirect(seeProfile 함수)
+            }; //profile 페이지로 redirect(seeProfile 함수)
 
             res.redirect("/users/".concat(req.session.user._id));
-            _context.next = 52;
+            _context.next = 40;
             break;
 
-          case 50:
-            console.log("error");
+          case 39:
             res.redirect("/");
 
-          case 52:
+          case 40:
           case "end":
             return _context.stop();
         }
@@ -249,7 +237,6 @@ var postEditProfile = /*#__PURE__*/function () {
               if (res) {
                 res.name = name;
                 res.save();
-                console.log(name, "으로 이름이 변경되었습니다");
               }
             });
 
@@ -289,9 +276,7 @@ var seeProfile = /*#__PURE__*/function () {
 
           case 2:
             user_data = _context3.sent;
-            req.session.user = user_data; // req.session.user.call_list = user_data.call_list;
-            // req.session.user.totPlan_list = user_data.totPlan_list;
-
+            req.session.user = user_data;
             return _context3.abrupt("return", res.render("see-profile", {
               user: req.session.user,
               totPlanTitles: req.session.user.totPlan_list
