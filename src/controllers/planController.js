@@ -311,9 +311,6 @@ export const refuse = async (req, res) => {
 }
 
 
-
-
-
 export const del = async(req, res) => {
     //삭제할 totPlan id
     const {id} = req.params;

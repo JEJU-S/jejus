@@ -130,17 +130,16 @@ async function sendSearchResults(keyword, socket){
     socket.emit("search_result", searchResults);
 }
 
-async function sendCurrentParticipant(planId, socket){
+async function sendCurrentParticipant(planId, totParticipants, socket){
     const clientsInRoom = await io.in(planId).fetchSockets();
     const currentParticipant = [];
-
+    
     clientsInRoom.forEach((user) => {
-
         currentParticipant.push(user.userId);
     })
     //socket.nsp.to(planId).emit("current_participant", currentParticipant);
-    socket.to(planId).emit("current_participant", currentParticipant);
-    socket.emit("current_participant", currentParticipant);
+    socket.to(planId).emit("current_participant", currentParticipant , totParticipants);
+    socket.emit("current_participant", currentParticipant, totParticipants);
 }
 
 
@@ -149,8 +148,6 @@ io.on("connection", (socket) => {
     //무슨 event가 일어났는지 확인하는 용도(추후 삭제)
     socket.onAny((event) => {
         console.log(`Socket Event: ${event}`);
-        
-
     });  
 
     // plan id 로 만든 room에 join    
@@ -160,12 +157,16 @@ io.on("connection", (socket) => {
         socket["userName"] = userName;
         socket["userId"] = userId;
         socket["planId"] = planId;
+
         //console.log(socket.rooms); 
-        sendCurrentParticipant(planId, socket);
         //DB** 처음 칸반 장소 리스트 불러오기
         const placeList = await finduserPlan(planId);
+        //DB** 사용자 불러오기(참가자 업데이트)
+        const totParticipants = placeList.participants;
+        console.log(totParticipants);
         let PL = placeList.day_plan;
         //console.log(PL);
+        sendCurrentParticipant(planId, totParticipants, socket);
         
         socket.to(planId).except(socket.userId).emit("server_msg", userName, true);
         init(PL);
@@ -415,8 +416,8 @@ io.on("connection", (socket) => {
     })
 
     socket.on("disconnecting", async (reason) => {
-        console.log(socket.planId);
-        console.log(socket.userId);
+        //console.log(socket.planId);
+        //console.log(socket.userId);
         const participants = io.sockets.adapter.rooms.get(socket.planId);
         const users = [];
         for(const prt of participants){
@@ -424,7 +425,7 @@ io.on("connection", (socket) => {
                 users.push(io.sockets.sockets.get(prt).userId);
         }
        
-        console.log(users.length);
+        //console.log(users.length);
         if(users.length <= 1){
             socket.to(socket.planId).emit("server_msg", socket.userName, false);
             socket.to(socket.planId).emit("disconnecting_user", socket.userId);
@@ -442,9 +443,6 @@ io.on("connection", (socket) => {
         }
         */
     });
-    socket.on("disconnect", () => {
-        console.log("dfsfd");
-    })
 });
 
 export default server;
