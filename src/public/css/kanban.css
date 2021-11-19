@@ -41,7 +41,9 @@ html::-webkit-scrollbar {
 .kanban__dropzone {
   grid-area: dr;
   height: 20px;
-  background-color: #ffffff;
+  background-color: rgb(241, 241, 241);
+  border-radius: 10px;
+  margin: 10px 0;
   transition: background 0.15s, height 0.15s;
 }
 

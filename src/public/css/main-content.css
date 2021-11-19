@@ -103,6 +103,10 @@
   border-radius: 5px 5px 0 0;
 }
 
+#regionbtn:hover {
+  background-color: #9addff;
+}
+
 .recommandation__categories {
   display: flex;
   flex-direction: row;
