@@ -1,5 +1,5 @@
 import {socket, planId} from "./communicate.js"
-import {createMapMarker, removeMapMarker, listClick, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
+import {createMapMarker, removeMapMarker, listClick, kanbanMapMarkers, kanbanMarkerClick} from "/public/js/edit-plan/Map.js";
 
 class MapMarker {
     constructor(id, x, y){
@@ -142,6 +142,7 @@ export class Item {
         
         //**** */
         const mapMarker = new MapMarker(this.elements.root.dataset.id, x, y);
+        this.elements.marker = mapMarker.marker;
         mapMarker.marker.setZIndex(99);
 
         kanbanMapMarkers.push(mapMarker);
@@ -195,6 +196,11 @@ export class Item {
 
         this.elements.root.addEventListener("click", event => {
             listClick(mapMarker.marker);
+        })
+
+        naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
+            kanbanMarkerClick(this.elements.marker, name, road_adr);
+            //this.elements.root.scrollIntoView({behavior : 'smooth'});
         })
     
     }

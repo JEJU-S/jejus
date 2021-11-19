@@ -37,8 +37,6 @@ return marker;
 }
 
 export function updateNumberMarkers(){
-
-
 }
 */
 
@@ -96,11 +94,30 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
            behavior: 'smooth'
         });
      });
-     
-    //root.scrollIntoView({behavior : 'smooth'});
 }
 
 export function searchMarkerClick(marker, place_name, road_address_name){
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+
+    infoWindow.setContent(
+        [
+            `<div class='map-info search' ondragstart="return false" onselectstart="return false">`,
+            `   <div><h3>${place_name}</h3>`,
+            `   <p>${road_address_name}</p></p></div>`
+        ].join('')
+    );
+    
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }else{
+        infoWindow.open(map, marker);
+    }
+    map.panTo(marker.getPosition());
+}
+
+export function kanbanMarkerClick(marker, place_name, road_address_name){
     if(infoWindow.getMap()){
         infoWindow.close();
     }
@@ -128,8 +145,9 @@ naver.maps.Event.addListener(map, 'click', (event) => {
     if(infoWindow.getMap()){
         infoWindow.close();
     }
-    colorChangedRoot.style.backgroundColor = "#ffffff";
-
+    if(colorChangedRoot != undefined){
+        colorChangedRoot.style.backgroundColor = "#ffffff";
+    }
 })
 
 

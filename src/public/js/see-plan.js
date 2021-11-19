@@ -118,20 +118,61 @@ const mapOptions = {
     zoom : 10
 };
 
+const infoWindow = new naver.maps.InfoWindow({
+    content : '',
+    backgroundColor: "#00000000",
+    borderWidth: 0,
+    disableAnchor: true
+});
+
+function seeplanMarkerClick(map, marker, name, road_adr){
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+    infoWindow.setContent(
+        [  
+            `<div class='map-info search' ondragstart="return false" onselectstart="return false">`,
+            `   <div><h3>${name}</h3>`,
+            `   <p>${road_adr}</p></p></div>`
+        ].join('')
+    );
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }else{
+        infoWindow.open(map, marker);
+    }
+    map.panTo(marker.getPosition());
+}
+
 const totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
 const dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
+const totMapMarkers = [];
+
 
 for(let i =0; i < dayPlan.length; i++){
     for(let j = 0; j < dayPlan[i].place.length; j++){
-        new naver.maps.Marker({
+        
+        const marker = new naver.maps.Marker({
             position : new naver.maps.LatLng(
                 dayPlan[i].place[j].y,
                 dayPlan[i].place[j].x
                 ),
             map : totMap
         })
+
+        naver.maps.Event.addListener(marker, 'click', (event) => {
+            seeplanMarkerClick(totMap, marker, dayPlan[i].place[j].name, dayPlan[i].place[j].road_adr);
+        })
     }   
 }
+
+
+naver.maps.Event.addListener(totMap, 'click', (event) => {
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+})
+
 
 /******버튼************/
 
@@ -157,26 +198,65 @@ if(document.querySelector(".del-btn") !== null){
 
 /************DAY********************/
 
+const dayInfoWindows = [];
+
 document.querySelectorAll(".day-map").forEach((dayMap) => {    
     const day = Number(dayMap.dataset.dayindex);
     const map = new naver.maps.Map(document.getElementById(`day-map${day + 1}`), mapOptions);
 
+    naver.maps.Event.addListener(map, 'click', (event) => {
+        if(dayInfoWindows[day].getMap()){
+            dayInfoWindows[day].close();
+        }
+    })
+
+    dayInfoWindows.push(new naver.maps.InfoWindow({
+        content : '',
+        backgroundColor: "#00000000",
+        borderWidth: 0,
+        disableAnchor: true
+    }));
+
     const dayPolyPath = [];
     
     for(let i =0; i < dayPlan[day].place.length; i++){
-        new naver.maps.Marker({
+        const marker = new naver.maps.Marker({
             position : new naver.maps.LatLng(
                 dayPlan[day].place[i].y,
                 dayPlan[day].place[i].x
             ),
             map : map
         })
+    
+        naver.maps.Event.addListener(marker, 'click', (event) => {
+            //(map, marker, dayPlan[day].name, dayPlan[day].road_adr);
+            if(dayInfoWindows[day].getMap()){
+                dayInfoWindows[day].close();
+            }
+            dayInfoWindows[day].setContent(
+                [  
+                    `<div class='map-info search' ondragstart="return false" onselectstart="return false">`,
+                    `   <div>${day + 1}일 ${i + 1}번째</div>`,
+                    `   <div><h3>${dayPlan[day].place[i].name}</h3>`,
+                    `   <p>${dayPlan[day].place[i].road_adr}</p></p></div>`
+                ].join('')
+            );
+
+            if(dayInfoWindows[day].getMap()){
+                dayInfoWindows[day].close();
+            }else{
+                dayInfoWindows[day].open(map, marker);
+            }
+            map.panTo(marker.getPosition());
+        })
+
+    
         dayPolyPath.push(new naver.maps.LatLng(
             dayPlan[day].place[i].y,
             dayPlan[day].place[i].x
         ));
     }
-    console.log(dayPolyPath);
+
         if(dayPolyPath.length > 1){
         const dayPolyLine = new naver.maps.Polyline({
             map : map,
