@@ -1,0 +1,82 @@
+html {
+  background-color: rgb(0, 0, 34);
+  color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  width: 100vw;
+}
+
+.plan-info {
+  text-align: center;
+}
+
+.wrap {
+  margin: 0px auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .map {
+    margin-top: 50px;
+    background-color: aliceblue;
+    width: 100vw;
+    height: 30vh;
+    min-height: 40vw;
+  }
+
+  .day-btn {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    margin-top: 10px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: blanchedalmond;
+    color: black;
+    width: 5vw;
+    height: 5vh;
+    border-radius: 5px;
+  }
+
+  .place-obj {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .obj {
+    background-color: burlywood;
+    color: black;
+    width: 70vw;
+    height: auto;
+    padding: 30px;
+  }
+}
+@media screen and (min-width: 1025px) {
+  .map {
+    margin-top: 50px;
+    background-color: aliceblue;
+    width: 40vw;
+    height: 40vh;
+  }
+
+  .place-obj {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .obj {
+    background-color: burlywood;
+    color: black;
+    width: 30vw;
+    height: auto;
+    padding: 30px;
+  }
+}
