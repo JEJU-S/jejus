@@ -5,7 +5,7 @@
     zoom : 11
 };
 
-const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
+export const map = new naver.maps.Map(document.getElementById("map"), mapOptions);
 export const recMarkers = [];
 export const searchMarkers = [];
 export const kanbanMapMarkers = [];
@@ -37,8 +37,6 @@ return marker;
 }
 
 export function updateNumberMarkers(){
-
-
 }
 */
 
@@ -64,11 +62,15 @@ const infoWindow = new naver.maps.InfoWindow({
     disableAnchor: true
 });
 
-export function recMarkerClick(marker, category, place_name, road_address_name, image_url){
+//
+let colorChangedRoot;
+export function recMarkerClick(marker, category, place_name, road_address_name, image_url, root){
+    if(colorChangedRoot != undefined){
+        colorChangedRoot.style.backgroundColor = "#ffffff";
+    }
     if(infoWindow.getMap()){
         infoWindow.close();
     }
-
     infoWindow.setContent(
         [
             `<div class='map-info' ondragstart="return false" onselectstart="return false">`,
@@ -84,6 +86,14 @@ export function recMarkerClick(marker, category, place_name, road_address_name, 
         infoWindow.open(map, marker);
     }
     map.panTo(marker.getPosition());
+    root.style.backgroundColor = "whitesmoke";
+    colorChangedRoot = root;
+
+    setTimeout(() => {
+        root.scrollIntoView({
+           behavior: 'smooth'
+        });
+     });
 }
 
 export function searchMarkerClick(marker, place_name, road_address_name){
@@ -107,12 +117,39 @@ export function searchMarkerClick(marker, place_name, road_address_name){
     map.panTo(marker.getPosition());
 }
 
+export function kanbanMarkerClick(marker, place_name, road_address_name){
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }
+
+    infoWindow.setContent(
+        [
+            `<div class='map-info search' ondragstart="return false" onselectstart="return false">`,
+            `   <div><h3>${place_name}</h3>`,
+            `   <p>${road_address_name}</p></p></div>`
+        ].join('')
+    );
+    
+    if(infoWindow.getMap()){
+        infoWindow.close();
+    }else{
+        infoWindow.open(map, marker);
+    }
+    map.panTo(marker.getPosition());
+}
+
+
+
 
 naver.maps.Event.addListener(map, 'click', (event) => {
     if(infoWindow.getMap()){
         infoWindow.close();
     }
+    if(colorChangedRoot != undefined){
+        colorChangedRoot.style.backgroundColor = "#ffffff";
+    }
 })
+
 
 
 export function recListClick(lon, lat){

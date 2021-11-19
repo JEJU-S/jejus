@@ -1,5 +1,5 @@
 import {createMapMarker, removeMapMarker, mapPanToBound, listClick, searchMarkerClick} from "/public/js/edit-plan/Map.js";
-import {searchMarkers} from "./Map.js"
+import {searchMarkers, map} from "./Map.js"
 /*****************************************************************/
 
 
@@ -46,10 +46,14 @@ class PlaceItem {
             }
         });
         
-        naver.maps.Event.addListener(this.elements.marker, 'click', (event) => {
+        naver.maps.Event.addListener(this.elements.marker, 'click', async (event) => {
             
             searchMarkerClick(this.elements.marker, place_name, road_address_name);
-            this.elements.root.scrollIntoView({behavior : 'smooth'});    
+            this.elements.root.scrollIntoView({behavior : 'smooth'});  
+    
+
+
+
         })
 
         this.elements.root.addEventListener("dragstart", event => {
