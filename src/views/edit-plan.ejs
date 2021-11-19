@@ -165,7 +165,7 @@
         <div class="checkbox">
             <%for(let i = 0; i < totPlan.day_plan.length; i++){%>
                 <div>
-                    <input type="checkbox" data-index=<%=i%> id=checkbox<%=i+1%> checked><label for=checkbox<%=i+1%>><span><%=i+1%>일차 경로</span></label>
+                    <input type="checkbox" id=checkbox<%=i+1%> checked><label class=cb<%=i+1%> for=checkbox<%=i+1%>></label><span><%=i+1%>일차 경로</span>
                 </div>
             <%}%>
             <!--
