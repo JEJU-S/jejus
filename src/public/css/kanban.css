@@ -80,7 +80,7 @@ html::-webkit-scrollbar {
     "title del"
     "adr adr"
     "dr dr";
-  grid-template-columns: 72% 28%;
+  grid-template-columns: 80% 20%;
   cursor: grab;
 }
 
@@ -111,7 +111,7 @@ html::-webkit-scrollbar {
   border: none;
   cursor: pointer;
   background-color: white;
-  padding: 15px 20px 0px 0px;
+  padding: 15px 0px 0px 0px;
   border-radius: 0 5px 0 0;
   z-index: 2;
   color: #383838;

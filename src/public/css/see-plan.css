@@ -377,3 +377,58 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 .more-btn:hover {
   color: rgb(110, 110, 110);
 }
+
+.map-info {
+  display: flex;
+  flex-direction: row;
+  width: 350px;
+  height: 135px;
+  background: rgba(0, 0, 0, 0.658);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.map-info:after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.658);
+  border-bottom: 0;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
+
+.map-info img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.map-info h3 {
+  color: white;
+  width: 200px;
+  margin: 0 !important;
+  margin-left: 10px !important;
+}
+
+.map-info p {
+  color: white;
+  margin: 0 0 0 10px;
+  width: 173px;
+  font-size: 0.8rem;
+}
+
+.search {
+  width: 220px;
+  height: auto;
+  padding: 15px 0;
+}
