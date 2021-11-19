@@ -77,11 +77,11 @@
         <button id="save">저장</button>
     </header>
 
-    <main class="main-content">        
+    <main id="main-content">
 
-        <div class="recommandation">        
-        <div class="dragdrop-info" style="display: none;">
-            <span>이곳은 JEJU'S가 추천하는 관광지입니다. <br>먼저 권역을 선택하고, 관광/식당/카페 중<br> 카테고리를 골라서 추천받을 수 있습니다. <br><br>마음에 드는 관광지를 끌어서<br>맨 오른쪽 공간에 넣어보세요 !
+        <div class="recommandation">
+        <div class="dragdrop-info" style="display: flex;">
+            <span>이곳은 JEJU'S가 추천하는 관광지입니다. <br>먼저 권역을 선택하고, 관광/식당/카페 중<br> 카테고리를 골라서 추천받을 수 있습니다. <br><br>마음에 드는 관광지를 마우스로 끌어서<br><span class="green">노란색 공간</span>에 넣어보세요 !
             </span>
         </div>
             <button type="button" id="regionbtn">
@@ -133,9 +133,8 @@
         <!--place api 사용한 장소 검색 리스트(키워드 검색)-->
 
         <div class="search-list">
-            <div class="dragdrop-info" style="
-  display: none;">
-                <span>이곳은 이용자분들이 원하는 곳을<br>검색하는 공간입니다.<br>검색 결과는 15개 까지 나오며,<br>정확한 검색을 위해 검색어를 <br>자세하게 입력해 주세요.<br><br>원하는 관광지를 끌어서<br>맨 오른쪽 공간에 넣어보세요 !</span>
+            <div class="dragdrop-info" style="display: flex;">
+                <span>이곳은 이용자분들이 원하는 곳을<br>검색하는 공간입니다.<br>검색 결과는 15개 까지 나오며,<br>정확한 검색을 위해 검색어를 <br>자세하게 입력해 주세요.<br><br>원하는 관광지를 마우스로 끌어서<br><span class="green">노란색 공간</span>에 넣어보세요 !</span>
             </div>
             <form id="search-form">
                 <input type="text", name="search-input", placeholder="검색어를 입력하세요", required>
@@ -143,7 +142,7 @@
                     <span class="material-icons">
                     search
                     </span>
-                </button>                
+                </button>
                 <button class="clear-btn">
                     <span class="material-icons">
                     refresh
@@ -160,13 +159,12 @@
                 -->
             </ul>
         </div>
-        
+
         <div id="map"></div>
 
-        <div class="kanban">        
-        <div class="dragdrop-info" style="
-  display: none;">
-            <span>이곳은 이용자분이 만들어가는<br>플래너 공간입니다.<br>각 Day별로 지도 좌측의 여행지들을<br>끌어다 놓을 수 있습니다.<br>플래너 공간 내에서<br>끌어서 순서를 바꿀 수도 있고,<br>Day별 이동도 가능합니다.</span>
+        <div class="kanban">
+        <div class="dragdrop-info drop" style="display: flex;">
+            <span>이곳은 이용자분이 만들어가는<br>플래너 공간입니다.<br>각 Day별로 <span class="black">검은 공간</span>의 여행지들을<br>끌어다 놓을 수 있습니다.<br>플래너 공간 내에서<br>마우스로 끌어서 <br>순서를 바꿀 수도 있고,<br>Day별 이동도 가능합니다.</span>
         </div>
             <!--
             <div class="kanban__column">
