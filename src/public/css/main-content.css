@@ -103,6 +103,10 @@
   border-radius: 5px 5px 0 0;
 }
 
+#regionbtn:hover {
+  background-color: #9addff;
+}
+
 .recommandation__categories {
   display: flex;
   flex-direction: row;
@@ -323,11 +327,43 @@ input[type="text"]:focus {
   color: rgb(110, 110, 110);
 }
 
-#map {
+.map-area {
   width: 45%;
   height: 65%;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
   box-shadow: 0 0 4px 0 rgb(0 0 0 / 13%);
   border-radius: 5px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 5px;
+}
+
+.input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.lable #checkbox1 {
+  color: #a2d2ff;
+}
+#checkbox2 {
+  color: #41a3ff;
+}
+#checkbox3 {
+  color: #ffdd99;
+}
+#checkbox4 {
+  color: #fee440;
+}
+#checkbox5 {
+  color: #ff865e;
 }
 
 .map-info {
@@ -419,9 +455,11 @@ textarea:focus {
 }
 
 #info {
-  width: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   border: none;
-  width: 50px;
+  width: 120px;
   background: none;
   margin-right: 5px;
   cursor: pointer;
@@ -434,6 +472,7 @@ textarea:focus {
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -443,6 +482,7 @@ textarea:focus {
   width: 100%;
   height: 100%;
   z-index: 2000;
+  font-weight: bold;
 }
 
 .drop {

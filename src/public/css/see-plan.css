@@ -214,11 +214,11 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   align-items: center;
   width: 80px;
   height: 40px;
-  color: green;
+  color: white;
+  background-color: green;
   font-size: 1.2rem;
   border: none;
-  border-radius: 30px;
-  background-color: rgba(0, 128, 0, 0);
+  border-radius: 5px;
   margin: 15px;
   cursor: pointer;
 }
@@ -228,11 +228,12 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   align-items: center;
   position: absolute;
   right: 1%;
-  width: 100px;
+  margin-right: 20px;
   height: 40px;
   border-radius: 5px;
-  color: rgb(131, 131, 131);
-  background-color: rgba(255, 0, 0, 0);
+  padding-right: 10px;
+  color: white;
+  background-color: red;
   border: none;
   cursor: pointer;
 }
@@ -243,11 +244,11 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
   justify-content: center;
   width: 80px;
   height: 40px;
-  color: rgb(255, 177, 32);
+  background-color: rgb(255, 177, 32);
+  color: white;
   font-size: 1.2rem;
   border: none;
-  border-radius: 30px;
-  background-color: rgba(0, 128, 0, 0);
+  border-radius: 5px;
   margin: 15px;
   cursor: pointer;
 }
@@ -375,4 +376,59 @@ display가 바뀌면 됨 whole-plan은 flex <-> none, day-plan은 grid <-> none*
 
 .more-btn:hover {
   color: rgb(110, 110, 110);
+}
+
+.map-info {
+  display: flex;
+  flex-direction: row;
+  width: 350px;
+  height: 135px;
+  background: rgba(0, 0, 0, 0.658);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.map-info:after {
+  content: "";
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.658);
+  border-bottom: 0;
+  margin-left: -10px;
+  margin-bottom: -10px;
+}
+
+.map-info img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.map-info h3 {
+  color: white;
+  width: 200px;
+  margin: 0 !important;
+  margin-left: 10px !important;
+}
+
+.map-info p {
+  color: white;
+  margin: 0 0 0 10px;
+  width: 173px;
+  font-size: 0.8rem;
+}
+
+.search {
+  width: 220px;
+  height: auto;
+  padding: 15px 0;
 }
