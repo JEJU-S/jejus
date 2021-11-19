@@ -302,7 +302,7 @@ var sendInvitation = /*#__PURE__*/function () {
 
           case 4:
             usertotplan = _context2.sent;
-            console.log("초대한 계획", usertotplan);
+            //console.log("초대한 계획", usertotplan)
             totplan_title = usertotplan.title;
             totplan_id = usertotplan._id;
             hostname = usertotplan.admin.name;
@@ -314,12 +314,11 @@ var sendInvitation = /*#__PURE__*/function () {
             parti = usertotplan.participants;
             console.log(parti); // 초대장을 받음
 
-            _context2.next = 14;
+            _context2.next = 13;
             return finduser(gmail);
 
-          case 14:
+          case 13:
             par_userinfo = _context2.sent;
-            console.log("초대한 유저", par_userinfo);
 
             if (par_userinfo != null) {
               par_id = par_userinfo._id;
@@ -353,7 +352,7 @@ var sendInvitation = /*#__PURE__*/function () {
               res.redirect("/plans/".concat(id, "?status=").concat(statusCode));
             }
 
-          case 17:
+          case 15:
           case "end":
             return _context2.stop();
         }
@@ -381,9 +380,9 @@ var editPlan = /*#__PURE__*/function () {
 
           case 3:
             usertotplan = _context3.sent;
-            console.log("!! userplans(editplan) check !!");
-            console.log(usertotplan);
 
+            //console.log("!! userplans(editplan) check !!")
+            //console.log(usertotplan)
             if (usertotplan == null) {
               res.redirect("/plans/".concat(id));
             } else {
@@ -406,7 +405,7 @@ var editPlan = /*#__PURE__*/function () {
               }
             }
 
-          case 7:
+          case 5:
           case "end":
             return _context3.stop();
         }
