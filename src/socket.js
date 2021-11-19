@@ -368,8 +368,8 @@ io.on("connection", (socket) => {
 
             await TotPlan.findByIdAndUpdate({_id:planId } , {$set : {day_plan: mPL } }).exec();
 
-            socket.to(planId).emit("move_in_placelist", itemId, columnId, droppedIndex);
-            socket.emit("move_in_placelist" , itemId, columnId, droppedIndex);
+            socket.to(planId).emit("move_in_placelist", itemId, originColumnId, columnId, droppedIndex);
+            socket.emit("move_in_placelist" , itemId, originColumnId, columnId, droppedIndex);
         }
 
     })
@@ -412,7 +412,7 @@ io.on("connection", (socket) => {
         
         //list에서 해당 id를 가진 place 삭제
         socket.to(planId).emit("delete_from_list", itemId);
-        //socket.emit("delete_from_list", itemId);
+        socket.emit("delete_from_list", itemId);
     })
 
     socket.on("disconnecting", async (reason) => {

@@ -22,23 +22,43 @@ export function createMapMarker(lon, lat, image){
     return marker;
 }
 
-/*
-export function makeNumberMarker(marker){
-    const indexMarker = new naver.maps.Marker({  // 위도 경도
-        position : marker.getPosition(),
-        map : map,
-        icon : {
-            content : ['<div></div>'].join(''),
-            size : new naver.maps.Size(25, 40)
+const kanbanPolyPath = [];
+let kanbanPolyLine;
+
+function drawKanbanPolyLine(){
+    console.log(kanbanMapMarkers);
+    if(kanbanPolyLine != undefined && kanbanPolyLine.getMap() != null){
+        kanbanPolyLine.setMap(null);
+        kanbanPolyPath.length = 0;
+    }
+
+    kanbanMapMarkers.forEach(root => {
+        kanbanPolyPath.push(root.marker.getPosition());
+    });
+
+     if(kanbanPolyPath.length > 1){
+        kanbanPolyLine = new naver.maps.Polyline({
+            map : map,
+            path : kanbanPolyPath,
+            strokeWeight : 2,
+            strokeOpacity : 0.9,
+            strokeColor : '#4169E1',
+            strokeStyle : 'shortdash',
+            endIcon : 1
+        }) 
+    }
+}
+
+function setPolyLineVisability(){
+    if(kanbanPolyLine != undefined && kanbanPolyLine.getMap() != null){
+        if(kanbanPolyLine.getVisible() == 0){
+            kanbanPolyLine.setVisable(0);
+        }else{
+            kanbanPolyLine.setVisable(0);
         }
-    })
-
-return marker;
+    }
 }
 
-export function updateNumberMarkers(){
-}
-*/
 
 export function mapPanToBound(lon, lat){
 
@@ -138,9 +158,6 @@ export function kanbanMarkerClick(marker, place_name, road_address_name){
     map.panTo(marker.getPosition());
 }
 
-
-
-
 naver.maps.Event.addListener(map, 'click', (event) => {
     if(infoWindow.getMap()){
         infoWindow.close();
@@ -149,8 +166,6 @@ naver.maps.Event.addListener(map, 'click', (event) => {
         colorChangedRoot.style.backgroundColor = "#ffffff";
     }
 })
-
-
 
 export function recListClick(lon, lat){
     map.panTo(new naver.maps.LatLng(lat , lon));

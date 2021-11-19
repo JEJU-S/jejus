@@ -1,6 +1,6 @@
 import ChattingList from "/public/js/edit-plan/Message.js";
 import SearchList from "/public/js/edit-plan/SearchList.js";
-import {createMapMarker, removeMapMarker, searchMarkers, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
+import {map, createMapMarker, removeMapMarker, searchMarkers, kanbanMapMarkers} from "/public/js/edit-plan/Map.js";
 //import {RecList} from "/public/js/edit-plan/RecList.js";
 import {Kanban, Item} from "/public/js/edit-plan/Kanban.js";
 
@@ -20,7 +20,6 @@ let kanbanList;
 //들어올 때 서버로 보내기💨
 //socket.emit("join_room", planId, userName, userId, init);
 window.addEventListener('pageshow', (event) => {
-    console.log("dfs");
     socket.emit("join_room", planId, userName, userId, init);
     console.log(event.persisted);
     if(event.persisted){
@@ -29,12 +28,55 @@ window.addEventListener('pageshow', (event) => {
 });
 
 
+const kanbanPolyLine = [];
 function init(placeList){
-
   // 칸반리스트 만들기
-  kanbanList = new Kanban(document.querySelector(".kanban"), placeList);
-  
+    kanbanList = new Kanban(document.querySelector(".kanban"), placeList);
+    const day = placeList.length;
+
+    placeList.forEach((plan, index) => {
+        const path = [];
+        for(const place of plan.place){
+            path.push(new naver.maps.LatLng(place.y, place.x))
+        };
+        drawKanbanPolyLine(path, index);
+    })
 }
+
+function drawKanbanPolyLine(path, index){
+    if(path.length > 1){
+        kanbanPolyLine.push(
+            new naver.maps.Polyline({
+            map : map,
+            path : path,
+            strokeWeight : 2,
+            strokeOpacity : 0.9,
+            strokeColor : '#4169E1',
+            strokeStyle : 'shortdash',
+            endIcon : 1
+        }))
+    }
+}
+
+
+
+
+function changeKanbanPolyLine(path, index){
+    if(kanbanPolyLine[index] != undefined && kanbanPolyLine[index].getMap() != null){
+        kanbanPolyLine[index].setMap(null);
+    }
+    
+    kanbanPolyLine[index] = new naver.maps.Polyline({
+        map : map,
+        path : path,
+        strokeWeight : 2,
+        strokeOpacity : 0.9,
+        strokeColor : '#4169E1',
+        strokeStyle : 'shortdash',
+        endIcon : 1
+    });
+}
+
 /***************************************/
 
 const chatForm = document.querySelector(".chatting form");
@@ -120,6 +162,8 @@ socket.on("move_in_placelist", moveInList);
 function deleteFromList(itemId){
     //item 삭제
     const deletedItem = kanbanList.root.querySelector(`.kanban div[data-id="${itemId}"]`);
+    const changedColumn = deletedItem.closest(".kanban__column");
+    const columnIndex = changedColumn.dataset.index;
 
     //map 삭제
     let mapIndex;
@@ -133,6 +177,15 @@ function deleteFromList(itemId){
         kanbanMapMarkers.splice(mapIndex, 1);
     }
     deletedItem.parentElement.removeChild(deletedItem);
+
+    const path = [];
+    changedColumn.querySelectorAll(`.kanban__item`).forEach(item => {
+        path.push(new naver.maps.LatLng(item.dataset.y, item.dataset.x));
+    });
+
+    changeKanbanPolyLine(path, columnIndex);
+
+    //drawKanbanPolyLine();
 }
 
 function addFromList(newId, newPlace, columnId, droppedIndex){
@@ -149,12 +202,28 @@ function addFromList(newId, newPlace, columnId, droppedIndex){
         return;
     }
     insertAfter.after(droppedItemElement);
+
+//************** */
+
+    const changedColumn = columnElement;
+    const columnIndex = changedColumn.dataset.index;
+
+
+    const path = [];
+    changedColumn.querySelectorAll(`.kanban__item`).forEach(item => {
+        console.log(item.dataset.y, item.dataset.x);
+
+        path.push(new naver.maps.LatLng(item.dataset.y, item.dataset.x));
+    });
+
+    changeKanbanPolyLine(path, columnIndex);
 }
 
-function moveInList(itemId, columnId, droppedIndex){
+function moveInList(itemId, originColumnId, columnId, droppedIndex){
     const droppedItemElement = document.querySelector(`.kanban div[data-id="${itemId}"]`);
 
     const columnElement = document.querySelector(`.kanban div[data-id="${columnId}"]`);
+    const originColumnElement = document.querySelector(`.kanban div[data-id="${originColumnId}"]`);
 
     const dropZonesInColumn = Array.from(columnElement.querySelectorAll(".kanban__dropzone"));
     const dropZone = dropZonesInColumn[droppedIndex];
@@ -166,7 +235,35 @@ function moveInList(itemId, columnId, droppedIndex){
     }
     
     insertAfter.after(droppedItemElement);
+
+    const columnIndex = columnElement.dataset.index;
+    const originIndex = originColumnElement.dataset.index;
+
+
+    const changedPath = [];
+    columnElement.querySelectorAll(`.kanban__item`).forEach(item => {
+
+        changedPath.push(new naver.maps.LatLng(item.dataset.y, item.dataset.x));
+    });
+    changeKanbanPolyLine(changedPath, columnIndex);
+
+    if(changedPath != originIndex){
+        const originPath = [];
+        originColumnElement.querySelectorAll(`.kanban__item`).forEach(item => {
+
+            originPath.push(new naver.maps.LatLng(item.dataset.y, item.dataset.x));
+        });
+        changeKanbanPolyLine(originPath, originIndex);
+    }
+
 }
+
+
+
+
+
+
+//************************ */
 
 document.querySelector("#save").addEventListener("click", () => {
     //socket leave room
@@ -189,7 +286,7 @@ socket.on("disconnect", () => {
 socket.on("current_participant", createParticipantHeader);
 
 function createParticipantHeader(currentParticipant, totParticipants){
-    console.log(totParticipants);
+    
     const participantContent = [];
 
     totParticipants.forEach((participant) => {

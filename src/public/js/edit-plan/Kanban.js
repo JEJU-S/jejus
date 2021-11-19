@@ -7,6 +7,7 @@ class MapMarker {
         this.marker = createMapMarker(x, y, "marker-user");
     } 
 }
+
 let check = false;
 class DropZone {
     constructor(){
@@ -165,7 +166,7 @@ export class Item {
                 //소켓서버에 보냄 💨
                 socket.emit("delete_from_list", this.elements.root.dataset.id, parentColumnId, planId);
 
-
+                /*
                // map 삭제 find index 왜 안되는지 찾아보기
                 let mapIndex;
                 kanbanMapMarkers.forEach((mapMarker, index) => {
@@ -179,6 +180,7 @@ export class Item {
                 }
 
                 this.elements.root.parentElement.removeChild(this.elements.root); // 컬럼에서 삭제
+                */
             }
         });
 
@@ -220,6 +222,7 @@ export class Item {
 }
 
 
+let index = 0;
 class Column {
 	constructor(id, title, placeList) {    
         const topDropZone = DropZone.createDropZone();
@@ -229,6 +232,7 @@ class Column {
 		this.elements.root = Column.createRoot();
 		this.elements.title = this.elements.root.querySelector(".kanban__column-title");
 		this.elements.items = this.elements.root.querySelector(".kanban__column-items");
+        this.elements.root.dataset.index = index++;
          /*       
         this.elements.root.dataset.id = id;
         this.elements.title.textContent = title;
