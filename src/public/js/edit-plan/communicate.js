@@ -4,6 +4,16 @@ import {map, createMapMarker, removeMapMarker, searchMarkers, kanbanMapMarkers} 
 //import {RecList} from "/public/js/edit-plan/RecList.js";
 import {Kanban, Item} from "/public/js/edit-plan/Kanban.js";
 
+
+const POLY_LINE_COLOR = [
+    `#0079b9`,
+`#0059ff`,
+`#2611a0`,
+`#0c2854`,
+`#003f03`
+]
+
+
 /******************socket 생성************************/
 export const socket = io(); 
 
@@ -28,6 +38,23 @@ window.addEventListener('pageshow', (event) => {
 });
 
 
+document.querySelectorAll("input[type=checkbox]").forEach((checkbox, index) => {
+    //const index = checkbox.dataset.index;
+    checkbox.addEventListener("change", (event) => {
+        setPolyLineVisability(index);    
+    })
+})
+
+function setPolyLineVisability(index){
+    if(kanbanPolyLine[index] != undefined && kanbanPolyLine[index].getMap() != null){
+        if(kanbanPolyLine[index].getVisible() != false){
+            kanbanPolyLine[index].setVisible(false);
+        }else{
+            kanbanPolyLine[index].setVisible(true);
+        }
+    }
+}
+
 const kanbanPolyLine = [];
 function init(placeList){
   // 칸반리스트 만들기
@@ -43,6 +70,7 @@ function init(placeList){
     })
 }
 
+
 function drawKanbanPolyLine(path, index){
     if(path.length > 1){
         kanbanPolyLine.push(
@@ -51,30 +79,34 @@ function drawKanbanPolyLine(path, index){
             path : path,
             strokeWeight : 2,
             strokeOpacity : 0.9,
-            strokeColor : '#4169E1',
+            strokeColor : POLY_LINE_COLOR[index],
             strokeStyle : 'shortdash',
             endIcon : 1
         }))
     }
 }
 
-
-
-
 function changeKanbanPolyLine(path, index){
     if(kanbanPolyLine[index] != undefined && kanbanPolyLine[index].getMap() != null){
         kanbanPolyLine[index].setMap(null);
     }
-    
-    kanbanPolyLine[index] = new naver.maps.Polyline({
-        map : map,
-        path : path,
-        strokeWeight : 2,
-        strokeOpacity : 0.9,
-        strokeColor : '#4169E1',
-        strokeStyle : 'shortdash',
-        endIcon : 1
-    });
+    if(path.length > 1){
+        kanbanPolyLine[index] = new naver.maps.Polyline({
+            map : map,
+            path : path,
+            strokeWeight : 2,
+            strokeOpacity : 0.9,
+            strokeColor : POLY_LINE_COLOR[index],
+            strokeStyle : 'shortdash',
+            endIcon : 1
+        });
+    }
+    //console.log(`#checkbox${index+1}`);
+    //console.log(document.querySelector(`#checkbox${index+1}`));
+    if(document.querySelector(`#checkbox${index+1}`).checked == false){
+        console.log("fd");
+        kanbanPolyLine[index].setVisible(false);
+    }
 }
 
 /***************************************/
@@ -163,7 +195,7 @@ function deleteFromList(itemId){
     //item 삭제
     const deletedItem = kanbanList.root.querySelector(`.kanban div[data-id="${itemId}"]`);
     const changedColumn = deletedItem.closest(".kanban__column");
-    const columnIndex = changedColumn.dataset.index;
+    const columnIndex = Number(changedColumn.dataset.index);
 
     //map 삭제
     let mapIndex;
@@ -203,10 +235,9 @@ function addFromList(newId, newPlace, columnId, droppedIndex){
     }
     insertAfter.after(droppedItemElement);
 
-//************** */
 
     const changedColumn = columnElement;
-    const columnIndex = changedColumn.dataset.index;
+    const columnIndex = Number(changedColumn.dataset.index);
 
 
     const path = [];
@@ -236,9 +267,10 @@ function moveInList(itemId, originColumnId, columnId, droppedIndex){
     
     insertAfter.after(droppedItemElement);
 
-    const columnIndex = columnElement.dataset.index;
-    const originIndex = originColumnElement.dataset.index;
-
+    const columnIndex = Number(columnElement.dataset.index);
+    const originIndex = Number(originColumnElement.dataset.index);
+    console.log(columnElement);
+    console.log(originColumnElement);
 
     const changedPath = [];
     columnElement.querySelectorAll(`.kanban__item`).forEach(item => {
@@ -247,7 +279,7 @@ function moveInList(itemId, originColumnId, columnId, droppedIndex){
     });
     changeKanbanPolyLine(changedPath, columnIndex);
 
-    if(changedPath != originIndex){
+    if(columnIndex != originIndex){
         const originPath = [];
         originColumnElement.querySelectorAll(`.kanban__item`).forEach(item => {
 
@@ -315,26 +347,4 @@ function checkCurrentParticipant(currentParticipant){
 
 
 
-/*
-function checkChrome(event){
-    const agt = navigator.userAgent.toLowerCase();
-    console.log(event.persisted);
-    if (agt.indexOf("edg") != -1){
-        console.log("edg");
-        return;
-    }
-    else if(agt.indexOf("chrome") != -1){
-        console.log("chrome");
-        console.log(event.persisted);
-        const back = event.persisted;
 
-
-        if (event.persisted == true) {
-            console.log("뒤로가기");
-        }
-    }
-    else{};
-}
-
-checkChrome();
-*/

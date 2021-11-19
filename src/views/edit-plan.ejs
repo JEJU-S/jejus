@@ -163,6 +163,12 @@
         </div>
     <div class="map-area">
         <div class="checkbox">
+            <%for(let i = 0; i < totPlan.day_plan.length; i++){%>
+                <div>
+                    <input type="checkbox" data-index=<%=i%> id=checkbox<%=i+1%> checked><label for=checkbox<%=i+1%>><span><%=i+1%>일차 경로</span></label>
+                </div>
+            <%}%>
+            <!--
             <div>
                 <input type="checkbox" id="checkbox1" = checked><label for="checkbox1"><span>1일차 경로</span></label>
             </div>
@@ -178,6 +184,7 @@
             <div>
                 <input type="checkbox" id="checkbox5" = checked><label for="checkbox5"><span>5일차 경로</span></label>
             </div>
+            -->
         </div>
         <div id="map"></div>
     </div>

@@ -22,6 +22,7 @@ export function createMapMarker(lon, lat, image){
     return marker;
 }
 
+/*
 const kanbanPolyPath = [];
 let kanbanPolyLine;
 
@@ -48,17 +49,7 @@ function drawKanbanPolyLine(){
         }) 
     }
 }
-
-function setPolyLineVisability(){
-    if(kanbanPolyLine != undefined && kanbanPolyLine.getMap() != null){
-        if(kanbanPolyLine.getVisible() == 0){
-            kanbanPolyLine.setVisable(0);
-        }else{
-            kanbanPolyLine.setVisable(0);
-        }
-    }
-}
-
+*/
 
 export function mapPanToBound(lon, lat){
 
