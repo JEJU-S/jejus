@@ -19,7 +19,8 @@
 }
 
 .new-message {
-  position: absolute;
+  visibility: hidden;
+  position : absolute;
   right: -5%;
   top: -10%;
   width: 20px;

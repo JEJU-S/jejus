@@ -4,7 +4,6 @@ import {map, createMapMarker, removeMapMarker, searchMarkers, kanbanMapMarkers} 
 //import {RecList} from "/public/js/edit-plan/RecList.js";
 import {Kanban, Item} from "/public/js/edit-plan/Kanban.js";
 
-
 const POLY_LINE_COLOR = [
     `#0079b9`,
 `#0059ff`,
@@ -12,7 +11,6 @@ const POLY_LINE_COLOR = [
 `#0c2854`,
 `#003f03`
 ]
-
 
 /******************socket 생성************************/
 export const socket = io(); 
@@ -113,6 +111,26 @@ function changeKanbanPolyLine(path, index){
 
 const chatForm = document.querySelector(".chatting form");
 const chatBox = document.querySelector(".chat-box");
+const nMsg = document.querySelector(".new-message");
+
+
+//chattng popup click
+const chattingPopup = document.querySelector("#popup");
+
+chattingPopup.addEventListener("click", showChatBox);
+
+function showChatBox(){
+    document.querySelector(".chatting").style.display = "flex";
+    chattingPopup.style.display = "none";
+    document.querySelector(".new-message").style.visibility = "hidden";
+}
+
+document.querySelector(".chatting button").addEventListener("click", showChatPopup);
+function showChatPopup(event){
+    event.preventDefault();
+    chattingPopup.style.display = "flex";
+    document.querySelector(".chatting").style.display = "none";
+}
 
 // 채팅 메시지 전송
 const chattingList = new ChattingList(document.querySelector(".chat-box"));
@@ -137,9 +155,18 @@ function recieveMyOwnMessage(message){
 
 // server side에서 전달 받을 때 사용할 함수
 socket.on("incomming_chatting_msg", receiveChattingMessage);
+
 function receiveChattingMessage(image_url, message){
     chattingList.addMessage(image_url, message, "incoming");
     chatBox.scrollTop = chatBox.scrollHeight;
+    console.log(chattingPopup.style.display);
+    if(chattingPopup.style.display == "none"){
+        document.querySelector(".new-message").style.visibility = "none";
+    }
+    else{
+        document.querySelector(".new-message").style.visibility = "visible";
+    }
+
 }
 
 socket.on("server_msg", receiveSystemMessage);
@@ -290,11 +317,6 @@ function moveInList(itemId, originColumnId, columnId, droppedIndex){
 
 }
 
-
-
-
-
-
 //************************ */
 
 document.querySelector("#save").addEventListener("click", () => {
@@ -343,7 +365,8 @@ function checkCurrentParticipant(currentParticipant){
     })
 }
 
-/****************페이지 이동 시 무조건 새로고침 (크롬만)***/
+
+
 
 
 

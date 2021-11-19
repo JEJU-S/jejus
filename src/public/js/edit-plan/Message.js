@@ -40,19 +40,3 @@ export default class ChattingList {
     }
 }
 
-//chattng popup click
-const chattingPopup = document.querySelector("#popup");
-
-chattingPopup.addEventListener("click", showChatBox);
-
-function showChatBox(){
-    document.querySelector(".chatting").style.display = "flex";
-    chattingPopup.style.display = "none";
-}
-
-document.querySelector(".chatting button").addEventListener("click", showChatPopup);
-function showChatPopup(event){
-    event.preventDefault();
-    chattingPopup.style.display = "flex";
-    document.querySelector(".chatting").style.display = "none";
-}
