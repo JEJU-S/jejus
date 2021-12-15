@@ -122,19 +122,59 @@ var mapOptions = {
   center: new naver.maps.LatLng(33.50088510909299, 126.52906251498592),
   zoom: 10
 };
+var infoWindow = new naver.maps.InfoWindow({
+  content: '',
+  backgroundColor: "#00000000",
+  borderWidth: 0,
+  disableAnchor: true
+});
+
+function seeplanMarkerClick(map, marker, name, road_adr) {
+  if (infoWindow.getMap()) {
+    infoWindow.close();
+  }
+
+  infoWindow.setContent(["<div class='map-info search' ondragstart=\"return false\" onselectstart=\"return false\">", "   <div><h3>".concat(name, "</h3>"), "   <p>".concat(road_adr, "</p></p></div>")].join(''));
+
+  if (infoWindow.getMap()) {
+    infoWindow.close();
+  } else {
+    infoWindow.open(map, marker);
+  }
+
+  map.panTo(marker.getPosition());
+}
+
 var totMap = new naver.maps.Map(document.getElementById("total-map"), mapOptions);
 var dayPlan = JSON.parse(document.getElementById("total-map").dataset.dayplan);
+var totMapMarkers = [];
 
-for (var i = 0; i < dayPlan.length; i++) {
-  for (var j = 0; j < dayPlan[i].place.length; j++) {
-    new naver.maps.Marker({
+var _loop = function _loop(i) {
+  var _loop3 = function _loop3(j) {
+    var marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(dayPlan[i].place[j].y, dayPlan[i].place[j].x),
       map: totMap
     });
-  }
-}
-/******버튼************/
+    naver.maps.Event.addListener(marker, 'click', function (event) {
+      seeplanMarkerClick(totMap, marker, dayPlan[i].place[j].name, dayPlan[i].place[j].road_adr);
+    });
+  };
 
+  for (var j = 0; j < dayPlan[i].place.length; j++) {
+    _loop3(j);
+  }
+};
+
+for (var i = 0; i < dayPlan.length; i++) {
+  _loop(i);
+}
+
+naver.maps.Event.addListener(totMap, 'click', function (event) {
+  if (infoWindow.getMap()) {
+    infoWindow.close();
+  }
+});
+/******버튼************/
 
 document.querySelector(".edit-btn").addEventListener("click", function () {
   window.location.href = "/plans/".concat(planId, "/edit");
@@ -156,20 +196,50 @@ if (document.querySelector(".del-btn") !== null) {
 /************DAY********************/
 
 
+var dayInfoWindows = [];
 document.querySelectorAll(".day-map").forEach(function (dayMap) {
   var day = Number(dayMap.dataset.dayindex);
   var map = new naver.maps.Map(document.getElementById("day-map".concat(day + 1)), mapOptions);
+  naver.maps.Event.addListener(map, 'click', function (event) {
+    if (dayInfoWindows[day].getMap()) {
+      dayInfoWindows[day].close();
+    }
+  });
+  dayInfoWindows.push(new naver.maps.InfoWindow({
+    content: '',
+    backgroundColor: "#00000000",
+    borderWidth: 0,
+    disableAnchor: true
+  }));
   var dayPolyPath = [];
 
-  for (var _i = 0; _i < dayPlan[day].place.length; _i++) {
-    new naver.maps.Marker({
+  var _loop2 = function _loop2(_i) {
+    var marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(dayPlan[day].place[_i].y, dayPlan[day].place[_i].x),
       map: map
     });
-    dayPolyPath.push(new naver.maps.LatLng(dayPlan[day].place[_i].y, dayPlan[day].place[_i].x));
-  }
+    naver.maps.Event.addListener(marker, 'click', function (event) {
+      //(map, marker, dayPlan[day].name, dayPlan[day].road_adr);
+      if (dayInfoWindows[day].getMap()) {
+        dayInfoWindows[day].close();
+      }
 
-  console.log(dayPolyPath);
+      dayInfoWindows[day].setContent(["<div class='map-info search' ondragstart=\"return false\" onselectstart=\"return false\">", "   <div>".concat(day + 1, "\uC77C ").concat(_i + 1, "\uBC88\uC9F8</div>"), "   <div><h3>".concat(dayPlan[day].place[_i].name, "</h3>"), "   <p>".concat(dayPlan[day].place[_i].road_adr, "</p></p></div>")].join(''));
+
+      if (dayInfoWindows[day].getMap()) {
+        dayInfoWindows[day].close();
+      } else {
+        dayInfoWindows[day].open(map, marker);
+      }
+
+      map.panTo(marker.getPosition());
+    });
+    dayPolyPath.push(new naver.maps.LatLng(dayPlan[day].place[_i].y, dayPlan[day].place[_i].x));
+  };
+
+  for (var _i = 0; _i < dayPlan[day].place.length; _i++) {
+    _loop2(_i);
+  }
 
   if (dayPolyPath.length > 1) {
     var dayPolyLine = new naver.maps.Polyline({

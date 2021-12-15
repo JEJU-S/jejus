@@ -80,7 +80,8 @@ var login = function login(req, res) {
     response_type: "code",
     client_id: process.env.GL_CLIENT,
     scope: "email profile",
-    redirect_uri: "http://localhost:".concat(PORT, "/users/callback")
+    // redirect_uri : `http://localhost:${PORT}/users/callback`,
+    redirect_uri: "https://chlwodnjs.netlify.app/users/callback"
   };
   var params = new URLSearchParams(config).toString();
   var finalURL = "".concat(baseURL, "?").concat(params);
@@ -103,7 +104,8 @@ var callback = /*#__PURE__*/function () {
               client_secret: process.env.GL_SECRET,
               code: req.query.code,
               grant_type: "authorization_code",
-              redirect_uri: "http://localhost:".concat(PORT, "/users/callback")
+              // redirect_uri : `http://localhost:${PORT}/users/callback`,
+              redirect_uri: "https://chlwodnjs.netlify.app/users/callback"
             };
             params = new URLSearchParams(config).toString();
             finalURL = "".concat(baseURL, "?").concat(params); //token 받기
